@@ -3,6 +3,7 @@ import { divide, multiply } from 'mathjs'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
 import { groupSizeStyleAdaptor } from '@/utils/style'
+import { nextTick } from 'vue'
 
 const dvMainStore = dvMainStoreWithOut()
 const { componentData, curComponentIndex, canvasStyleData } = storeToRefs(dvMainStore)
@@ -49,7 +50,7 @@ export function changeComponentsSizeWithScale(scale) {
     // 计算逻辑 Group 中样式 * groupComponent.groupStyle[sonKey].
     if (['Group', 'DeTabs'].includes(component.component)) {
       try {
-        groupSizeStyleAdaptor(component)
+        nextTick(() => groupSizeStyleAdaptor(component))
       } catch (e) {
         // 旧Group适配
         console.error('group adaptor error:' + e)
