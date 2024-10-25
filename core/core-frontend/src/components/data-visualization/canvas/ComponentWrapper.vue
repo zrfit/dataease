@@ -145,7 +145,7 @@ const handleInnerMouseDown = e => {
     e.stopPropagation()
     e.preventDefault()
   }
-  if (showPosition.value.includes('popEdit')) {
+  if (showPosition.value.includes('popEdit') || dvMainStore.mobileInPc) {
     onClick(e)
   }
 }
@@ -338,6 +338,7 @@ const initOpenHandler = newWindow => {
   }
 }
 const deepScale = computed(() => scale.value / 100)
+const showActive = computed(() => props.popActive || (dvMainStore.mobileInPc && props.active))
 </script>
 
 <template>
@@ -386,7 +387,7 @@ const deepScale = computed(() => scale.value / 100)
       <div
         class="wrapper-inner-adaptor"
         :style="slotStyle"
-        :class="{ 'pop-wrapper-inner': popActive, 'event-active': eventEnable }"
+        :class="{ 'pop-wrapper-inner': showActive, 'event-active': eventEnable }"
         @mousedown="onWrapperClick"
       >
         <component
