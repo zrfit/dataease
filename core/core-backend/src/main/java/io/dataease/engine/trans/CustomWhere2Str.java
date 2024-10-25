@@ -130,7 +130,13 @@ public class CustomWhere2Str {
                     }
                 }
                 // 此处获取标准格式的日期
-                whereName = originName;
+                if (StringUtils.equalsIgnoreCase(field.getType(), "date")) {
+                    whereName = String.format(SQLConstants.DE_CAST_DATE_FORMAT, originName,
+                            SQLConstants.DEFAULT_DATE_FORMAT,
+                            SQLConstants.DEFAULT_DATE_FORMAT);
+                } else {
+                    whereName = originName;
+                }
             }
         } else if (field.getDeType() == 2 || field.getDeType() == 3) {
             if (field.getDeExtractType() == 0 || field.getDeExtractType() == 5) {
