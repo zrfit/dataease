@@ -86,16 +86,7 @@ export class Waterfall extends G2PlotChartView<WaterfallOptions, G2Waterfall> {
       xField: 'field',
       yField: 'value',
       seriesField: 'category',
-      appendPadding: getPadding(chart),
-      interactions: [
-        {
-          type: 'tooltip',
-          cfg: {
-            start: [{ trigger: 'interval:mousemove', action: 'tooltip:show' }],
-            end: [{ trigger: 'interval:mouseleave', action: 'tooltip:hide' }]
-          }
-        }
-      ]
+      appendPadding: getPadding(chart)
     }
     const options = this.setupOptions(chart, baseOptions)
     const { Waterfall: G2Waterfall } = await import('@antv/g2plot/esm/plots/waterfall')
