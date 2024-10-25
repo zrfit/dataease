@@ -787,5 +787,7 @@ export function mobileViewStyleSwitch(component) {
     const viewInfo = canvasViewInfo.value[component.id]
     viewInfo.customStyle = component.customStyle
     viewInfo.customAttr = component.customAttr
+    viewInfo.title = component.title
+    viewInfo.name = component.name
   }
 }

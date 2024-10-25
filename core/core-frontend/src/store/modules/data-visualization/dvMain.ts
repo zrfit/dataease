@@ -311,7 +311,7 @@ export const dvMainStore = defineStore('dataVisualization', {
       if (this.mobileInPc) {
         useEmitt().emitter.emit('curComponentChange', {
           type: 'curComponentChange',
-          value: JSON.parse(JSON.stringify(this.curComponent))
+          value: this.curComponent ? JSON.parse(JSON.stringify(this.curComponent)) : null
         })
       }
     },

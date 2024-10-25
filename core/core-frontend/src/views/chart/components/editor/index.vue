@@ -1061,8 +1061,16 @@ const onChangeMiscStyleForm = val => {
 
 const onTextChange = val => {
   view.value.customStyle.text = val
-  useEmitt().emitter.emit('updateTitle-' + view.value.id)
-  snapshotStore.recordSnapshotCache('renderChart', view.value.id)
+  if (mobileInPc.value) {
+    //移动端设计
+    useEmitt().emitter.emit('onMobileStatusChange', {
+      type: 'componentStyleChange',
+      value: { type: 'updateTitle', component: JSON.parse(JSON.stringify(view.value)) }
+    })
+  } else {
+    useEmitt().emitter.emit('updateTitle-' + view.value.id)
+    snapshotStore.recordSnapshotCache('renderChart', view.value.id)
+  }
 }
 
 const onLegendChange = val => {
