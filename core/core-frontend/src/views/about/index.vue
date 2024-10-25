@@ -324,7 +324,8 @@ const syncFree = () => {
   display: flex;
   align-items: center;
   align-content: center;
-  max-width: 250px;
+  width: fit-content;
   justify-content: space-between;
+  column-gap: 12px;
 }
 </style>
