@@ -143,7 +143,8 @@ public class WhereTree2Str {
                         originName = String.format(SQLConstants.DE_STR_TO_DATE, String.format(SQLConstants.CONCAT, "'1970-01-01 '", originName), SQLConstants.DEFAULT_DATE_FORMAT);
                     }
                 }
-                if (StringUtils.equalsIgnoreCase(field.getType(), "date")) {
+                if (StringUtils.equalsIgnoreCase(field.getType(), "date")
+                        || (StringUtils.equalsIgnoreCase(dsMap.entrySet().iterator().next().getValue().getType(), "oracle") && StringUtils.equalsIgnoreCase(field.getType(), "timestamp"))) {
                     whereName = String.format(SQLConstants.DE_CAST_DATE_FORMAT, originName,
                             SQLConstants.DEFAULT_DATE_FORMAT,
                             SQLConstants.DEFAULT_DATE_FORMAT);
