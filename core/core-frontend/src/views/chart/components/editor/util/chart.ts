@@ -731,6 +731,13 @@ export const DEFAULT_MISC_STYLE: ChartMiscStyle = {
   },
   splitArea: {
     show: true
+  },
+  axisValue: {
+    auto: true,
+    min: 10,
+    max: 100,
+    split: 10,
+    splitCount: 10
   }
 }
 export const DEFAULT_FUNCTION_CFG: ChartFunctionCfg = {
