@@ -317,13 +317,24 @@ const pointClickTrans = () => {
   }
 }
 
-const action = param => {
+const actionDefault = param => {
   if (param.from === 'map') {
     emitter.emit('map-default-range', param)
-    return
   }
   if (param.from === 'word-cloud') {
     emitter.emit('word-cloud-default-data-range', param)
+  }
+  if (param.from === 'gauge') {
+    emitter.emit('gauge-default-data', param)
+  }
+  if (param.from === 'liquid') {
+    emitter.emit('liquid-default-data', param)
+  }
+}
+
+const action = param => {
+  if (param.from) {
+    actionDefault(param)
     return
   }
   state.pointParam = param.data
