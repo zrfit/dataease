@@ -191,7 +191,6 @@ const init = ref({
             originalHandle.style.display = 'none' // 隐藏原始手柄
             // 将克隆手柄添加到原手柄的父元素中
             const parentDiv = originalHandle.parentNode // 获取原手柄的父元素
-            cloneHandle.style.width = `${parentDiv.offsetWidth}px`
             parentDiv.appendChild(cloneHandle) // 将克隆手柄添加到父元素中
           }
         })
@@ -219,25 +218,55 @@ const init = ref({
           // 显示原始手柄并移除克隆手柄
           originalHandle.style.display = ''
           if (cloneHandle) {
-            originalHandle.parentNode.removeChild(cloneHandle) // 获取原手柄的父元素
+            cloneHandle.parentNode.removeChild(cloneHandle) // 获取原手柄的父元素
           }
           cloneHandle = null
           originalHandle = null
         }
       })
-    })
 
-    // 在表格调整大小结束时
-    // 解决移动表格corner点位resize时因为缩放导致的坐标系放大问题，进而导致移动错位问题
-    editor.on('ObjectResized', function (e) {
-      const { target, width, height, origin } = e
-      if (target.nodeName === 'TABLE' && origin.indexOf('corner') > -1) {
-        // 将最终调整的宽高根据缩放比例重设
-        target.style.width = `${width}px`
-        target.style.height = `${height}px`
-      } else if (target.nodeName === 'TABLE' && origin.indexOf('bar-col') > -1) {
-        // do nothing
+      // 函数：根据缩放比例调整 .mce-resizehandle 的位置和大小
+      const adjustResizeHandles = (aLeft, aTop) => {
+        nextTick(() => {
+          const nodeRt = doc.getElementById('mceResizeHandlene')
+          const nodeRb = doc.getElementById('mceResizeHandlese')
+          const nodeLb = doc.getElementById('mceResizeHandlesw')
+          if (nodeRt) {
+            nodeRt.style.left = `${aLeft}px`
+          }
+          if (nodeRb) {
+            nodeRb.style.left = `${aLeft}px`
+            nodeRb.style.top = `${aTop}px`
+          }
+          if (nodeLb) {
+            nodeLb.style.top = `${aTop}px`
+          }
+        })
       }
+
+      // 监听 ObjectSelected 事件，点击表格时触发调整
+      editor.on('ObjectSelected', event => {
+        if (event.target.nodeName === 'TABLE') {
+          adjustResizeHandles(
+            event.target.offsetWidth + event.target.offsetLeft,
+            event.target.offsetHeight + event.target.offsetTop
+          )
+        }
+      })
+
+      // 监听 ObjectResized 事件，更新调整大小句柄
+      // 在表格调整大小结束时
+      // 解决移动表格corner点位resize时因为缩放导致的坐标系放大问题，进而导致移动错位问题
+      editor.on('ObjectResized', function (e) {
+        const { target, width, height, origin } = e
+        if (target.nodeName === 'TABLE' && origin.indexOf('corner') > -1) {
+          // 将最终调整的宽高根据缩放比例重设
+          target.style.width = `${width}px`
+          target.style.height = `${height}px`
+        } else if (target.nodeName === 'TABLE' && origin.indexOf('bar-col') > -1) {
+          // do nothing
+        }
+      })
     })
   }
 })
