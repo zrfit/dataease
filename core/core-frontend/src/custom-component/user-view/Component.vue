@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRefs, PropType } from 'vue'
+import { computed, toRefs, PropType, CSSProperties } from 'vue'
 import Chart from '@/views/chart/components/views/index.vue'
 
 const props = defineProps({
@@ -63,8 +63,9 @@ const props = defineProps({
 
 const { element, view, active, searchCount, scale } = toRefs(props)
 const autoStyle = computed(() => {
-  return {}
+  return { zoom: scale.value }
   // if (element.value.innerType === 'rich-text') {
+  //
   //   return {
   //     position: 'absolute',
   //     height: 100 / scale.value + '%!important',
