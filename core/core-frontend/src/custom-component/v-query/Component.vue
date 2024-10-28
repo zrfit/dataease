@@ -462,7 +462,7 @@ const resetData = () => {
         if (next.id === comId) {
           item.currentSelectValue = Array.isArray(next.selectValue)
             ? next.selectValue
-            : [next.selectValue].map(itx => ![null, undefined].includes(itx))
+            : [next.selectValue].filter(itx => ![null, undefined].includes(itx))
           useEmitt().emitter.emit(`${item.datasetId.split('--')[1]}-select`)
         }
       })
