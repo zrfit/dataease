@@ -459,9 +459,7 @@ const resetData = () => {
     ;(props.element.cascade || []).forEach(ele => {
       ele.forEach(item => {
         const comId = item.datasetId.split('--')[1]
-        console.log('comId', comId)
-
-        if (next.id === comId) {
+        if (next.id === comId && ![null, undefined].includes(next.selectValue)) {
           item.currentSelectValue = Array.isArray(next.selectValue)
             ? next.selectValue
             : [next.selectValue]
