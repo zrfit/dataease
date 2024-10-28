@@ -380,7 +380,6 @@ const initSearch = () => {
   state.filterTable = tableData.value.filter(ele =>
     ele.tableName.toLowerCase().includes(nickName.value.toLowerCase())
   )
-  console.log(tableData.value)
   state.paginationConfig.total = state.filterTable.length
 }
 
@@ -867,7 +866,6 @@ const operation = (cmd: string, data: Tree, nodeType: string) => {
 }
 
 const handleClick = (tabName: TabPaneName) => {
-  console.log(tabName)
   switch (tabName) {
     case 'config':
       listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
@@ -1091,8 +1089,22 @@ const getMenuList = (val: boolean) => {
                   :title="node.label"
                   class="label-tooltip ellipsis"
                   :class="data.type === 'Excel' && 'excel'"
+                  v-if="data.extraFlag > -1"
                   >{{ node.label }}</span
                 >
+                <el-tooltip
+                  effect="dark"
+                  v-else
+                  :content="`${t('data_set.invalid_data_source')}: ${node.label}`"
+                  placement="top"
+                >
+                  <span
+                    :title="node.label"
+                    class="label-tooltip ellipsis"
+                    :class="data.type === 'Excel' && 'excel'"
+                    >{{ node.label }}</span
+                  >
+                </el-tooltip>
                 <div class="icon-more" v-if="data.weight >= 7">
                   <handle-more
                     icon-size="24px"

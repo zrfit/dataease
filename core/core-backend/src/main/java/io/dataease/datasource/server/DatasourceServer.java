@@ -1155,8 +1155,11 @@ public class DatasourceServer implements DatasourceApi {
             if (!Arrays.asList("API", "Excel", "folder").contains(coreDatasource.getType())) {
                 calciteProvider.updateDsPoolAfterCheckStatus(datasourceDTO);
             }
+        } catch (DEException e) {
+            datasourceDTO.setStatus("Error");
+            DEException.throwException(e.getMessage());
         } catch (Exception e) {
-            coreDatasource.setStatus("Error");
+            datasourceDTO.setStatus("Error");
             DEException.throwException(e.getMessage());
         } finally {
             coreDatasource.setStatus(datasourceDTO.getStatus());
