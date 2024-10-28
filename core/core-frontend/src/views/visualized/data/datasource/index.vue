@@ -1080,14 +1080,14 @@ const getMenuList = (val: boolean) => {
             @node-click="handleNodeClick"
           >
             <template #default="{ node, data }">
-              <span class="custom-tree-node">
+              <span class="custom-tree-node" style="position: relative">
                 <el-icon :class="data.leaf && 'icon-border'" style="font-size: 18px">
                   <Icon :static-content="getDsIcon(data)"
                     ><component class="svg-icon" :is="getDsIconName(data)"></component
                   ></Icon>
                 </el-icon>
                 <el-icon
-                  style="position: absolute; top: 21px; left: 34px; font-size: 12px"
+                  style="position: absolute; top: 10px; left: 10px; font-size: 12px"
                   v-if="data.extraFlag <= -1"
                 >
                   <Icon><icon_warning_colorful_red class="svg-icon" /></Icon>
