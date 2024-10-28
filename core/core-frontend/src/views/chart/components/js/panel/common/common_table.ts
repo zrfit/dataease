@@ -23,7 +23,12 @@ import {
   type PivotSheet,
   type Node,
   type Meta,
-  S2DataConfig
+  S2DataConfig,
+  SpreadSheet,
+  InteractionStateName,
+  InteractionName,
+  DataCellBrushSelection,
+  TableDataCell
 } from '@antv/s2'
 import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
@@ -31,6 +36,7 @@ import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vu
 import Exceljs from 'exceljs'
 import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus-secondary'
+import { matrix } from 'mathjs'
 
 export function getCustomTheme(chart: Chart): S2Theme {
   const headerColor = hexColorToRGBA(
@@ -971,12 +977,76 @@ export function configTooltip(chart: Chart, option: S2Options) {
   }
 }
 
-export function copyContent(s2Instance, event, fieldMeta) {
+export function copyContent(s2Instance: SpreadSheet, event, fieldMeta) {
   event.preventDefault()
   const cell = s2Instance.getCell(event.target)
   const valueField = cell.getMeta().valueField
   const cellMeta = cell.getMeta()
-  let content
+  const selectState = s2Instance.interaction.getState()
+  let content = ''
+  // 多选
+  if (selectState.stateName === InteractionStateName.SELECTED) {
+    const { cells } = selectState
+    if (!cells?.length) {
+      return
+    }
+    const brushSelection = s2Instance.interaction.interactions.get(
+      InteractionName.BRUSH_SELECTION
+    ) as DataCellBrushSelection
+    const selectedCells: TableDataCell[] = brushSelection.getScrollBrushRangeCells(cells)
+    selectedCells.sort((a, b) => {
+      const aMeta = a.getMeta()
+      const bMeta = b.getMeta()
+      if (aMeta.rowIndex !== bMeta.rowIndex) {
+        return aMeta.rowIndex - bMeta.rowIndex
+      }
+      return aMeta.colIndex - bMeta.colIndex
+    })
+    // 点击已选的就复制，未选的就忽略
+    let validClick = false
+    const matrix = selectedCells.reduce((p, n) => {
+      if (
+        n.getMeta().colIndex === cellMeta.colIndex &&
+        n.getMeta().rowIndex === cellMeta.rowIndex
+      ) {
+        validClick = true
+      }
+      const arr = p[n.getMeta().rowIndex]
+      if (!arr) {
+        p[n.getMeta().rowIndex] = [n]
+      } else {
+        arr.push(n)
+      }
+      return p
+    }, {}) as Record<number, TableDataCell[]>
+    if (validClick) {
+      keys(matrix).forEach(k => {
+        const arr = matrix[k] as TableDataCell[]
+        arr.forEach((cell, index) => {
+          const cellMeta = cell.getMeta()
+          const value = cellMeta.data?.[cellMeta.valueField]
+          const metaObj = find(fieldMeta, m => m.field === valueField)
+          let fieldVal = value?.toString()
+          if (metaObj) {
+            fieldVal = metaObj.formatter(value)
+          }
+          if (fieldVal === undefined) {
+            fieldVal = ''
+          }
+          if (index !== arr.length - 1) {
+            fieldVal += '\t'
+          }
+          content += fieldVal
+        })
+        content = content + '\n'
+      })
+      if (content) {
+        copyString(content, true)
+      }
+    }
+    s2Instance.interaction.clearState()
+    return
+  }
   // 单元格
   if (cellMeta?.data) {
     const value = cellMeta.data[valueField]
