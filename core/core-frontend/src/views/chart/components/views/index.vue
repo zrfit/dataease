@@ -583,6 +583,10 @@ const checkFieldIsAllowEmpty = (allField?) => {
   showEmpty.value = false
   if (view.value?.render && view.value?.type) {
     const chartView = chartViewManager.getChartView(view.value.render, view.value.type)
+    // 插件
+    if (!chartView) {
+      return
+    }
     const map = parseJson(view.value.customAttr).map
     if (['bubble-map', 'map'].includes(view.value?.type) && !map?.id) {
       showEmpty.value = true
