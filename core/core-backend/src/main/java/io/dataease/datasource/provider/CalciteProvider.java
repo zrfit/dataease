@@ -906,6 +906,7 @@ public class CalciteProvider extends Provider {
                                 rootSchema.add(ds.getSchemaAlias(), schema);
                         }
                     } catch (Exception e) {
+                        LogUtil.error("Fail to create connection: " + ds.getName(), e);
                     }
                 } catch (Exception e) {
                 }
