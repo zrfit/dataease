@@ -255,7 +255,7 @@ const getEmptyDesc = (): string => {
   >
     <el-tabs v-model="activeName" class="dashboard-type-tabs" @tab-click="handleClick">
       <el-tab-pane
-        v-for="item in tablePaneList.filter(pannel => !shareDisable || pannel.name !== 'share')"
+        v-for="item in tablePaneList.filter(panel => !shareDisable || panel.name !== 'share')"
         :key="item.name"
         :disabled="item.disabled"
         :label="item.title"
