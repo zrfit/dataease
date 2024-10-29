@@ -62,11 +62,13 @@ const handleRemove = (file, fileListArray) => {
   snapshotStore.recordSnapshotCache()
 }
 async function upload(file) {
-  uploadFileResult(file.file, fileUrl => {
-    snapshotStore.recordSnapshotCache()
-    element.value.propValue.urlList.unshift({ name: file.file.name, url: fileUrl })
-    useEmitt().emitter.emit('calcData-' + element.value.id)
-  })
+  if (element.value.propValue.urlList.length < 10) {
+    uploadFileResult(file.file, fileUrl => {
+      snapshotStore.recordSnapshotCache()
+      element.value.propValue.urlList.unshift({ name: file.file.name, url: fileUrl })
+      useEmitt().emitter.emit('calcData-' + element.value.id)
+    })
+  }
 }
 
 const onStyleChange = () => {
