@@ -492,6 +492,8 @@ eventBus.on('handleNew', handleNew)
             :side-name="'componentProp'"
             :aside-position="'right'"
             class="left-sidebar"
+            :slide-index="2"
+            :view="canvasViewInfo[curComponent.id]"
             :class="{ 'preview-aside': editMode === 'preview' }"
           >
             <component :is="findComponentAttr(curComponent)" />
