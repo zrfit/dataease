@@ -282,6 +282,7 @@ onUnmounted(() => {
         :width="420"
         :side-name="'componentProp'"
         :aside-position="'right'"
+        :view="canvasViewInfo[curComponent.id]"
         class="left-sidebar"
       >
         <component :is="findComponentAttr(curComponent)" :themes="'light'" />
