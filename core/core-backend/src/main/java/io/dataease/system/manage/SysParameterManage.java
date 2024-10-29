@@ -3,6 +3,7 @@ package io.dataease.system.manage;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.dataease.api.system.request.OnlineMapEditor;
 import io.dataease.api.system.vo.SettingItemVO;
+import io.dataease.api.system.vo.ShareBaseVO;
 import io.dataease.datasource.server.DatasourceServer;
 import io.dataease.license.config.XpackInteract;
 import io.dataease.system.dao.auto.entity.CoreSysSetting;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.beans.PropertyDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -158,5 +158,18 @@ public class SysParameterManage {
 
     private SysParameterManage proxy() {
         return CommonBeanFactory.getBean(SysParameterManage.class);
+    }
+
+    public ShareBaseVO shareBase() {
+        String disableText = singleVal("basic.shareDisable");
+        String requireText = singleVal("basic.sharePeRequire");
+        ShareBaseVO vo = new ShareBaseVO();
+        if (StringUtils.isNotBlank(disableText) && StringUtils.equals("true", disableText)) {
+            vo.setDisable(true);
+        }
+        if (StringUtils.isNotBlank(requireText) && StringUtils.equals("true", requireText)) {
+            vo.setPeRequire(true);
+        }
+        return vo;
     }
 }

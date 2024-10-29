@@ -17,6 +17,9 @@ import { ref, watch, computed } from 'vue'
 import ShareVisualHead from '@/views/share/share/ShareVisualHead.vue'
 import { XpackComponent } from '@/components/plugin'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { useShareStoreWithOut } from '@/store/modules/share'
+const shareStore = useShareStoreWithOut()
+
 const dvMainStore = dvMainStoreWithOut()
 const appStore = useAppStoreWithOut()
 const { dvInfo } = storeToRefs(dvMainStore)
@@ -38,6 +41,7 @@ const preview = () => {
 }
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
+const shareDisable = computed(() => shareStore.getShareDisable)
 
 const reload = () => {
   emit('reload', dvInfo.value.id)
@@ -156,6 +160,7 @@ const initOpenHandler = newWindow => {
         预览</el-button
       >
       <ShareVisualHead
+        v-if="!shareDisable"
         :resource-id="dvInfo.id"
         :weight="dvInfo.weight"
         :resource-type="dvInfo.type"
