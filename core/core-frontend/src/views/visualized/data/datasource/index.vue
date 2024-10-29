@@ -139,6 +139,7 @@ const dsTableDetail = reactive({
   name: ''
 })
 const rootManage = ref(false)
+const nodeData = ref({})
 const nickName = ref('')
 const dsName = ref('')
 const userDrawer = ref(false)
@@ -271,29 +272,36 @@ const handleLoadExcel = data => {
 }
 
 const validateDS = () => {
-  validateById(nodeInfo.id as number).then(res => {
-    if (res.data.type === 'API') {
-      let error = 0
-      const status = JSON.parse(res.data.status)
-      for (let i = 0; i < status.length; i++) {
-        if (status[i].status === 'Error') {
-          error++
-        }
-        for (let i = 0; i < nodeInfo.apiConfiguration.length; i++) {
-          if (nodeInfo.apiConfiguration[i].name === status[i].name) {
-            nodeInfo.apiConfiguration[i].status = status[i].status
+  validateById(nodeInfo.id as number)
+    .then(res => {
+      if (res.data.type === 'API') {
+        let error = 0
+        const status = JSON.parse(res.data.status)
+        for (let i = 0; i < status.length; i++) {
+          if (status[i].status === 'Error') {
+            error++
+          }
+          for (let i = 0; i < nodeInfo.apiConfiguration.length; i++) {
+            if (nodeInfo.apiConfiguration[i].name === status[i].name) {
+              nodeInfo.apiConfiguration[i].status = status[i].status
+            }
           }
         }
-      }
-      if (error === 0) {
-        ElMessage.success(t('data_source.verification_successful'))
+        if (error === 0) {
+          nodeData.value.extraFlag = Math.abs(nodeData.value.extraFlag)
+          ElMessage.success(t('data_source.verification_successful'))
+        } else {
+          nodeData.value.extraFlag = -Math.abs(nodeData.value.extraFlag)
+          ElMessage.error(t('data_source.verification_failed'))
+        }
       } else {
-        ElMessage.error(t('data_source.verification_failed'))
+        nodeData.value.extraFlag = Math.abs(nodeData.value.extraFlag)
+        ElMessage.success(t('data_source.verification_successful'))
       }
-    } else {
-      ElMessage.success(t('data_source.verification_successful'))
-    }
-  })
+    })
+    .catch(() => {
+      nodeData.value.extraFlag = -Math.abs(nodeData.value.extraFlag)
+    })
 }
 
 const dialogErrorInfo = ref(false)
@@ -522,6 +530,7 @@ const sortTypeTip = computed(() => {
 const tableData = shallowRef([])
 const tabData = shallowRef([])
 const handleNodeClick = data => {
+  nodeData.value = data
   if (!data.leaf) {
     dsListTree.value.setCurrentKey(null)
     return
