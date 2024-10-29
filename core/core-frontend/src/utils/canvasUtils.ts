@@ -782,6 +782,20 @@ export function findComponentById(componentId) {
   return result
 }
 
+export function onInitReady(params) {
+  try {
+    console.info('Canvas initReady')
+    const targetPm = {
+      type: 'dataease-embedded-interactive',
+      eventName: 'canvas_init_ready',
+      args: params
+    }
+    window.parent.postMessage(targetPm, '*')
+  } catch (e) {
+    console.warn('de_inner_params send error')
+  }
+}
+
 export function mobileViewStyleSwitch(component) {
   if (component) {
     const viewInfo = canvasViewInfo.value[component.id]

@@ -27,7 +27,7 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
     'basic-style-selector': ['colors', 'alpha', 'radarShape', 'seriesColor'],
     'label-selector': ['seriesLabelFormatter'],
     'tooltip-selector': ['color', 'fontSize', 'backgroundColor', 'seriesTooltipFormatter', 'show'],
-    'misc-style-selector': ['showName', 'color', 'fontSize', 'axisColor'],
+    'misc-style-selector': ['showName', 'color', 'fontSize', 'axisColor', 'axisValue'],
     'title-selector': [
       'show',
       'title',
@@ -211,6 +211,22 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
             stroke: misc.axisColor
           }
         }
+      }
+    }
+    const axisValue = misc.axisValue
+    if (!axisValue?.auto) {
+      const axisYAxis = {
+        ...yAxis,
+        min: axisValue.min,
+        max: axisValue.max,
+        minLimit: axisValue.min,
+        maxLimit: axisValue.max,
+        tickCount: axisValue.splitCount
+      }
+      return {
+        ...options,
+        xAxis,
+        yAxis: axisYAxis
       }
     }
     return {

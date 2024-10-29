@@ -132,7 +132,6 @@ const canEdit = ref(false)
 // 初始化配置
 const tinymceId = 'tinymce-view-' + element.value.id + '-' + suffixId.value
 const myValue = ref('')
-const cellDragStart = ref(0)
 
 const systemFontFamily = appearanceStore.fontList.map(item => item.name)
 const curFontFamily = () => {
@@ -172,107 +171,25 @@ const init = ref({
   branding: false,
   icons: 'vertical-content',
   vertical_align: element.value.propValue.verticalAlign,
-  table_default_attributes: {
-    width: '400' // 使用 table_default_attributes 设置表格的宽度
-  },
-  table_default_styles: {
-    width: '400px' // 或者使用 table_default_styles 设置宽度，单位为 px
-  },
   setup: function (editor) {
-    let cloneHandle = null // 用于存储克隆的手柄
-    let originalHandle = null // 用于存储原始手柄
-    editor.on('init', () => {
-      const doc = editor.getDoc()
-      // 监测 mouseup、mousedown 和 mousemove 事件
-      // 1.单元格问题 因为缩放问题 导致拖拽的坐标系有偏差，此处隐藏原有拖拽定位bar,并根据
-      // 缩放比例动态调整时间定位bar的位置，这会代理鼠标移速和bar移速不同步问题，不过bar定位是准确的
-      // 可以解决因为缩放导致tinymce 内部坐标系出错问题
-      doc.addEventListener('mousedown', event => {
-        nextTick(() => {
-          originalHandle = event.target.closest('.ephox-snooker-resizer-bar-dragging')
-          if (originalHandle) {
-            // 克隆原始手柄
-            cloneHandle = originalHandle.cloneNode(true)
-            cloneHandle.style.zIndex = 9999 // 提升克隆手柄的层级
-            originalHandle.style.display = 'none' // 隐藏原始手柄
-            // 将克隆手柄添加到原手柄的父元素中
-            const parentDiv = originalHandle.parentNode // 获取原手柄的父元素
-            parentDiv.appendChild(cloneHandle) // 将克隆手柄添加到父元素中
-          }
-        })
-      })
-
-      // 监听 mousemove 事件以更新克隆手柄位置
-      doc.addEventListener('mousemove', event => {
-        if (cloneHandle) {
-          // // 计算鼠标移动的距离
-          if (cloneHandle.offsetHeight > cloneHandle.offsetWidth) {
-            // 计算鼠标移动的距离
-            const offsetX = event.movementX * props.scale // 使用缩放比例进行调整
-            cloneHandle.style.left = `${cloneHandle.offsetLeft + offsetX}px` // 更新克隆手柄的位置
-          } else {
-            // 计算鼠标移动的距离
-            const offsetY = event.movementY * props.scale // 使用缩放比例进行调整
-            cloneHandle.style.top = `${cloneHandle.offsetTop + offsetY}px` // 更新克隆手柄的位置
-          }
-        }
-      })
-
-      // 监听 mouseup 事件以结束调整
-      doc.addEventListener('mouseup', event => {
-        if (cloneHandle) {
-          // 显示原始手柄并移除克隆手柄
-          originalHandle.style.display = ''
-          if (cloneHandle) {
-            cloneHandle.parentNode.removeChild(cloneHandle) // 获取原手柄的父元素
-          }
-          cloneHandle = null
-          originalHandle = null
-        }
-      })
-
-      // 函数：根据缩放比例调整 .mce-resizehandle 的位置和大小
-      const adjustResizeHandles = (aLeft, aTop) => {
-        nextTick(() => {
-          const nodeRt = doc.getElementById('mceResizeHandlene')
-          const nodeRb = doc.getElementById('mceResizeHandlese')
-          const nodeLb = doc.getElementById('mceResizeHandlesw')
-          if (nodeRt) {
-            nodeRt.style.left = `${aLeft}px`
-          }
-          if (nodeRb) {
-            nodeRb.style.left = `${aLeft}px`
-            nodeRb.style.top = `${aTop}px`
-          }
-          if (nodeLb) {
-            nodeLb.style.top = `${aTop}px`
-          }
-        })
+    // 在表格调整大小开始时
+    editor.on('ObjectResizeStart', function (e) {
+      const { target, width, height } = e
+      if (target.nodeName === 'TABLE') {
+        // 将宽高根据缩放比例调整
+        // e.width = width / props.scale
+        // e.height = height / props.scale
       }
+    })
 
-      // 监听 ObjectSelected 事件，点击表格时触发调整
-      editor.on('ObjectSelected', event => {
-        if (event.target.nodeName === 'TABLE') {
-          adjustResizeHandles(
-            event.target.offsetWidth + event.target.offsetLeft,
-            event.target.offsetHeight + event.target.offsetTop
-          )
-        }
-      })
-
-      // 监听 ObjectResized 事件，更新调整大小句柄
-      // 在表格调整大小结束时
-      // 解决移动表格corner点位resize时因为缩放导致的坐标系放大问题，进而导致移动错位问题
-      editor.on('ObjectResized', function (e) {
-        const { target, width, height, origin } = e
-        if (target.nodeName === 'TABLE' && origin.indexOf('corner') > -1) {
-          // 将最终调整的宽高根据缩放比例重设
-          target.style.width = `${width}px`
-          target.style.height = `${height}px`
-        } else if (target.nodeName === 'TABLE' && origin.indexOf('bar-col') > -1) {
-          // do nothing
-        }
-      })
+    // 在表格调整大小结束时
+    editor.on('ObjectResized', function (e) {
+      const { target, width, height } = e
+      if (target.nodeName === 'TABLE') {
+        // 将最终调整的宽高根据缩放比例重设
+        // target.style.width = `${width * props.scale}px`
+        // target.style.height = `${height  scaleFactor}px`
+      }
     })
   }
 })

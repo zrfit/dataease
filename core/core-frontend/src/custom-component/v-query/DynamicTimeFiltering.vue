@@ -32,7 +32,7 @@ const props = defineProps({
   timeGranularityMultiple: {
     type: Object as PropType<DatePickType>,
     default: () => {
-      return 'yearrange'
+      return { type: 'yearrange' } as PropType<DatePickType>
     }
   }
 })

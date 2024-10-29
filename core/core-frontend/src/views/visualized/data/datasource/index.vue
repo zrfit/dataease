@@ -6,6 +6,7 @@ import icon_dataset from '@/assets/svg/icon_dataset.svg'
 import icon_deleteTrash_outlined from '@/assets/svg/icon_delete-trash_outlined.svg'
 import icon_intoItem_outlined from '@/assets/svg/icon_into-item_outlined.svg'
 import icon_rename_outlined from '@/assets/svg/icon_rename_outlined.svg'
+import icon_warning_colorful_red from '@/assets/svg/icon_warning_colorful_red.svg'
 import dvFolder from '@/assets/svg/dv-folder.svg'
 import dvNewFolder from '@/assets/svg/dv-new-folder.svg'
 import icon_fileAdd_outlined from '@/assets/svg/icon_file-add_outlined.svg'
@@ -380,7 +381,6 @@ const initSearch = () => {
   state.filterTable = tableData.value.filter(ele =>
     ele.tableName.toLowerCase().includes(nickName.value.toLowerCase())
   )
-  console.log(tableData.value)
   state.paginationConfig.total = state.filterTable.length
 }
 
@@ -867,7 +867,6 @@ const operation = (cmd: string, data: Tree, nodeType: string) => {
 }
 
 const handleClick = (tabName: TabPaneName) => {
-  console.log(tabName)
   switch (tabName) {
     case 'config':
       listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
@@ -1081,18 +1080,38 @@ const getMenuList = (val: boolean) => {
             @node-click="handleNodeClick"
           >
             <template #default="{ node, data }">
-              <span class="custom-tree-node">
+              <span class="custom-tree-node" style="position: relative">
                 <el-icon :class="data.leaf && 'icon-border'" style="font-size: 18px">
                   <Icon :static-content="getDsIcon(data)"
                     ><component class="svg-icon" :is="getDsIconName(data)"></component
                   ></Icon>
                 </el-icon>
+                <el-icon
+                  style="position: absolute; top: 10px; left: 10px; font-size: 12px"
+                  v-if="data.extraFlag <= -1"
+                >
+                  <Icon><icon_warning_colorful_red class="svg-icon" /></Icon>
+                </el-icon>
                 <span
                   :title="node.label"
                   class="label-tooltip ellipsis"
                   :class="data.type === 'Excel' && 'excel'"
+                  v-if="data.extraFlag > -1"
                   >{{ node.label }}</span
                 >
+                <el-tooltip
+                  effect="dark"
+                  v-else
+                  :content="`${t('data_set.invalid_data_source')}: ${node.label}`"
+                  placement="top"
+                >
+                  <span
+                    :title="node.label"
+                    class="label-tooltip ellipsis"
+                    :class="data.type === 'Excel' && 'excel'"
+                    >{{ node.label }}</span
+                  >
+                </el-tooltip>
                 <div class="icon-more" v-if="data.weight >= 7">
                   <handle-more
                     icon-size="24px"

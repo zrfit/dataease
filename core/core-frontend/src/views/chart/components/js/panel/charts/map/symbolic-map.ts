@@ -276,6 +276,7 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
         await scene.addImage(`customIcon`, svgStrToUrl(svgEle.outerHTML))
         pointLayer.shape('customIcon')
       } else {
+        pointLayer.shape(mapSymbol)
         pointLayer.color(colorsWithAlpha[0])
         pointLayer.style({
           stroke: colorsWithAlpha[0],

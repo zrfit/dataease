@@ -176,8 +176,6 @@ function install_docker() {
          cp docker/service/docker.service /etc/systemd/system/
          chmod +x /usr/bin/docker*
          chmod 644 /etc/systemd/system/docker.service
-         log_content "启动 docker"
-         systemctl enable docker >/dev/null 2>&1; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
       else
          log_content "在线安装 docker"
          curl -fsSL https://resource.fit2cloud.com/get-docker-linux.sh -o get-docker.sh 2>&1 | tee -a ${CURRENT_DIR}/install.log
@@ -186,13 +184,20 @@ function install_docker() {
             exit 1
          fi
          sudo sh get-docker.sh 2>&1 | tee -a ${CURRENT_DIR}/install.log
-         log_content "启动 docker"
-         systemctl enable docker >/dev/null 2>&1; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
       fi
 
       docker_config_folder="/etc/docker"
       if [ ! -d "$docker_config_folder" ];then
          mkdir -p "$docker_config_folder"
+         cat <<EOF> $docker_config_folder/daemon.json
+         {
+            "log-driver": "json-file",
+            "log-opts": {
+               "max-file": "3",
+               "max-size": "10m"
+            }
+         }
+EOF
       fi
 
       docker version >/dev/null 2>&1
@@ -201,6 +206,8 @@ function install_docker() {
          exit 1
       else
          log_content "docker 安装成功"
+         log_content "启动 docker"
+         systemctl enable docker >/dev/null 2>&1; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
       fi
    fi
 }

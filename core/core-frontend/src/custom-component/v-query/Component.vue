@@ -441,6 +441,11 @@ const resetData = () => {
     next.conditionValueS = next.defaultConditionValueS
     next.conditionValueOperatorS = next.defaultConditionValueOperatorS
 
+    if (next.displayType === '22') {
+      next.numValueEnd = next.defaultNumValueEnd
+      next.numValueStart = next.defaultNumValueStart
+    }
+
     if (!next.defaultValueCheck) {
       next.defaultValue = next.multiple || +next.displayType === 7 ? [] : undefined
     }
@@ -450,6 +455,19 @@ const resetData = () => {
         ? [...next.defaultMapValue]
         : next.defaultMapValue
     }
+
+    ;(props.element.cascade || []).forEach(ele => {
+      ele.forEach(item => {
+        const comId = item.datasetId.split('--')[1]
+        if (next.id === comId) {
+          item.currentSelectValue = Array.isArray(next.selectValue)
+            ? next.selectValue
+            : [next.selectValue].filter(itx => ![null, undefined].includes(itx))
+          useEmitt().emitter.emit(`${item.datasetId.split('--')[1]}-select`)
+        }
+      })
+    })
+
     const keyList = Object.entries(next.checkedFieldsMap)
       .filter(ele => next.checkedFields.includes(ele[0]))
       .filter(ele => !!ele[1])
@@ -461,6 +479,14 @@ const resetData = () => {
 }
 
 const clearData = () => {
+  ;(props.element.cascade || []).forEach(ele => {
+    ele.forEach(item => {
+      if (item.currentSelectValue?.length) {
+        useEmitt().emitter.emit(`${item.datasetId.split('--')[1]}-select`)
+        item.currentSelectValue = []
+      }
+    })
+  })
   ;(list.value || []).reduce((pre, next) => {
     next.selectValue = next.multiple || +next.displayType === 7 ? [] : undefined
     if (next.optionValueSource === 1 && next.defaultMapValue?.length) {
@@ -468,6 +494,11 @@ const clearData = () => {
     }
     next.conditionValueF = ''
     next.conditionValueS = ''
+
+    if (next.displayType === '22') {
+      next.numValueEnd = undefined
+      next.numValueStart = undefined
+    }
     const keyList = Object.entries(next.checkedFieldsMap)
       .filter(ele => next.checkedFields.includes(ele[0]))
       .filter(ele => !!ele[1])
