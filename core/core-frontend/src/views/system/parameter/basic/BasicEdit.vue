@@ -13,11 +13,11 @@ const options = [
   { value: 'hour', label: t('system.and_0_seconds_de') }
 ]
 const pvpOptions = [
-  { value: '0', label: t('date.permanent') },
-  { value: '1', label: t('date.one_year') },
-  { value: '2', label: t('date.six_months') },
-  { value: '3', label: t('date.three_months') },
-  { value: '4', label: t('date.one_month') }
+  { value: '0', label: t('commons.date.permanent') },
+  { value: '1', label: t('commons.date.one_year') },
+  { value: '2', label: t('commons.date.six_months') },
+  { value: '3', label: t('commons.date.three_months') },
+  { value: '4', label: t('commons.date.one_month') }
 ]
 
 const state = reactive({
@@ -69,14 +69,14 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         state.form.dsExecuteTime === 'minute' &&
         (Number(state.form.dsIntervalTime) < 1 || Number(state.form.dsIntervalTime) > 59)
       ) {
-        ElMessage.error(t('date.of_range_1_59'))
+        ElMessage.error(t('commons.date.of_range_1_59'))
         return
       }
       if (
         state.form.dsExecuteTime === 'hour' &&
         (Number(state.form.dsIntervalTime) < 1 || Number(state.form.dsIntervalTime) > 23)
       ) {
-        ElMessage.error(t('date.of_range_1_23'))
+        ElMessage.error(t('commons.date.of_range_1_23'))
         return
       }
       const param = buildSettingList()

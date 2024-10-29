@@ -36,13 +36,15 @@ export default {
     delete_success: 'Delete success',
     no_auth_tips: 'Missing menu permissions, please contact the administrator'
   },
-  date: {
-    permanent: 'Permanent',
-    one_year: 'One year',
-    six_months: 'Six months',
-    three_months: 'Three months',
-    of_range_1_59: 'Minutes out of range [1-59]',
-    of_range_1_23: 'Hours out of range [1-23]'
+  commons: {
+    date: {
+      permanent: 'Permanent',
+      one_year: 'One year',
+      six_months: 'Six months',
+      three_months: 'Three months',
+      of_range_1_59: 'Minutes out of range [1-59]',
+      of_range_1_23: 'Hours out of range [1-23]'
+    }
   },
   system: {
     click_to_show: 'Click to show',
