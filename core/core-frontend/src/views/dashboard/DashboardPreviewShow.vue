@@ -7,7 +7,7 @@ import DePreview from '@/components/data-visualization/canvas/DePreview.vue'
 import PreviewHead from '@/views/data-visualization/PreviewHead.vue'
 import EmptyBackground from '@/components/empty-background/src/EmptyBackground.vue'
 import ArrowSide from '@/views/common/DeResourceArrow.vue'
-import { initCanvasData, initCanvasDataPrepare } from '@/utils/canvasUtils'
+import { initCanvasData, initCanvasDataPrepare, onInitReady } from '@/utils/canvasUtils'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import { useRequestStoreWithOut } from '@/store/modules/request'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
@@ -108,6 +108,7 @@ const loadCanvasData = (dvId, weight?) => {
       dataInitState.value = true
       nextTick(() => {
         dashboardPreview.value.restore()
+        onInitReady({ resourceId: dvId })
       })
     }
   )

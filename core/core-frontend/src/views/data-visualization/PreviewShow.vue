@@ -8,7 +8,7 @@ import PreviewHead from '@/views/data-visualization/PreviewHead.vue'
 import EmptyBackground from '@/components/empty-background/src/EmptyBackground.vue'
 import { storeToRefs } from 'pinia'
 import { useAppStoreWithOut } from '@/store/modules/app'
-import { initCanvasData, initCanvasDataPrepare } from '@/utils/canvasUtils'
+import { initCanvasData, initCanvasDataPrepare, onInitReady } from '@/utils/canvasUtils'
 import { useRequestStoreWithOut } from '@/store/modules/request'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 import { useMoveLine } from '@/hooks/web/useMoveLine'
@@ -92,6 +92,9 @@ const loadCanvasData = (dvId, weight?) => {
           dvPreviewRef.value?.restore()
         })
       }
+      nextTick(() => {
+        onInitReady({ resourceId: dvId })
+      })
     }
   )
 }

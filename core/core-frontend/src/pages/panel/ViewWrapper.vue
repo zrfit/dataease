@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref, onBeforeMount, reactive, inject } from 'vue'
-import { initCanvasData } from '@/utils/canvasUtils'
+import { ref, onBeforeMount, reactive, inject, nextTick } from 'vue'
+import { initCanvasData, onInitReady } from '@/utils/canvasUtils'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useEmbedded } from '@/store/modules/embedded'
 import { check } from '@/utils/CrossPermission'
@@ -124,6 +124,9 @@ onBeforeMount(async () => {
           })
         }
         return false
+      })
+      nextTick(() => {
+        onInitReady({ resourceId: chartId })
       })
     }
   )
