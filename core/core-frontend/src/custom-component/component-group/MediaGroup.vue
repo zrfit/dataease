@@ -88,6 +88,6 @@ const handleDragEnd = e => {
 }
 .media-component {
   float: left;
-  margin: 0 6px !important;
+  margin: 0 6px 12px 6px !important;
 }
 </style>

@@ -140,12 +140,7 @@ onBeforeUnmount(() => {
       </el-col>
     </el-row>
     <el-row>
-      <span
-        style="margin-top: 2px"
-        v-if="!curComponent.propValue.url"
-        class="image-hint"
-        :class="`image-hint_${themes}`"
-      >
+      <span style="margin-top: 2px" class="image-hint" :class="`image-hint_${themes}`">
         支持JPG、PNG、GIF、SVG
       </span>
     </el-row>
