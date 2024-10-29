@@ -24,11 +24,11 @@ const editor = ref()
 const infoTemplate = ref()
 const showDefaultLogin = ref(false)
 const pvpOptions = [
-  { value: '0', label: t('date.permanent') },
-  { value: '1', label: t('date.one_year') },
-  { value: '2', label: t('date.six_months') },
-  { value: '3', label: t('date.three_months') },
-  { value: '4', label: t('date.one_month') }
+  { value: '0', label: t('commons.date.permanent') },
+  { value: '1', label: t('commons.date.one_year') },
+  { value: '2', label: t('commons.date.six_months') },
+  { value: '3', label: t('commons.date.three_months') },
+  { value: '4', label: t('commons.date.one_month') }
 ]
 const tooltips = [
   {
@@ -89,7 +89,7 @@ const search = cb => {
         item.pkey === 'basic.dip' ||
         item.pkey === 'basic.pwdStrategy'
       ) {
-        item.pval = item.pval === 'true' ? t('.chart.open') : t('system.not_enabled')
+        item.pval = item.pval === 'true' ? t('chart.open') : t('system.not_enabled')
       } else if (item.pkey === 'basic.platformOid') {
         selectedOid.value = item.pval
         await loadOrgOptions()
