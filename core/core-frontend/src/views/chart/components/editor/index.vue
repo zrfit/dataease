@@ -1591,7 +1591,7 @@ const setCacheId = () => {
       !cacheId ||
       !!view.value.tableId ||
       templateStatusShow.value ||
-      view.value.type === 'rich-text'
+      ['rich-text', 'picture-group'].includes(view.value.type)
     )
       return
     view.value.tableId = cacheId as unknown as number
