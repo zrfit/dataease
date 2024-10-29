@@ -1,6 +1,7 @@
 package io.dataease.datasource.provider;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.mysql.cj.log.Log;
 import io.dataease.dataset.utils.FieldUtils;
 import io.dataease.datasource.dao.auto.entity.CoreDatasource;
 import io.dataease.datasource.dao.auto.entity.CoreDriver;
@@ -906,6 +907,7 @@ public class CalciteProvider extends Provider {
                                 rootSchema.add(ds.getSchemaAlias(), schema);
                         }
                     } catch (Exception e) {
+                        LogUtil.error("Fail to create connection: " + ds.getName(), e);
                     }
                 } catch (Exception e) {
                 }
