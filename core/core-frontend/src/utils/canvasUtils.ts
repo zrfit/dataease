@@ -782,12 +782,16 @@ export function findComponentById(componentId) {
   return result
 }
 
-export function mobileViewStyleSwitch(component) {
-  if (component) {
-    const viewInfo = canvasViewInfo.value[component.id]
-    viewInfo.customStyle = component.customStyle
-    viewInfo.customAttr = component.customAttr
-    viewInfo.title = component.title
-    viewInfo.name = component.name
+export function onInitReady(params) {
+  try {
+    console.info('Canvas initReady')
+    const targetPm = {
+      type: 'dataease-embedded-interactive',
+      eventName: 'canvas_init_ready',
+      args: params
+    }
+    window.parent.postMessage(targetPm, '*')
+  } catch (e) {
+    console.warn('de_inner_params send error')
   }
 }

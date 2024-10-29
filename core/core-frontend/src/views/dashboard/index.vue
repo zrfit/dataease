@@ -13,7 +13,7 @@ import ViewEditor from '@/views/chart/components/editor/index.vue'
 import { getDatasetTree } from '@/api/dataset'
 import { Tree } from '@/views/visualized/data/dataset/form/CreatDsGroup.vue'
 import DbCanvasAttr from '@/components/dashboard/DbCanvasAttr.vue'
-import { decompressionPre, initCanvasData } from '@/utils/canvasUtils'
+import { decompressionPre, initCanvasData, onInitReady } from '@/utils/canvasUtils'
 import ChartStyleBatchSet from '@/views/chart/components/editor/editor-style/ChartStyleBatchSet.vue'
 import DeCanvas from '@/views/canvas/DeCanvas.vue'
 import { check, compareStorage } from '@/utils/CrossPermission'
@@ -160,6 +160,7 @@ const initLocalCanvasData = () => {
         snapshotStore.recordSnapshotCache()
       }, 1500)
     }
+    onInitReady({ resourceId: resourceId })
   })
 }
 onMounted(async () => {

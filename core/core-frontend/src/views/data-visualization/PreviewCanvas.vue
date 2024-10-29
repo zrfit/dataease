@@ -4,7 +4,7 @@ import { nextTick, onMounted, reactive, ref } from 'vue'
 import DePreview from '@/components/data-visualization/canvas/DePreview.vue'
 import router from '@/router'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { initCanvasData } from '@/utils/canvasUtils'
+import { initCanvasData, onInitReady } from '@/utils/canvasUtils'
 import { queryTargetVisualizationJumpInfo } from '@/api/visualization/linkJump'
 import { Base64 } from 'js-base64'
 import { getOuterParamsInfo } from '@/api/visualization/outerParams'
@@ -28,7 +28,7 @@ const state = reactive({
   canvasViewInfoPreview: null,
   dvInfo: null,
   curPreviewGap: 0,
-  initState: false
+  initState: true
 })
 
 const props = defineProps({
@@ -116,7 +116,6 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
       canvasViewInfoPreview,
       curPreviewGap
     }) {
-      state.initState = false
       state.canvasDataPreview = canvasDataResult
       state.canvasStylePreview = canvasStyleResult
       state.canvasViewInfoPreview = canvasViewInfoPreview
@@ -125,6 +124,7 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
       if (jumpParam) {
         dvMainStore.addViewTrackFilter(jumpParam)
       }
+      state.initState = false
       dvMainStore.addOuterParamsFilter(attachParam)
       state.initState = true
       if (props.publicLinkStatus) {
@@ -133,9 +133,13 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
         setTitle(dvInfo.name)
       }
       initBrowserTimer()
+      nextTick(() => {
+        onInitReady({ resourceId: dvId })
+      })
     }
   )
 }
+
 const downloadH2 = type => {
   downloadStatus.value = true
   nextTick(() => {

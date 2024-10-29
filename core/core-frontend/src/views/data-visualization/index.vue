@@ -22,7 +22,8 @@ import {
   decompressionPre,
   findDragComponent,
   findNewComponent,
-  initCanvasData
+  initCanvasData,
+  onInitReady
 } from '@/utils/canvasUtils'
 import CanvasCore from '@/components/data-visualization/canvas/CanvasCore.vue'
 import { listenGlobalKeyDown, releaseAttachKey } from '@/utils/DeShortcutKey'
@@ -245,6 +246,7 @@ const initLocalCanvasData = async () => {
           snapshotStore.recordSnapshotCache('renderChart')
         }, 1500)
       }
+      onInitReady({ resourceId: resourceId })
     })
   })
 }
