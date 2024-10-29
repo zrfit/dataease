@@ -42,6 +42,10 @@ const tooltips = [
   {
     key: 'setting_basic.platformRid',
     val: t('system.and_platform_docking')
+  },
+  {
+    key: 'setting_basic.shareDisable',
+    val: '开启后仪表板以及大屏分享无效'
   }
 ]
 const state = reactive({
@@ -87,7 +91,9 @@ const search = cb => {
       if (
         item.pkey === 'basic.autoCreateUser' ||
         item.pkey === 'basic.dip' ||
-        item.pkey === 'basic.pwdStrategy'
+        item.pkey === 'basic.pwdStrategy' ||
+        item.pkey === 'basic.shareDisable' ||
+        item.pkey === 'basic.sharePeRequire'
       ) {
         item.pval = item.pval === 'true' ? t('chart.open') : t('system.not_enabled')
       } else if (item.pkey === 'basic.platformOid') {

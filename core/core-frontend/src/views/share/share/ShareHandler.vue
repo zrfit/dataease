@@ -56,11 +56,18 @@
 
         <div v-if="shareEnable" class="exp-container">
           <el-checkbox
+            ref="expCheckbox"
             :disabled="!shareEnable"
             v-model="overTimeEnable"
             @change="expEnableSwitcher"
-            :label="t('visualization.over_time')"
-          />
+          >
+            <div class="checkbox-span">
+              <span>{{ t('visualization.over_time') }}</span>
+              <span class="pe-require" :class="{ 'pe-tips-hidden': !sharePeRequire }">
+                <span>*</span>
+              </span>
+            </div>
+          </el-checkbox>
           <div class="inline-share-item-picker">
             <el-date-picker
               :clearable="false"
@@ -80,11 +87,18 @@
         </div>
         <div v-if="shareEnable" class="pwd-container">
           <el-checkbox
+            ref="pwdCheckbox"
             :disabled="!shareEnable"
             v-model="passwdEnable"
             @change="pwdEnableSwitcher"
-            :label="t('visualization.passwd_protect')"
-          />
+          >
+            <div class="checkbox-span">
+              <span>{{ t('visualization.passwd_protect') }}</span>
+              <span class="pe-require" :class="{ 'pe-tips-hidden': !sharePeRequire }">
+                <span>*</span>
+              </span>
+            </div>
+          </el-checkbox>
           <div class="auto-pwd-container" v-if="passwdEnable">
             <el-checkbox
               :disabled="!shareEnable"
@@ -153,6 +167,8 @@ import { ElMessage, ElLoading } from 'element-plus-secondary'
 import useClipboard from 'vue-clipboard3'
 import ShareTicket from './ShareTicket.vue'
 import { useEmbedded } from '@/store/modules/embedded'
+import { useShareStoreWithOut } from '@/store/modules/share'
+const shareStore = useShareStoreWithOut()
 const embeddedStore = useEmbedded()
 const { toClipboard } = useClipboard()
 const { t } = useI18n()
@@ -164,6 +180,8 @@ const props = defineProps({
   isButton: propTypes.bool.def(false)
 })
 const pwdRef = ref(null)
+const expCheckbox = ref()
+const pwdCheckbox = ref()
 const loadingInstance = ref<any>(null)
 const dialogVisible = ref(false)
 const overTimeEnable = ref(false)
@@ -189,6 +207,8 @@ const shareTips = computed(
   () =>
     `开启后，用户可以通过该链接访问${props.resourceType === 'dashboard' ? '仪表板' : '数据大屏'}`
 )
+const shareDisable = computed(() => shareStore.getShareDisable)
+const sharePeRequire = computed(() => shareStore.getSharePeRequire)
 const editUuid = () => {
   linkCustom.value = true
   nextTick(() => {
@@ -274,10 +294,10 @@ const closeLoading = () => {
 
 const share = () => {
   dialogVisible.value = true
-  loadShareInfo()
+  loadShareInfo(validatePeRequire)
 }
 
-const loadShareInfo = () => {
+const loadShareInfo = cb => {
   showLoading()
   const resourceId = props.resourceId
   const url = `/share/detail/${resourceId}`
@@ -289,6 +309,7 @@ const loadShareInfo = () => {
     })
     .finally(() => {
       closeLoading()
+      cb && cb()
     })
 }
 
@@ -305,7 +326,7 @@ const enableSwitcher = () => {
   const resourceId = props.resourceId
   const url = `/share/switcher/${resourceId}`
   request.post({ url }).then(() => {
-    loadShareInfo()
+    loadShareInfo(null)
   })
 }
 
@@ -335,6 +356,7 @@ const expEnableSwitcher = val => {
     exp = now.getTime()
     state.detailInfo.exp = exp
   }
+  validateExpRequire()
   expChangeHandler(exp)
 }
 
@@ -348,7 +370,7 @@ const expChangeHandler = exp => {
   const url = '/share/editExp'
   const data = { resourceId, exp }
   request.post({ url, data }).then(() => {
-    loadShareInfo()
+    loadShareInfo(null)
   })
 }
 const beforeClose = async done => {
@@ -357,12 +379,44 @@ const beforeClose = async done => {
     done()
     return
   }
+  if (sharePeRequire.value) {
+    const peRequireValid = validatePeRequire()
+    if (!peRequireValid) {
+      return
+    }
+  }
   const pwdValid = validatePwdFormat()
   const uuidValid = await validateUuid()
   if (pwdValid && uuidValid) {
     showTicket.value = false
     done()
   }
+}
+const validatePeRequire = () => {
+  if (shareEnable.value && sharePeRequire.value) {
+    const expRequireValid = validateExpRequire()
+    const pwdRequireValid = validatePwdRequire()
+    return expRequireValid && pwdRequireValid
+  }
+  return true
+}
+
+const validateExpRequire = () => {
+  if (!sharePeRequire.value || overTimeEnable.value) {
+    showCheckboxError(null, expCheckbox)
+    return true
+  }
+  showCheckboxError('必填', expCheckbox)
+  return false
+}
+
+const validatePwdRequire = () => {
+  if (!sharePeRequire.value || passwdEnable.value) {
+    showCheckboxError(null, pwdCheckbox)
+    return true
+  }
+  showCheckboxError('必填', pwdCheckbox)
+  return false
 }
 const validatePwdFormat = () => {
   if (!shareEnable.value || state.detailInfo.autoPwd) {
@@ -382,6 +436,34 @@ const validatePwdFormat = () => {
   showPageError(null, pwdRef)
   resetPwdHandler(val, false)
   return true
+}
+const showCheckboxError = (msg, target, className?: string) => {
+  if (!target.value) {
+    return
+  }
+  className = className || 'checkbox-span-require'
+  const fullClassName = `.${className}`
+  const e = target.value.$el
+  if (!msg) {
+    e.style = null
+    e.children[0].children[1].style.borderColor = null
+    const child = e.children[1].children[0].querySelector(fullClassName)
+    if (child) {
+      e.children[1].children[0].removeChild(child)
+    }
+  } else {
+    e.style.color = 'red'
+    e.children[0].children[1].style.borderColor = 'red'
+    const child = e.children[1].children[0].querySelector(fullClassName)
+    if (!child) {
+      const errorDom = document.createElement('span')
+      errorDom.className = className
+      errorDom.innerText = msg
+      e.children[1].children[0].appendChild(errorDom)
+    } else {
+      child.innerText = msg
+    }
+  }
 }
 const showPageError = (msg, target, className?: string) => {
   className = className || 'link-pwd-error-msg'
@@ -433,6 +515,7 @@ const pwdEnableSwitcher = val => {
   if (val) {
     pwd = getUuid()
   }
+  validatePwdRequire()
   resetPwdHandler(pwd, true)
 }
 const resetPwd = () => {
@@ -444,7 +527,7 @@ const resetPwdHandler = (pwd?: string, autoPwd?: boolean) => {
   const url = '/share/editPwd'
   const data = { resourceId, pwd, autoPwd }
   request.post({ url, data }).then(() => {
-    loadShareInfo()
+    loadShareInfo(null)
   })
 }
 
@@ -639,6 +722,22 @@ onMounted(() => {
     }
   }
   .hidden-link-container {
+    display: none;
+  }
+}
+:deep(.checkbox-span) {
+  display: flex;
+  align-items: center;
+  .pe-require {
+    color: red;
+    font-size: 10px;
+    line-height: 32px;
+    margin: 0 4px;
+  }
+  .checkbox-span-require {
+    font-size: 10px;
+  }
+  .pe-tips-hidden {
     display: none;
   }
 }

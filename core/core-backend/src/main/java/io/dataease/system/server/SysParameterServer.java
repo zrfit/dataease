@@ -3,6 +3,7 @@ package io.dataease.system.server;
 import io.dataease.api.system.SysParameterApi;
 import io.dataease.api.system.request.OnlineMapEditor;
 import io.dataease.api.system.vo.SettingItemVO;
+import io.dataease.api.system.vo.ShareBaseVO;
 import io.dataease.constant.XpackSettingConstants;
 import io.dataease.system.dao.auto.entity.CoreSysSetting;
 import io.dataease.system.manage.SysParameterManage;
@@ -68,5 +69,10 @@ public class SysParameterServer implements SysParameterApi {
     @Override
     public Integer defaultLogin() {
         return sysParameterManage.defaultLogin();
+    }
+
+    @Override
+    public ShareBaseVO shareBase() {
+        return sysParameterManage.shareBase();
     }
 }

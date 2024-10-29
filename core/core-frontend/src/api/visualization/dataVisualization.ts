@@ -121,3 +121,10 @@ export const queryOuterParamsDsInfo = async dvId => {
     loading: false
   })
 }
+
+export const queryShareBaseApi = () => {
+  return request.get({
+    url: '/sysParameter/shareBase',
+    loading: false
+  })
+}

@@ -2780,7 +2780,9 @@ export default {
     pwdStrategy: '开启密码策略',
     dip: '禁用初始密码',
     pvp: '密码有效期',
-    defaultLogin: '默认登录方式'
+    defaultLogin: '默认登录方式',
+    shareDisable: '禁用分享',
+    sharePeRequire: '分享有效期密码必填'
   },
   setting_email: {
     title: '邮件设置',

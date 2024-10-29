@@ -17,7 +17,12 @@ import dvFolder from '@/assets/svg/dv-folder.svg'
 import icon_operationAnalysis_outlined from '@/assets/svg/icon_operation-analysis_outlined.svg'
 import icon_edit_outlined from '@/assets/svg/icon_edit_outlined.svg'
 import { onMounted, reactive, ref, toRefs, watch, nextTick, computed } from 'vue'
-import { copyResource, deleteLogic, ResourceOrFolder } from '@/api/visualization/dataVisualization'
+import {
+  copyResource,
+  deleteLogic,
+  ResourceOrFolder,
+  queryShareBaseApi
+} from '@/api/visualization/dataVisualization'
 import { ElIcon, ElMessage, ElMessageBox, ElScrollbar } from 'element-plus-secondary'
 import { Icon } from '@/components/icon-custom'
 import { useEmitt } from '@/hooks/web/useEmitt'
@@ -30,6 +35,8 @@ import { useAppStoreWithOut } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 import DvHandleMore from '@/components/handle-more/src/DvHandleMore.vue'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
+import { useShareStoreWithOut } from '@/store/modules/share'
+const shareStore = useShareStoreWithOut()
 const interactiveStore = interactiveStoreWithOut()
 import router from '@/router'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -503,9 +510,20 @@ const loadInit = () => {
     state.curSortType = historyTreeSort
   }
 }
+
+const loadShareBase = () => {
+  queryShareBaseApi().then(res => {
+    const param = {
+      shareDisable: res.data?.disable,
+      sharePeRequire: res.data?.peRequire
+    }
+    shareStore.setData(param)
+  })
+}
 onMounted(() => {
   loadInit()
   getTree()
+  loadShareBase()
 })
 
 defineExpose({

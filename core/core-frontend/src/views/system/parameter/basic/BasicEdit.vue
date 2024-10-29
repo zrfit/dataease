@@ -234,7 +234,11 @@ defineExpose({
         <el-switch
           class="de-basic-switch"
           v-if="
-            item.pkey === 'autoCreateUser' || item.pkey === 'pwdStrategy' || item.pkey === 'dip'
+            item.pkey === 'autoCreateUser' ||
+            item.pkey === 'pwdStrategy' ||
+            item.pkey === 'dip' ||
+            item.pkey === 'shareDisable' ||
+            item.pkey === 'sharePeRequire'
           "
           active-value="true"
           inactive-value="false"
