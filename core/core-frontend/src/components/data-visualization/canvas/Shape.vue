@@ -47,15 +47,15 @@
         @mousedown="handleInnerMouseDownOnShape"
       >
         <Icon v-if="shapeLock" name="dv-lock"><dvLock class="svg-icon iconfont icon-suo" /></Icon>
+        <div class="component-slot" :style="slotStyle">
+          <slot></slot>
+        </div>
         <!--边框背景-->
         <Board
           v-if="svgInnerEnable"
           :style="{ color: element.commonBackground.innerImageColor }"
           :name="commonBackgroundSvgInner"
         ></Board>
-        <div class="component-slot" :style="slotStyle">
-          <slot></slot>
-        </div>
       </div>
       <div
         v-for="item in isActive() ? getPointList() : []"
