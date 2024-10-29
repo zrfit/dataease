@@ -605,6 +605,42 @@ export default {
     new_folder: 'New Folder',
     form_manage: 'Form Manage',
     my_job: 'My Job',
+    disable_data_fill_hint:
+      'After closing Data Filling, the form data will fail to submit. Are you sure you want to close?',
+    enable_data_fill_hint:
+      'After enabled, it allows for the creation of new tables in the data source database, and stores form data into these tables.',
+    todo: 'Todo',
+    finished: 'Finished',
+    expired: 'Expired',
+    required_select: 'Required',
+    condition: 'Condition',
+    add_condition: 'Add condition',
+    disable_edit: 'Non-editable',
+    enable_edit: 'Editable',
+    select_component: 'Select component',
+    set_condition: 'Set condition',
+    move_to: 'Move to',
+    rename: 'Rename',
+    delete: 'Delete',
+    move_success: 'Move success',
+    rename_success: 'Rename success',
+    create_success: 'Create success',
+    create_form: 'Create Form',
+    create_folder: 'Create Folder',
+    order_by_create_time_asc: 'Order by create time asc',
+    order_by_create_time_desc: 'Order by create time desc',
+    order_by_name_asc: 'Order by name asc',
+    order_by_name_desc: 'Order by name desc',
+    delete_folder_hint:
+      'After deletion, all resources under this folder will be removed. Please proceed with caution.',
+    confirm_delete_folder: 'Confirm to delete folder',
+    confirm_delete_form: 'Confirm to delete form',
+    confirm_delete_multiple_data: 'Confirm to delete {0} data？',
+    confirm_delete_data: 'Confirm to delete data？',
+    no_form: 'No form',
+    on_the_left: 'Select form on the left side',
+    exporting: 'During exporting, you can goto ',
+    progress_to_download: 'to see progress, and download',
     form: {
       mobile_number_format_is_incorrect: 'Incorrect format of mobile phone number',
       email_format_is_incorrect: 'The mailbox format is incorrect',
@@ -715,6 +751,8 @@ export default {
       datetime: 'Datetime'
     },
     data: {
+      data_not_exists: 'Data dose not exists',
+      cannot_select_all: 'Cannot select all',
       commit_time: 'Commit Time',
       confirm_delete: 'Confirm delete?',
       add_data: 'Add Data',
@@ -732,6 +770,23 @@ export default {
       data_not_found: '] Not Found'
     },
     task: {
+      time_check_5_minute_later_than_current:
+        'Cannot be earlier than 5 minutes after the current time.',
+      time_check_later_than_current: 'Cannot be earlier than the current time.',
+      time_check_earlier_than_end: 'Cannot be later than the end time.',
+      time_check_later_than_start: 'Cannot be earlier than the start time.',
+      confirm_exit_without_save:
+        'The current changes have not been saved. Are you sure you want to exit?',
+      deliver_now: 'Deliver now',
+      deliver_scheduled: 'Deliver by schedule',
+      logic_filter: 'Logic filter',
+      enum_filter: 'Enum filter',
+      cannot_be_all_disabled: 'Not all components can be disabled.',
+      template_hint_title: 'The settings instructions are as follows',
+      template_hint_1:
+        'When a component is set to be non-editable, users are not allowed to modify it when filling out the form.',
+      template_hint_2:
+        'When a component is set to be editable, users are allowed to modify it when filling out the form.',
       finish_rate_hint: 'Finished Rate = Finished Task Count / Assigned Task Count * 100%',
       distribute_frequency: 'Distribute Frequency',
       one_time: 'One Time',
