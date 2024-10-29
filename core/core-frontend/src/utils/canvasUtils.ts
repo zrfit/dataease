@@ -795,3 +795,13 @@ export function onInitReady(params) {
     console.warn('de_inner_params send error')
   }
 }
+
+export function mobileViewStyleSwitch(component) {
+  if (component) {
+    const viewInfo = canvasViewInfo.value[component.id]
+    viewInfo.customStyle = component.customStyle
+    viewInfo.customAttr = component.customAttr
+    viewInfo.title = component.title
+    viewInfo.name = component.name
+  }
+}
