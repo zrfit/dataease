@@ -63,7 +63,11 @@ const props = defineProps({
 
 const { element, view, active, searchCount, scale } = toRefs(props)
 const autoStyle = computed(() => {
-  return { zoom: scale.value }
+  if (element.value.innerType === 'rich-text') {
+    return { zoom: scale.value }
+  } else {
+    return {}
+  }
 })
 const emits = defineEmits(['onPointClick'])
 
