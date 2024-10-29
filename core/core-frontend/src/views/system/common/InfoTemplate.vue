@@ -115,7 +115,7 @@ const props = defineProps({
   },
   settingTitle: {
     type: String,
-    default: t('system.basic_settings')
+    default: ''
   },
   hideHead: {
     type: Boolean,
@@ -136,7 +136,7 @@ const props = defineProps({
 })
 const executeTime = ref(t('system.and_0_seconds'))
 const curTitle = computed(() => {
-  return props.settingTitle
+  return props.settingTitle || t('system.basic_settings')
 })
 const copyVal = async val => {
   try {
