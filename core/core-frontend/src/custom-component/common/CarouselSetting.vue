@@ -87,6 +87,7 @@ const handleInput = value => {
             :disabled="!carouselInfo.enable"
             controls-position="right"
             @input="handleInput"
+            @blur="onSettingChange"
             @change="onSettingChange"
           >
           </el-input-number>

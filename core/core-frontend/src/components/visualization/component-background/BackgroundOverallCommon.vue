@@ -229,7 +229,6 @@ import elementResizeDetectorMaker from 'element-resize-detector'
 import { ElMessage } from 'element-plus-secondary'
 import BoardItem from '@/components/visualization/component-background/BoardItem.vue'
 import ImgViewDialog from '@/custom-component/ImgViewDialog.vue'
-import PictureOptionPrefix from '@/custom-component/picture-group/PictureOptionPrefix.vue'
 import BorderOptionPrefix from '@/components/visualization/component-background/BorderOptionPrefix.vue'
 const snapshotStore = snapshotStoreWithOut()
 const { t } = useI18n()

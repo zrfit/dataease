@@ -547,7 +547,9 @@ const calcData = (view: Chart, callback) => {
           state.viewDataInfo = res
           state.totalItems = res?.totalItems
           const curViewInfo = canvasViewInfo.value[element.value.id]
-          curViewInfo['curFields'] = res.data.fields
+          if (res.data) {
+            curViewInfo['curFields'] = res.data.fields
+          }
           dvMainStore.setViewDataDetails(element.value.id, res)
           initReady.value = true
           initCurFields(res)
