@@ -224,7 +224,6 @@ onBeforeUnmount(() => {
   }
 }
 .img-area {
-  margin-top: 10px;
   overflow: hidden;
 
   &.img-area_dark {
@@ -272,7 +271,7 @@ onBeforeUnmount(() => {
 }
 
 .pic-adaptor {
-  margin: 8px 0 16px 0;
+  margin: 8px 0 8px 0;
   :deep(.ed-form-item__content) {
     margin-top: 8px !important;
   }

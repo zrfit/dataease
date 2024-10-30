@@ -80,7 +80,7 @@ watch(
 </script>
 
 <template>
-  <el-row class="custom-row">
+  <el-row class="custom-row" style="padding-bottom: 8px">
     <el-form label-position="top">
       <template v-if="isSvgComponent">
         <el-row style="display: flex">

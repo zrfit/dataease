@@ -649,7 +649,7 @@ watch(
   }
 }
 .custom-row-inner {
-  margin: 8px 0px 24px;
+  margin: 0 0 16px;
 }
 
 .dark-icon {
