@@ -80,6 +80,8 @@ export default {
     error_msg: '错误信息'
   },
   template_manage: {
+    name_already_exists_type: '分类名称已存在',
+    the_same_category: '同一分类下，该模板名称已存在',
     name: '模板管理',
     rename: '重命名',
     edit_template: '编辑模板',
@@ -2881,10 +2883,6 @@ export default {
     reci: '测试收件人',
     ssl: 'SSL',
     tsl: 'TSL'
-  },
-  template_manage: {
-    name_already_exists_type: '分类名称已存在',
-    the_same_category: '同一分类下，该模板名称已存在'
   },
   sync_manage: {
     title: '同步管理',
