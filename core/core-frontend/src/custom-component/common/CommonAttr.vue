@@ -135,7 +135,7 @@ onMounted(() => {
         ></common-style-set>
       </el-collapse-item>
       <el-collapse-item
-        v-if="element && element.events && eventsShow && !mobileInPc"
+        v-if="element && element.events && eventsShow"
         :effect="themes"
         title="事件"
         name="events"

@@ -5,10 +5,9 @@
         :effect="themes"
         title="流媒体信息"
         name="streamLinks"
-        v-if="curComponent && curComponent.streamMediaLinks"
+        v-if="curComponent && curComponent.streamMediaLinks && !mobileInPc"
       >
         <stream-media-links
-          v-show="!mobileInPc"
           :link-info="curComponent.streamMediaLinks"
           :themes="themes"
         ></stream-media-links>
