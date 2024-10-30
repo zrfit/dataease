@@ -139,7 +139,6 @@ const dsTableDetail = reactive({
   name: ''
 })
 const rootManage = ref(false)
-const nodeData = ref({})
 const nickName = ref('')
 const dsName = ref('')
 const userDrawer = ref(false)
@@ -276,31 +275,31 @@ const validateDS = () => {
     .then(res => {
       if (res.data.type === 'API') {
         let error = 0
-        const status = JSON.parse(res.data.status)
-        for (let i = 0; i < status.length; i++) {
-          if (status[i].status === 'Error') {
+        const dsStatus = JSON.parse(res.data.status)
+        for (let i = 0; i < dsStatus.length; i++) {
+          if (dsStatus[i].status === 'Error') {
             error++
           }
           for (let i = 0; i < nodeInfo.apiConfiguration.length; i++) {
-            if (nodeInfo.apiConfiguration[i].name === status[i].name) {
-              nodeInfo.apiConfiguration[i].status = status[i].status
+            if (nodeInfo.apiConfiguration[i].name === dsStatus[i].name) {
+              nodeInfo.apiConfiguration[i].status = dsStatus[i].status
             }
           }
         }
         if (error === 0) {
-          nodeData.value.extraFlag = Math.abs(nodeData.value.extraFlag)
+          changeDsStatus(state.datasourceTree, nodeInfo.id, Math.abs(nodeInfo.extraFlag))
           ElMessage.success(t('data_source.verification_successful'))
         } else {
-          nodeData.value.extraFlag = -Math.abs(nodeData.value.extraFlag)
+          changeDsStatus(state.datasourceTree, nodeInfo.id, -Math.abs(nodeInfo.extraFlag))
           ElMessage.error(t('data_source.verification_failed'))
         }
       } else {
-        nodeData.value.extraFlag = Math.abs(nodeData.value.extraFlag)
+        changeDsStatus(state.datasourceTree, nodeInfo.id, Math.abs(nodeInfo.extraFlag))
         ElMessage.success(t('data_source.verification_successful'))
       }
     })
     .catch(() => {
-      nodeData.value.extraFlag = -Math.abs(nodeData.value.extraFlag)
+      changeDsStatus(state.datasourceTree, nodeInfo.id, -Math.abs(nodeInfo.extraFlag))
     })
 }
 
@@ -412,7 +411,8 @@ const defaultInfo = {
   syncSetting: null,
   apiConfiguration: [],
   weight: 0,
-  enableDataFill: false
+  enableDataFill: false,
+  extraFlag: 0
 }
 const nodeInfo = reactive<Node>(cloneDeep(defaultInfo))
 const infoList = computed(() => {
@@ -490,6 +490,19 @@ const listDs = () => {
     })
 }
 
+const changeDsStatus = (ds, id, extraFlag) => {
+  ds.some(ele => {
+    if (ele.id === id) {
+      ele.extraFlag = extraFlag
+      return true
+    }
+    if (!!ele.children?.length) {
+      changeDsStatus(ele.children, id, extraFlag)
+    }
+    return false
+  })
+}
+
 const dfsDatasourceTree = (ds, id) => {
   ds.some(ele => {
     if (ele.id === id) {
@@ -530,7 +543,6 @@ const sortTypeTip = computed(() => {
 const tableData = shallowRef([])
 const tabData = shallowRef([])
 const handleNodeClick = data => {
-  nodeData.value = data
   if (!data.leaf) {
     dsListTree.value.setCurrentKey(null)
     return
@@ -580,7 +592,8 @@ const handleNodeClick = data => {
       paramsConfiguration: paramsStr,
       weight: data.weight,
       lastSyncTime,
-      enableDataFill
+      enableDataFill,
+      extraFlag: data.extraFlag
     })
     activeTab.value = ''
     activeName.value = 'config'
