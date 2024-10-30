@@ -1998,6 +1998,11 @@ const deleteChartFieldItem = id => {
                           :quota="state.quota"
                           :themes="themes"
                           :emitter="emitter"
+                          @onDimensionItemChange="dimensionItemChange"
+                          @onDimensionItemRemove="dimensionItemRemove"
+                          @onNameEdit="showRename"
+                          @onCustomSort="onCustomSort"
+                          @valueFormatter="valueFormatter"
                         />
                       </template>
                       <template v-else>
