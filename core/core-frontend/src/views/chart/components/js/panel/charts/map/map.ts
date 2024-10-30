@@ -80,6 +80,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     if (!areaId) {
       return
     }
+    chart.container = container
     const sourceData = JSON.parse(JSON.stringify(chart.data?.data || []))
     let data = []
     const { misc } = parseJson(chart.customAttr)

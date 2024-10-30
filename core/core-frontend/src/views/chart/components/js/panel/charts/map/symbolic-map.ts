@@ -345,6 +345,7 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
             background-color: ${tooltip.backgroundColor} !important;
             padding: 6px 10px 6px;
             line-height: 1.6;
+            border-top-left-radius: 3px;
           }
           #${container} .l7-popup-tip {
            border-top-color: ${tooltip.backgroundColor} !important;
@@ -353,7 +354,35 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
       document.head.appendChild(style)
       const htmlPrefix = `<div style='font-size:${tooltip.fontSize}px;color:${tooltip.color}'>`
       const htmlSuffix = '</div>'
+      const containerElement = document.getElementById(container)
+      if (containerElement) {
+        containerElement.addEventListener('mousemove', event => {
+          const rect = containerElement.getBoundingClientRect()
+          const mouseX = event.clientX - rect.left
+          const mouseY = event.clientY - rect.top
+          const tooltipElement = containerElement.getElementsByClassName('l7-popup')
+          for (let i = 0; i < tooltipElement?.length; i++) {
+            const element = tooltipElement[i] as HTMLElement
+            element.firstElementChild.style.display = 'none'
+            element.style.transform = 'translate(15px, 12px)'
+            const isNearRightEdge =
+              containerElement.clientWidth - mouseX <= element.clientWidth + 10
+            const isNearBottomEdge = containerElement.clientHeight - mouseY <= element.clientHeight
+            let transform = ''
+            if (isNearRightEdge) {
+              transform += 'translateX(-120%) translateY(15%) '
+            }
+            if (isNearBottomEdge) {
+              transform += 'translateX(15%) translateY(-80%) '
+            }
+            if (transform) {
+              element.style.transform = transform.trim()
+            }
+          }
+        })
+      }
       return new LayerPopup({
+        anchor: 'top-left',
         items: [
           {
             layer: pointLayer,
