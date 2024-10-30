@@ -77,7 +77,12 @@ export default {
     user: '操作用户',
     time: '操作时间',
     ip: 'IP地址',
-    error_msg: '错误信息'
+    organization: '所属组织',
+    error_msg: '错误信息',
+    confirm_export: '确定导出日志吗',
+    export_success: '导出成功',
+    excel_file_name: 'DataEase操作日志',
+    relevant_content_found: '没有找到相关内容'
   },
   template_manage: {
     name_already_exists_type: '分类名称已存在',
@@ -120,6 +125,7 @@ export default {
     exists_name_hint: '当前名称已在模版管理中存在，请修改'
   },
   work_branch: {
+    back_to_work_branch: '返回工作台',
     recommended_dashboard: '推荐仪表板',
     template_market_official: '未获取模板下载链接请联系模板市场官方',
     create_quickly: '快速创建',
@@ -3316,7 +3322,6 @@ export default {
       task_finish_in_suffix: '内完成填报',
       open_sub_task: '查看已下发任务'
     },
-    on_the_left: '请在左侧选择表单',
     search_by_commit_name: '根据操作人名称搜索'
   },
   threshold: {

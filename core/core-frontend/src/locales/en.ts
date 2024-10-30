@@ -52,7 +52,13 @@ export default {
     user: 'Operating User',
     time: 'Operation Time',
     ip: 'IP Address',
-    error_msg: 'Error Message'
+    error_msg: 'Error Message',
+    organization: 'Organization',
+    error_msg: 'Error Message',
+    confirm_export: 'Are You Sure You Want to Export the Log?',
+    export_success: 'Export Succeeded',
+    excel_file_name: 'DataEase Operation Log',
+    relevant_content_found: 'No Relevant Content Found'
   },
   template_manage: {
     name_already_exists_type: 'Classification name already exists',
@@ -353,6 +359,7 @@ export default {
     to_delete_: 'Are you sure to delete [100]?'
   },
   work_branch: {
+    back_to_work_branch: 'Back to work branch',
     recommended_dashboard: 'Recommended dashboard',
     template_market_official:
       'If you have not obtained the template download link, please contact the template market official',
@@ -995,7 +1002,6 @@ export default {
       task_finish_in_suffix: '',
       open_sub_task: 'Open Assigned Tasks'
     },
-    on_the_left: 'Please select a form on the left',
     search_by_commit_name: 'Search by operator name'
   },
   relation: {

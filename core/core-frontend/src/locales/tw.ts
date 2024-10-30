@@ -77,7 +77,12 @@ export default {
     user: '操作用戶',
     time: '操作時間',
     ip: 'IP地址',
-    error_msg: '錯誤信息'
+    organization: '所屬組織',
+    error_msg: '錯誤信息',
+    confirm_export: '確定導出日志嗎',
+    export_success: '導出成功',
+    excel_file_name: 'DataEase操作日志',
+    relevant_content_found: '沒有找到相關內容'
   },
   template_manage: {
     name_already_exists_type: '分類名稱已存在',
@@ -120,6 +125,7 @@ export default {
     exists_name_hint: '當前名稱已在模版管理中存在，請修改'
   },
   work_branch: {
+    back_to_work_branch: '返回工作台',
     recommended_dashboard: '推薦儀表板',
     template_market_official: '未獲取模板下載鏈接請聯系模板市場官方',
     create_quickly: '快速創建',
@@ -3257,7 +3263,6 @@ export default {
       task_finish_in_suffix: '內完成填報',
       open_sub_task: '查看已下發任務'
     },
-    on_the_left: '請在左側選擇表單',
     search_by_commit_name: '根據操作人名稱搜索'
   },
   threshold: {
