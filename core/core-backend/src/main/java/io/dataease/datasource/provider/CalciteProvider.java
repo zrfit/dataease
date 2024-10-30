@@ -269,7 +269,7 @@ public class CalciteProvider extends Provider {
             try (Connection con = getConnectionFromPool(datasourceRequest.getDatasource().getId()); Statement statement = getStatement(con, 30)) {
                 datasourceRequest.setDsVersion(con.getMetaData().getDatabaseMajorVersion());
                 if (datasourceRequest.getDatasource().getType().equalsIgnoreCase("mongo") || isDorisCatalog(datasourceRequest)) {
-                    resultSet = statement.executeQuery("select * from " + table + " limit 0 offset 0 ");
+                    resultSet = statement.executeQuery("select * from " + String.format(" `%s`", table) + " limit 0 offset 0 ");
                     return fetchResultField(resultSet);
                 }
                 resultSet = statement.executeQuery(getTableFiledSql(datasourceRequest));
