@@ -2,7 +2,6 @@
 import { computed, nextTick, onMounted, ref, toRefs } from 'vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
-import { styleData } from '@/utils/attr'
 import ComponentPosition from '@/components/visualization/common/ComponentPosition.vue'
 import BackgroundOverallCommon from '@/components/visualization/component-background/BackgroundOverallCommon.vue'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -35,7 +34,7 @@ const props = withDefaults(
   }
 )
 
-const { themes, element, showStyle } = toRefs(props)
+const { themes, element } = toRefs(props)
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, batchOptStatus, mobileInPc } = storeToRefs(dvMainStore)
 const activeName = ref(element.value.collapseName)

@@ -60,12 +60,12 @@ const handleInput = value => {
     @modelChange="onSettingChange"
     title="轮播"
   >
-    <el-row class="custom-row">
+    <el-row class="custom-row" style="margin-top: -8px">
       <el-form label-position="top" @submit.prevent>
         <el-form-item
           class="form-item"
           :class="'form-item-' + themes"
-          style="width: 50%; margin-bottom: 8px"
+          style="width: 50%; margin-bottom: 0"
         >
           <span style="font-size: 12px">轮播时间（秒）</span>
           <el-tooltip class="item" :effect="themes" placement="top">
