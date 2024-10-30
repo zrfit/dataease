@@ -30,9 +30,9 @@ const props = defineProps({
     }
   },
   timeGranularityMultiple: {
-    type: Object as PropType<DatePickType>,
+    type: String as PropType<DatePickType>,
     default: () => {
-      return { type: 'yearrange' } as PropType<DatePickType>
+      return 'yearrange'
     }
   }
 })
