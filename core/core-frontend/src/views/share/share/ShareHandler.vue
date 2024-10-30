@@ -24,7 +24,7 @@
     :close-on-click-modal="true"
     :append-to-body="true"
     :before-close="beforeClose"
-    title="公共链接分享"
+    :title="t('work_branch.public_link_share')"
     width="480px"
     :show-close="false"
   >
@@ -46,7 +46,9 @@
               {{ formatLinkBase() }}
             </template>
           </el-input>
-          <el-button v-if="linkCustom" text @click="finishEditUuid">完成</el-button>
+          <el-button v-if="linkCustom" text @click="finishEditUuid">{{
+            t('components.complete')
+          }}</el-button>
           <el-button v-else @click="editUuid" size="default" plain>
             <template #icon>
               <icon name="icon_admin_outlined"><icon_admin_outlined class="svg-icon" /></icon>
@@ -82,7 +84,7 @@
               :disabled-date="disabledDate"
               value-format="x"
             />
-            <span v-if="expError" class="exp-error">必须大于当前时间</span>
+            <span v-if="expError" class="exp-error">{{ t('work_branch.share_time_limit') }}</span>
           </div>
         </div>
         <div v-if="shareEnable" class="pwd-container">
@@ -145,7 +147,7 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button secondary @click="openTicket">Ticket 设置</el-button>
+        <el-button secondary @click="openTicket">{{ t('work_branch.ticket_setting') }}</el-button>
         <el-button :disabled="!shareEnable || expError" type="primary" @click.stop="copyInfo">
           {{ t('visualization.copy_link') }}
         </el-button>
@@ -205,7 +207,11 @@ const state = reactive({
 const emits = defineEmits(['loaded'])
 const shareTips = computed(
   () =>
-    `开启后，用户可以通过该链接访问${props.resourceType === 'dashboard' ? '仪表板' : '数据大屏'}`
+    `${t('work_branch.open_link_hint')}${
+      props.resourceType === 'dashboard'
+        ? t('work_branch.dashboard')
+        : t('work_branch.big_data_screen')
+    }`
 )
 const shareDisable = computed(() => shareStore.getShareDisable)
 const sharePeRequire = computed(() => shareStore.getSharePeRequire)
@@ -221,13 +227,13 @@ const validateUuid = async () => {
   const val = state.detailInfo.uuid
   const className = 'link-uuid-error-msg'
   if (!val) {
-    showPageError('不能为空！', linkUuidRef, className)
+    showPageError(t('commons.cannot_be_null'), linkUuidRef, className)
     return false
   }
   const regex = /^[a-zA-Z0-9]{8,16}$/
   const result = regex.test(val)
   if (!result) {
-    showPageError('仅支持8-16位(字母数字)，请重新输入！', linkUuidRef, className)
+    showPageError(t('work_branch.uuid_checker'), linkUuidRef, className)
   } else {
     const msg = await uuidValidateApi(val)
     showPageError(msg, linkUuidRef, className)
@@ -249,7 +255,7 @@ const finishEditUuid = async () => {
 const copyPwd = async () => {
   if (shareEnable.value && passwdEnable.value) {
     if (!state.detailInfo.autoPwd && existErrorMsg('link-pwd-error-msg')) {
-      ElMessage.warning('密码格式错误，请重新填写！')
+      ElMessage.warning(t('work_branch.error_password_hint'))
       return
     }
     try {
@@ -266,7 +272,7 @@ const copyInfo = async () => {
   if (shareEnable.value) {
     try {
       if (existErrorMsg('link-uuid-error-msg')) {
-        ElMessage.warning('链接格式错误，请重新填写！')
+        ElMessage.warning(t('work_branch.error_link_hint'))
         return
       }
       formatLinkAddr()
@@ -406,7 +412,7 @@ const validateExpRequire = () => {
     showCheckboxError(null, expCheckbox)
     return true
   }
-  showCheckboxError('必填', expCheckbox)
+  showCheckboxError(t('common.required'), expCheckbox)
   return false
 }
 
@@ -415,7 +421,7 @@ const validatePwdRequire = () => {
     showCheckboxError(null, pwdCheckbox)
     return true
   }
-  showCheckboxError('必填', pwdCheckbox)
+  showCheckboxError(t('common.required'), pwdCheckbox)
   return false
 }
 const validatePwdFormat = () => {
@@ -425,12 +431,12 @@ const validatePwdFormat = () => {
   }
   const val = state.detailInfo.pwd
   if (!val) {
-    showPageError('密码不能为空，请重新输入！', pwdRef)
+    showPageError(t('work_branch.password_null_hint'), pwdRef)
     return false
   }
   const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,10}$/
   if (!regex.test(val)) {
-    showPageError('密码必须是包含数字、字母、特殊字符[!@#$%^&*()_+]的4-10位字符串', pwdRef)
+    showPageError(t('work_branch.password_hint'), pwdRef)
     return false
   }
   showPageError(null, pwdRef)
@@ -577,7 +583,7 @@ defineExpose({
 onMounted(() => {
   if (!props.inGrid && props.weight >= 7) {
     const commandInfo = {
-      label: '分享',
+      label: t('visualization.share'),
       command: 'share',
       svgName: dvShare
     }

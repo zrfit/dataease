@@ -150,7 +150,18 @@ export default {
     new_page_preview: '新页面预览',
     cancel_favorites: '取消收藏',
     open_dataset: '打开数据集',
-    administrator_for_authorization: '没有任何业务菜单权限，请联系管理员授权'
+    administrator_for_authorization: '没有任何业务菜单权限，请联系管理员授权',
+    public_link_share: '公共链接分享',
+    share_time_limit: '必须大于当前时间',
+    ticket_setting: 'Ticket 设置',
+    cannot_share_link: '已经开启全局禁用分享，分享功能暂不可用，请联系管理员！',
+    open_link_hint: '开启后，用户可以通过该链接访问',
+    uuid_checker: '仅支持8-16位(字母数字)，请重新输入！',
+    error_password_hint: '密码格式错误，请重新填写！',
+    error_link_hint: '链接格式错误，请重新填写！',
+    password_null_hint: '密码不能为空，请重新输入！',
+    password_hint: '密码必须是包含数字、字母、特殊字符[!@#$%^&*()_+]的4-10位字符串',
+    max_ticket_count: '最多支持创建5个Ticket'
   },
   data_set: {
     ten_wan: '10万',
@@ -2452,6 +2463,7 @@ export default {
       end_date_time: '结束日期时间',
       range_separator: '至',
       data_time_error: '开始日期不能大于结束日期',
+      one_hour: '一小时',
       one_day: '一天',
       one_week: '一周',
       one_month: '一个月',
