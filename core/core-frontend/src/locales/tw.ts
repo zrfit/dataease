@@ -80,6 +80,8 @@ export default {
     error_msg: '錯誤信息'
   },
   template_manage: {
+    name_already_exists_type: '分類名稱已存在',
+    the_same_category: '同一分類下，該模板名稱已存在',
     name: '模板管理',
     rename: '重命名',
     edit_template: '編輯模板',
@@ -562,7 +564,39 @@ export default {
       '登錄頁面右側 Logo，建議尺寸 204 x 52，支持 JPG、PNG、SVG，大小不超過 200KB',
     not_exceeding_5m_de:
       '左側背景圖，矢量圖建議尺寸 640 x 900，位圖建議尺寸 1280 x 1800；支持 JPG、PNG、SVG，大小不超過 5M',
-    tab: '頁簽'
+    tab: '頁簽',
+    incorrect_please_re_enter: '回調域名格式錯誤，請重新輸入',
+    cas_settings: 'CAS設置',
+    callback_domain_name: '回調域名',
+    authentication_settings: '認證設置',
+    be_turned_on: '測試連接有效后，可開啟',
+    platform_information_first: '請先保存平台信息',
+    for_example: '如：{"account":"uid","name":"cn","email":"mail"}',
+    in_json_format: '請輸入json格式',
+    ldap_settings: 'LDAP設置',
+    ldap_address: 'LDAP地址',
+    such_as_ldap: 'LDAP地址（如 ldap://127.0.0.1:389）',
+    bind_dn: '綁定DN',
+    user_ou: '用戶OU',
+    separate_each_ou: 'OU（使用|分割各OU）',
+    user_filter: '用戶過濾器',
+    such_as_uid: '過濾器 [可能的選項是cn或uid或sAMAccountName={0}, 如：(uid={0})]',
+    ldap_attribute_mapping: 'LDAP屬性映射',
+    incorrect_please_re_enter_de: 'url格式錯誤，請重新輸入',
+    oauth2_settings: 'OAUTH2設置',
+    authorization_end_address: '授權端地址',
+    token_end_address: 'Token 端地址',
+    information_end_address: '用戶信息端地址',
+    connection_range: '連接范圍',
+    client_id: '客戶端 ID',
+    client_key: '客戶端密鑰',
+    callback_address: '回調地址',
+    field_mapping: '字段映射',
+    oauth2name: '例如：{"account": "oauth2Account", "name": "oauth2Name", "email": "email"}',
+    oidc_settings: 'OIDC設置',
+    test_mail_recipient: '僅用來作為測試郵件收件人',
+    to_enable_ssl: '如果SMTP端口是 465 ，通常需要啟用SSL',
+    to_enable_tsl: '如果SMTP端口是 587 ，通常需要啟用TSL'
   },
   components: {
     dashboard_style: '儀表板風格',
@@ -2836,7 +2870,9 @@ export default {
     pwdStrategy: '開啟密碼策略',
     dip: '禁用初始密碼',
     pvp: '密碼有效期',
-    defaultLogin: '默認登錄方式'
+    defaultLogin: '默認登錄方式',
+    shareDisable: '禁用分享',
+    sharePeRequire: '分享有效期密碼必填'
   },
   setting_email: {
     title: '郵件設置',
@@ -2847,10 +2883,6 @@ export default {
     reci: '測試收件人',
     ssl: 'SSL',
     tsl: 'TSL'
-  },
-  template_manage: {
-    name_already_exists_type: '分類名稱已存在',
-    the_same_category: '同一分類下，該模板名稱已存在'
   },
   sync_manage: {
     title: '同步管理',

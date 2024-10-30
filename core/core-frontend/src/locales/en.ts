@@ -55,6 +55,8 @@ export default {
     error_msg: 'Error Message'
   },
   template_manage: {
+    name_already_exists_type: 'Classification name already exists',
+    the_same_category: 'The template name already exists under the same category',
     name: 'Template Management',
     rename: 'Rename',
     edit_template: 'Edit Template',
@@ -681,10 +683,6 @@ export default {
     minute_limit: 'Minutes cannot be less than 1 and greater than 59',
     hour_limit: 'Hours cannot be less than 1 and greater than 23',
     day_limit: 'Days cannot be less than 1 and greater than 31'
-  },
-  template_manage: {
-    name_already_exists_type: 'Classification name already exists',
-    the_same_category: 'The template name already exists under the same category'
   },
   data_fill: {
     data_fill: 'Data Filling',
