@@ -893,6 +893,30 @@ export function configL7Tooltip(chart: Chart): TooltipOptions {
       pre[next.id] = next
       return pre
     }, {}) as Record<string, SeriesFormatter>
+  const container = document.getElementById(chart.container)
+  if (container) {
+    container.addEventListener('mousemove', event => {
+      const rect = container.getBoundingClientRect()
+      const mouseX = event.clientX - rect.left
+      const mouseY = event.clientY - rect.top
+      const tooltipElement = container.getElementsByClassName('l7plot-tooltip-container')
+      for (let i = 0; i < tooltipElement?.length; i++) {
+        const element = tooltipElement[i] as HTMLElement
+        const isNearRightEdge = container.clientWidth - mouseX <= element.clientWidth
+        const isNearBottomEdge = container.clientHeight - mouseY <= element.clientHeight
+        let transform = ''
+        if (isNearRightEdge) {
+          transform += 'translateX(-120%) '
+        }
+        if (isNearBottomEdge) {
+          transform += 'translateY(-100%) '
+        }
+        if (transform) {
+          element.style.transform = transform.trim()
+        }
+      }
+    })
+  }
   return {
     customTitle(data) {
       return data.name

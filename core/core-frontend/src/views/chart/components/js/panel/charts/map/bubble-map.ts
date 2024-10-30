@@ -57,6 +57,7 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     if (!areaId) {
       return
     }
+    chart.container = container
     const geoJson = cloneDeep(await getGeoJsonFile(areaId))
     let options: ChoroplethOptions = {
       preserveDrawingBuffer: true,
