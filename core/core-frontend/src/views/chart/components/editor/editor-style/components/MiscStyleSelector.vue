@@ -180,20 +180,6 @@ onMounted(() => {
             <el-form-item
               class="form-item"
               :class="'form-item-' + themes"
-              :label="t('chart.axis_value_max')"
-            >
-              <el-input-number
-                controls-position="right"
-                :effect="props.themes"
-                v-model.number="state.miscForm.axisValue.max"
-                @change="changeMiscStyle('axisValue.max')"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item
-              class="form-item"
-              :class="'form-item-' + themes"
               :label="t('chart.axis_value_min')"
             >
               <el-input-number
@@ -201,6 +187,20 @@ onMounted(() => {
                 controls-position="right"
                 v-model.number="state.miscForm.axisValue.min"
                 @change="changeMiscStyle('axisValue.min')"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              class="form-item"
+              :class="'form-item-' + themes"
+              :label="t('chart.axis_value_max')"
+            >
+              <el-input-number
+                controls-position="right"
+                :effect="props.themes"
+                v-model.number="state.miscForm.axisValue.max"
+                @change="changeMiscStyle('axisValue.max')"
               />
             </el-form-item>
           </el-col>
