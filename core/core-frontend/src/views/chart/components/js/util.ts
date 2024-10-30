@@ -555,14 +555,13 @@ export const copyString = (content: string, notify = false) => {
   const clipboard = navigator.clipboard || {
     writeText: data => {
       return new Promise(resolve => {
-        const inputDom = document.createElement('input')
-        inputDom.setAttribute('style', 'z-index: -1;position: fixed;opacity: 0;')
-        inputDom.setAttribute('type', 'text')
-        inputDom.setAttribute('value', data)
-        document.body.appendChild(inputDom)
-        inputDom.select()
+        const textareaDom = document.createElement('textarea')
+        textareaDom.setAttribute('style', 'z-index: -1;position: fixed;opacity: 0;')
+        textareaDom.value = data
+        document.body.appendChild(textareaDom)
+        textareaDom.select()
         document.execCommand('copy')
-        inputDom.remove()
+        textareaDom.remove()
         resolve()
       })
     }
