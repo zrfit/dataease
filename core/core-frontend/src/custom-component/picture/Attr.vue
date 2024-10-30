@@ -250,7 +250,6 @@ onBeforeUnmount(() => {
 .img-area {
   height: 80px;
   width: 80px;
-  margin-top: 10px;
   overflow: hidden;
 
   &.img-area_dark {
