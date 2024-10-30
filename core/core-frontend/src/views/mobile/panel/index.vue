@@ -21,12 +21,6 @@ const checkItemPosition = component => {
 const hanedleMessage = event => {
   if (event.data.type === 'panelInit') {
     const { componentData, canvasStyleData, dvInfo, canvasViewInfo, isEmbedded } = event.data.value
-    Object.keys(canvasViewInfo).forEach(viewId => {
-      const viewInfo = canvasViewInfo[viewId]
-      const { customAttrMobile, customStyleMobile } = viewInfo
-      viewInfo.customAttr = customAttrMobile || viewInfo.customAttr
-      viewInfo.customStyle = customStyleMobile || viewInfo.customStyle
-    })
     componentData.forEach(ele => {
       const { mx, my, mSizeX, mSizeY, mStyle, mCommonBackground } = ele
       ele.x = mx
