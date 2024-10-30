@@ -420,7 +420,7 @@ watch(
             :effect="themes"
             v-if="showProperties('misc-style-selector')"
             name="size"
-            :title="selectorSpec['misc-style-selector']?.title"
+            :title="selectorSpec['misc-style-selector']?.title || t('chart.tooltip_axis')"
           >
             <misc-style-selector
               :property-inner="propertyInnerAll['misc-style-selector']"
