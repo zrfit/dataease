@@ -52,7 +52,13 @@ export default {
     user: 'Operating User',
     time: 'Operation Time',
     ip: 'IP Address',
-    error_msg: 'Error Message'
+    error_msg: 'Error Message',
+    organization: 'Organization',
+    error_msg: 'Error Message',
+    confirm_export: 'Are You Sure You Want to Export the Log?',
+    export_success: 'Export Succeeded',
+    excel_file_name: 'DataEase Operation Log',
+    relevant_content_found: 'No Relevant Content Found'
   },
   template_manage: {
     name_already_exists_type: 'Classification name already exists',

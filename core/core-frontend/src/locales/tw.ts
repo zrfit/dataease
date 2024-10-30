@@ -77,7 +77,12 @@ export default {
     user: '操作用戶',
     time: '操作時間',
     ip: 'IP地址',
-    error_msg: '錯誤信息'
+    organization: '所屬組織',
+    error_msg: '錯誤信息',
+    confirm_export: '確定導出日志嗎',
+    export_success: '導出成功',
+    excel_file_name: 'DataEase操作日志',
+    relevant_content_found: '沒有找到相關內容'
   },
   template_manage: {
     name_already_exists_type: '分類名稱已存在',
