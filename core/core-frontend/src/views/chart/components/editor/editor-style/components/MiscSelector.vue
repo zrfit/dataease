@@ -111,9 +111,9 @@ const initField = () => {
 }
 
 const initDynamicDefaultField = () => {
-  if (state.quotaData.length > 0) {
+  const yAxisId = props.chart.yAxis?.[0]?.id
+  if (yAxisId !== '-1' && state.quotaData.length) {
     // 查找 quotaData 中是否存在 chart.yAxis[0].id
-    const yAxisId = props.chart.yAxis?.[0]?.id
     const yAxisExists = state.quotaData.find(ele => ele.id === yAxisId)
     // 如果不存在
     if (!yAxisExists && (state.miscForm.liquidMaxField.id || state.miscForm.gaugeMaxField.id)) {
@@ -190,9 +190,13 @@ const initDynamicDefaultField = () => {
 }
 
 const changeQuotaField = (type: string, resetSummary?: boolean) => {
+  let isCountField = props.chart.yAxis?.[0]?.id === '-1'
   if (type === 'min') {
     if (state.miscForm.gaugeMinType === 'dynamic') {
-      if (!state.miscForm.gaugeMinField.id) {
+      if (isCountField && state.quotaData.length) {
+        state.miscForm.gaugeMinField.id = state.quotaData[0]?.id
+      }
+      if (!state.miscForm.gaugeMinField.id && !isCountField) {
         state.miscForm.gaugeMinField.id = props.chart.yAxis?.[0]?.id
       }
       if (!state.miscForm.gaugeMinField.summary) {
@@ -216,12 +220,13 @@ const changeQuotaField = (type: string, resetSummary?: boolean) => {
     }
   } else if (type === 'max') {
     if (props.chart.type === 'liquid') {
+      if (isCountField && state.quotaData.length) {
+        state.miscForm.liquidMaxField.id = state.quotaData[0]?.id
+      }
       if (state.miscForm.liquidMaxType === 'dynamic') {
         state.miscForm.liquidMax = undefined
-      } else {
-        if (!state.miscForm.liquidMax) {
-          state.miscForm.liquidMax = cloneDeep(defaultMaxValue.liquidMax)
-        }
+      } else if (!state.miscForm.liquidMax) {
+        state.miscForm.liquidMax = cloneDeep(defaultMaxValue.liquidMax)
       }
       if (!state.miscForm.liquidMaxField.id) {
         state.miscForm.liquidMaxField.id = props.chart.yAxis?.[0]?.id
@@ -238,8 +243,11 @@ const changeQuotaField = (type: string, resetSummary?: boolean) => {
       }
     } else {
       if (state.miscForm.gaugeMaxType === 'dynamic') {
+        if (isCountField && state.quotaData.length) {
+          state.miscForm.gaugeMaxField.id = state.quotaData[0]?.id
+        }
         state.miscForm.gaugeMax = undefined
-        if (!state.miscForm.gaugeMaxField.id) {
+        if (!state.miscForm.gaugeMaxField.id && !isCountField) {
           state.miscForm.gaugeMaxField.id = props.chart.yAxis?.[0]?.id
         }
         if (!state.miscForm.gaugeMaxField.summary) {
