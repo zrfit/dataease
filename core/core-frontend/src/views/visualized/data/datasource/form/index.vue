@@ -710,7 +710,7 @@ defineExpose({
         <Icon name="icon_close_outlined"><icon_close_outlined class="svg-icon" /></Icon>
       </el-icon>
     </template>
-    <div class="datasource">
+    <div class="datasource" v-loading="dsLoading">
       <div class="ds-type-select" v-if="!editDs">
         <div class="title">
           <el-input
@@ -778,7 +778,7 @@ defineExpose({
           </template>
         </el-tree>
       </div>
-      <div class="ds-editor" :class="editDs && 'edit-ds'" v-loading="dsLoading">
+      <div class="ds-editor" :class="editDs && 'edit-ds'">
         <div v-show="activeStep !== 0 && !editDs" class="ds-type-title">
           {{ typeTitle }}
         </div>
@@ -816,7 +816,7 @@ defineExpose({
           </template>
         </div>
       </div>
-      <div class="editor-footer" v-loading="dsLoading">
+      <div class="editor-footer">
         <el-button secondary @click="beforeClose"> {{ t('common.cancel') }}</el-button>
         <el-button
           v-show="!(activeStep === 0 || (editDs && activeApiStep <= 1))"

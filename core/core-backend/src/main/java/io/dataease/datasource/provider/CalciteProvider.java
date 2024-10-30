@@ -1391,11 +1391,14 @@ public class CalciteProvider extends Provider {
             Connection connection = take();
             CalciteConnection calciteConnection = connection.unwrap(CalciteConnection.class);
             SchemaPlus rootSchema = calciteConnection.getRootSchema();
+            if (rootSchema.getSubSchema(String.format(SQLConstants.SCHEMA, dsId)) == null) {
+                DEException.throwException("请检查数据源的有效性！");
+            }
             JdbcSchema jdbcSchema = rootSchema.getSubSchema(String.format(SQLConstants.SCHEMA, dsId)).unwrap(JdbcSchema.class);
             BasicDataSource basicDataSource = (BasicDataSource) jdbcSchema.getDataSource();
             return basicDataSource.getConnection();
         } catch (Exception e) {
-            DEException.throwException("连接无效");
+            DEException.throwException("连接无效, " + e.getMessage());
         }
         return null;
     }
