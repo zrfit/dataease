@@ -59,11 +59,10 @@ const handleLoad = () => {
   // 移动端初始化话
   if (!!mobileViewInfo) {
     Object.keys(mobileViewInfo).forEach(key => {
-      const { customAttrMobile, customStyleMobile } = canvasViewInfo.value[key]
-      mobileViewInfo[key]['customAttr'] =
-        customAttrMobile || canvasViewInfo.value[key]['customAttrMobile']
-      mobileViewInfo[key]['customStyle'] =
-        customStyleMobile || canvasViewInfo.value[key]['customStyleMobile']
+      const { customAttrMobile, customStyleMobile, customAttr, customStyle } =
+        canvasViewInfo.value[key]
+      mobileViewInfo[key]['customAttr'] = customAttrMobile || customAttr
+      mobileViewInfo[key]['customStyle'] = customStyleMobile || customStyle
     })
   }
   canvasViewInfoMobile.value = mobileViewInfo
