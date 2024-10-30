@@ -845,8 +845,9 @@ onMounted(() => {
             :effect="themes"
             is-custom
             :trigger-width="108"
-            color-format="hex"
+            color-format="rgb"
             :predefine="predefineColors"
+            show-alpha
             @change="changeBasicStyle('tableBorderColor')"
           />
         </el-form-item>

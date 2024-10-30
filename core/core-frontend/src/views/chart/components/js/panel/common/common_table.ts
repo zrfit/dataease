@@ -168,7 +168,7 @@ export function getCustomTheme(chart: Chart): S2Theme {
     const { basicStyle, tableHeader, tableCell } = customAttr
     // basic
     if (basicStyle) {
-      const tableBorderColor = hexColorToRGBA(basicStyle.tableBorderColor, basicStyle.alpha)
+      const tableBorderColor = basicStyle.tableBorderColor
       const tableScrollBarColor = basicStyle.tableScrollBarColor
       const tmpTheme: S2Theme = {
         splitLine: {
