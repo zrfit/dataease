@@ -125,6 +125,7 @@ export default {
     exists_name_hint: '当前名称已在模版管理中存在，请修改'
   },
   work_branch: {
+    back_to_work_branch: '返回工作台',
     recommended_dashboard: '推荐仪表板',
     template_market_official: '未获取模板下载链接请联系模板市场官方',
     create_quickly: '快速创建',
@@ -3320,7 +3321,6 @@ export default {
       task_finish_in_suffix: '内完成填报',
       open_sub_task: '查看已下发任务'
     },
-    on_the_left: '请在左侧选择表单',
     search_by_commit_name: '根据操作人名称搜索'
   },
   threshold: {

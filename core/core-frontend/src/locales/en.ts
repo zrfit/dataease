@@ -359,6 +359,7 @@ export default {
     to_delete_: 'Are you sure to delete [100]?'
   },
   work_branch: {
+    back_to_work_branch: 'Back to work branch',
     recommended_dashboard: 'Recommended dashboard',
     template_market_official:
       'If you have not obtained the template download link, please contact the template market official',
@@ -1001,7 +1002,6 @@ export default {
       task_finish_in_suffix: '',
       open_sub_task: 'Open Assigned Tasks'
     },
-    on_the_left: 'Please select a form on the left',
     search_by_commit_name: 'Search by operator name'
   }
 }
