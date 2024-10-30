@@ -752,7 +752,6 @@ public class DataVisualizationServer implements DataVisualizationApi {
         wrapper.eq("name", request.getName().trim());
         wrapper.eq("node_type", request.getNodeType());
         wrapper.eq("type", request.getType());
-        wrapper.eq("org_id", AuthUtils.getUser().getDefaultOid());
         if (visualizationInfoMapper.exists(wrapper)) {
             DEException.throwException("当前名称已经存在");
         }
