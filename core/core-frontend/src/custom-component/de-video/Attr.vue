@@ -5,13 +5,9 @@
         :effect="themes"
         title="链接信息"
         name="videoLinks"
-        v-if="curComponent && curComponent.videoLinks"
+        v-if="curComponent && curComponent.videoLinks && !mobileInPc"
       >
-        <video-links
-          v-show="!mobileInPc"
-          :link-info="curComponent.videoLinks"
-          :themes="themes"
-        ></video-links>
+        <video-links :link-info="curComponent.videoLinks" :themes="themes"></video-links>
       </el-collapse-item>
     </CommonAttr>
   </div>

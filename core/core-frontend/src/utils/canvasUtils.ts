@@ -402,13 +402,14 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
     function ({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview }) {
       const componentData = canvasDataResult.filter(ele => !!ele.inMobile)
       canvasDataResult.forEach(ele => {
-        const { mx, my, mSizeX, mSizeY, mStyle, mPropValue, mCommonBackground } = ele
+        const { mx, my, mSizeX, mSizeY, mStyle, mPropValue, mEvents, mCommonBackground } = ele
         ele.x = mx
         ele.y = my
         ele.sizeX = mSizeX
         ele.sizeY = mSizeY
         ele.mStyle = mStyle || ele.Style
         ele.mPropValue = mPropValue || ele.propValue
+        ele.mEvents = mEvents || ele.events
         ele.mCommonBackground = mCommonBackground || ele.commonBackground
         if (ele.component === 'DeTabs') {
           ele.propValue.forEach(tabItem => {
