@@ -6,6 +6,7 @@ import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { XpackComponent } from '@/components/plugin'
 import DePreviewMobile from './MobileInPc.vue'
 import { findComponentById, mobileViewStyleSwitch } from '@/utils/canvasUtils'
+import { deepCopy } from '@/utils/utils'
 const panelInit = ref(false)
 const dvMainStore = dvMainStoreWithOut()
 
@@ -22,13 +23,14 @@ const hanedleMessage = event => {
   if (event.data.type === 'panelInit') {
     const { componentData, canvasStyleData, dvInfo, canvasViewInfo, isEmbedded } = event.data.value
     componentData.forEach(ele => {
-      const { mx, my, mSizeX, mSizeY, mStyle, mCommonBackground } = ele
+      const { mx, my, mSizeX, mSizeY, mStyle, mCommonBackground, mPropValue } = ele
       ele.x = mx
       ele.y = my
       ele.sizeX = mSizeX
       ele.sizeY = mSizeY
       ele.style = mStyle || ele.style
-      ele.commonBackground = mCommonBackground || ele.commonBackground
+      ele.commonBackground = deepCopy(mCommonBackground || ele.commonBackground)
+      ele.propValue = deepCopy(mPropValue || ele.propValue)
 
       if (ele.component === 'DeTabs') {
         ele.propValue.forEach(tabItem => {
@@ -39,15 +41,19 @@ const hanedleMessage = event => {
               mSizeX: tSizeX,
               mSizeY: tSizeY,
               mStyle: tStyle,
-              mCommonBackground: tCommonBackground
+              mCommonBackground: tCommonBackground,
+              mPropValue: tPropValue
             } = tabComponent
             if (tSizeX && tSizeY) {
               tabComponent.x = tx
               tabComponent.y = ty
               tabComponent.sizeX = tSizeX
               tabComponent.sizeY = tSizeY
-              tabComponent.style = tStyle || tabComponent.style
-              tabComponent.commonBackground = tCommonBackground || tabComponent.commonBackground
+              tabComponent.style = deepCopy(tStyle || tabComponent.style)
+              tabComponent.commonBackground = deepCopy(
+                tCommonBackground || tabComponent.commonBackground
+              )
+              tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
             }
           })
         })
@@ -96,13 +102,14 @@ const hanedleMessage = event => {
       {
         type: `${event.data.type}FromMobile`,
         value: dvMainStore.componentData.reduce((pre, next) => {
-          const { x, y, sizeX, sizeY, id, component, style, commonBackground } = next
+          const { x, y, sizeX, sizeY, id, component, propValue, style, commonBackground } = next
           pre[id] = {
             x,
             y,
             sizeX,
             sizeY,
             component,
+            propValue: JSON.parse(JSON.stringify(propValue)),
             style: JSON.parse(JSON.stringify(style)),
             commonBackground: JSON.parse(JSON.stringify(commonBackground))
           }
