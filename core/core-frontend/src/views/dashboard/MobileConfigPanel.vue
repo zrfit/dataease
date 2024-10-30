@@ -33,6 +33,9 @@ const getComponentStyleDefault = () => {
   }
 }
 const mobileStatusChange = (type, value) => {
+  if (type === 'componentStyleChange') {
+    changeTimes.value++
+  }
   const iframe = document.querySelector('iframe')
   if (iframe) {
     iframe.contentWindow.postMessage(
@@ -52,7 +55,18 @@ const iframeSrc = computed(() => {
     : './mobile.html#/panel'
 })
 const handleLoad = () => {
-  canvasViewInfoMobile.value = JSON.parse(JSON.stringify(unref(canvasViewInfo)))
+  const mobileViewInfo = JSON.parse(JSON.stringify(unref(canvasViewInfo)))
+  // 移动端初始化话
+  if (!!mobileViewInfo) {
+    Object.keys(mobileViewInfo).forEach(key => {
+      const { customAttrMobile, customStyleMobile } = canvasViewInfo.value[key]
+      mobileViewInfo[key]['customAttr'] =
+        customAttrMobile || canvasViewInfo.value[key]['customAttrMobile']
+      mobileViewInfo[key]['customStyle'] =
+        customStyleMobile || canvasViewInfo.value[key]['customStyleMobile']
+    })
+  }
+  canvasViewInfoMobile.value = mobileViewInfo
   mobileStatusChange(
     'panelInit',
     JSON.parse(
@@ -61,7 +75,7 @@ const handleLoad = () => {
           JSON.stringify(unref(componentData.value.filter(ele => !!ele.inMobile)))
         ),
         canvasStyleData: JSON.parse(JSON.stringify(unref(canvasStyleData))),
-        canvasViewInfo: JSON.parse(JSON.stringify(unref(canvasViewInfo))),
+        canvasViewInfo: mobileViewInfo,
         dvInfo: JSON.parse(JSON.stringify(unref(dvInfo))),
         isEmbedded: !!embeddedStore.baseUrl
       })
