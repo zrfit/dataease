@@ -260,6 +260,9 @@ export const dvMainStore = defineStore('dataVisualization', {
     setAppDataInfo(appDataInfo) {
       this.appData = appDataInfo
     },
+    setCurComponentMobileConfig(component) {
+      this.curComponent = component
+    },
     setCurComponent({ component, index }) {
       if (!component && this.curComponent) {
         this.curComponent['editing'] = false
