@@ -88,6 +88,12 @@ const changeMisc = (prop = '', refresh = false) => {
 const init = () => {
   const misc = cloneDeep(props.chart.customAttr.misc)
   state.miscForm = defaultsDeep(misc, cloneDeep(DEFAULT_MISC)) as ChartMiscAttr
+  const maxTypeKey = props.chart.type === 'liquid' ? 'liquidMaxType' : 'gaugeMaxType'
+  const maxValueKey = props.chart.type === 'liquid' ? 'liquidMax' : 'gaugeMax'
+  if (!props.chart.yAxis.length) {
+    state.miscForm[maxTypeKey] = 'fix'
+    state.miscForm[maxValueKey] = undefined
+  }
 }
 
 const initField = () => {
@@ -319,9 +325,21 @@ const changeMaxValidate = prop => {
   }
   changeMisc(prop)
 }
+const addAxis = (form: AxisEditForm) => {
+  const maxTypeKey = props.chart.type === 'liquid' ? 'liquidMaxType' : 'gaugeMaxType'
+  const maxValueKey = props.chart.type === 'liquid' ? 'liquidMax' : 'gaugeMax'
+  if (form.axis[0]?.id === '-1') {
+    state.miscForm[maxTypeKey] = 'fix'
+    state.miscForm[maxValueKey] = cloneDeep(defaultMaxValue[maxValueKey])
+    changeMisc(maxValueKey + 'Field')
+  } else {
+    state.miscForm[maxTypeKey] = 'dynamic'
+  }
+}
 onMounted(() => {
   initField()
   init()
+  useEmitt({ name: 'addAxis', callback: addAxis })
 })
 </script>
 
