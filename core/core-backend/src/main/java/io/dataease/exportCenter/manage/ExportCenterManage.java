@@ -174,7 +174,12 @@ public class ExportCenterManage implements BaseExportApi {
         response.setContentType("application/vnd.ms-excel");
 
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(exportTask.getFileName(), StandardCharsets.UTF_8));
-        InputStream fileInputStream = new FileInputStream(exportData_path + id + "/" + exportTask.getFileName());
+        InputStream fileInputStream;
+        if (exportTask.getExportTime() < 1730277243491L) {
+            fileInputStream = new FileInputStream(exportData_path + id + "/" + exportTask.getFileName());
+        } else {
+            fileInputStream = new FileInputStream(exportData_path + id + "/" + id + ".xlsx");
+        }
         byte[] buffer = new byte[4096];
         int bytesRead;
         while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -396,7 +401,7 @@ public class ExportCenterManage implements BaseExportApi {
                 exportTask.setExportStatus("IN_PROGRESS");
                 exportTaskMapper.updateById(exportTask);
 
-                getDataFillingApi().writeExcel(dataPath + "/" + exportTask.getFileName(),
+                getDataFillingApi().writeExcel(dataPath + "/" + exportTask.getId() + ".xlsx",
                         new DataFillFormTableDataRequest()
                                 .setId(Long.parseLong(exportTask.getExportFrom()))
                                 .setWithoutLogs(true)
@@ -406,7 +411,7 @@ public class ExportCenterManage implements BaseExportApi {
                 exportTask.setExportProgress("100");
                 exportTask.setExportStatus("SUCCESS");
 
-                setFileSize(dataPath + "/" + exportTask.getFileName(), exportTask);
+                setFileSize(dataPath + "/" + exportTask.getId() + ".xlsx", exportTask);
             } catch (Exception e) {
                 exportTask.setMsg(e.getMessage());
                 LogUtil.error("Failed to export data", e);
@@ -508,7 +513,7 @@ public class ExportCenterManage implements BaseExportApi {
                 Long sheetLimit = 1000000L;
                 Long sheetCount = (totalCount / sheetLimit) + (totalCount % sheetLimit > 0 ? 1 : 0);
                 Workbook wb = new SXSSFWorkbook();
-                FileOutputStream fileOutputStream = new FileOutputStream(dataPath + "/" + request.getFilename() + ".xlsx");
+                FileOutputStream fileOutputStream = new FileOutputStream(dataPath + "/" + exportTask.getId() + ".xlsx");
                 for (Long s = 1L; s < sheetCount + 1; s++) {
                     Long sheetSize;
                     if (s.equals(sheetCount)) {
@@ -607,7 +612,7 @@ public class ExportCenterManage implements BaseExportApi {
                 wb.close();
                 exportTask.setExportProgress("100");
                 exportTask.setExportStatus("SUCCESS");
-                setFileSize(dataPath + "/" + request.getFilename() + ".xlsx", exportTask);
+                setFileSize(dataPath + "/" + exportTask.getId() + ".xlsx", exportTask);
 
             } catch (Exception e) {
                 LogUtil.error("Failed to export data", e);
@@ -676,14 +681,14 @@ public class ExportCenterManage implements BaseExportApi {
                         ChartDataServer.setExcelData(detailsSheet, cellStyle, header, details, detailFields, excelTypes);
                     }
                 }
-                try (FileOutputStream outputStream = new FileOutputStream(dataPath + "/" + request.getViewName() + ".xlsx")) {
+                try (FileOutputStream outputStream = new FileOutputStream(dataPath + "/" + exportTask.getId() + ".xlsx")) {
                     wb.write(outputStream);
                     outputStream.flush();
                 }
                 wb.close();
                 exportTask.setExportProgress("100");
                 exportTask.setExportStatus("SUCCESS");
-                setFileSize(dataPath + "/" + request.getViewName() + ".xlsx", exportTask);
+                setFileSize(dataPath + "/" + exportTask.getId() + ".xlsx", exportTask);
             } catch (Exception e) {
                 exportTask.setMsg(e.getMessage());
                 LogUtil.error("Failed to export data", e);
