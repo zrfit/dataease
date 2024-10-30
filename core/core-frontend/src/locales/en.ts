@@ -103,12 +103,24 @@ export default {
   },
   commons: {
     date: {
+      select_date: 'Select Date',
+      start_date: 'Start Date',
+      end_date: 'End Date',
+      select_date_time: 'Select Date and Time',
+      start_date_time: 'Start Date and Time',
+      end_date_time: 'End Date and Time',
+      range_separator: 'to',
+      data_time_error: 'Start date cannot be after end date',
+      one_hour: 'One Hour',
+      one_day: 'One Day',
+      one_week: 'One Week',
+      one_month: 'One Month',
       permanent: 'Permanent',
-      one_year: 'One year',
-      six_months: 'Six months',
-      three_months: 'Three months',
-      of_range_1_59: 'Minutes out of range [1-59]',
-      of_range_1_23: 'Hours out of range [1-23]'
+      one_year: 'One Year',
+      six_months: 'Six Months',
+      three_months: 'Three Months',
+      of_range_1_59: 'Minute out of range [1-59]',
+      of_range_1_23: 'Hour out of range [1-23]'
     }
   },
   system: {
@@ -386,7 +398,20 @@ export default {
     cancel_favorites: 'Cancel favorites',
     open_dataset: 'Open dataset',
     administrator_for_authorization:
-      'There is no business menu permission, please contact the administrator for authorization'
+      'There is no business menu permission, please contact the administrator for authorization',
+    public_link_share: 'Public Link Sharing',
+    share_time_limit: 'Must be greater than the current time',
+    ticket_setting: 'Ticket Settings',
+    cannot_share_link:
+      'Global link sharing is disabled. Sharing function is temporarily unavailable. Please contact the administrator!',
+    open_link_hint: 'Once enabled, users can access via this link',
+    uuid_checker: 'Only supports 8-16 characters (alphanumeric). Please re-enter!',
+    error_password_hint: 'Password format is incorrect. Please refill!',
+    error_link_hint: 'Link format is incorrect. Please refill!',
+    password_null_hint: 'Password cannot be empty. Please re-enter!',
+    password_hint:
+      'Password must be a 4-10 character string containing numbers, letters, and special characters [!@#$%^&*()_+]',
+    max_ticket_count: 'Supports up to 5 Tickets creation'
   },
   data_set: {
     ten_wan: '100000',

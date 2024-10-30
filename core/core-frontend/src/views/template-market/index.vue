@@ -11,7 +11,7 @@
       :create-auth="createAuth"
       @closePreview="closePreview"
       @templateApply="templateApply"
-    ></market-preview-v2>
+    />
     <el-row v-if="previewModel === 'createPreview'" class="main-container">
       <el-row class="market-head">
         <el-icon class="custom-back-icon hover-icon" @click="previewModel = 'full'"
