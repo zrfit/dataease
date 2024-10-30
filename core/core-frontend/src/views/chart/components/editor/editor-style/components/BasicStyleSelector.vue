@@ -76,7 +76,12 @@ const init = () => {
     basicStyle.mapSymbol === 'custom' &&
     state.basicStyleForm.customIcon !== basicStyle.customIcon
   ) {
-    const file = svgStrToUrl(basicStyle.customIcon)
+    let file
+    if (basicStyle.customIcon?.startsWith('data')) {
+      file = basicStyle.customIcon
+    } else {
+      file = svgStrToUrl(basicStyle.customIcon)
+    }
     file && (state.fileList[0] = { url: file })
   }
   state.basicStyleForm = defaultsDeep(basicStyle, cloneDeep(DEFAULT_BASIC_STYLE)) as ChartBasicStyle
@@ -243,11 +248,12 @@ const mapSymbolOptions = [
   { name: t('commons.custom'), value: 'custom' }
 ]
 const iconUpload = ref()
+const acceptedFileType = ['image/svg+xml', 'image/jpeg', 'image/png']
 const onIconChange: UploadProps['onChange'] = async uploadFile => {
   const rawFile = uploadFile.raw
   let validIcon = true
-  if (rawFile.type !== 'image/svg+xml') {
-    ElMessage.error('请选择正确的 SVG 文件！')
+  if (!acceptedFileType.includes(rawFile.type)) {
+    ElMessage.error('请选择正确的图标文件！')
     validIcon = false
   }
   if (rawFile.size / 1024 / 1024 > 1) {
@@ -257,20 +263,42 @@ const onIconChange: UploadProps['onChange'] = async uploadFile => {
   if (!validIcon) {
     iconUpload.value?.clearFiles()
     state.fileList.splice(0)
-    const svg = state.basicStyleForm.customIcon
-    if (svg) {
-      const file = svgStrToUrl(svg)
+    const customIcon = state.basicStyleForm.customIcon
+    if (customIcon) {
+      let file = ''
+      // 图片
+      if (customIcon.startsWith('data')) {
+        file = customIcon
+      } else {
+        // svg
+        file = svgStrToUrl(customIcon)
+      }
       file && (state.fileList[0] = { url: file })
     }
   } else {
-    state.basicStyleForm.customIcon = await rawFile.text()
-    changeBasicStyle('customIcon')
+    if (rawFile.type === 'image/svg+xml') {
+      state.basicStyleForm.customIcon = await rawFile.text()
+      changeBasicStyle('customIcon')
+    } else {
+      const fileReader = new FileReader()
+      fileReader.onloadend = () => {
+        state.basicStyleForm.customIcon = fileReader.result as string
+        changeBasicStyle('customIcon')
+      }
+      fileReader.readAsDataURL(rawFile)
+    }
   }
 }
 
 const changeMapSymbol = () => {
-  if (state.basicStyleForm.mapSymbol === 'custom' && state.basicStyleForm.customIcon) {
-    const file = svgStrToUrl(state.basicStyleForm.customIcon)
+  const { mapSymbol, customIcon } = state.basicStyleForm
+  if (mapSymbol === 'custom' && customIcon) {
+    let file
+    if (customIcon.startsWith('data')) {
+      file = customIcon
+    } else {
+      file = svgStrToUrl(state.basicStyleForm.customIcon)
+    }
     file && (state.fileList[0] = { url: file })
   }
   changeBasicStyle('mapSymbol')
@@ -521,12 +549,12 @@ onMounted(() => {
       <el-row style="flex: 1">
         <el-col>
           <el-form-item class="form-item" :class="'form-item-' + themes">
-            <template v-if="state.basicStyleForm.mapSymbol === 'custom'" #label>
+            <template #label>
               <span class="data-area-label">
                 <span style="margin-right: 4px">符号形状</span>
                 <el-tooltip class="item" effect="dark" placement="bottom">
-                  <template #content>
-                    <div>支持 1MB 以内的 SVG 文件</div>
+                  <template v-if="state.basicStyleForm.mapSymbol === 'custom'" #content>
+                    <div>支持 1MB 以内的 SVG, JPG, JPEG, PNG 文件</div>
                   </template>
                   <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                     <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -555,7 +583,7 @@ onMounted(() => {
             <div class="avatar-uploader-container" :class="`img-area_${themes}`">
               <el-upload
                 action="#"
-                accept=".svg"
+                accept=".svg,.png,.jpeg,.jpg"
                 class="avatar-uploader"
                 list-type="picture-card"
                 ref="iconUpload"

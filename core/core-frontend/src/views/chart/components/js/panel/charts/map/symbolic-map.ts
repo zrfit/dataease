@@ -241,19 +241,27 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
       .active(true)
     if (xAxisExt[0]?.dataeaseName) {
       if (basicStyle.mapSymbol === 'custom' && basicStyle.customIcon) {
-        const parser = new DOMParser()
-        for (let index = 0; index < Math.min(colorsWithAlpha.length, colorIndex + 1); index++) {
-          const color = colorsWithAlpha[index]
-          const fillRegex = /(fill="[^"]*")/g
-          const svgStr = basicStyle.customIcon.replace(fillRegex, '')
-          const doc = parser.parseFromString(svgStr, 'image/svg+xml')
-          const svgEle = doc.documentElement
-          svgEle.setAttribute('fill', color)
-          await scene.addImage(`icon-${color}`, svgStrToUrl(svgEle.outerHTML))
+        // 图片无法改色
+        if (basicStyle.customIcon.startsWith('data')) {
+          scene.removeImage('customIcon')
+          await scene.addImage('customIcon', basicStyle.customIcon)
+          pointLayer.shape('customIcon')
+        } else {
+          const parser = new DOMParser()
+          for (let index = 0; index < Math.min(colorsWithAlpha.length, colorIndex + 1); index++) {
+            const color = colorsWithAlpha[index]
+            const fillRegex = /(fill="[^"]*")/g
+            const svgStr = basicStyle.customIcon.replace(fillRegex, '')
+            const doc = parser.parseFromString(svgStr, 'image/svg+xml')
+            const svgEle = doc.documentElement
+            svgEle.setAttribute('fill', color)
+            scene.removeImage(`icon-${color}`)
+            await scene.addImage(`icon-${color}`, svgStrToUrl(svgEle.outerHTML))
+          }
+          pointLayer.shape('color', c => {
+            return `icon-${c}`
+          })
         }
-        pointLayer.shape('color', c => {
-          return `icon-${c}`
-        })
       } else {
         pointLayer.shape(mapSymbol).color(xAxisExt[0]?.dataeaseName, colorsWithAlpha)
         pointLayer.style({
@@ -266,23 +274,30 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
       }
     } else {
       if (basicStyle.mapSymbol === 'custom' && basicStyle.customIcon) {
-        const parser = new DOMParser()
-        const color = colorsWithAlpha[0]
-        const fillRegex = /(fill="[^"]*")/g
-        const svgStr = basicStyle.customIcon.replace(fillRegex, '')
-        const doc = parser.parseFromString(svgStr, 'image/svg+xml')
-        const svgEle = doc.documentElement
-        svgEle.setAttribute('fill', color)
-        await scene.addImage(`customIcon`, svgStrToUrl(svgEle.outerHTML))
-        pointLayer.shape('customIcon')
+        scene.removeImage('customIcon')
+        if (basicStyle.customIcon.startsWith('data')) {
+          await scene.addImage('customIcon', basicStyle.customIcon)
+          pointLayer.shape('customIcon')
+        } else {
+          const parser = new DOMParser()
+          const color = colorsWithAlpha[0]
+          const fillRegex = /(fill="[^"]*")/g
+          const svgStr = basicStyle.customIcon.replace(fillRegex, '')
+          const doc = parser.parseFromString(svgStr, 'image/svg+xml')
+          const svgEle = doc.documentElement
+          svgEle.setAttribute('fill', color)
+          await scene.addImage(`customIcon`, svgStrToUrl(svgEle.outerHTML))
+          pointLayer.shape('customIcon')
+        }
       } else {
-        pointLayer.shape(mapSymbol)
-        pointLayer.color(colorsWithAlpha[0])
-        pointLayer.style({
-          stroke: colorsWithAlpha[0],
-          strokeWidth: mapSymbolStrokeWidth,
-          opacity: mapSymbolOpacity / 10
-        })
+        pointLayer
+          .shape(mapSymbol)
+          .color(colorsWithAlpha[0])
+          .style({
+            stroke: colorsWithAlpha[0],
+            strokeWidth: mapSymbolStrokeWidth,
+            opacity: mapSymbolOpacity / 10
+          })
       }
     }
     if (sizeKey) {
