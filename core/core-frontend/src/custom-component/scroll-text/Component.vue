@@ -109,10 +109,11 @@ const marqueeTxt = computed(
 )
 
 const setEdit = () => {
-  if (element.value['isLock']) return
-  canEdit.value = true
-  // 全选
-  selectText(text.value)
+  if (['canvas', 'canvasDataV', 'edit'].includes(showPosition.value) && !element.value['isLock']) {
+    canEdit.value = true
+    // 全选
+    selectText(text.value)
+  }
 }
 const selectText = element => {
   const selection = window.getSelection()
