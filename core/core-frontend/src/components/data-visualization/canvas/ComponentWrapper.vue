@@ -378,12 +378,6 @@ const showActive = computed(() => props.popActive || (dvMainStore.mobileInPc && 
       :id="viewDemoInnerId"
       :style="componentBackgroundStyle"
     >
-      <!--边框背景-->
-      <Board
-        v-if="svgInnerEnable"
-        :style="{ color: config.commonBackground.innerImageColor }"
-        :name="commonBackgroundSvgInner"
-      ></Board>
       <div
         class="wrapper-inner-adaptor"
         :style="slotStyle"
@@ -413,6 +407,12 @@ const showActive = computed(() => props.popActive || (dvMainStore.mobileInPc && 
           @onPointClick="onPointClick"
         />
       </div>
+      <!--边框背景-->
+      <Board
+        v-if="svgInnerEnable"
+        :style="{ color: config.commonBackground.innerImageColor, pointerEvents: 'none' }"
+        :name="commonBackgroundSvgInner"
+      ></Board>
     </div>
   </div>
 </template>

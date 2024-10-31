@@ -53,7 +53,7 @@
         <!--边框背景-->
         <Board
           v-if="svgInnerEnable"
-          :style="{ color: element.commonBackground.innerImageColor }"
+          :style="{ color: element.commonBackground.innerImageColor, pointerEvents: 'none' }"
           :name="commonBackgroundSvgInner"
         ></Board>
       </div>
