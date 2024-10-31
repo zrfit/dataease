@@ -222,6 +222,9 @@ onMounted(() => {
           <el-input-number
             style="width: 100%"
             :effect="props.themes"
+            :min="1"
+            :step="1"
+            :precision="0"
             controls-position="right"
             v-model.number="state.miscForm.axisValue.splitCount"
             @change="changeMiscStyle('axisValue.splitCount')"
