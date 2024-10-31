@@ -351,7 +351,7 @@ export async function initCanvasData(dvId, busiFlag, callBack) {
   )
 }
 
-export async function backCanvasData(dvId, busiFlag, callBack) {
+export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
   initCanvasDataPrepare(
     dvId,
     busiFlag,
@@ -361,11 +361,15 @@ export async function backCanvasData(dvId, busiFlag, callBack) {
       componentData.value.forEach(ele => {
         ele.inMobile = componentDataId.includes(ele.id)
         if (ele.inMobile) {
-          const { mx, my, mSizeX, mSizeY } = componentDataCopy.find(itx => itx.id === ele.id)
+          const { mx, my, mSizeX, mSizeY, mPropValue, mEvents, mCommonBackground } =
+            componentDataCopy.find(itx => itx.id === ele.id)
           ele.mx = mx
           ele.my = my
           ele.mSizeX = mSizeX
           ele.mSizeY = mSizeY
+          ele.mPropValue = mPropValue
+          ele.mEvents = mEvents
+          ele.mCommonBackground = mCommonBackground
           if (ele.component === 'DeTabs') {
             ele.propValue.forEach(tabItem => {
               tabItem.componentData.forEach(tabComponent => {
@@ -373,13 +377,23 @@ export async function backCanvasData(dvId, busiFlag, callBack) {
                 tabComponent.my = tabComponent.my
                 tabComponent.mSizeX = tabComponent.mSizeX
                 tabComponent.mSizeY = tabComponent.mSizeY
+                tabComponent.mPropValue = tPropValue
+                tabComponent.mEvents = tEvents
+                tabComponent.mCommonBackground = tCommonBackground
               })
             })
           }
         }
       })
+      Object.keys(mobileViewInfo).forEach(key => {
+        if (canvasViewInfo.value[key] && mobileViewInfo[key]) {
+          const { customAttrMobile, customStyleMobile } = mobileViewInfo[key]
+          // 此处作为还原移动设计使用
+          canvasViewInfo.value[key]['customStyleMobile'] = customStyleMobile
+          canvasViewInfo.value[key]['customAttrMobile'] = customAttrMobile
+        }
+      })
       dvMainStore.setComponentData(componentData.value)
-      dvMainStore.setCanvasViewInfo(canvasViewInfoPreview)
       const canvasStyleDataCopy = cloneDeep(canvasStyleData.value)
       if (!canvasStyleDataCopy.mobileSetting) {
         canvasStyleDataCopy.mobileSetting = {

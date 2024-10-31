@@ -15,6 +15,7 @@ import { storeToRefs } from 'pinia'
 import { debounce } from 'lodash-es'
 import mobileHeader from '@/assets/img/mobile-header.png'
 import ComponentStyleEditor from '@/views/common/ComponentStyleEditor.vue'
+import { deepCopy } from '@/utils/utils'
 
 const dvMainStore = dvMainStoreWithOut()
 const { componentData, canvasStyleData, canvasViewInfo, dvInfo } = storeToRefs(dvMainStore)
@@ -59,8 +60,7 @@ const handleLoad = () => {
   // 移动端初始化话
   if (!!mobileViewInfo) {
     Object.keys(mobileViewInfo).forEach(key => {
-      const { customAttrMobile, customStyleMobile, customAttr, customStyle } =
-        canvasViewInfo.value[key]
+      const { customAttrMobile, customStyleMobile, customAttr, customStyle } = mobileViewInfo[key]
       mobileViewInfo[key]['customAttr'] = customAttrMobile || customAttr
       mobileViewInfo[key]['customStyle'] = customStyleMobile || customStyle
     })
@@ -74,7 +74,7 @@ const handleLoad = () => {
           JSON.stringify(unref(componentData.value.filter(ele => !!ele.inMobile)))
         ),
         canvasStyleData: JSON.parse(JSON.stringify(unref(canvasStyleData))),
-        canvasViewInfo: mobileViewInfo,
+        canvasViewInfo: deepCopy(mobileViewInfo),
         dvInfo: JSON.parse(JSON.stringify(unref(dvInfo))),
         isEmbedded: !!embeddedStore.baseUrl
       })
@@ -258,7 +258,7 @@ const handleBack = () => {
     showClose: false
   }).then(() => {
     setTimeout(() => {
-      backCanvasData(dvInfo.value.id, 'dashboard', () => {
+      backCanvasData(dvInfo.value.id, canvasViewInfoMobile.value, 'dashboard', () => {
         changeTimes.value = 0
         emits('pcMode')
       })
