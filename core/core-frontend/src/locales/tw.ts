@@ -11,6 +11,7 @@ export default {
       add_component_hint: '點擊或拖拽左側組件添加字段'
     },
     inputText: '請輸入',
+    selectText: '請選擇',
     add: '添加',
     account: '賬號',
     email: '郵箱',
@@ -122,7 +123,11 @@ export default {
     delete_catalog_hint: '確定刪除該分類嗎？',
     delete_catalog_tip: '刪除后不可恢復，是否繼續？',
     illegal_name_hint: '不合法命名，請更換！',
-    exists_name_hint: '當前名稱已在模版管理中存在，請修改'
+    exists_name_hint: '當前名稱已在模版管理中存在，請修改',
+    get_download_link_hint: '未獲取模板下載鏈接請聯系模板市場官方',
+    search_result_count: '的搜索結果是 {0} 個',
+    template_center: '模版中心',
+    preview: '預覽'
   },
   work_branch: {
     back_to_work_branch: '返回工作台',
@@ -137,6 +142,7 @@ export default {
     last_edited_by: '最近編輯人',
     last_edit_time: '最近編輯時間',
     big_data_screen: '數據大屏',
+    big_screen: '大屏',
     dashboard: '儀表板',
     data_set: '數據集',
     data_source: '數據源',
@@ -161,7 +167,13 @@ export default {
     error_link_hint: '鏈接格式錯誤，請重新填寫！',
     password_null_hint: '密碼不能為空，請重新輸入！',
     password_hint: '密碼必須是包含數字、字母、特殊字符[!@#$%^&*()_+]的4-10位字符串',
-    max_ticket_count: '最多支持創建5個Ticket'
+    max_ticket_count: '最多支持創建5個Ticket',
+    last: '上一個',
+    next: '下一個',
+    recommend: '推薦',
+    recent: '最近使用',
+    all_types: '全部類型',
+    all_source: '全部來源'
   },
   data_set: {
     ten_wan: '10萬',
@@ -2603,6 +2615,8 @@ export default {
     enter_name_tips: '請輸入儀表板名稱',
     name: '名稱',
     apply_template: '應用模板',
+    style_template: '樣式模板',
+    all_type: '全部分類',
     enter_template_name_tips: '搜索模板名稱',
     pic_adaptation: '適應組件',
     pic_equiratio: '等比適應',

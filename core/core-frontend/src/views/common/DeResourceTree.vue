@@ -73,7 +73,8 @@ const mounted = ref(false)
 const rootManage = ref(false)
 const anyManage = ref(false)
 const { curCanvasType, showPosition } = toRefs(props)
-const resourceLabel = curCanvasType.value === 'dataV' ? '数据大屏' : '仪表板'
+const resourceLabel =
+  curCanvasType.value === 'dataV' ? t('work_branch.big_data_screen') : t('work_branch.dashboard')
 const newResourceLabel = '新建' + resourceLabel
 const selectedNodeKey = ref(null)
 const filterText = ref(null)
@@ -139,7 +140,7 @@ const resourceTypeList = computed(() => {
       command: 'newLeaf'
     },
     {
-      label: '使用模板新建',
+      label: t('work_branch.new_using_template'),
       svgName: dvUseTemplate,
       command: 'newFromTemplate'
     },
@@ -569,7 +570,7 @@ defineExpose({
                     <el-icon class="handle-icon">
                       <Icon name="dv-use-template"><dvUseTemplate class="svg-icon" /></Icon>
                     </el-icon>
-                    使用模板新建
+                    {{ t('work_branch.new_using_template') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>

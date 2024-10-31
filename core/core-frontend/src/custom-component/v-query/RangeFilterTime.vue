@@ -400,7 +400,7 @@ const relativeToCurrentListRange = computed(() => {
         </template>
       </div>
       <div class="parameters" :class="dynamicTime && 'setting'">
-        <div class="setting-label" v-if="dynamicTime">预览</div>
+        <div class="setting-label" v-if="dynamicTime">{{ t('template_manage.preview') }}</div>
         <div :class="dynamicTime ? 'setting-value' : 'w100'">
           <component
             :config="timeRange"

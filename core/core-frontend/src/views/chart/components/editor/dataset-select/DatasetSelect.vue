@@ -274,7 +274,7 @@ onMounted(() => {
               class="data-set-dark"
               @focus="handleFocus"
               :disabled="disabled"
-              :placeholder="'请选择' + sourceName"
+              :placeholder="t('common.selectText') + sourceName"
             >
               <template #suffix>
                 <el-icon class="input-arrow-icon" :class="{ reverse: _popoverShow }">
