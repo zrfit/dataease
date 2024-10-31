@@ -223,20 +223,22 @@ provide('quota', () => state.quota)
 watch(
   [() => view.value['tableId']],
   () => {
-    if ('picture-group' === props.view.type) {
-      return
-    }
-    getFields(props.view.tableId, props.view.id, props.view.type)
-    const nodeId = view.value['tableId']
-    if (!!nodeId) {
-      cacheId = nodeId as unknown as string
-    }
-    const node = datasetSelector?.value?.getNode(nodeId)
-    if (node?.data) {
-      curDatasetWeight.value = node.data.weight
-    }
+    nextTick(() => {
+      if ('picture-group' === props.view.type) {
+        return
+      }
+      getFields(props.view.tableId, props.view.id, props.view.type)
+      const nodeId = view.value['tableId']
+      if (!!nodeId) {
+        cacheId = nodeId as unknown as string
+      }
+      const node = datasetSelector?.value?.getNode(nodeId)
+      if (node?.data) {
+        curDatasetWeight.value = node.data.weight
+      }
+    })
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 const getFields = (id, chartId, type) => {
   if (id && chartId) {
