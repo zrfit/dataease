@@ -65,6 +65,7 @@ const changeTableCell = prop => {
 const init = () => {
   const tableCell = props.chart?.customAttr?.tableCell
   if (tableCell) {
+    tableCell.mergeCells = tableCell.mergeCells === undefined ? false : tableCell.mergeCells
     state.tableCellForm = defaultsDeep(cloneDeep(tableCell), cloneDeep(DEFAULT_TABLE_CELL))
     const alpha = props.chart.customAttr.basicStyle.alpha
     if (!isAlphaColor(state.tableCellForm.tableItemBgColor)) {
@@ -364,6 +365,20 @@ onMounted(() => {
         </el-form-item>
       </el-col>
     </el-row>
+    <el-form-item
+      class="form-item"
+      :class="'form-item-' + themes"
+      v-if="showProperty('mergeCells')"
+    >
+      <el-checkbox
+        size="small"
+        :effect="themes"
+        v-model="state.tableCellForm.mergeCells"
+        @change="changeTableCell('mergeCells')"
+      >
+        {{ t('chart.merge_cells') }}
+      </el-checkbox>
+    </el-form-item>
     <el-form-item
       class="form-item"
       :class="'form-item-' + themes"

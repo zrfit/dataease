@@ -66,7 +66,8 @@ export class TableInfo extends S2ChartView<TableSheet> {
       ...TABLE_EDITOR_PROPERTY_INNER['table-cell-selector'],
       'tableFreeze',
       'tableColumnFreezeHead',
-      'tableRowFreezeHead'
+      'tableRowFreezeHead',
+      'mergeCells'
     ]
   }
   axis: AxisType[] = ['xAxis', 'filter', 'drill']
@@ -197,6 +198,8 @@ export class TableInfo extends S2ChartView<TableSheet> {
     }
     // tooltip
     this.configTooltip(chart, s2Options)
+    // 合并单元格
+    this.configMergeCells(chart, s2Options)
     // 隐藏表头，保留顶部的分割线, 禁用表头横向 resize
     if (tableHeader.showTableHeader === false) {
       s2Options.style.colCfg.height = 1
@@ -312,7 +315,6 @@ export class TableInfo extends S2ChartView<TableSheet> {
     // theme
     const customTheme = this.configTheme(chart)
     newChart.setThemeCfg({ theme: customTheme })
-
     return newChart
   }
 

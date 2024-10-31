@@ -1880,7 +1880,8 @@ export default {
     zoom_level: '缩放等级',
     central_point: '中心点',
     full_display: '全量显示',
-    show_hover_style: '显示鼠标悬浮样式'
+    show_hover_style: '显示鼠标悬浮样式',
+    merge_cells: '合并单元格'
   },
   dataset: {
     scope_edit: '仅编辑时生效',

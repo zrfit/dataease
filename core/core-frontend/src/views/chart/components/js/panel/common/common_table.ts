@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   copyString,
   hexColorToRGBA,
@@ -36,7 +37,6 @@ import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vu
 import Exceljs from 'exceljs'
 import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus-secondary'
-import { matrix } from 'mathjs'
 
 export function getCustomTheme(chart: Chart): S2Theme {
   const headerColor = hexColorToRGBA(
@@ -1406,5 +1406,61 @@ export async function exportPivotExcel(instance: PivotSheet, chart: ChartObj) {
     exportGridPivot(instance, chart)
   } else {
     exportTreePivot(instance, chart)
+  }
+}
+
+export function configMergeCells(chart: Chart, options: S2Options) {
+  const { mergeCells } = parseJson(chart.customAttr).tableCell
+  const { showIndex } = parseJson(chart.customAttr).tableHeader
+  if (mergeCells) {
+    const xAxis = chart.xAxis
+    const quotaIndex = xAxis.findIndex(axis => axis.groupType === 'q')
+    const data = chart.data?.tableRow
+    if (quotaIndex <= 0 || !data?.length) {
+      return
+    }
+    const mergedColInfo: number[][][] = [[[0, data.length - 1]]]
+    const mergedCellsInfo = []
+    const axisToMerge = xAxis.filter((a, i) => a.hide !== true && i < quotaIndex)
+    axisToMerge.forEach((a, i) => {
+      const preMergedColInfo = mergedColInfo[i]
+      const curMergedColInfo = []
+      mergedColInfo.push(curMergedColInfo)
+      preMergedColInfo.forEach(range => {
+        const [start, end] = range
+        let lastVal = data[start][a.dataeaseName]
+        let lastIndex = start
+        for (let index = start; index <= end; index++) {
+          const curVal = data[index][a.dataeaseName]
+          if (curVal !== lastVal || index === end) {
+            const curRange = index - lastIndex
+            if (curRange > 1 ||
+               (index === end && curRange === 1 && lastVal === curVal)) {
+              const tmpMergeCells = []
+              const textIndex = curRange % 2 === 1 ? (curRange - 1) / 2 : curRange / 2 - 1
+              for (let j = 0; j < curRange; j++) {
+                tmpMergeCells.push({
+                  colIndex: showIndex ? i + 1 : i,
+                  rowIndex: lastIndex + j,
+                  showText: j === textIndex
+                })
+              }
+              if (index === end) {
+                tmpMergeCells.push({
+                  colIndex: showIndex ? i + 1 : i,
+                  rowIndex: index,
+                  showText: false
+                })
+              }
+              mergedCellsInfo.push(tmpMergeCells)
+              curMergedColInfo.push([lastIndex, index === end ? index : index - 1])
+            }
+            lastVal = curVal
+            lastIndex = index
+          }
+        }
+      })
+    })
+    options.mergedCellsInfo = mergedCellsInfo
   }
 }

@@ -15,6 +15,7 @@ import {
 } from '@antv/s2'
 import {
   configHeaderInteraction,
+  configMergeCells,
   configTooltip,
   getConditions,
   getCustomTheme,
@@ -61,6 +62,10 @@ export abstract class S2ChartView<P extends SpreadSheet> extends AntVAbstractCha
 
   protected configConditions(chart: Chart) {
     return getConditions(chart)
+  }
+
+  protected configMergeCells(chart: Chart, option: S2Options) {
+    configMergeCells(chart, option)
   }
 
   protected showTooltip(s2Instance: P, event, metaConfig: Meta[]) {
