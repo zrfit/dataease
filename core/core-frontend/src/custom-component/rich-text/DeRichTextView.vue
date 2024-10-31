@@ -130,9 +130,9 @@ const initReady = ref(false)
 const editShow = ref(true)
 const canEdit = ref(false)
 // 初始化配置
-const tinymceId = 'tinymce-view-' + element.value.id + '-' + suffixId.value
+const tinymceId =
+  'tinymce-view-' + element.value.id + '-' + suffixId.value + '-' + showPosition.value
 const myValue = ref('')
-const cellDragStart = ref(0)
 
 const systemFontFamily = appearanceStore.fontList.map(item => item.name)
 const curFontFamily = () => {
