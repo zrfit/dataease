@@ -157,8 +157,8 @@ const initOpenHandler = newWindow => {
         <template #icon>
           <icon name="icon_pc_outlined"><icon_pc_outlined class="svg-icon" /></icon>
         </template>
-        预览</el-button
-      >
+        {{ t('template_manage.preview') }}
+      </el-button>
       <ShareVisualHead
         v-if="!shareDisable"
         :resource-id="dvInfo.id"
@@ -194,12 +194,14 @@ const initOpenHandler = newWindow => {
                   <el-dropdown-item style="width: 118px" @click="download('pdf')"
                     >PDF</el-dropdown-item
                   >
-                  <el-dropdown-item style="width: 118px" @click="downloadAsAppTemplate('template')"
-                    >样式模板</el-dropdown-item
+                  <el-dropdown-item
+                    style="width: 118px"
+                    @click="downloadAsAppTemplate('template')"
+                    >{{ t('visualization.style_template') }}</el-dropdown-item
                   >
-                  <el-dropdown-item style="width: 118px" @click="downloadAsAppTemplate('app')"
-                    >应用模板</el-dropdown-item
-                  >
+                  <el-dropdown-item style="width: 118px" @click="downloadAsAppTemplate('app')">{{
+                    t('visualization.apply_template')
+                  }}</el-dropdown-item>
                   <el-dropdown-item @click="download('img')">{{
                     t('chart.image')
                   }}</el-dropdown-item>

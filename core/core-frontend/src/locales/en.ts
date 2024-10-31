@@ -11,6 +11,7 @@ export default {
       add_component_hint: 'Click or drag the component on the left to add a field'
     },
     inputText: 'Please input',
+    selectText: 'Please select',
     account: 'Account',
     email: 'Email',
     phone: 'Phone',
@@ -99,7 +100,12 @@ export default {
     delete_catalog_hint: 'Are You Sure You Want to Delete This Category?',
     delete_catalog_tip: 'Deletion Is Irreversible. Do You Want to Continue?',
     illegal_name_hint: 'Illegal Name. Please Change!',
-    exists_name_hint: 'This Name Already Exists in Template Management. Please Modify'
+    exists_name_hint: 'This Name Already Exists in Template Management. Please Modify',
+    get_download_link_hint:
+      'Please contact the official template marketplace if you have not obtained the template download link.',
+    search_result_count: 'The search results are {0} items.',
+    template_center: 'Template Center',
+    preview: 'Preview'
   },
   commons: {
     date: {
@@ -384,6 +390,7 @@ export default {
     last_edited_by: 'Last edited by',
     last_edit_time: 'last edit time',
     big_data_screen: 'Big data screen',
+    big_screen: 'Big screen',
     dashboard: 'Dashboard',
     data_set: 'data set',
     data_source: 'data source',
@@ -411,7 +418,13 @@ export default {
     password_null_hint: 'Password cannot be empty. Please re-enter!',
     password_hint:
       'Password must be a 4-10 character string containing numbers, letters, and special characters [!@#$%^&*()_+]',
-    max_ticket_count: 'Supports up to 5 Tickets creation'
+    max_ticket_count: 'Supports up to 5 Tickets creation',
+    last: 'Previous',
+    next: 'Next',
+    recommend: 'Recommended',
+    recent: 'Recently Used',
+    all_types: 'All Types',
+    all_source: 'All Sources'
   },
   data_set: {
     ten_wan: '100000',

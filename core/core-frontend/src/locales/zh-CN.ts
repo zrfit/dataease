@@ -11,6 +11,7 @@ export default {
       add_component_hint: '点击或拖拽左侧组件添加字段'
     },
     inputText: '请输入',
+    selectText: '请选择',
     add: '添加',
     account: '账号',
     email: '邮箱',
@@ -122,7 +123,11 @@ export default {
     delete_catalog_hint: '确定删除该分类吗？',
     delete_catalog_tip: '删除后不可恢复，是否继续？',
     illegal_name_hint: '不合法命名，请更换！',
-    exists_name_hint: '当前名称已在模版管理中存在，请修改'
+    exists_name_hint: '当前名称已在模版管理中存在，请修改',
+    get_download_link_hint: '未获取模板下载链接请联系模板市场官方',
+    search_result_count: '的搜索结果是 {0} 个',
+    template_center: '模版中心',
+    preview: '预览'
   },
   work_branch: {
     back_to_work_branch: '返回工作台',
@@ -137,6 +142,7 @@ export default {
     last_edited_by: '最近编辑人',
     last_edit_time: '最近编辑时间',
     big_data_screen: '数据大屏',
+    big_screen: '大屏',
     dashboard: '仪表板',
     data_set: '数据集',
     data_source: '数据源',
@@ -161,7 +167,13 @@ export default {
     error_link_hint: '链接格式错误，请重新填写！',
     password_null_hint: '密码不能为空，请重新输入！',
     password_hint: '密码必须是包含数字、字母、特殊字符[!@#$%^&*()_+]的4-10位字符串',
-    max_ticket_count: '最多支持创建5个Ticket'
+    max_ticket_count: '最多支持创建5个Ticket',
+    last: '上一个',
+    next: '下一个',
+    recommend: '推荐',
+    recent: '最近使用',
+    all_types: '全部类型',
+    all_source: '全部来源'
   },
   data_set: {
     ten_wan: '10万',
@@ -2603,6 +2615,8 @@ export default {
     enter_name_tips: '请输入仪表板名称',
     name: '名称',
     apply_template: '应用模板',
+    style_template: '样式模板',
+    all_type: '全部分类',
     enter_template_name_tips: '搜索模板名称',
     pic_adaptation: '适应组件',
     pic_equiratio: '等比适应',

@@ -175,7 +175,11 @@ const props = defineProps({
 
 const { componentData, canvasViewInfo, curCanvasType, themes } = toRefs(props)
 
-const dvPreName = computed(() => (curCanvasType.value === 'dashboard' ? '仪表板' : '数据大屏'))
+const dvPreName = computed(() =>
+  curCanvasType.value === 'dashboard'
+    ? t('work_branch.dashboard')
+    : t('work_branch.big_data_screen')
+)
 const addDsWindow = () => {
   // do addDsWindow
   const url = '#/data/datasource?opt=create'
@@ -243,7 +247,10 @@ const initData = () => {
     dfs(resultTree as unknown as BusiTreeNode[])
     state.dvTree = (resultTree as unknown as BusiTreeNode[]) || []
     if (state.dvTree.length && state.dvTree[0].name === 'root' && state.dvTree[0].id === '0') {
-      state.dvTree[0].name = curCanvasType.value === 'dataV' ? '数据大屏' : '仪表板'
+      state.dvTree[0].name =
+        curCanvasType.value === 'dataV'
+          ? t('work_branch.big_data_screen')
+          : t('work_branch.dashboard')
     }
   })
 

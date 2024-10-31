@@ -620,7 +620,7 @@ const handleInputEnd = value => {
       </template>
     </div>
     <div v-if="curComponent.defaultValueCheck" class="parameters" :class="dynamicTime && 'setting'">
-      <div class="setting-label" v-if="dynamicTime">预览</div>
+      <div class="setting-label" v-if="dynamicTime">{{ t('template_manage.preview') }}</div>
       <div :class="dynamicTime ? 'setting-value' : 'w100'">
         <component :config="curComponent" isConfig ref="inputCom" :is="filterTypeCom"></component>
       </div>

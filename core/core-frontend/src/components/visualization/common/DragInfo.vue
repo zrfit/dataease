@@ -22,7 +22,9 @@ const { dvInfo, mobileInPc } = storeToRefs(dvMainStore)
 
 const tips =
   '从顶部工具栏中选择组件，添加到这里创建' +
-  (dvInfo.value.type === 'dashboard' ? '仪表板' : '数据大屏')
+  (dvInfo.value.type === 'dashboard'
+    ? t('work_branch.dashboard')
+    : t('work_branch.big_data_screen'))
 </script>
 
 <style lang="less" scoped>

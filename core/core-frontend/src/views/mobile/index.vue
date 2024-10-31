@@ -59,8 +59,9 @@ onBeforeMount(() => {
                 :is="active ? mobileIcon_dashboard_filled : mobileIcon_dashboard_outlined"
               ></component
             ></Icon>
-          </el-icon> </template
-        >仪表板</van-tabbar-item
+          </el-icon>
+        </template>
+        {{ t('work_branch.dashboard') }}</van-tabbar-item
       >
       <van-tabbar-item name="user"
         ><template #icon="{ active }">
