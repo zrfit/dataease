@@ -70,7 +70,9 @@
                 :content="t('link_ticket.time_tips')"
                 placement="top"
               >
-                <Icon name="dv-info"><dvInfo class="svg-icon" /></Icon>
+                <span class="exp-tips-span">
+                  <Icon name="dv-info"><dvInfo class="svg-icon" /></Icon>
+                </span>
               </el-tooltip>
             </div>
           </template>
@@ -449,11 +451,14 @@ onMounted(() => {
       line-height: 22px;
       height: 22px;
       align-items: center;
-      svg {
-        margin-left: 4px;
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
+      .exp-tips-span {
+        height: 18px;
+        svg {
+          margin-left: 4px;
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
       }
     }
     :deep(.ticket-row) {
