@@ -70,10 +70,11 @@ public class RedisCacheImpl implements DECacheService {
 
     @Override
     public void keyRemove(String cacheName, String key) {
-        // redisTemplate.delete(cacheName + SEPARATOR + key);
         Cache cache = getCacheManager().getCache(cacheName);
         if (null == cache) return;
         cache.evictIfPresent(key);
+        cache.clear();
+        redisTemplate.delete(cacheName + SEPARATOR + key);
     }
 
     @PostConstruct
