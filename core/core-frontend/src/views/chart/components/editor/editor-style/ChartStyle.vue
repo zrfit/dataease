@@ -144,10 +144,6 @@ const eventsShow = computed(() => {
   )
 })
 
-const pictureGroupShow = computed(() => {
-  return curComponent.value?.innerType === 'picture-group'
-})
-
 const showProperties = (property: EditorProperty) => properties.value?.includes(property)
 
 const onMiscChange = (val, prop) => {
