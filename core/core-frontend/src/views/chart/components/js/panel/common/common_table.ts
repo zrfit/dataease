@@ -1464,6 +1464,16 @@ export function configMergeCells(chart: Chart, options: S2Options) {
         }
       })
     })
+    if (showIndex) {
+      const indexMergedCells = mergedCellsInfo.filter(cells => cells[0].colIndex === 1)
+      indexMergedCells.forEach(cells => {
+        const tmpCells = cloneDeep(cells)
+        tmpCells.forEach(cell => {
+          cell.colIndex = 0
+        })
+        mergedCellsInfo.unshift(tmpCells)
+      })
+    }
     options.mergedCellsInfo = mergedCellsInfo
     options.mergedCell = (sheet, cells, meta) => {
       return new CustomMergedCell(sheet, cells, meta)
