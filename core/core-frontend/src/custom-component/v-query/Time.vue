@@ -5,6 +5,7 @@ import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import type { ManipulateType } from 'dayjs'
 import { type TimeRange } from './time-format'
 import dayjs from 'dayjs'
+import { useI18n } from '@/hooks/web/useI18n'
 import { useShortcuts } from './shortcuts'
 import { getThisStart, getLastStart, getAround } from './time-format-dayjs'
 import VanPopup from 'vant/es/popup'
@@ -28,6 +29,7 @@ interface SelectConfig {
   placeholder: string
   setTimeRange: boolean
 }
+const { t } = useI18n()
 
 const props = defineProps({
   config: {
@@ -453,9 +455,9 @@ const formatDate = computed(() => {
       @confirm="onConfirm"
       @cancel="onCancel"
       v-if="showTimePick"
-      title="时间选择"
-      :tabs="['选择日期', '选择时间']"
-      next-step-text="下一步"
+      :title="t('v_query.time_selection')"
+      :tabs="[t('dataset.select_date'), t('dataset.select_time')]"
+      :next-step-text="t('sync_datasource.next')"
     >
       <van-date-picker
         :min-date="minDate"
@@ -466,7 +468,7 @@ const formatDate = computed(() => {
       <van-time-picker :columns-type="['hour', 'minute', 'second']" v-model="currentTime" />
     </van-picker-group>
     <van-date-picker
-      title="选择日期"
+      :title="t('dataset.select_date')"
       :columns-type="columnsType"
       @confirm="onConfirm"
       @cancel="onCancel"
