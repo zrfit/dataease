@@ -122,6 +122,7 @@ const onMobileConfig = () => {
   dvMainStore.setCanvasStyle(canvasStyleDataCopy)
   nextTick(() => {
     mobileConfig.value = true
+    dvMainStore.setCurComponent({ component: null, index: null })
   })
 }
 

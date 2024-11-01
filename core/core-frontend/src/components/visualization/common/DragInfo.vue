@@ -16,6 +16,8 @@
 import dvDragTips from '@/assets/svg/dv-drag-tips.svg'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, mobileInPc } = storeToRefs(dvMainStore)

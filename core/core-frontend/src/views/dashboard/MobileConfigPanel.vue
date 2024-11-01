@@ -251,6 +251,7 @@ const handleBack = () => {
     mobileStatusChange('mobilePatch', undefined)
     return
   }
+  dvMainStore.setCurComponent({ component: null, index: null })
   ElMessageBox.confirm('当前的更改尚未保存，确定退出吗？', {
     confirmButtonType: 'primary',
     type: 'warning',
