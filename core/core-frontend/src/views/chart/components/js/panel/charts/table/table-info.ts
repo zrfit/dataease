@@ -14,7 +14,11 @@ import { S2ChartView, S2DrawOptions } from '../../types/impl/s2'
 import { TABLE_EDITOR_PROPERTY, TABLE_EDITOR_PROPERTY_INNER } from './common'
 import { useI18n } from '@/hooks/web/useI18n'
 import { isNumber } from 'lodash-es'
-import { copyContent, SortTooltip } from '@/views/chart/components/js/panel/common/common_table'
+import {
+  copyContent,
+  getRowIndex,
+  SortTooltip
+} from '@/views/chart/components/js/panel/common/common_table'
 
 const { t } = useI18n()
 class ImageCell extends TableDataCell {
@@ -192,7 +196,12 @@ export class TableInfo extends S2ChartView<TableSheet> {
         return new ImageCell(viewMeta, viewMeta?.spreadsheet)
       }
       if (viewMeta.colIndex === 0 && s2Options.showSeriesNumber) {
-        viewMeta.fieldValue = pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
+        if (tableCell.mergeCells) {
+          viewMeta.fieldValue = getRowIndex(s2Options.mergedCellsInfo, viewMeta)
+        } else {
+          viewMeta.fieldValue =
+            pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
+        }
       }
       return new TableDataCell(viewMeta, viewMeta?.spreadsheet)
     }
