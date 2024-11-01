@@ -627,7 +627,7 @@ const checkFieldIsAllowEmpty = (allField?) => {
       if (
         !value['allowEmpty'] &&
         value['limit'] &&
-        view.value?.[key]?.length < parseInt(value['limit'])
+        (!view.value?.[key] || view.value?.[key]?.length < parseInt(value['limit']))
       ) {
         showEmpty.value = true
         return false
