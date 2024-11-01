@@ -19,6 +19,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import DatasetParamsComponent from '@/components/visualization/DatasetParamsComponent.vue'
 import DeFullscreen from '@/components/visualization/common/DeFullscreen.vue'
 import EmptyBackground from '../../empty-background/src/EmptyBackground.vue'
+import LinkOptBar from '@/components/data-visualization/canvas/LinkOptBar.vue'
 const dvMainStore = dvMainStoreWithOut()
 const { pcMatrixCount, curComponent, mobileInPc, canvasState } = storeToRefs(dvMainStore)
 const openHandler = ref(null)
@@ -393,6 +394,14 @@ const datasetParamsInit = item => {
 const dataVPreview = computed(
   () => dvInfo.value.type === 'dataV' && canvasId.value === 'canvas-main'
 )
+
+const linkOptBarShow = computed(() => {
+  return Boolean(canvasStyleData.value.suspensionButtonAvailable)
+})
+
+const downloadAsPDF = () => {
+  // test
+}
 defineExpose({
   restore
 })
@@ -455,6 +464,13 @@ defineExpose({
   <de-fullscreen ref="fullScreeRef"></de-fullscreen>
   <dataset-params-component ref="customDatasetParamsRef"></dataset-params-component>
   <XpackComponent ref="openHandler" jsname="L2NvbXBvbmVudC9lbWJlZGRlZC1pZnJhbWUvT3BlbkhhbmRsZXI=" />
+  <link-opt-bar
+    v-if="linkOptBarShow"
+    ref="link-opt-bar"
+    :terminal="'pc'"
+    :canvas-style-data="canvasStyleData"
+    @link-export-pdf="downloadAsPDF"
+  />
 </template>
 
 <style lang="less" scoped>

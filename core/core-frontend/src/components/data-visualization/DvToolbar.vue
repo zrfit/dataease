@@ -395,7 +395,7 @@ const fullScreenPreview = () => {
           编辑
         </el-button>
         <el-button v-else class="preview-button" @click="fullScreenPreview" style="float: right">
-          {{ t('template_manage.preview') }}
+          预览
         </el-button>
         <el-button
           @click="saveCanvasWithCheck()"

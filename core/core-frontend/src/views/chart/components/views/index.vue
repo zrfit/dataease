@@ -470,7 +470,9 @@ const jumpClick = param => {
           if (jumpInfo.publicJumpId) {
             const url = `${embeddedBaseUrl}#/de-link/${
               jumpInfo.publicJumpId
-            }?jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+            }?fromLink=true&jumpInfoParam=${encodeURIComponent(
+              Base64.encode(JSON.stringify(param))
+            )}`
             const currentUrl = window.location.href
             localStorage.setItem('beforeJumpUrl', currentUrl)
             windowsJump(url, jumpInfo.jumpType, jumpInfo.windowSize)
@@ -480,8 +482,9 @@ const jumpClick = param => {
         } else {
           const url = `${embeddedBaseUrl}#/preview?dvId=${
             jumpInfo.targetDvId
-          }&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
-
+          }&fromLink=true&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+          const currentUrl = window.location.href
+          localStorage.setItem('beforeJumpUrl', currentUrl)
           if (isIframe.value || isDataEaseBi.value) {
             embeddedStore.clearState()
           }
