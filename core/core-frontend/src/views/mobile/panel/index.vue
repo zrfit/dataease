@@ -28,7 +28,7 @@ const hanedleMessage = event => {
       ele.y = my
       ele.sizeX = mSizeX
       ele.sizeY = mSizeY
-      ele.style = mStyle || ele.style
+      ele.style = deepCopy(mStyle || ele.style)
       ele.commonBackground = deepCopy(mCommonBackground || ele.commonBackground)
       ele.events = deepCopy(mEvents || ele.events)
       ele.propValue = deepCopy(mPropValue || ele.propValue)
