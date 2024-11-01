@@ -445,7 +445,7 @@ watch(
               @onLabelChange="onLabelChange"
             />
           </collapse-switch-item>
-          // tooltip 为鼠标悬停 移动端看不到效果 不再单独配置
+          <!-- tooltip 为鼠标悬停 移动端看不到效果 不再单独配置 -->
           <collapse-switch-item
             v-if="showProperties('tooltip-selector') && !mobileInPc"
             v-model="chart.customAttr.tooltip.show"
