@@ -75,6 +75,7 @@ export abstract class S2ChartView<P extends SpreadSheet> extends AntVAbstractCha
     let field
     switch (cell.cellType) {
       case 'dataCell':
+      case 'mergedCell':
         if (meta.valueField === SERIES_NUMBER_FIELD) {
           content = meta.fieldValue.toString()
           break
