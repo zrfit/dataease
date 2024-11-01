@@ -296,7 +296,7 @@ const queryDataForId = id => {
       return pre
     }, [])
   if (!!requiredName) {
-    ElMessage.error(`【${requiredName}】查询条件是必填项，请设置选项值后，再进行查询！`)
+    ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
     return
   }
   if (!emitterList.length) return
@@ -572,7 +572,7 @@ const queryData = () => {
     return pre
   }, [])
   if (!!requiredName) {
-    ElMessage.error(`【${requiredName}】查询条件是必填项，请设置选项值后，再进行查询！`)
+    ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
     return
   }
   if (!emitterList.length) return
@@ -640,13 +640,13 @@ const autoStyle = computed(() => {
     >
       <div v-if="!listVisible.length" class="no-list-label flex-align-center">
         <div class="container flex-align-center">
-          将右侧的字段拖拽到这里 或 点击
+          {{ t('v_query.here_or_click') }}
           <el-button
             :disabled="showPosition === 'preview' || mobileInPc"
             @click="addCriteriaConfigOut"
             text
           >
-            添加查询条件
+            {{ t('v_query.add_query_condition') }}
           </el-button>
         </div>
       </div>
@@ -677,12 +677,16 @@ const autoStyle = computed(() => {
                 class="label-wrapper-tooltip"
                 v-if="showPosition !== 'preview' && !dvMainStore.mobileInPc"
               >
-                <el-tooltip effect="dark" content="设置过滤条件" placement="top">
+                <el-tooltip
+                  effect="dark"
+                  :content="t('v_query.set_filter_condition')"
+                  placement="top"
+                >
                   <el-icon @click="editeQueryConfig(ele.id)">
                     <Icon name="icon_edit_outlined"><icon_edit_outlined class="svg-icon" /></Icon>
                   </el-icon>
                 </el-tooltip>
-                <el-tooltip effect="dark" content="删除条件" placement="top">
+                <el-tooltip effect="dark" :content="t('v_query.delete_condition')" placement="top">
                   <el-icon style="margin-left: 8px" @click="delQueryConfig(index)">
                     <Icon name="icon_delete-trash_outlined"
                       ><icon_deleteTrash_outlined class="svg-icon"

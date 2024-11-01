@@ -2,6 +2,7 @@
 import { toRefs, onBeforeMount, type PropType, type Ref, inject, computed, nextTick } from 'vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
+import { useI18n } from '@/hooks/web/useI18n'
 interface SelectConfig {
   id: string
   conditionValueOperatorF: string
@@ -17,6 +18,7 @@ interface SelectConfig {
   conditionType: number
 }
 const placeholder: Ref = inject('placeholder')
+const { t } = useI18n()
 
 const placeholderText = computed(() => {
   if (placeholder.value.placeholderShow) {
@@ -27,11 +29,11 @@ const placeholderText = computed(() => {
 
 const operators = [
   {
-    label: '精确匹配',
+    label: t('v_query.exact_match'),
     value: 'eq'
   },
   {
-    label: '模糊匹配',
+    label: t('v_query.fuzzy_match'),
     value: 'like'
   }
 ]
@@ -120,7 +122,9 @@ const lineWidth = computed(() => {
       <div :style="lineWidth" class="bottom-line"></div>
     </div>
     <div class="condition-type" v-if="[1, 2].includes(config.conditionType)">
-      <sapn class="condition-type-tip">{{ config.conditionType === 1 ? '与' : '或' }}</sapn>
+      <sapn class="condition-type-tip">{{
+        config.conditionType === 1 ? t('chart.and') : t('chart.or')
+      }}</sapn>
       <el-select
         v-if="!config.hideConditionSwitching"
         class="condition-value-select"

@@ -12,6 +12,7 @@ import { useCache } from '@/hooks/web/useCache'
 import Personal from './personal/index.vue'
 import VanTabbar from 'vant/es/tabbar'
 import VanTabbarItem from 'vant/es/tabbar-item'
+import { useI18n } from '@/hooks/web/useI18n'
 import VanOverlay from 'vant/es/overlay'
 import VanLoading from 'vant/es/loading'
 import 'vant/es/tabbar-item/style'
@@ -23,6 +24,7 @@ const activeTabbar = ref('home')
 const showLoading = ref(false)
 const hiddenTabbar = ref(false)
 const { wsCache } = useCache('sessionStorage')
+const { t } = useI18n()
 
 onBeforeMount(() => {
   activeTabbar.value = wsCache.get('activeTabbar') || 'home'
