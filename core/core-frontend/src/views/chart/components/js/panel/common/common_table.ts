@@ -32,7 +32,9 @@ import {
   TableDataCell,
   MergedCell,
   getPolygonPoints,
-  renderPolygon
+  renderPolygon,
+  MergedCellInfo,
+  ViewMeta
 } from '@antv/s2'
 import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
@@ -1419,12 +1421,12 @@ export function configMergeCells(chart: Chart, options: S2Options) {
     const xAxis = chart.xAxis
     const quotaIndex = xAxis.findIndex(axis => axis.groupType === 'q')
     const data = chart.data?.tableRow
-    if (quotaIndex <= 0 || !data?.length) {
+    if (quotaIndex === 0 || !data?.length) {
       return
     }
     const mergedColInfo: number[][][] = [[[0, data.length - 1]]]
     const mergedCellsInfo = []
-    const axisToMerge = xAxis.filter((a, i) => a.hide !== true && i < quotaIndex)
+    const axisToMerge = xAxis.filter((a, i) => a.hide !== true && (i < quotaIndex || quotaIndex === -1))
     axisToMerge.forEach((a, i) => {
       const preMergedColInfo = mergedColInfo[i]
       const curMergedColInfo = []
@@ -1476,11 +1478,33 @@ export function configMergeCells(chart: Chart, options: S2Options) {
     }
     options.mergedCellsInfo = mergedCellsInfo
     options.mergedCell = (sheet, cells, meta) => {
+      if (showIndex && meta.colIndex === 0) {
+        meta.fieldValue = getRowIndex(mergedCellsInfo, meta)
+      }
       return new CustomMergedCell(sheet, cells, meta)
     }
   }
 }
 
+export function getRowIndex(mergedCellsInfo: MergedCellInfo[][], meta: ViewMeta): number {
+  let curRangeStartIndex = 0
+  const lostCells = mergedCellsInfo.reduce((p, n) => {
+    if (n[0].colIndex !== 0) {
+      return p
+    }
+    const start = n[0].rowIndex
+    const end = n[n.length - 1].rowIndex
+    const lost = end - start
+    if (meta.rowIndex >= start && meta.rowIndex <= end) {
+      curRangeStartIndex = start
+    }
+    if (meta.rowIndex > end) {
+      return p + lost
+    }
+    return p
+  }, 0)
+  return curRangeStartIndex - lostCells + 1
+}
 class CustomMergedCell extends MergedCell {
   protected drawBackgroundShape() {
     const allPoints = getPolygonPoints(this.cells)
