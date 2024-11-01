@@ -29,7 +29,10 @@ import {
   InteractionStateName,
   InteractionName,
   DataCellBrushSelection,
-  TableDataCell
+  TableDataCell,
+  MergedCell,
+  getPolygonPoints,
+  renderPolygon
 } from '@antv/s2'
 import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
@@ -1462,5 +1465,25 @@ export function configMergeCells(chart: Chart, options: S2Options) {
       })
     })
     options.mergedCellsInfo = mergedCellsInfo
+    options.mergedCell = (sheet, cells, meta) => {
+      return new CustomMergedCell(sheet, cells, meta)
+    }
+  }
+}
+
+class CustomMergedCell extends MergedCell {
+  protected drawBackgroundShape() {
+    const allPoints = getPolygonPoints(this.cells)
+    // 处理条件样式，这里没有用透明度
+    // 因为合并的单元格是单独的图层，透明度降低的话会显示底下未合并的单元格，需要单独处理被覆盖的单元格
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
+      this.getBackgroundColor();
+    const cellTheme = this.theme.dataCell.cell
+    this.backgroundShape = renderPolygon(this, {
+      points: allPoints,
+      stroke: cellTheme.horizontalBorderColor,
+      fill,
+      lineHeight: cellTheme.horizontalBorderWidth,
+    })
   }
 }
