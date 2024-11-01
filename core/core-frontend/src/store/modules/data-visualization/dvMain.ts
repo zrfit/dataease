@@ -404,12 +404,15 @@ export const dvMainStore = defineStore('dataVisualization', {
         Object.keys(idMap).forEach(function (oldComponentId) {
           if (canvasViewInfoPre[oldComponentId]) {
             const newComponentId = idMap[oldComponentId]
-            _this.canvasViewInfo[newComponentId] = {
+            const newView = {
               ...deepCopy(canvasViewInfoPre[oldComponentId]),
               id: newComponentId,
               linkageActive: false,
               jumpActive: false
             }
+            newView['customAttrMobile'] = null
+            newView['customStyleMobile'] = null
+            _this.canvasViewInfo[newComponentId] = newView
           }
         })
       }

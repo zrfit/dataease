@@ -30,7 +30,7 @@ import CommonEvent from '@/custom-component/common/CommonEvent.vue'
 import CommonBorderSetting from '@/custom-component/common/CommonBorderSetting.vue'
 
 const dvMainStore = dvMainStoreWithOut()
-const { dvInfo, batchOptStatus, curComponent } = storeToRefs(dvMainStore)
+const { dvInfo, batchOptStatus, mobileInPc } = storeToRefs(dvMainStore)
 const { t } = useI18n()
 
 const state = {
@@ -445,8 +445,9 @@ watch(
               @onLabelChange="onLabelChange"
             />
           </collapse-switch-item>
+          // tooltip 为鼠标悬停 移动端看不到效果 不再单独配置
           <collapse-switch-item
-            v-if="showProperties('tooltip-selector')"
+            v-if="showProperties('tooltip-selector') && !mobileInPc"
             v-model="chart.customAttr.tooltip.show"
             :themes="themes"
             :change-model="chart.customAttr.tooltip"

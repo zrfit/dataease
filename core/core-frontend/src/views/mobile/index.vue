@@ -18,11 +18,13 @@ import 'vant/es/tabbar-item/style'
 import 'vant/es/tabbar/style'
 import 'vant/es/overlay/style'
 import 'vant/es/loading/style'
+import { useI18n } from '@/hooks/web/useI18n'
 
 const activeTabbar = ref('home')
 const showLoading = ref(false)
 const hiddenTabbar = ref(false)
 const { wsCache } = useCache('sessionStorage')
+const { t } = useI18n()
 
 onBeforeMount(() => {
   activeTabbar.value = wsCache.get('activeTabbar') || 'home'
