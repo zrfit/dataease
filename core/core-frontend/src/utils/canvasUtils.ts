@@ -423,15 +423,28 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
     function ({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview }) {
       const componentData = canvasDataResult.filter(ele => !!ele.inMobile)
       canvasDataResult.forEach(ele => {
-        const { mx, my, mSizeX, mSizeY, mStyle, mPropValue, mEvents, mCommonBackground } = ele
+        const {
+          mx,
+          my,
+          mSizeX,
+          mSizeY,
+          mStyle,
+          mPropValue,
+          mEvents,
+          mCommonBackground,
+          style,
+          propValue,
+          events,
+          commonBackground
+        } = ele
         ele.x = mx
         ele.y = my
         ele.sizeX = mSizeX
         ele.sizeY = mSizeY
-        ele.mStyle = mStyle || ele.Style
-        ele.mPropValue = mPropValue || ele.propValue
-        ele.mEvents = mEvents || ele.events
-        ele.mCommonBackground = mCommonBackground || ele.commonBackground
+        ele.style = mStyle || style
+        ele.propValue = mPropValue || propValue
+        ele.events = mEvents || events
+        ele.commonBackground = mCommonBackground || commonBackground
         if (ele.component === 'DeTabs') {
           ele.propValue.forEach(tabItem => {
             tabItem.componentData.forEach(tabComponent => {
@@ -439,6 +452,11 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
               tabComponent.y = tabComponent.my
               tabComponent.sizeX = tabComponent.mSizeX
               tabComponent.sizeY = tabComponent.mSizeY
+              tabComponent.style = tabComponent.mStyle || tabComponent.style
+              tabComponent.propValue = tabComponent.mPropValue || tabComponent.propValue
+              tabComponent.events = tabComponent.mEvents || tabComponent.events
+              tabComponent.commonBackground =
+                tabComponent.mCommonBackground || tabComponent.commonBackground
             })
           })
         }
