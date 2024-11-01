@@ -205,7 +205,7 @@ function deepCopyHelper(data, idMap) {
   delete result.mStyle
   delete result.mEvents
   delete result.mPropValue
-  delete result.mCommonBackgroud
+  delete result.mCommonBackground
   if (result.component === 'Group') {
     result.propValue.forEach((component, i) => {
       result.propValue[i] = deepCopyHelper(component, idMap)
