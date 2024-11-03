@@ -111,6 +111,7 @@ import {
   getCurrentInstance,
   nextTick,
   onBeforeMount,
+  onBeforeUnmount,
   onMounted,
   reactive,
   ref,
@@ -133,7 +134,6 @@ const dvMainStore = dvMainStoreWithOut()
 const { tabMoveInActiveId, bashMatrixInfo, editMode, mobileInPc } = storeToRefs(dvMainStore)
 const tabComponentRef = ref(null)
 let carouselTimer = null
-const copyStore = copyStoreWithOut()
 
 const props = defineProps({
   canvasStyleData: {
@@ -496,20 +496,26 @@ onMounted(() => {
     editableTabsValue.value = element.value.propValue[0].name
   }
   calcTabLength()
-  eventBus.on('onTabMoveIn-' + element.value.id, componentMoveIn)
-  eventBus.on('onTabMoveOut-' + element.value.id, componentMoveOut)
-  eventBus.on('onTabSortChange-' + element.value.id, reShow)
+  if (['canvas', 'canvasDataV', 'edit'].includes(showPosition.value) && !mobileInPc.value) {
+    eventBus.on('onTabMoveIn-' + element.value.id, componentMoveIn)
+    eventBus.on('onTabMoveOut-' + element.value.id, componentMoveOut)
+    eventBus.on('onTabSortChange-' + element.value.id, reShow)
+  }
+
   currentInstance = getCurrentInstance()
   initCarousel()
   nextTick(() => {
     groupSizeStyleAdaptor(element.value)
   })
 })
-
+onBeforeUnmount(() => {
+  if (['canvas', 'canvasDataV', 'edit'].includes(showPosition.value) && !mobileInPc.value) {
+    eventBus.off('onTabMoveIn-' + element.value.id, componentMoveIn)
+    eventBus.off('onTabMoveOut-' + element.value.id, componentMoveOut)
+    eventBus.off('onTabSortChange-' + element.value.id, reShow)
+  }
+})
 onBeforeMount(() => {
-  eventBus.off('onTabMoveIn-' + element.value.id, componentMoveIn)
-  eventBus.off('onTabMoveOut-' + element.value.id, componentMoveOut)
-  eventBus.off('onTabSortChange-' + element.value.id, reShow)
   if (carouselTimer) {
     clearInterval(carouselTimer)
     carouselTimer = null

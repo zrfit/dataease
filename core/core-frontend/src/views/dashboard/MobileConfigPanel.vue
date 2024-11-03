@@ -154,6 +154,7 @@ const hanedleMessage = event => {
           ele.propValue.forEach(tabItem => {
             tabItem.componentData.forEach(tabComponent => {
               const {
+                style: tStyle,
                 propValue: tPropValue,
                 events: tEvents,
                 commonBackground: tCommonBackground
