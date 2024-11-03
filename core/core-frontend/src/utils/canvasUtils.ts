@@ -29,8 +29,15 @@ import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapsho
 import { deepCopy } from '@/utils/utils'
 import { ElMessage } from 'element-plus-secondary'
 const dvMainStore = dvMainStoreWithOut()
-const { curBatchOptComponents, dvInfo, canvasStyleData, componentData, canvasViewInfo, appData } =
-  storeToRefs(dvMainStore)
+const {
+  inMobile,
+  curBatchOptComponents,
+  dvInfo,
+  canvasStyleData,
+  componentData,
+  canvasViewInfo,
+  appData
+} = storeToRefs(dvMainStore)
 const snapshotStore = snapshotStoreWithOut()
 
 export function chartTransStr2Object(targetIn, copy) {
@@ -262,15 +269,19 @@ export function refreshOtherComponent(dvId, busiFlag) {
       for (let i = 0; i < componentData.value.length; i++) {
         const component = componentData.value[i]
         if (refreshIdList.includes(component.id) && canvasDataResultMap[component.id]) {
-          const { top, left, height, width, fontSize } = componentData.value[i].style
-          canvasDataResultMap[component.id].style.top = top
-          canvasDataResultMap[component.id].style.left = left
-          canvasDataResultMap[component.id].style.height = height
-          canvasDataResultMap[component.id].style.width = width
-          if (fontSize) {
-            canvasDataResultMap[component.id].style.fontSize = fontSize
+          if (inMobile.value) {
+            componentData.value[i].propValue = canvasDataResultMap[component.id].mPropValue
+          } else {
+            const { top, left, height, width, fontSize } = componentData.value[i].style
+            canvasDataResultMap[component.id].style.top = top
+            canvasDataResultMap[component.id].style.left = left
+            canvasDataResultMap[component.id].style.height = height
+            canvasDataResultMap[component.id].style.width = width
+            if (fontSize) {
+              canvasDataResultMap[component.id].style.fontSize = fontSize
+            }
+            componentData.value[i] = canvasDataResultMap[component.id]
           }
-          componentData.value[i] = canvasDataResultMap[component.id]
         }
       }
     })
