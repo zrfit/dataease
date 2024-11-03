@@ -39,28 +39,18 @@ const hanedleMessage = event => {
         ele.propValue.forEach(tabItem => {
           tabItem.componentData.forEach(tabComponent => {
             const {
-              mx: tx,
-              my: ty,
-              mSizeX: tSizeX,
-              mSizeY: tSizeY,
               mStyle: tStyle,
               mCommonBackground: tCommonBackground,
               mEvents: tEvents,
               mPropValue: tPropValue
             } = tabComponent
-            if (tSizeX && tSizeY) {
-              tabComponent.x = tx
-              tabComponent.y = ty
-              tabComponent.sizeX = tSizeX
-              tabComponent.sizeY = tSizeY
-              tabComponent.style = deepCopy(tStyle || tabComponent.style)
-              tabComponent.commonBackground = deepCopy(
-                tCommonBackground || tabComponent.commonBackground
-              )
-              tabComponent.events = deepCopy(tEvents || tabComponent.events)
-              if (tabComponent.component === 'VQuery') {
-                tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
-              }
+            tabComponent.style = deepCopy(tStyle || tabComponent.style)
+            tabComponent.commonBackground = deepCopy(
+              tCommonBackground || tabComponent.commonBackground
+            )
+            tabComponent.events = deepCopy(tEvents || tabComponent.events)
+            if (tabComponent.component === 'VQuery') {
+              tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
             }
           })
         })
