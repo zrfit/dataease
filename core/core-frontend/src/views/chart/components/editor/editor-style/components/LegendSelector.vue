@@ -283,7 +283,7 @@ onMounted(() => {
         </el-tooltip>
       </el-form-item>
     </el-space>
-    <el-space>
+    <el-space style="width: 100%">
       <div v-if="chartType === 'map'">
         <el-row>
           <el-col>

@@ -129,7 +129,7 @@ const hanedleMessage = event => {
         targetViewInfo = deepCopy(sourceViewInfo)
         targetViewInfo.customStyleMobile = null
         targetViewInfo.customAttrMobile = null
-        canvasViewInfoMobile[targetComponent.id] = targetViewInfo
+        canvasViewInfoMobile.value[targetComponent.id] = targetViewInfo
       }
       snapshotStore.recordSnapshotCacheToMobile('syncPcDesign', targetComponent, targetViewInfo)
     }
@@ -154,19 +154,10 @@ const hanedleMessage = event => {
           ele.propValue.forEach(tabItem => {
             tabItem.componentData.forEach(tabComponent => {
               const {
-                x: tx,
-                y: ty,
-                sizeX: tSizeX,
-                sizeY: tSizeY,
-                style: tStyle,
                 propValue: tPropValue,
                 events: tEvents,
                 commonBackground: tCommonBackground
               } = com.tab[tabComponent.id]
-              tabComponent.mx = tx
-              tabComponent.my = ty
-              tabComponent.mSizeX = tSizeX
-              tabComponent.mSizeY = tSizeY
               tabComponent.mStyle = tStyle
               tabComponent.mEvents = tEvents
               tabComponent.mCommonBackground = tCommonBackground

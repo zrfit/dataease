@@ -298,7 +298,6 @@ const showCheck = computed(() => {
 })
 
 const updateFromMobile = (e, type) => {
-  console.log('====updateFromMobile===' + type)
   if (type === 'syncPcDesign') {
     e.preventDefault()
     e.stopPropagation()
