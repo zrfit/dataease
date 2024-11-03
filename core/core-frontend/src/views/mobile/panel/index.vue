@@ -31,7 +31,9 @@ const hanedleMessage = event => {
       ele.style = deepCopy(mStyle || ele.style)
       ele.commonBackground = deepCopy(mCommonBackground || ele.commonBackground)
       ele.events = deepCopy(mEvents || ele.events)
-      ele.propValue = deepCopy(mPropValue || ele.propValue)
+      if (ele.component === 'VQuery') {
+        ele.propValue = deepCopy(mPropValue || ele.propValue)
+      }
 
       if (ele.component === 'DeTabs') {
         ele.propValue.forEach(tabItem => {
@@ -56,7 +58,9 @@ const hanedleMessage = event => {
                 tCommonBackground || tabComponent.commonBackground
               )
               tabComponent.events = deepCopy(tEvents || tabComponent.events)
-              tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
+              if (tabComponent.component === 'VQuery') {
+                tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
+              }
             }
           })
         })
@@ -73,7 +77,7 @@ const hanedleMessage = event => {
   }
   // 进行内部组件渲染 type render 渲染 calcData 计算  主组件渲染
   if (event.data.type === 'componentStyleChange') {
-    const { type, component } = event.data.value
+    const { type, component, otherComponent } = event.data.value
     if (type === 'renderChart') {
       mobileViewStyleSwitch(component)
       useEmitt().emitter.emit('renderChart-' + component.id, component)
@@ -86,6 +90,14 @@ const hanedleMessage = event => {
     } else if (['style', 'commonBackground', 'events', 'propValue'].includes(type)) {
       const mobileComponent = findComponentById(component.id)
       mobileComponent[type] = component[type]
+    } else if (['syncPcDesign'].includes(type)) {
+      const mobileComponent = findComponentById(component.id)
+      mobileComponent['style'] = component['style']
+      mobileComponent['commonBackground'] = component['commonBackground']
+      mobileComponent['events'] = component['events']
+      mobileComponent['propValue'] = component['propValue']
+      mobileViewStyleSwitch(otherComponent)
+      useEmitt().emitter.emit('renderChart-' + component.id, otherComponent)
     }
   }
 

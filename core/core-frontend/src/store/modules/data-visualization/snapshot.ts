@@ -54,12 +54,16 @@ export const snapshotStore = defineStore('snapshot', {
         this.recordSnapshot('snapshotCatchToStore')
       }
     },
-    recordSnapshotCacheToMobile(type) {
-      if (mobileInPc.value && curComponent.value) {
+    recordSnapshotCacheToMobile(type, component = curComponent.value, otherComponent = null) {
+      if (mobileInPc.value && component) {
         //移动端设计
         useEmitt().emitter.emit('onMobileStatusChange', {
           type: 'componentStyleChange',
-          value: { type: type, component: JSON.parse(JSON.stringify(curComponent.value)) }
+          value: {
+            type: type,
+            component: JSON.parse(JSON.stringify(component)),
+            otherComponent: otherComponent
+          }
         })
       }
       this.recordSnapshotCache(type)

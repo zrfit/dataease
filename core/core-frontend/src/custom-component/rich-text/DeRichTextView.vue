@@ -67,7 +67,7 @@ import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 const snapshotStore = snapshotStoreWithOut()
 const errMsg = ref('')
 const dvMainStore = dvMainStoreWithOut()
-const { canvasViewInfo } = storeToRefs(dvMainStore)
+const { canvasViewInfo, mobileInPc } = storeToRefs(dvMainStore)
 const isError = ref(false)
 const appearanceStore = useAppearanceStoreWithOut()
 
@@ -459,7 +459,8 @@ const computedCanEdit = computed<boolean>(() => {
     editStatus.value &&
     canEdit.value === false &&
     !isError.value &&
-    !disabled.value
+    !disabled.value &&
+    !mobileInPc.value
   )
 })
 
