@@ -29,8 +29,8 @@ const getComponentStyleDefault = () => {
   return {
     top: 0,
     left: 0,
-    width: '190px',
-    height: '190px'
+    width: 'calc(100% -8px)',
+    height: 'calc(100% -8px)'
   }
 }
 const mobileStatusChange = (type, value) => {
@@ -247,11 +247,11 @@ const addToMobile = com => {
 const changeTimes = ref(0)
 const activeCollapse = ref('com')
 const handleBack = () => {
+  dvMainStore.setCurComponent({ component: null, index: null })
   if (!changeTimes.value) {
     mobileStatusChange('mobilePatch', undefined)
     return
   }
-  dvMainStore.setCurComponent({ component: null, index: null })
   ElMessageBox.confirm('当前的更改尚未保存，确定退出吗？', {
     confirmButtonType: 'primary',
     type: 'warning',
@@ -327,7 +327,7 @@ const save = () => {
         </div>
         <div class="config-mobile-tab" v-show="activeCollapse === 'com'">
           <div
-            :style="{ height: '198px', width: '198px' }"
+            :style="{ height: '196px', width: '196px' }"
             class="mobile-wrapper-inner-adaptor"
             v-for="item in componentDataNotInMobile"
             :key="item.id"
@@ -341,7 +341,7 @@ const save = () => {
                 :canvas-view-info="canvasViewInfoMobile"
                 :view-info="canvasViewInfoMobile[item.id]"
                 :config="item"
-                :style="getComponentStyleDefault()"
+                class="wrapper-design"
                 show-position="preview"
                 :search-count="0"
                 :scale="80"
@@ -549,7 +549,7 @@ const save = () => {
     }
 
     .config-mobile-tab {
-      padding: 16px 8px;
+      padding: 16px 0;
     }
     .config-mobile-tab-style {
       padding: 0;
@@ -561,7 +561,7 @@ const save = () => {
     }
     .mobile-wrapper-inner-adaptor {
       position: relative;
-      margin-right: 8px;
+      margin-left: 8px;
       margin-bottom: 8px;
       float: left;
       background: #fff;
@@ -611,6 +611,13 @@ const save = () => {
       }
     }
   }
+}
+
+.wrapper-design {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
 
