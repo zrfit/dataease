@@ -21,7 +21,7 @@ import DeFullscreen from '@/components/visualization/common/DeFullscreen.vue'
 import EmptyBackground from '../../empty-background/src/EmptyBackground.vue'
 import LinkOptBar from '@/components/data-visualization/canvas/LinkOptBar.vue'
 const dvMainStore = dvMainStoreWithOut()
-const { pcMatrixCount, curComponent, mobileInPc, canvasState } = storeToRefs(dvMainStore)
+const { pcMatrixCount, curComponent, mobileInPc, canvasState, inMobile } = storeToRefs(dvMainStore)
 const openHandler = ref(null)
 const customDatasetParamsRef = ref(null)
 const emits = defineEmits(['onResetLayout'])
@@ -396,7 +396,9 @@ const dataVPreview = computed(
 )
 
 const linkOptBarShow = computed(() => {
-  return Boolean(canvasStyleData.value.suspensionButtonAvailable)
+  return Boolean(
+    canvasStyleData.value.suspensionButtonAvailable && !inMobile.value && !mobileInPc.value
+  )
 })
 
 const downloadAsPDF = () => {

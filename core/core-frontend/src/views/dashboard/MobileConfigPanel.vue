@@ -7,7 +7,7 @@ import MobileBackgroundSelector from './MobileBackgroundSelector.vue'
 import ComponentWrapper from '@/components/data-visualization/canvas/ComponentWrapper.vue'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { useEmbedded } from '@/store/modules/embedded'
-import { canvasSave } from '@/utils/canvasUtils'
+import { canvasSave, findComponentById } from '@/utils/canvasUtils'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { backCanvasData } from '@/utils/canvasUtils'
@@ -25,14 +25,6 @@ const emits = defineEmits(['pcMode'])
 const snapshotStore = snapshotStoreWithOut()
 const canvasViewInfoMobile = ref({})
 
-const getComponentStyleDefault = () => {
-  return {
-    top: 0,
-    left: 0,
-    width: 'calc(100% -8px)',
-    height: 'calc(100% -8px)'
-  }
-}
 const mobileStatusChange = (type, value) => {
   if (type === 'componentStyleChange') {
     changeTimes.value++
@@ -127,6 +119,22 @@ const hanedleMessage = event => {
     })
   }
 
+  if (event.data.type === 'syncPcDesign') {
+    const targetComponent = findComponentById(event.data.value)
+    if (targetComponent) {
+      changeTimes.value++
+      let targetViewInfo
+      const sourceViewInfo = canvasViewInfo.value[targetComponent.id]
+      if (sourceViewInfo) {
+        targetViewInfo = deepCopy(sourceViewInfo)
+        targetViewInfo.customStyleMobile = null
+        targetViewInfo.customAttrMobile = null
+        canvasViewInfoMobile[targetComponent.id] = targetViewInfo
+      }
+      snapshotStore.recordSnapshotCacheToMobile('syncPcDesign', targetComponent, targetViewInfo)
+    }
+  }
+
   if (['mobileSaveFromMobile', 'mobilePatchFromMobile'].includes(event.data.type)) {
     componentData.value.forEach(ele => {
       const com = event.data.value[ele.id]
@@ -137,9 +145,11 @@ const hanedleMessage = event => {
         ele.mSizeX = sizeX
         ele.mSizeY = sizeY
         ele.mStyle = style
-        ele.mPropValue = propValue
         ele.mEvents = events
         ele.mCommonBackground = commonBackground
+        if (ele.component === 'VQuery') {
+          ele.mPropValue = propValue
+        }
         if (ele.component === 'DeTabs') {
           ele.propValue.forEach(tabItem => {
             tabItem.componentData.forEach(tabComponent => {
@@ -158,9 +168,11 @@ const hanedleMessage = event => {
               tabComponent.mSizeX = tSizeX
               tabComponent.mSizeY = tSizeY
               tabComponent.mStyle = tStyle
-              tabComponent.mPropValue = tPropValue
               tabComponent.mEvents = tEvents
               tabComponent.mCommonBackground = tCommonBackground
+              if (tabComponent.component === 'VQuery') {
+                tabComponent.mPropValue = tPropValue
+              }
             })
           })
         }
@@ -344,7 +356,7 @@ const save = () => {
                 class="wrapper-design"
                 show-position="preview"
                 :search-count="0"
-                :scale="80"
+                :scale="65"
               />
             </div>
             <div class="mobile-com-mask" @click="addToMobile(item)">

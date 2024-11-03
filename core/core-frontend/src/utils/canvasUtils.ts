@@ -270,7 +270,7 @@ export function refreshOtherComponent(dvId, busiFlag) {
         const component = componentData.value[i]
         if (refreshIdList.includes(component.id) && canvasDataResultMap[component.id]) {
           if (inMobile.value) {
-            componentData.value[i].propValue = canvasDataResultMap[component.id].mPropValue
+            componentData.value[i].propValue = canvasDataResultMap[component.id].propValue
           } else {
             const { top, left, height, width, fontSize } = componentData.value[i].style
             canvasDataResultMap[component.id].style.top = top
@@ -382,9 +382,11 @@ export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
           ele.my = my
           ele.mSizeX = mSizeX
           ele.mSizeY = mSizeY
-          ele.mPropValue = mPropValue
           ele.mEvents = mEvents
           ele.mCommonBackground = mCommonBackground
+          if (ele.component === 'VQuery') {
+            ele.mPropValue = mPropValue
+          }
           if (ele.component === 'DeTabs') {
             ele.propValue.forEach(tabItem => {
               tabItem.componentData.forEach(tabComponent => {
@@ -392,9 +394,11 @@ export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
                 tabComponent.my = tabComponent.my
                 tabComponent.mSizeX = tabComponent.mSizeX
                 tabComponent.mSizeY = tabComponent.mSizeY
-                tabComponent.mPropValue = tPropValue
                 tabComponent.mEvents = tEvents
                 tabComponent.mCommonBackground = tCommonBackground
+                if (tabComponent.component === 'VQuery') {
+                  tabComponent.mPropValue = tPropValue
+                }
               })
             })
           }
