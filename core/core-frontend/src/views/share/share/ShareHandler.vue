@@ -213,7 +213,6 @@ const shareTips = computed(
         : t('work_branch.big_data_screen')
     }`
 )
-const shareDisable = computed(() => shareStore.getShareDisable)
 const sharePeRequire = computed(() => shareStore.getSharePeRequire)
 const editUuid = () => {
   linkCustom.value = true
@@ -274,6 +273,16 @@ const copyInfo = async () => {
       if (existErrorMsg('link-uuid-error-msg')) {
         ElMessage.warning(t('work_branch.error_link_hint'))
         return
+      }
+      if (passwdEnable.value && !state.detailInfo.autoPwd && existErrorMsg('link-pwd-error-msg')) {
+        ElMessage.warning(t('work_branch.error_password_hint'))
+        return
+      }
+      if (sharePeRequire.value) {
+        const peRequireValid = validatePeRequire()
+        if (!peRequireValid) {
+          return
+        }
       }
       formatLinkAddr()
       await toClipboard(linkAddr.value)
@@ -435,7 +444,8 @@ const validatePwdFormat = () => {
     return false
   }
   const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,10}$/
-  if (!regex.test(val)) {
+  const regep = new RegExp(regex)
+  if (!regep.test(val)) {
     showPageError(t('work_branch.password_hint'), pwdRef)
     return false
   }

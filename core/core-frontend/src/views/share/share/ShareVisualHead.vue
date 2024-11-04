@@ -260,6 +260,16 @@ const copyInfo = async () => {
         ElMessage.warning(t('work_branch.error_link_hint'))
         return
       }
+      if (passwdEnable.value && !state.detailInfo.autoPwd && existErrorMsg('link-pwd-error-msg')) {
+        ElMessage.warning(t('work_branch.error_password_hint'))
+        return
+      }
+      if (sharePeRequire.value) {
+        const peRequireValid = validatePeRequire()
+        if (!peRequireValid) {
+          return
+        }
+      }
       formatLinkAddr()
       await toClipboard(linkAddr.value)
       ElMessage.success(t('common.copy_success'))
@@ -451,7 +461,8 @@ const validatePwdFormat = () => {
     return false
   }
   const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,10}$/
-  if (!regex.test(val)) {
+  const regep = new RegExp(regex)
+  if (!regep.test(val)) {
     showPageError(t('work_branch.password_hint'), pwdRef)
     return false
   }
