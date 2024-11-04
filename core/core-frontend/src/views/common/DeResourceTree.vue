@@ -220,7 +220,12 @@ const getTree = async () => {
   const nodeData = interactiveData.treeNodes
   rootManage.value = interactiveData.rootManage
   anyManage.value = interactiveData.anyManage
-  if (dvInfo.value && dvInfo.value.id && !JSON.stringify(nodeData).includes(dvInfo.value.id)) {
+  if (
+    dvInfo.value &&
+    dvInfo.value.id &&
+    !JSON.stringify(nodeData).includes(dvInfo.value.id) &&
+    showPosition.value !== 'multiplexing'
+  ) {
     dvMainStore.resetDvInfo()
   }
   if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
