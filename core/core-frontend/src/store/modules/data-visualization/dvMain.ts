@@ -1255,8 +1255,14 @@ export const dvMainStore = defineStore('dataVisualization', {
                   filterItem.defaultValue = queryParams[0]
                 } else if (filterItem.displayType === '7') {
                   // 7 时间范围类型
-                  filterItem.selectValue = queryParams
-                  filterItem.defaultValue = queryParams
+                  if (QDItem.timeValue && Array.isArray(QDItem.timeValue)) {
+                    // 如果dimension.timeValue存在值且是数组 目前判断为是时间组件
+                    filterItem.selectValue = QDItem.timeValue
+                    filterItem.defaultValue = QDItem.timeValue
+                  } else {
+                    filterItem.selectValue = queryParams
+                    filterItem.defaultValue = queryParams
+                  }
                 } else if (filterItem.displayType === '8') {
                   // 8 文本搜索
                   filterItem.conditionValueF = queryParams[0]
