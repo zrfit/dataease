@@ -304,7 +304,7 @@ onBeforeMount(() => {
             <template #icon>
               <Icon name="icon_add_outlined"><icon_add_outlined class="svg-icon" /></Icon>
             </template>
-            {{ $t('commons.create') }}{{ t('work_branch.big_data_screen') }}
+            {{ $t('commons.create') }}{{ $t('work_branch.big_data_screen') }}
           </el-button>
         </empty-background>
       </template>
