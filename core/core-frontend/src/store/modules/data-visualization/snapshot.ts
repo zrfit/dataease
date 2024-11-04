@@ -167,9 +167,9 @@ export const snapshotStore = defineStore('snapshot', {
     },
 
     recordSnapshot() {
-      this.styleChangeTimes = ++this.styleChangeTimes
       // 移动端设计时暂不保存镜像
-      if (dataPrepareState.value && !mobileInPc) {
+      if (dataPrepareState.value && !mobileInPc.value) {
+        this.styleChangeTimes = ++this.styleChangeTimes
         const snapshotComponentData = deepCopy(componentData.value)
         dvMainStore.removeGroupArea(snapshotComponentData)
         // 添加新的快照
