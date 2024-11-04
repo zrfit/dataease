@@ -21,7 +21,7 @@ const placeholder: Ref = inject('placeholder')
 const { t } = useI18n()
 
 const placeholderText = computed(() => {
-  if (placeholder.value.placeholderShow) {
+  if (placeholder?.value?.placeholderShow) {
     return props.config.placeholder
   }
   return ' '
