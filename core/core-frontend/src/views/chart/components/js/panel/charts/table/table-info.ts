@@ -264,7 +264,12 @@ export class TableInfo extends S2ChartView<TableSheet> {
         }, 0)
         const containerWidth = containerDom.getBoundingClientRect().width
         if (containerWidth <= totalWidthWithImg) {
-          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，不处理
+          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，但是需要处理非整数宽度值，不然会出现透明细线
+          ev.colLeafNodes.reduce((p, n) => {
+            n.width = Math.round(n.width)
+            n.x = p
+            return p + n.width
+          }, 0)
           return
         }
         // 图片字段固定 120, 剩余宽度按比例均摊到其他字段进行扩大
