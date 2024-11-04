@@ -3,17 +3,18 @@ import {
   S2DataConfig,
   S2Event,
   S2Options,
+  S2Theme,
   TableColCell,
   TableDataCell,
   TableSheet,
   ViewMeta
 } from '@antv/s2'
 import { formatterItem, valueFormatter } from '../../../formatter'
-import { parseJson } from '../../../util'
+import { hexColorToRGBA, isAlphaColor, parseJson } from '../../../util'
 import { S2ChartView, S2DrawOptions } from '../../types/impl/s2'
 import { TABLE_EDITOR_PROPERTY, TABLE_EDITOR_PROPERTY_INNER } from './common'
 import { useI18n } from '@/hooks/web/useI18n'
-import { isNumber } from 'lodash-es'
+import { isNumber, merge } from 'lodash-es'
 import {
   copyContent,
   getRowIndex,
@@ -328,6 +329,64 @@ export class TableInfo extends S2ChartView<TableSheet> {
     const customTheme = this.configTheme(chart)
     newChart.setThemeCfg({ theme: customTheme })
     return newChart
+  }
+
+  protected configTheme(chart: Chart): S2Theme {
+    const theme = super.configTheme(chart)
+    const { basicStyle, tableCell } = parseJson(chart.customAttr)
+    if (tableCell.mergeCells) {
+      const tableFontColor = hexColorToRGBA(tableCell.tableFontColor, basicStyle.alpha)
+      let tableItemBgColor = tableCell.tableItemBgColor
+      if (!isAlphaColor(tableItemBgColor)) {
+        tableItemBgColor = hexColorToRGBA(tableItemBgColor, basicStyle.alpha)
+      }
+      const { tableBorderColor } = basicStyle
+      const { tableItemAlign, tableItemFontSize } = tableCell
+      const fontStyle = tableCell.isItalic ? 'italic' : 'normal'
+      const fontWeight = tableCell.isBolder === false ? 'normal' : 'bold'
+      const mergeCellTheme: S2Theme = {
+        mergedCell: {
+          cell: {
+            backgroundColor: tableItemBgColor,
+            crossBackgroundColor: tableItemBgColor,
+            horizontalBorderColor: tableBorderColor,
+            verticalBorderColor: tableBorderColor,
+            horizontalBorderWidth: tableCell.showHorizonBorder ? 1 : 0,
+            verticalBorderWidth: tableCell.showVerticalBorder ? 1 : 0
+          },
+          bolderText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          text: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          measureText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          seriesText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          }
+        }
+      }
+      merge(theme, mergeCellTheme)
+    }
+    return theme
   }
 
   constructor() {
