@@ -417,7 +417,7 @@ const windowsJump = (url, jumpType, size = 'middle') => {
       )
     } else if ('_self' === jumpType) {
       newWindow = window.open(url, jumpType)
-      if (inMobile) {
+      if (inMobile.value) {
         window.location.reload()
       }
     } else {
