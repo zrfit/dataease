@@ -271,7 +271,9 @@ const handleLoadExcel = data => {
 }
 
 const validateDS = () => {
-  validateById(nodeInfo.id as number)
+  let nodeTmpInfo = reactive<Node>(cloneDeep(defaultInfo))
+  Object.assign(nodeTmpInfo, cloneDeep(nodeInfo))
+  validateById(nodeTmpInfo.id as number)
     .then(res => {
       if (res.data.type === 'API') {
         let error = 0
@@ -280,26 +282,26 @@ const validateDS = () => {
           if (dsStatus[i].status === 'Error') {
             error++
           }
-          for (let i = 0; i < nodeInfo.apiConfiguration.length; i++) {
+          for (let i = 0; i < nodeTmpInfo.apiConfiguration.length; i++) {
             if (nodeInfo.apiConfiguration[i].name === dsStatus[i].name) {
               nodeInfo.apiConfiguration[i].status = dsStatus[i].status
             }
           }
         }
         if (error === 0) {
-          changeDsStatus(state.datasourceTree, nodeInfo.id, Math.abs(nodeInfo.extraFlag))
+          changeDsStatus(state.datasourceTree, nodeTmpInfo.id, Math.abs(nodeTmpInfo.extraFlag))
           ElMessage.success(t('data_source.verification_successful'))
         } else {
-          changeDsStatus(state.datasourceTree, nodeInfo.id, -Math.abs(nodeInfo.extraFlag))
+          changeDsStatus(state.datasourceTree, nodeTmpInfo.id, -Math.abs(nodeTmpInfo.extraFlag))
           ElMessage.error(t('data_source.verification_failed'))
         }
       } else {
-        changeDsStatus(state.datasourceTree, nodeInfo.id, Math.abs(nodeInfo.extraFlag))
+        changeDsStatus(state.datasourceTree, nodeTmpInfo.id, Math.abs(nodeTmpInfo.extraFlag))
         ElMessage.success(t('data_source.verification_successful'))
       }
     })
     .catch(() => {
-      changeDsStatus(state.datasourceTree, nodeInfo.id, -Math.abs(nodeInfo.extraFlag))
+      changeDsStatus(state.datasourceTree, nodeTmpInfo.id, -Math.abs(nodeTmpInfo.extraFlag))
     })
 }
 
