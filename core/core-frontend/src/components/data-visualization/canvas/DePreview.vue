@@ -235,7 +235,8 @@ const resetLayout = () => {
           baseComponentData.value,
           canvasStyleData.value,
           scaleMin.value || outerScale.value * 100,
-          scaleMinHeight || outerScale.value * 100
+          scaleMinHeight || outerScale.value * 100,
+          outerScale.value * 100
         )
         scaleMin.value = isMainCanvas(canvasId.value) ? scaleMin.value : outerScale.value * 100
       }

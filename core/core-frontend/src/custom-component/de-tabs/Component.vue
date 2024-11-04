@@ -129,8 +129,10 @@ import DePreview from '@/components/data-visualization/canvas/DePreview.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { getPanelAllLinkageInfo } from '@/api/visualization/linkage'
 import { dataVTabComponentAdd, groupSizeStyleAdaptor } from '@/utils/style'
-import { copyStoreWithOut, deepCopyTabItemHelper } from '@/store/modules/data-visualization/copy'
+import { deepCopyTabItemHelper } from '@/store/modules/data-visualization/copy'
+import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 const dvMainStore = dvMainStoreWithOut()
+const snapshotStore = snapshotStoreWithOut()
 const { tabMoveInActiveId, bashMatrixInfo, editMode, mobileInPc } = storeToRefs(dvMainStore)
 const tabComponentRef = ref(null)
 let carouselTimer = null
@@ -233,6 +235,7 @@ const curPreviewGap = computed(() =>
 function sureCurTitle() {
   state.curItem.title = state.textarea
   state.dialogVisible = false
+  snapshotStore.recordSnapshotCache()
 }
 
 function addTab() {
@@ -245,6 +248,7 @@ function addTab() {
   }
   element.value.propValue.push(newTab)
   editableTabsValue.value = newTab.name
+  snapshotStore.recordSnapshotCache()
 }
 
 function deleteCur(param) {
@@ -286,9 +290,11 @@ function handleCommand(command) {
       break
     case 'deleteCur':
       deleteCur(command.param)
+      snapshotStore.recordSnapshotCache()
       break
     case 'copyCur':
       copyCur(command.param)
+      snapshotStore.recordSnapshotCache()
       break
   }
 }
