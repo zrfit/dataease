@@ -240,7 +240,7 @@ const state = reactive({
     },
     {
       value: 'market',
-      label: t('work_branch.template_market_official')
+      label: t('visualization.template_market')
     },
     {
       value: 'manage',
