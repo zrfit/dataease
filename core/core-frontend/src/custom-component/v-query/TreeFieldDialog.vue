@@ -14,7 +14,9 @@ const emits = defineEmits(['saveTree'])
 const { t } = useI18n()
 const addCascadeItem = () => {
   treeList.value.push({
-    field: null,
+    field: {
+      id: ''
+    },
     id: guid()
   })
 }
@@ -127,7 +129,7 @@ defineExpose({
     </div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button secondary @click="cancelClick">{{ t('v_query.cancel') }}</el-button>
+        <el-button secondary @click="cancelClick">{{ t('common.cancel') }}</el-button>
         <el-button type="primary" @click="confirmClick"> {{ t('pblink.sure_bt') }} </el-button>
       </div>
     </template>

@@ -1734,10 +1734,9 @@ const startTreeDesign = () => {
   const [comId] = curComponent.value.checkedFields
   const componentObj = fields.value.find(ele => ele.componentId === comId)
   treeDialog.value.init(
-    (curComponent.value.optionValueSource === 0
-      ? componentObj?.fields?.dimensionList
-      : curComponent.value.dataset?.fields
-    ).filter(ele => ele.deType === +curComponent.value.field.deType),
+    componentObj?.fields?.dimensionList.filter(
+      ele => ele.deType === +curComponent.value.field.deType
+    ),
     curComponent.value.treeFieldList
   )
 }
