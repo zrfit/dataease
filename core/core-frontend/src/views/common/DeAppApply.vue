@@ -13,7 +13,7 @@
         ref="appSaveForm"
         :model="state.form"
         :rules="state.rule"
-        class="de-form-item"
+        class="de-form-item app-form"
         size="middle"
         label-width="180px"
         label-position="top"
@@ -405,6 +405,9 @@ defineExpose({
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.app-form {
+  padding-bottom: 95px;
 }
 </style>
 
