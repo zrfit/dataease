@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue'
 import DynamicTime from '@/custom-component/v-query/DynamicTimeForViewFilter.vue'
 import { type DatePickType } from 'element-plus-secondary'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 export interface SelectConfig {
   relativeToCurrent: string
   timeNum: number
