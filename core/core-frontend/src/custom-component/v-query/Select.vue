@@ -86,7 +86,7 @@ const cascadeList = inject('cascade-list', Function, true)
 const setCascadeDefault = inject('set-cascade-default', Function, true)
 
 const placeholderText = computed(() => {
-  if (placeholder.value.placeholderShow) {
+  if (placeholder?.value?.placeholderShow) {
     return ['', undefined].includes(props.config.placeholder) ? ' ' : props.config.placeholder
   }
   return ' '

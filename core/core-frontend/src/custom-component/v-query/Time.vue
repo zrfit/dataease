@@ -67,7 +67,7 @@ const props = defineProps({
 })
 const placeholder: Ref = inject('placeholder')
 const placeholderText = computed(() => {
-  if (placeholder.value.placeholderShow) {
+  if (placeholder?.value?.placeholderShow) {
     return props.config.placeholder
   }
   return ' '
