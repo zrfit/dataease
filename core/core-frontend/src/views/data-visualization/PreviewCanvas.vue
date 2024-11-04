@@ -44,7 +44,7 @@ const props = defineProps({
   ticketArgs: propTypes.string.def(null)
 })
 
-const loadCanvasDataAsync = async (dvId, dvType) => {
+const loadCanvasDataAsync = async (dvId, dvType, ignoreParams = false) => {
   const jumpInfoParam = embeddedStore.jumpInfoParam || router.currentRoute.value.query.jumpInfoParam
   let jumpParam
   // 获取外部跳转参数
@@ -124,9 +124,11 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
       if (jumpParam) {
         dvMainStore.addViewTrackFilter(jumpParam)
       }
-      state.initState = false
-      dvMainStore.addOuterParamsFilter(attachParam)
-      state.initState = true
+      if (!ignoreParams) {
+        state.initState = false
+        dvMainStore.addOuterParamsFilter(attachParam)
+        state.initState = true
+      }
       if (props.publicLinkStatus) {
         // 设置浏览器title为当前仪表板名称
         document.title = dvInfo.name
@@ -161,12 +163,14 @@ onMounted(async () => {
   })
   await new Promise(r => (p = r))
   const dvId = embeddedStore.dvId || router.currentRoute.value.query.dvId
+  // 检查外部参数
+  const ignoreParams = router.currentRoute.value.query.ignoreParams === 'true'
   const { dvType, callBackFlag, taskId, showWatermark } = router.currentRoute.value.query
   if (!!taskId) {
     dvMainStore.setCanvasAttachInfo({ taskId, showWatermark })
   }
   if (dvId) {
-    loadCanvasDataAsync(dvId, dvType)
+    await loadCanvasDataAsync(dvId, dvType, ignoreParams)
     return
   }
   dvMainStore.setEmbeddedCallBack(callBackFlag || 'no')
