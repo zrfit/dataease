@@ -869,6 +869,7 @@ const autoStyle = computed(() => {
           height: 16px;
           line-height: 16px;
           color: #575757;
+          white-space: nowrap;
         }
       }
 
