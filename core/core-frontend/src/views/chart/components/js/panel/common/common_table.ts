@@ -1035,7 +1035,7 @@ export function copyContent(s2Instance: SpreadSheet, event, fieldMeta) {
           if (metaObj) {
             fieldVal = metaObj.formatter(value)
           }
-          if (fieldVal === undefined) {
+          if (fieldVal === undefined || fieldVal === null) {
             fieldVal = ''
           }
           if (index !== arr.length - 1) {
