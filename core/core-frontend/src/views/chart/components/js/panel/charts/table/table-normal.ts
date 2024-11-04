@@ -265,7 +265,12 @@ export class TableNormal extends S2ChartView<TableSheet> {
         const containerWidth = containerDom.getBoundingClientRect().width
         const scale = containerWidth / ev.colsHierarchy.width
         if (scale <= 1) {
-          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，不处理
+          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，但是需要处理非整数宽度值，不然会出现透明细线
+          ev.colLeafNodes.reduce((p, n) => {
+            n.width = Math.round(n.width)
+            n.x = p
+            return p + n.width
+          }, 0)
           return
         }
         const totalWidth = ev.colLeafNodes.reduce((p, n) => {
