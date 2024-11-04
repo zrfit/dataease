@@ -300,7 +300,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
                     coreDatasetTableFieldMapper.insert(dsTableFields);
                 });
 
-
+                List<String> dsGroupNameSave = new ArrayList<>();
                 // 持久化数据集
                 newDsGroupInfo.forEach(dsGroup -> {
                     dsTableIdMap.forEach((key, value) -> {
@@ -325,8 +325,10 @@ public class DataVisualizationServer implements DataVisualizationApi {
                         }
 
                     });
-
-
+                    if(dsGroupNameSave.contains(dsGroup.getName())){
+                        dsGroup.setName(dsGroup.getName()+"-"+UUID.randomUUID().toString());
+                    }
+                    dsGroupNameSave.add(dsGroup.getName());
                     datasetGroupManage.innerSave(dsGroup);
                 });
 
