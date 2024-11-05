@@ -453,9 +453,9 @@ public class DatasetDataManage {
                 LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
                 if (row.length > 0) {
                     for (int j = 0; j < fields.size(); j++) {
-                        // 如果字段类型是数值类型的小数，将结果保留8位小数，同时去除科学计数
                         String res = row[j];
-                        if (fields.get(j).getDeType() == 3) {
+                        // 如果字段类型是数值类型的小数，则去除科学计数
+                        if (fields.get(j).getDeType() == 3 && StringUtils.containsIgnoreCase(res, "E")) {
                             BigDecimal bigDecimal = new BigDecimal(res);
                             res = String.format("%.8f", bigDecimal);
                         }
