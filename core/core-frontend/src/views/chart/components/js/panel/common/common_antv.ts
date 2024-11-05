@@ -1,5 +1,6 @@
 import { hexColorToRGBA, parseJson } from '../../util'
 import {
+  DEFAULT_BASIC_STYLE,
   DEFAULT_XAXIS_STYLE,
   DEFAULT_YAXIS_EXT_STYLE,
   DEFAULT_YAXIS_STYLE
@@ -1139,22 +1140,23 @@ export class CustomZoom extends Zoom {
 }
 export function configL7Zoom(chart: Chart, plot: L7Plot<PlotOptions> | Scene) {
   const { basicStyle } = parseJson(chart.customAttr)
-  if (
-    (basicStyle.suspension === false && basicStyle.showZoom === undefined) ||
-    basicStyle.showZoom === false
-  ) {
+  const plotScene = plot instanceof Scene ? plot : plot.scene
+  const zoomOption = plotScene?.getControlByName('zoom')
+  if (zoomOption) {
+    plotScene.removeControl(zoomOption)
+  }
+  if (shouldHideZoom(basicStyle)) {
     return
   }
-  const plotScene = plot instanceof Scene ? plot : plot.scene
-  plot.once('loaded', () => {
-    const zoomOptions = {
-      initZoom: plotScene.getZoom(),
-      center: plotScene.getCenter(),
+  if (!plotScene?.getControlByName('zoom')) {
+    const newZoomOptions = {
+      initZoom: basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5,
+      center: getCenter(basicStyle),
       buttonColor: basicStyle.zoomButtonColor,
       buttonBackground: basicStyle.zoomBackground
     } as any
-    plotScene.addControl(new CustomZoom(zoomOptions))
-  })
+    addCustomZoom(plotScene, newZoomOptions)
+  }
 }
 
 function setStyle(elements: HTMLElement[], styleProp: string, value) {
@@ -1175,4 +1177,36 @@ export function mapRendered(dom: HTMLElement | string) {
     dom = document.getElementById(dom)
   }
   dom.classList.add('de-map-rendered')
+}
+
+/**
+ * 隐藏缩放控件
+ * @param basicStyle
+ */
+function shouldHideZoom(basicStyle: any): boolean {
+  return (
+    (basicStyle.suspension === false && basicStyle.showZoom === undefined) ||
+    basicStyle.showZoom === false
+  )
+}
+
+/**
+ * 获取地图中心点
+ * @param basicStyle
+ */
+function getCenter(basicStyle: any): [number, number] {
+  let center = [DEFAULT_BASIC_STYLE.mapCenter.longitude, DEFAULT_BASIC_STYLE.mapCenter.latitude]
+  if (basicStyle.autoFit === false) {
+    center = [basicStyle.mapCenter.longitude, basicStyle.mapCenter.latitude]
+  }
+  return center
+}
+
+/**
+ * 添加自定义缩放控件
+ * @param plotScene
+ * @param newZoomOptions
+ */
+function addCustomZoom(plotScene: Scene, newZoomOptions: any): void {
+  plotScene.addControl(new CustomZoom(newZoomOptions))
 }
