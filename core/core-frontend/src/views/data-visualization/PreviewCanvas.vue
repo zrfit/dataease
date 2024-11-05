@@ -205,6 +205,9 @@ defineExpose({
 </template>
 
 <style lang="less" scoped>
+::-webkit-scrollbar {
+  display: none;
+}
 .content {
   background-color: #ffffff;
   width: 100%;
@@ -212,9 +215,5 @@ defineExpose({
   align-items: center;
   overflow-x: hidden;
   overflow-y: auto;
-  ::-webkit-scrollbar {
-    width: 0px !important;
-    height: 0px !important;
-  }
 }
 </style>
