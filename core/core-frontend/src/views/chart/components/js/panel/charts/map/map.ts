@@ -278,6 +278,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
       },
       square: {},
       triangle: {
+        border: 'unset',
         borderLeft: '5px solid transparent',
         borderRight: '5px solid transparent',
         borderBottom: '10px solid var(--bgColor)',
