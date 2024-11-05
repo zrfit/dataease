@@ -191,11 +191,29 @@ public class ExtWhere2Str {
                     if (StringUtils.equals(value.get(0), SQLConstants.EMPTY_SIGN)) {
                         whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE, "") + " or " + whereName + " is null ";
                     } else {
-                        if (StringUtils.containsIgnoreCase(request.getDatasetTableField().getType(), "NVARCHAR")
-                                || StringUtils.containsIgnoreCase(request.getDatasetTableField().getType(), "NCHAR")) {
-                            whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE_CH, value.get(0));
+                        // tree的情况需额外处理
+                        if (request.getIsTree()) {
+                            List<DatasetTableFieldDTO> datasetTableFieldList = request.getDatasetTableFieldList();
+                            boolean hasN = false;
+                            for (DatasetTableFieldDTO dto : datasetTableFieldList) {
+                                if (StringUtils.containsIgnoreCase(dto.getType(), "NVARCHAR")
+                                        || StringUtils.containsIgnoreCase(dto.getType(), "NCHAR")) {
+                                    hasN = true;
+                                    break;
+                                }
+                            }
+                            if (hasN) {
+                                whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE_CH, value.get(0));
+                            } else {
+                                whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE, value.get(0));
+                            }
                         } else {
-                            whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE, value.get(0));
+                            if (StringUtils.containsIgnoreCase(request.getDatasetTableField().getType(), "NVARCHAR")
+                                    || StringUtils.containsIgnoreCase(request.getDatasetTableField().getType(), "NCHAR")) {
+                                whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE_CH, value.get(0));
+                            } else {
+                                whereValue = String.format(SQLConstants.WHERE_VALUE_VALUE, value.get(0));
+                            }
                         }
                     }
                 }
