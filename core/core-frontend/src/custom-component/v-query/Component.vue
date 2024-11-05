@@ -564,6 +564,15 @@ const queryData = () => {
         requiredName = next.name
       }
     }
+
+    if (next.displayType === '22') {
+      if (
+        [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
+          .length === 1
+      ) {
+        requiredName = next.name
+      }
+    }
     const keyList = Object.entries(next.checkedFieldsMap)
       .filter(ele => next.checkedFields.includes(ele[0]))
       .filter(ele => !!ele[1])
