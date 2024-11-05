@@ -488,6 +488,9 @@ const clearData = () => {
     })
   })
   ;(list.value || []).reduce((pre, next) => {
+    if (!next.visible) {
+      return pre
+    }
     next.selectValue = next.multiple || +next.displayType === 7 ? [] : undefined
     if (next.optionValueSource === 1 && next.defaultMapValue?.length) {
       next.mapValue = next.multiple ? [] : undefined
