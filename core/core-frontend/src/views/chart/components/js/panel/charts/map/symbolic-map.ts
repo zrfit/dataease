@@ -331,12 +331,22 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
   }
 
   /**
+   * 清除 popup
+   * @param container
+   */
+  clearPopup = container => {
+    const containerElement = document.getElementById(container)
+    containerElement?.querySelectorAll('.l7-popup').forEach((element: Element) => element.remove())
+  }
+
+  /**
    * 构建 tooltip
    * @param chart
    * @param pointLayer
    */
   buildTooltip = (chart, container, pointLayer) => {
     const customAttr = chart.customAttr ? parseJson(chart.customAttr) : null
+    this.clearPopup(container)
     if (customAttr?.tooltip?.show) {
       const { tooltip } = deepCopy(customAttr)
       let showFields = tooltip.showFields || []
