@@ -2491,7 +2491,11 @@ defineExpose({
           </el-checkbox-group>
         </div>
       </div>
-      <div v-if="!!curComponent" class="condition-configuration">
+      <div
+        v-if="!!curComponent"
+        class="condition-configuration"
+        :class="curComponent.auto && 'condition-configuration_hide'"
+      >
         <div class="mask condition" v-if="curComponent.auto"></div>
         <div class="title flex-align-center">
           {{ t('v_query.query_condition_configuration') }}
@@ -3294,6 +3298,10 @@ defineExpose({
       width: 467px;
       position: relative;
       overflow-y: auto;
+
+      &.condition-configuration_hide {
+        overflow: hidden;
+      }
       .mask {
         left: -1px;
         width: calc(100% + 2px);
