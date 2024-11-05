@@ -133,6 +133,10 @@ const handleMouseDown = e => {
   }
 }
 
+const canvasInitImmediately = () => {
+  cyGridster.value.canvasInit()
+}
+
 const canvasInit = (isFistLoad = true) => {
   if (canvasActive.value) {
     renderState.value = true
@@ -218,6 +222,7 @@ const moveOutFromTab = component => {
       componentData: componentData.value
     })
     addItemBox(component)
+    canvasInit()
   }, 500)
 }
 
@@ -272,6 +277,8 @@ watch(
 
 defineExpose({
   addItemBox,
+  canvasInit,
+  canvasInitImmediately,
   getBaseMatrixSize
 })
 </script>
