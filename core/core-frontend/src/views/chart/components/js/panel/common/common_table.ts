@@ -34,7 +34,9 @@ import {
   getPolygonPoints,
   renderPolygon,
   MergedCellInfo,
-  ViewMeta
+  ViewMeta,
+  updateShapeAttr,
+  SHAPE_STYLE_MAP
 } from '@antv/s2'
 import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
@@ -64,8 +66,12 @@ export function getCustomTheme(chart: Chart): S2Theme {
     },
     splitLine: {
       horizontalBorderColor: borderColor,
+      horizontalBorderColorOpacity: 1,
+      horizontalBorderWidth: 1,
       verticalBorderColor: borderColor,
-      horizontalBorderWidth: 0
+      verticalBorderColorOpacity: 1,
+      verticalBorderWidth: 1,
+      showShadow: false,
     },
     cornerCell: {
       cell: {
@@ -280,10 +286,11 @@ export function getCustomTheme(chart: Chart): S2Theme {
       merge(theme, tmpTheme)
       // 这边设置为 0 的话就会显示表头背景颜色，所以要判断一下表头是否关闭
       if (tableHeader.showHorizonBorder === false && tableHeader.showTableHeader !== false) {
-        const tmpTheme = {
+        const tmpTheme: S2Theme = {
           splitLine: {
             horizontalBorderColor: tableHeaderBgColor,
-            horizontalBorderWidth: 0
+            horizontalBorderWidth: 0,
+            horizontalBorderColorOpacity: 0
           },
           colCell: {
             cell: {
@@ -298,7 +305,8 @@ export function getCustomTheme(chart: Chart): S2Theme {
         const tmpTheme: S2Theme = {
           splitLine: {
             verticalBorderColor: tableHeaderBgColor,
-            verticalBorderWidth: 0
+            verticalBorderWidth: 0,
+            verticalBorderColorOpacity: 0
           },
           colCell: {
             cell: {
@@ -406,7 +414,11 @@ export function getCustomTheme(chart: Chart): S2Theme {
         merge(theme, tmpTheme)
       }
       if (tableCell.showVerticalBorder === false) {
-        const tmpTheme = {
+        const tmpTheme: S2Theme = {
+          splitLine: {
+            verticalBorderWidth: 0,
+            verticalBorderColorOpacity: 0
+          },
           dataCell: {
             cell: {
               verticalBorderColor: tableItemBgColor,
@@ -1518,6 +1530,22 @@ class CustomMergedCell extends MergedCell {
       stroke: cellTheme.horizontalBorderColor,
       fill,
       lineHeight: cellTheme.horizontalBorderWidth,
+    })
+  }
+}
+
+export class CustomDataCell extends TableDataCell {
+  /**
+   * 重写这个方法是为了处理底部的汇总行取消 hover 状态时设置 border 为 1,
+   * 这样会导致单元格隐藏横边边框失败，出现一条白线
+   */
+  hideInteractionShape() {
+    this.stateShapes.forEach(shape => {
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent')
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent')
     })
   }
 }

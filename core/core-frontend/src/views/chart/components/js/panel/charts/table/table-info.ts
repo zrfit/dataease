@@ -17,12 +17,13 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { isNumber, merge } from 'lodash-es'
 import {
   copyContent,
+  CustomDataCell,
   getRowIndex,
   SortTooltip
 } from '@/views/chart/components/js/panel/common/common_table'
 
 const { t } = useI18n()
-class ImageCell extends TableDataCell {
+class ImageCell extends CustomDataCell {
   protected drawTextShape(): void {
     const img = new Image()
     const { x, y, width, height, fieldValue } = this.meta
@@ -204,7 +205,7 @@ export class TableInfo extends S2ChartView<TableSheet> {
             pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
         }
       }
-      return new TableDataCell(viewMeta, viewMeta?.spreadsheet)
+      return new CustomDataCell(viewMeta, viewMeta?.spreadsheet)
     }
     // tooltip
     this.configTooltip(chart, s2Options)
