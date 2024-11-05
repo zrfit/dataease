@@ -488,6 +488,9 @@ const clearData = () => {
     })
   })
   ;(list.value || []).reduce((pre, next) => {
+    if (!next.visible) {
+      return pre
+    }
     next.selectValue = next.multiple || +next.displayType === 7 ? [] : undefined
     if (next.optionValueSource === 1 && next.defaultMapValue?.length) {
       next.mapValue = next.multiple ? [] : undefined
@@ -560,6 +563,15 @@ const queryData = () => {
       } else if (
         (Array.isArray(next.selectValue) && !next.selectValue.length) ||
         (next.selectValue !== 0 && !next.selectValue)
+      ) {
+        requiredName = next.name
+      }
+    }
+
+    if (next.displayType === '22') {
+      if (
+        [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
+          .length === 1
       ) {
         requiredName = next.name
       }
