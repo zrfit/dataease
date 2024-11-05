@@ -194,6 +194,7 @@ defineExpose({
       :cur-gap="state.curPreviewGap"
       :is-selector="props.isSelector"
       :download-status="downloadStatus"
+      :show-pop-bar="true"
     ></de-preview>
     <empty-background v-if="!state.initState" description="参数不能为空" img-type="noneWhite" />
   </div>

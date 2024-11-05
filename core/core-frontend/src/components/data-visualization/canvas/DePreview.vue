@@ -78,6 +78,11 @@ const props = defineProps({
   isSelector: {
     type: Boolean,
     default: false
+  },
+  // 显示悬浮按钮
+  showPopBar: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -91,7 +96,8 @@ const {
   previewActive,
   downloadStatus,
   outerScale,
-  outerSearchCount
+  outerSearchCount,
+  showPopBar
 } = toRefs(props)
 const domId = 'preview-' + canvasId.value
 const scaleWidthPoint = ref(100)
@@ -398,7 +404,10 @@ const dataVPreview = computed(
 
 const linkOptBarShow = computed(() => {
   return Boolean(
-    canvasStyleData.value.suspensionButtonAvailable && !inMobile.value && !mobileInPc.value
+    canvasStyleData.value.suspensionButtonAvailable &&
+      !inMobile.value &&
+      !mobileInPc.value &&
+      showPopBar.value
   )
 })
 

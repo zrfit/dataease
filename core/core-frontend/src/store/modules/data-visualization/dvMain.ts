@@ -189,7 +189,8 @@ export const dvMainStore = defineStore('dataVisualization', {
       // 基础网格信息
       baseCellInfo: {},
       dataPrepareState: false, //数据准备状态
-      multiplexingStyleAdapt: true //复用样式跟随主题
+      multiplexingStyleAdapt: true, //复用样式跟随主题
+      mainScrollTop: 0 //主画布运动量
     }
   },
   actions: {
@@ -1330,6 +1331,7 @@ export const dvMainStore = defineStore('dataVisualization', {
         type: null,
         mobileLayout: false
       }
+      this.mainScrollTop = 0
     },
     setViewDataDetails(viewId, chartDataInfo) {
       this.canvasViewDataInfo[viewId] = chartDataInfo.data
