@@ -335,8 +335,9 @@ const componentMoveIn = component => {
             component.style.left = 0
             component.style.top = 0
             tabItem.componentData.push(component)
+            refInstance.addItemBox(component) //在适当的时候初始化布局组件
             nextTick(() => {
-              refInstance.addItemBox(component) //在适当的时候初始化布局组件
+              refInstance.canvasInitImmediately()
             })
           }
         } else {

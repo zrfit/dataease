@@ -349,7 +349,7 @@ const coordinates = ref([]) //坐标点集合
 
 let lastTask = undefined
 let isOverlay = false //是否正在交换位置
-let moveTime = 200 //移动动画时间
+let moveTime = 100 //移动动画时间
 
 const itemMaxY = ref(0)
 let itemMaxX = 0
@@ -874,6 +874,11 @@ function removeItemById(componentId) {
         removeItem(index)
       }
     })
+    if (!isMainCanvas(canvasId.value)) {
+      nextTick(() => {
+        canvasInit()
+      })
+    }
   }
 }
 
