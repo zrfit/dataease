@@ -1,6 +1,10 @@
 import { useI18n } from '@/hooks/web/useI18n'
 import { formatterItem, valueFormatter } from '@/views/chart/components/js/formatter'
-import { copyContent, SortTooltip } from '@/views/chart/components/js/panel/common/common_table'
+import {
+  copyContent,
+  CustomDataCell,
+  SortTooltip
+} from '@/views/chart/components/js/panel/common/common_table'
 import { S2ChartView, S2DrawOptions } from '@/views/chart/components/js/panel/types/impl/s2'
 import { parseJson } from '@/views/chart/components/js/util'
 import {
@@ -8,11 +12,8 @@ import {
   S2DataConfig,
   S2Event,
   S2Options,
-  SHAPE_STYLE_MAP,
   TableColCell,
-  TableDataCell,
   TableSheet,
-  updateShapeAttr,
   ViewMeta
 } from '@antv/s2'
 import { cloneDeep, isNumber } from 'lodash-es'
@@ -210,7 +211,7 @@ export class TableNormal extends S2ChartView<TableSheet> {
       newData.push(summaryObj)
       s2Options.dataCell = viewMeta => {
         if (viewMeta.rowIndex !== newData.length - 1) {
-          return new TableDataCell(viewMeta, viewMeta.spreadsheet)
+          return new CustomDataCell(viewMeta, viewMeta.spreadsheet)
         }
         if (viewMeta.colIndex === 0) {
           if (tableHeader.showIndex) {
@@ -334,7 +335,7 @@ export class TableNormal extends S2ChartView<TableSheet> {
   }
 }
 
-class SummaryCell extends TableDataCell {
+class SummaryCell extends CustomDataCell {
   getTextStyle() {
     const textStyle = cloneDeep(this.theme.colCell.bolderText)
     textStyle.textAlign = this.theme.dataCell.text.textAlign
@@ -343,19 +344,5 @@ class SummaryCell extends TableDataCell {
   getBackgroundColor() {
     const { backgroundColor, backgroundColorOpacity } = this.theme.colCell.cell
     return { backgroundColor, backgroundColorOpacity }
-  }
-  /**
-   * 重写这个方法是为了处理底部的汇总行取消 hover 状态时设置 border 为 1,
-   * 这样会导致单元格隐藏横边边框失败，出现一条白线
-   */
-  hideInteractionShape() {
-    const width = this.theme.dataCell.cell.horizontalBorderWidth
-    this.stateShapes.forEach(shape => {
-      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0)
-      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent')
-      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0)
-      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, width)
-      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent')
-    })
   }
 }
