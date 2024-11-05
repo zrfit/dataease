@@ -101,5 +101,8 @@ defineExpose({
   align-items: center;
   flex-direction: column;
   justify-content: center; /* 上下居中 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 </style>
