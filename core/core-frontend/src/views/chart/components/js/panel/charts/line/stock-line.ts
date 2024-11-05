@@ -610,6 +610,7 @@ export class StockLine extends G2PlotChartView<MixOptions, Mix> {
               label
             }
           : {
+              ...yAxisOptions['yAxis'],
               label,
               grid: null,
               line: null
