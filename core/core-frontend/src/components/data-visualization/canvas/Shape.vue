@@ -156,7 +156,8 @@ const {
   tabCollisionActiveId,
   tabMoveInActiveId,
   tabMoveOutComponentId,
-  mobileInPc
+  mobileInPc,
+  mainScrollTop
 } = storeToRefs(dvMainStore)
 const { editorMap, areaData, isCtrlOrCmdDown } = storeToRefs(composeStore)
 const emit = defineEmits([
@@ -558,7 +559,7 @@ const handleMouseDownOnShape = e => {
         mouseY:
           !isDashboard() && outerTabDom
             ? outerTabDom.offsetTop + curDom.offsetTop + offsetY + 100
-            : curY,
+            : curY + mainScrollTop.value,
         width: componentWidth,
         height: componentHeight
       })

@@ -58,7 +58,8 @@ const scaleMin = ref(100)
 
 const state = reactive({
   screenWidth: 1920,
-  screenHeight: 1080
+  screenHeight: 1080,
+  curScrollTop: 0
 })
 
 //仪表板矩阵信息适配，
@@ -266,6 +267,12 @@ const scrollTo = y => {
   })
 }
 
+const scrollCanvas = () => {
+  if (isMainCanvas(canvasId.value)) {
+    dvMainStore.mainScrollTop = canvasInner.value.scrollTop
+  }
+}
+
 watch(
   () => canvasActive.value,
   () => {
@@ -299,6 +306,7 @@ defineExpose({
       @drop="handleDrop"
       @dragover="handleDragOver"
       @mousedown="handleMouseDown"
+      @scroll="scrollCanvas"
     >
       <canvas-core
         ref="cyGridster"
