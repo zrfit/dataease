@@ -256,7 +256,7 @@ initParams()
     <el-row class="de-collapse-style">
       <el-collapse v-model="styleActiveNames" class="style-collapse">
         <el-collapse-item :effect="themes" name="basicStyle" :title="t('chart.basic_style')">
-          <el-form label-position="top">
+          <el-form @keydown.stop.prevent.enter label-position="top">
             <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
               <el-checkbox
                 :effect="themes"
@@ -394,7 +394,7 @@ initParams()
           </el-form>
         </el-collapse-item>
         <el-collapse-item :effect="themes" name="addition" title="查询条件">
-          <el-form label-position="top">
+          <el-form @keydown.stop.prevent.enter label-position="top">
             <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
               <el-checkbox
                 :effect="themes"
@@ -638,7 +638,7 @@ initParams()
           </el-form>
         </collapse-switch-item>
         <el-collapse-item :effect="themes" name="button" :title="t('commons.button')">
-          <el-form label-position="top">
+          <el-form @keydown.stop.prevent.enter label-position="top">
             <el-form-item
               :effect="themes"
               class="form-item"
