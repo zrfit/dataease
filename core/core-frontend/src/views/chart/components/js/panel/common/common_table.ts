@@ -1426,29 +1426,33 @@ export async function exportPivotExcel(instance: PivotSheet, chart: ChartObj) {
   }
 }
 
-export function configMergeCells(chart: Chart, options: S2Options) {
+export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S2DataConfig) {
   const { mergeCells } = parseJson(chart.customAttr).tableCell
   const { showIndex } = parseJson(chart.customAttr).tableHeader
   if (mergeCells) {
-    const xAxis = chart.xAxis
-    const quotaIndex = xAxis.findIndex(axis => axis.groupType === 'q')
+    const fields = chart.data.fields || []
+    const fielsMap = fields.reduce((p, n) => {
+      p[n.dataeaseName] = n
+      return p
+    }, {}) || {}
+    const quotaIndex = dataConfig.meta.findIndex(m => fielsMap[m.field].groupType === 'q')
     const data = chart.data?.tableRow
     if (quotaIndex === 0 || !data?.length) {
       return
     }
     const mergedColInfo: number[][][] = [[[0, data.length - 1]]]
     const mergedCellsInfo = []
-    const axisToMerge = xAxis.filter((a, i) => a.hide !== true && (i < quotaIndex || quotaIndex === -1))
+    const axisToMerge = dataConfig.meta.filter((_, i) => i < quotaIndex || quotaIndex === -1)
     axisToMerge.forEach((a, i) => {
       const preMergedColInfo = mergedColInfo[i]
       const curMergedColInfo = []
       mergedColInfo.push(curMergedColInfo)
       preMergedColInfo.forEach(range => {
         const [start, end] = range
-        let lastVal = data[start][a.dataeaseName]
+        let lastVal = data[start][a.field]
         let lastIndex = start
         for (let index = start; index <= end; index++) {
-          const curVal = data[index][a.dataeaseName]
+          const curVal = data[index][a.field]
           if (curVal !== lastVal || index === end) {
             const curRange = index - lastIndex
             if (curRange > 1 ||
