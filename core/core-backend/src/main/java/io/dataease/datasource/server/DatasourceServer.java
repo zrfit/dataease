@@ -126,7 +126,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     public boolean checkRepeat(@RequestBody BusiDsRequest dataSourceDTO) {
-        if (Arrays.asList("API", "Excel", "folder").contains(dataSourceDTO.getType())) {
+        if (Arrays.asList("API", "Excel", "folder", "es").contains(dataSourceDTO.getType())) {
             return false;
         }
         BusiNodeRequest request = new BusiNodeRequest();
@@ -267,7 +267,11 @@ public class DatasourceServer implements DatasourceApi {
                 try {
                     datasourceSyncManage.createEngineTable(datasourceRequest.getTable(), tableFields);
                 } catch (Exception e) {
-                    DEException.throwException("Failed to create table " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    if (e.getMessage().toLowerCase().contains("Row size too large".toLowerCase())) {
+                        DEException.throwException("文本内容超出最大支持范围： " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    } else {
+                        DEException.throwException("Failed to create table " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    }
                 }
             }
             commonThreadPool.addTask(() -> {
