@@ -181,8 +181,12 @@ const getResultNum = (
   numValueEnd,
   numValueStart,
   defaultNumValueStart,
+  defaultValueCheck,
   firstLoad
 ) => {
+  if (firstLoad && !defaultValueCheck) {
+    return []
+  }
   const valueS = firstLoad ? defaultNumValueStart : numValueStart
   const valueE = firstLoad ? defaultNumValueEnd : numValueEnd
   return [valueS ?? '', valueE ?? ''].filter(ele => ele !== '')
@@ -347,6 +351,7 @@ export const searchQuery = (queryComponentList, filter, curComponentId, firstLoa
               numValueEnd,
               numValueStart,
               defaultNumValueStart,
+              defaultValueCheck,
               firstLoad
             )
           } else {

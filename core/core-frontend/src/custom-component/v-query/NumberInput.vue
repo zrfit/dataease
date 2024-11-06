@@ -40,7 +40,11 @@ const props = defineProps({
 
 const { config } = toRefs(props)
 const setParams = () => {
-  if (!config.value.defaultValueCheck) return
+  if (!config.value.defaultValueCheck) {
+    config.value.numValueEnd = undefined
+    config.value.numValueStart = undefined
+    return
+  }
   const { defaultNumValueEnd, defaultNumValueStart } = config.value
   config.value.numValueEnd = defaultNumValueEnd
   config.value.numValueStart = defaultNumValueStart
