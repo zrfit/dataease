@@ -1107,7 +1107,12 @@ export const dvMainStore = defineStore('dataVisualization', {
         targetInfoList.forEach(targetInfo => {
           const targetInfoArray = targetInfo.split('#')
           const targetViewId = targetInfoArray[0] // 目标图表
-          if (element.component === 'UserView' && element.id === targetViewId) {
+          // DE_EMPTY 为清空条件标志
+          if (
+            element.component === 'UserView' &&
+            element.id === targetViewId &&
+            'DE_EMPTY' !== paramValueStr
+          ) {
             // 如果目标图表 和 当前循环组件id相等 则进行条件增减
             const targetFieldId = targetInfoArray[1] // 目标图表列ID
             const condition = {
@@ -1152,6 +1157,8 @@ export const dvMainStore = defineStore('dataVisualization', {
                     filterItem['selectValue'] = queryParams[0]
                     filterItem['defaultValue'] = queryParams[0]
                   }
+                  filterItem['defaultMapValue'] = queryParams
+                  filterItem['mapValue'] = queryParams
                 } else if (filterItem.displayType === '1') {
                   // 1 时间类型
                   filterItem['selectValue'] = queryParams[0]
@@ -1162,8 +1169,14 @@ export const dvMainStore = defineStore('dataVisualization', {
                   filterItem['defaultValue'] = queryParams
                 } else if (filterItem.displayType === '8') {
                   // 8 文本搜索
-                  filterItem.conditionValueF = parmaValueSource + ''
-                  filterItem.defaultConditionValueF = parmaValueSource + ''
+                  filterItem['conditionValueF'] = parmaValueSource + ''
+                  filterItem['defaultConditionValueF'] = parmaValueSource + ''
+                }
+                if ('DE_EMPTY' === paramValueStr) {
+                  filterItem['selectValue'] = null
+                  filterItem['defaultValue'] = null
+                  filterItem['conditionValueF'] = null
+                  filterItem['defaultConditionValueF'] = null
                 }
               }
             })
@@ -1268,8 +1281,8 @@ export const dvMainStore = defineStore('dataVisualization', {
                   }
                 } else if (filterItem.displayType === '8') {
                   // 8 文本搜索
-                  filterItem.conditionValueF = queryParams[0]
-                  filterItem.defaultConditionValueF = queryParams[0]
+                  filterItem['conditionValueF'] = queryParams[0]
+                  filterItem['defaultConditionValueF'] = queryParams[0]
                 }
               }
             })
