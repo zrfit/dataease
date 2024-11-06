@@ -126,7 +126,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     public boolean checkRepeat(@RequestBody BusiDsRequest dataSourceDTO) {
-        if (Arrays.asList("API", "Excel", "folder").contains(dataSourceDTO.getType())) {
+        if (Arrays.asList("API", "Excel", "folder", "es").contains(dataSourceDTO.getType())) {
             return false;
         }
         BusiNodeRequest request = new BusiNodeRequest();
