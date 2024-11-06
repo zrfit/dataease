@@ -631,6 +631,7 @@ public class ExportCenterManage implements BaseExportApi {
         boolean isCreated = directory.mkdir();
         TokenUserBO tokenUserBO = AuthUtils.getUser();
         Future future = scheduledThreadPoolExecutor.submit(() -> {
+            LicenseUtil.validate();
             AuthUtils.setUser(tokenUserBO);
             try {
                 exportTask.setExportStatus("IN_PROGRESS");
