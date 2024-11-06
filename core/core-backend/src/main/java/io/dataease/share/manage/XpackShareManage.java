@@ -199,7 +199,7 @@ public class XpackShareManage {
         if (ObjectUtils.isEmpty(sharedBase) || !sharedBase.isPeRequire()) return true;
         Long exp = share.getExp();
         String pwd = share.getPwd();
-        return StringUtils.isNotBlank(pwd) && ObjectUtils.isNotEmpty(exp);
+        return StringUtils.isNotBlank(pwd) && ObjectUtils.isNotEmpty(exp) && exp > 0L;
     }
 
     public XpackShareProxyVO proxyInfo(XpackShareProxyRequest request) {
