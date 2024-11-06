@@ -330,7 +330,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
           ...LEGEND_SHAPE_STYLE_MAP[legend.icon],
           width: '9px',
           height: '9px',
-          border: '0.01px solid #f4f4f4'
+          ...(legend.icon === 'triangle' ? {} : { border: '0.01px solid #f4f4f4' })
         }
       }
     }
