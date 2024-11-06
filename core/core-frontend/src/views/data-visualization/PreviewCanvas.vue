@@ -106,7 +106,7 @@ const loadCanvasDataAsync = async (dvId, dvType, ignoreParams = false) => {
     }
   }
 
-  initCanvasData(
+  await initCanvasData(
     dvId,
     dvType,
     function ({
