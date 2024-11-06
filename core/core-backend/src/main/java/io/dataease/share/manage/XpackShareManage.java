@@ -64,6 +64,15 @@ public class XpackShareManage {
         return xpackShareMapper.selectOne(queryWrapper);
     }
 
+    public String queryPwd(Long resourceId, Long userId) {
+        QueryWrapper<XpackShare> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("creator", userId);
+        queryWrapper.eq("resource_id", resourceId);
+        XpackShare xpackShare = xpackShareMapper.selectOne(queryWrapper);
+        if (ObjectUtils.isEmpty(xpackShare)) return null;
+        return xpackShare.getPwd();
+    }
+
     @Transactional
     public void switcher(Long resourceId) {
         XpackShare originData = queryByResource(resourceId);
