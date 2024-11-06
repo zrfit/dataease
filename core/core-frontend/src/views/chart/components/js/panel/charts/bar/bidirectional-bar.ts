@@ -4,10 +4,13 @@ import {
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import { cloneDeep, defaultTo, isEmpty, map } from 'lodash-es'
 import {
+  configPlotTooltipEvent,
   getPadding,
+  getTooltipContainer,
   getYAxis,
   getYAxisExt,
-  setGradientColor
+  setGradientColor,
+  TOOLTIP_TPL
 } from '@/views/chart/components/js/panel/common/common_antv'
 import type {
   BidirectionalBar as G2BidirectionalBar,
@@ -171,7 +174,7 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
         ...sourceData[0]
       }
     })
-
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -299,7 +302,10 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
           })
         }
         return result
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

@@ -3,7 +3,13 @@ import {
   G2PlotDrawOptions
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Bar, BarOptions } from '@antv/g2plot/esm/plots/bar'
-import { getPadding, setGradientColor } from '@/views/chart/components/js/panel/common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  setGradientColor,
+  TOOLTIP_TPL
+} from '@/views/chart/components/js/panel/common/common_antv'
 import { cloneDeep, find } from 'lodash-es'
 import { flow, hexColorToRGBA, parseJson } from '@/views/chart/components/js/util'
 import { valueFormatter } from '@/views/chart/components/js/formatter'
@@ -161,7 +167,7 @@ export class RangeBar extends G2PlotChartView<BarOptions, Bar> {
     const newChart = new BarClass(container, options)
 
     newChart.on('interval:click', action)
-
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -232,7 +238,10 @@ export class RangeBar extends G2PlotChartView<BarOptions, Bar> {
                 }
               }
               return { value: res, values: param.values, name: param.field }
-            }
+            },
+            container: getTooltipContainer(`tooltip-${chart.id}`),
+            itemTpl: TOOLTIP_TPL,
+            enterable: true
           }
         } else {
           tooltip = false
