@@ -10,7 +10,8 @@ import {
   getGeoJsonFile,
   hexColorToRGBA,
   parseJson,
-  getMaxAndMinValueByData
+  getMaxAndMinValueByData,
+  filterEmptyMinValue
 } from '@/views/chart/components/js/util'
 import {
   handleGeoJson,
@@ -102,7 +103,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
           from: 'map',
           data: {
             max: maxValue,
-            min: minValue,
+            min: minValue ?? filterEmptyMinValue(sourceData, 'value'),
             legendNumber: legendNumber
           }
         })
@@ -252,7 +253,10 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     if (colorScale.length) {
       options.color['value'] = colorScale.map(item => (item.color ? item.color : item))
       if (colorScale[0].value && !misc.mapAutoLegend) {
-        options.color['scale']['domain'] = [minValue, maxValue]
+        options.color['scale']['domain'] = [
+          minValue ?? filterEmptyMinValue(sourceData, 'value'),
+          maxValue
+        ]
       }
     }
     return options
@@ -271,6 +275,33 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     const { legend } = parseJson(chart.customStyle)
     if (!legend.show) {
       return options
+    }
+    // 内部函数 创建自定义图例的内容
+    const createLegendCustomContent = showItems => {
+      const containerDom = createDom(CONTAINER_TPL) as HTMLElement
+      const listDom = containerDom.getElementsByClassName(LIST_CLASS)[0] as HTMLElement
+      showItems.forEach(item => {
+        let value = '-'
+        if (item.value !== '') {
+          if (Array.isArray(item.value)) {
+            item.value.forEach((v, i) => {
+              item.value[i] = Number.isNaN(v) || v === 'NaN' ? 'NaN' : parseFloat(v).toFixed(0)
+            })
+            value = item.value.join('-')
+          } else {
+            const tmp = item.value as string
+            value = Number.isNaN(tmp) || tmp === 'NaN' ? 'NaN' : parseFloat(tmp).toFixed(0)
+          }
+        }
+        const substituteObj = { ...item, value }
+
+        const domStr = substitute(ITEM_TPL, substituteObj)
+        const itemDom = createDom(domStr)
+        // 给 legend 形状用的
+        itemDom.style.setProperty('--bgColor', item.color)
+        listDom.appendChild(itemDom)
+      })
+      return listDom
     }
     const LEGEND_SHAPE_STYLE_MAP = {
       circle: {
@@ -324,61 +355,17 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
           color: rangeColor
         })
       })
-      customLegend['items'] = items
-      const findColorByValue = (value, intervals) => {
-        if (value) {
-          for (const interval of intervals) {
-            if (value >= interval.value[0] && value <= interval.value[1]) {
-              return interval.color
-            }
-          }
+      customLegend['customContent'] = (_: string, _items: CategoryLegendListItem[]) => {
+        if (items?.length) {
+          return createLegendCustomContent(items)
         }
-        // 或者可以返回 undefined
-        return null
-      }
-      options.color.value = t => {
-        const c = findColorByValue(t.value, items)
-        return c ? c : null
-      }
-      customLegend['domStyles'] = {
-        ...customLegend['domStyles'],
-        'l7plot-legend l7plot-legend__category': {
-          'box-shadow': '0px 0px 0px 0px',
-          'background-color': 'var(--bgColor)',
-          padding: 0
-        },
-        'l7plot-legend__list-item': {
-          'margin-bottom': '3px'
-        }
+        return ''
       }
     } else {
       customLegend['customContent'] = (_: string, items: CategoryLegendListItem[]) => {
         const showItems = items?.length > 30 ? items.slice(0, 30) : items
         if (showItems?.length) {
-          const containerDom = createDom(CONTAINER_TPL) as HTMLElement
-          const listDom = containerDom.getElementsByClassName(LIST_CLASS)[0] as HTMLElement
-          showItems.forEach(item => {
-            let value = '-'
-            if (item.value !== '') {
-              if (Array.isArray(item.value)) {
-                item.value.forEach((v, i) => {
-                  item.value[i] = Number.isNaN(v) || v === 'NaN' ? 'NaN' : parseFloat(v).toFixed(0)
-                })
-                value = item.value.join('-')
-              } else {
-                const tmp = item.value as string
-                value = Number.isNaN(tmp) || tmp === 'NaN' ? 'NaN' : parseFloat(tmp).toFixed(0)
-              }
-            }
-            const substituteObj = { ...item, value }
-
-            const domStr = substitute(ITEM_TPL, substituteObj)
-            const itemDom = createDom(domStr)
-            // 给 legend 形状用的
-            itemDom.style.setProperty('--bgColor', item.color)
-            listDom.appendChild(itemDom)
-          })
-          return listDom
+          return createLegendCustomContent(showItems)
         }
         return ''
       }

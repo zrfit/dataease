@@ -1431,11 +1431,11 @@ export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S
   const { showIndex } = parseJson(chart.customAttr).tableHeader
   if (mergeCells) {
     const fields = chart.data.fields || []
-    const fielsMap = fields.reduce((p, n) => {
+    const fieldMap = fields.reduce((p, n) => {
       p[n.dataeaseName] = n
       return p
     }, {}) || {}
-    const quotaIndex = dataConfig.meta.findIndex(m => fielsMap[m.field].groupType === 'q')
+    const quotaIndex = dataConfig.meta.findIndex(m => fieldMap[m.field].groupType === 'q')
     const data = chart.data?.tableRow
     if (quotaIndex === 0 || !data?.length) {
       return
