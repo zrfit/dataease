@@ -168,7 +168,8 @@ export function getLabel(chart: Chart) {
               'pie-donut',
               'radar',
               'waterfall',
-              't-heatmap'
+              't-heatmap',
+              'bar'
             ].includes(chart.type)
           ) {
             layout.push({ type: 'hide-overlap' })
