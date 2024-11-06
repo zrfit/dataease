@@ -537,6 +537,7 @@ const boxWidth = computed(() => {
 
 const queryData = () => {
   let requiredName = ''
+  let numName = ''
   const emitterList = (element.value.propValue || []).reduce((pre, next) => {
     if (next.required) {
       if (!next.defaultValueCheck) {
@@ -570,6 +571,13 @@ const queryData = () => {
 
     if (next.displayType === '22') {
       if (
+        !isNaN(next.numValueEnd) &&
+        !isNaN(next.numValueStart) &&
+        next.numValueEnd < next.numValueStart
+      ) {
+        numName = next.name
+      }
+      if (
         [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
           .length === 1
       ) {
@@ -585,6 +593,11 @@ const queryData = () => {
   }, [])
   if (!!requiredName) {
     ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
+    return
+  }
+
+  if (!!numName) {
+    ElMessage.error(`【${numName}】数值区间最大值必须大于最小值`)
     return
   }
   if (!emitterList.length) return

@@ -1153,6 +1153,24 @@ const validate = () => {
       ElMessage.error(t('v_query.be_linked_first'))
       return true
     }
+
+    if (ele.displayType === '22' && ele.defaultValueCheck) {
+      if (
+        (ele.defaultNumValueEnd !== 0 && !ele.defaultNumValueEnd) ||
+        (ele.defaultNumValueStart !== 0 && !ele.defaultNumValueStart)
+      ) {
+        ElMessage.error(t('v_query.cannot_be_empty_de'))
+        return true
+      }
+      if (
+        !isNaN(ele.defaultNumValueEnd) &&
+        !isNaN(ele.defaultNumValueStart) &&
+        ele.defaultNumValueEnd < ele.defaultNumValueStart
+      ) {
+        ElMessage.error('数值区间最大值必须大于最小值')
+        return true
+      }
+    }
     let displayTypeField = null
     let errorTips = t('v_query.cannot_be_performed')
     let hasParameterTimeArrType = 0
@@ -2983,7 +3001,7 @@ defineExpose({
                 <el-radio-group class="larger-radio" v-model="curComponent.conditionType">
                   <el-radio :label="0">{{ t('v_query.single_condition') }}</el-radio>
                   <el-radio :label="1" :disabled="!!curComponent.parameters.length">{{
-                    t('v_query.single_condition')
+                    t('v_query.with_condition')
                   }}</el-radio>
                   <el-radio :label="2" :disabled="!!curComponent.parameters.length">{{
                     t('v_query.or_condition')
