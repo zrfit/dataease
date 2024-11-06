@@ -1145,21 +1145,21 @@ export const dvMainStore = defineStore('dataVisualization', {
                   // 0 文本类型 1 数字类型
                   if (filterItem.multiple) {
                     // multiple === true 多选
-                    filterItem.selectValue = queryParams
-                    filterItem.defaultValue = queryParams
+                    filterItem['selectValue'] = queryParams
+                    filterItem['defaultValue'] = queryParams
                   } else {
                     // 单选
-                    filterItem.selectValue = queryParams[0]
-                    filterItem.defaultValue = queryParams[0]
+                    filterItem['selectValue'] = queryParams[0]
+                    filterItem['defaultValue'] = queryParams[0]
                   }
                 } else if (filterItem.displayType === '1') {
                   // 1 时间类型
-                  filterItem.selectValue = queryParams[0]
-                  filterItem.defaultValue = queryParams[0]
+                  filterItem['selectValue'] = queryParams[0]
+                  filterItem['defaultValue'] = queryParams[0]
                 } else if (filterItem.displayType === '7') {
                   // 7 时间范围类型
-                  filterItem.selectValue = queryParams
-                  filterItem.defaultValue = queryParams
+                  filterItem['selectValue'] = queryParams
+                  filterItem['defaultValue'] = queryParams
                 } else if (filterItem.displayType === '8') {
                   // 8 文本搜索
                   filterItem.conditionValueF = parmaValueSource + ''
@@ -1243,26 +1243,28 @@ export const dvMainStore = defineStore('dataVisualization', {
                   // 0 文本类型 1 数字类型
                   if (filterItem.multiple) {
                     // multiple === true 多选
-                    filterItem.selectValue = queryParams
-                    filterItem.defaultValue = queryParams
+                    filterItem['selectValue'] = queryParams
+                    filterItem['defaultValue'] = queryParams
                   } else {
                     // 单选
-                    filterItem.selectValue = queryParams[0]
-                    filterItem.defaultValue = queryParams[0]
+                    filterItem['selectValue'] = queryParams[0]
+                    filterItem['defaultValue'] = queryParams[0]
                   }
+                  filterItem['defaultMapValue'] = queryParams
+                  filterItem['mapValue'] = queryParams
                 } else if (filterItem.displayType === '1') {
                   // 1 时间类型
-                  filterItem.selectValue = queryParams[0]
-                  filterItem.defaultValue = queryParams[0]
+                  filterItem['selectValue'] = queryParams[0]
+                  filterItem['defaultValue'] = queryParams[0]
                 } else if (filterItem.displayType === '7') {
                   // 7 时间范围类型
                   if (QDItem.timeValue && Array.isArray(QDItem.timeValue)) {
                     // 如果dimension.timeValue存在值且是数组 目前判断为是时间组件
-                    filterItem.selectValue = QDItem.timeValue
-                    filterItem.defaultValue = QDItem.timeValue
+                    filterItem['selectValue'] = QDItem.timeValue
+                    filterItem['defaultValue'] = QDItem.timeValue
                   } else {
-                    filterItem.selectValue = queryParams
-                    filterItem.defaultValue = queryParams
+                    filterItem['selectValue'] = queryParams
+                    filterItem['defaultValue'] = queryParams
                   }
                 } else if (filterItem.displayType === '8') {
                   // 8 文本搜索
