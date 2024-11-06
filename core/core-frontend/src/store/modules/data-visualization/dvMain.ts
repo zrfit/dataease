@@ -1108,30 +1108,29 @@ export const dvMainStore = defineStore('dataVisualization', {
           const targetInfoArray = targetInfo.split('#')
           const targetViewId = targetInfoArray[0] // 目标图表
           // DE_EMPTY 为清空条件标志
-          if (
-            element.component === 'UserView' &&
-            element.id === targetViewId &&
-            'DE_EMPTY' !== paramValueStr
-          ) {
-            // 如果目标图表 和 当前循环组件id相等 则进行条件增减
-            const targetFieldId = targetInfoArray[1] // 目标图表列ID
-            const condition = {
-              fieldId: targetFieldId,
-              operator: operator,
-              value: paramValue,
-              viewIds: [targetViewId]
-            }
-            let j = currentFilters.length
-            while (j--) {
-              const filter = currentFilters[j]
-              // 兼容性准备 viewIds 只会存放一个值
-              if (targetFieldId === filter.fieldId && filter.viewIds.includes(targetViewId)) {
-                currentFilters.splice(j, 1)
+          if (element.component === 'UserView' && element.id === targetViewId) {
+            if ('DE_EMPTY' !== paramValueStr) {
+              // 如果目标图表 和 当前循环组件id相等 则进行条件增减
+              const targetFieldId = targetInfoArray[1] // 目标图表列ID
+              const condition = {
+                fieldId: targetFieldId,
+                operator: operator,
+                value: paramValue,
+                viewIds: [targetViewId]
               }
+              let j = currentFilters.length
+              while (j--) {
+                const filter = currentFilters[j]
+                // 兼容性准备 viewIds 只会存放一个值
+                if (targetFieldId === filter.fieldId && filter.viewIds.includes(targetViewId)) {
+                  currentFilters.splice(j, 1)
+                }
+              }
+              // 不存在该条件 且 条件有效 直接保存该条件
+              // !filterExist && vValid && currentFilters.push(condition)
+
+              currentFilters.push(condition)
             }
-            // 不存在该条件 且 条件有效 直接保存该条件
-            // !filterExist && vValid && currentFilters.push(condition)
-            currentFilters.push(condition)
             preActiveComponentIds.push(element.id)
           }
           if (element.component === 'VQuery') {
