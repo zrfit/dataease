@@ -1505,7 +1505,10 @@ export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S
 }
 
 export function getRowIndex(mergedCellsInfo: MergedCellInfo[][], meta: ViewMeta): number {
-  let curRangeStartIndex = 0
+  if (!mergedCellsInfo?.length) {
+    return meta.rowIndex + 1
+  }
+  let curRangeStartIndex = meta.rowIndex
   const lostCells = mergedCellsInfo.reduce((p, n) => {
     if (n[0].colIndex !== 0) {
       return p
