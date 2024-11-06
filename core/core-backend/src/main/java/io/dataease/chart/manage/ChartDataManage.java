@@ -316,6 +316,11 @@ public class ChartDataManage {
                                 dillAxis.add(nextDrillField);
                                 fields.add(nextDrillField.getId());
                             } else {
+                                Optional<ChartViewFieldDTO> axis = xAxis.stream().filter(x -> Objects.equals(x.getId(), nextDrillField.getId())).findFirst();
+                                axis.ifPresent(field -> {
+                                    field.setSort(nextDrillField.getSort());
+                                    field.setCustomSort(nextDrillField.getCustomSort());
+                                });
                                 dillAxis.add(nextDrillField);
                             }
                         }
