@@ -8,6 +8,7 @@ import { valueFormatter } from '@/views/chart/components/js/formatter'
 import { useI18n } from '@/hooks/web/useI18n'
 import { isEmpty, map } from 'lodash-es'
 import { cloneDeep, defaultTo } from 'lodash-es'
+import { configPlotTooltipEvent, getTooltipContainer, TOOLTIP_TPL } from '../../common/common_antv'
 
 const { t } = useI18n()
 /**
@@ -209,6 +210,7 @@ export class Quadrant extends G2PlotChartView<ScatterOptions, G2Scatter> {
     newChart.on('point:click', action)
     newChart.on('click', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
     newChart.on('afterrender', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -379,7 +381,10 @@ export class Quadrant extends G2PlotChartView<ScatterOptions, G2Scatter> {
           })
         }
         return result
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

@@ -19,9 +19,12 @@ import {
   BAR_EDITOR_PROPERTY_INNER
 } from '@/views/chart/components/js/panel/charts/bar/common'
 import {
+  configPlotTooltipEvent,
   getLabel,
   getPadding,
-  setGradientColor
+  getTooltipContainer,
+  setGradientColor,
+  TOOLTIP_TPL
 } from '@/views/chart/components/js/panel/common/common_antv'
 import { useI18n } from '@/hooks/web/useI18n'
 import { DEFAULT_LABEL } from '@/views/chart/components/editor/util/chart'
@@ -82,6 +85,7 @@ export class Bar extends G2PlotChartView<ColumnOptions, Column> {
     newChart = new ColumnClass(container, options)
     newChart.on('interval:click', action)
     extremumEvt(newChart, chart, options, container)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -308,7 +312,10 @@ export class StackBar extends Bar {
         const res = valueFormatter(param.value, tooltipAttr.tooltipFormatter)
         obj.value = res ?? ''
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,
@@ -522,7 +529,10 @@ export class GroupStackBar extends StackBar {
         const obj = { name: `${param.category} - ${param.group}`, value: param.value }
         obj.value = valueFormatter(param.value, tooltipAttr.tooltipFormatter)
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,
@@ -605,7 +615,10 @@ export class PercentageStackBar extends GroupStackBar {
         const obj = { name: param.category, value: param.value }
         obj.value = (Math.round(param.value * 10000) / 100).toFixed(l.reserveDecimalCount) + '%'
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

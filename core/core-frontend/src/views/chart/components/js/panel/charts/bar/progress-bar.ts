@@ -1,6 +1,11 @@
 import { G2PlotChartView, G2PlotDrawOptions } from '../../types/impl/g2plot'
 import { flow, hexColorToRGBA, parseJson } from '../../../util'
-import { setGradientColor } from '../../common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getTooltipContainer,
+  setGradientColor,
+  TOOLTIP_TPL
+} from '../../common/common_antv'
 import { useI18n } from '@/hooks/web/useI18n'
 import type { Bar as G2Progress, BarOptions } from '@antv/g2plot/esm/plots/bar'
 import {
@@ -134,7 +139,7 @@ export class ProgressBar extends G2PlotChartView<BarOptions, G2Progress> {
     const newChart = new G2Progress(container, options)
 
     newChart.on('interval:click', action)
-
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
   protected configBasicStyle(chart: Chart, options: BarOptions): BarOptions {
@@ -224,7 +229,10 @@ export class ProgressBar extends G2PlotChartView<BarOptions, G2Progress> {
             }
           })
           return result.length == 0 ? originalItems : result
-        }
+        },
+        container: getTooltipContainer(`tooltip-${chart.id}`),
+        itemTpl: TOOLTIP_TPL,
+        enterable: true
       }
     }
   }
