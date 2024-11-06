@@ -564,7 +564,7 @@ export function getConditions(chart: Chart) {
   if (conditions?.length > 0) {
     const { tableCell, basicStyle, tableHeader } = parseJson(chart.customAttr)
     const enableTableCrossBG = tableCell.enableTableCrossBG
-    const valueColor = tableCell.tableFontColor
+    const valueColor = isAlphaColor(tableCell.tableFontColor) ? tableCell.tableFontColor : hexColorToRGBA(tableCell.tableFontColor, basicStyle.alpha)
     const valueBgColor = enableTableCrossBG
       ? null
       : isAlphaColor(tableCell.tableItemBgColor)
@@ -629,7 +629,7 @@ export function getConditions(chart: Chart) {
 }
 
 export function mappingColor(value, defaultColor, field, type, filedValueMap?, rowData?) {
-  let color
+  let color = null
   for (let i = 0; i < field.conditions.length; i++) {
     let flag = false
     const t = field.conditions[i]
