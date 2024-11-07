@@ -81,14 +81,26 @@ const copy = () => {
 }
 
 const hide = () => {
+  if (curComponent.value && !isGroupArea.value) {
+    layerStore.hideComponentWithComponent()
+  } else if (areaData.value.components.length) {
+    areaData.value.components.forEach(component => {
+      layerStore.hideComponentWithComponent(component.id)
+    })
+  }
   snapshotStore.recordSnapshotCache()
-  layerStore.hideComponent()
   menuOpt('hide')
 }
 
 const show = () => {
+  if (curComponent.value && !isGroupArea.value) {
+    layerStore.showComponent()
+  } else if (areaData.value.components.length) {
+    areaData.value.components.forEach(component => {
+      layerStore.showComponent(component.id)
+    })
+  }
   snapshotStore.recordSnapshotCache()
-  layerStore.showComponent()
   menuOpt('show')
 }
 const categoryChange = type => {
