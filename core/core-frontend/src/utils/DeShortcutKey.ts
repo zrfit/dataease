@@ -38,7 +38,8 @@ const ctrlKey = 17,
   dKey = 68, // 删除
   deleteKey = 46, // 删除
   macDeleteKey = 8, // 删除
-  eKey = 69 // 清空画布
+  eKey = 69, // 清空画布
+  spaceKey = 32 // 空格键
 
 export const keycodes = [8, 37, 38, 39, 40, 66, 67, 68, 69, 71, 76, 80, 83, 85, 86, 88, 89, 90]
 
@@ -118,6 +119,10 @@ export function listenGlobalKeyDown() {
       isCtrlOrCommandDown = true
       composeStore.setIsCtrlOrCmdDownStatus(true)
       releaseKeyCheck('ctrl')
+    } else if (keyCode === spaceKey) {
+      composeStore.setSpaceDownStatus(true)
+      e.preventDefault()
+      e.stopPropagation()
     } else if ((keyCode == deleteKey || keyCode == macDeleteKey) && curComponent.value) {
       deleteComponent()
     } else if (isCtrlOrCommandDown) {
@@ -138,6 +143,10 @@ export function listenGlobalKeyDown() {
     } else if (e.keyCode === shiftKey) {
       isShiftDown = true
       composeStore.setIsShiftDownStatus(false)
+    } else if (e.keyCode === spaceKey) {
+      composeStore.setSpaceDownStatus(false)
+      e.preventDefault()
+      e.stopPropagation()
     }
   }
 

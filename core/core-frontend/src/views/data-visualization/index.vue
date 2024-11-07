@@ -85,7 +85,7 @@ const {
   canvasState,
   batchOptStatus
 } = storeToRefs(dvMainStore)
-const { editorMap } = storeToRefs(composeStore)
+const { editorMap, isSpaceDown } = storeToRefs(composeStore)
 const canvasOut = ref(null)
 const canvasInner = ref(null)
 const leftSidebarRef = ref(null)
@@ -93,6 +93,8 @@ const dvLayout = ref(null)
 const canvasCenterRef = ref(null)
 const mainHeight = ref(300)
 let createType = null
+let isDragging = false // 标记是否在拖动
+let startX, startY, scrollLeft, scrollTop
 const state = reactive({
   datasetTree: [],
   scaleHistory: null,
@@ -102,6 +104,39 @@ const state = reactive({
   resourceId: null,
   opt: null
 })
+
+// 启用拖动
+const enableDragging = e => {
+  if (isSpaceDown.value) {
+    // 仅在空格键按下时启用拖动
+    isDragging = true
+    startX = e.pageX - canvasOut.value.wrapRef.offsetLeft
+    startY = e.pageY - canvasOut.value.wrapRef.offsetTop
+    scrollLeft = canvasOut.value.wrapRef.scrollLeft
+    scrollTop = canvasOut.value.wrapRef.scrollTop
+    e.preventDefault()
+    e.stopPropagation()
+  }
+}
+
+// 执行拖动
+const onMouseMove = e => {
+  if (!isDragging) return
+  e.preventDefault()
+  e.stopPropagation()
+  const x = e.pageX - canvasOut.value.wrapRef.offsetLeft
+  const y = e.pageY - canvasOut.value.wrapRef.offsetTop
+  const walkX = x - startX
+  const walkY = y - startY
+  canvasOut.value.wrapRef.scrollLeft = scrollLeft - walkX
+  canvasOut.value.wrapRef.scrollTop = scrollTop - walkY
+  console.log('====onMouseMove==walkX=' + walkX + ';walkY=' + walkY)
+}
+
+// 禁用拖动
+const disableDragging = () => {
+  isDragging = false
+}
 
 const contentStyle = computed(() => {
   const { width, height } = canvasStyleData.value
@@ -421,6 +456,8 @@ eventBus.on('handleNew', handleNew)
     :class="isDataEaseBi && !newWindowFromDiv && 'dataease-w-h'"
   >
     <DvToolbar />
+    <span style="color: blue">---{{ isSpaceDown }}</span>
+
     <div class="custom-dv-divider" />
     <el-container
       v-if="loadFinish"
@@ -456,7 +493,12 @@ eventBus.on('handleNew', handleNew)
           @scroll="scrollCanvas"
           class="content"
           :class="{ 'preview-content': previewStatus }"
+          @mousedown="enableDragging"
+          @mouseup="disableDragging"
+          @mousemove="onMouseMove"
+          @mouseleave="disableDragging"
         >
+          <div v-if="isSpaceDown" class="canvas-drag" :style="contentStyle"></div>
           <div
             id="canvas-dv-outer"
             ref="canvasInner"
@@ -476,7 +518,11 @@ eventBus.on('handleNew', handleNew)
                 :canvas-style-data="canvasStyleData"
                 :canvas-view-info="canvasViewInfo"
                 :canvas-id="state.canvasId"
-              ></canvas-core>
+              >
+                <template v-slot:canvasDragTips>
+                  <div class="canvas-drag-tip">按住空格可拖动画布</div>
+                </template>
+              </canvas-core>
             </div>
           </div>
         </el-scrollbar>
@@ -580,6 +626,7 @@ eventBus.on('handleNew', handleNew)
       background-color: rgba(51, 51, 51, 1);
       overflow: auto;
       .content {
+        position: relative;
         flex: 1;
         width: 100%;
         overflow: auto;
@@ -643,5 +690,20 @@ eventBus.on('handleNew', handleNew)
     font-size: 24px;
     color: #ebebeb;
   }
+}
+
+.canvas-drag {
+  position: absolute;
+  z-index: 1;
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.canvas-drag-tip {
+  position: absolute;
+  right: 5px;
+  bottom: -20px;
+  font-size: 12px;
+  color: rgb(169, 175, 184);
 }
 </style>
