@@ -318,7 +318,7 @@ const queryDataForId = id => {
     return
   }
   if (!!numName) {
-    ElMessage.error(`【${numName}】数值区间最大值必须大于最小值`)
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return
@@ -624,7 +624,7 @@ const queryData = () => {
   }
 
   if (!!numName) {
-    ElMessage.error(`【${numName}】数值区间最大值必须大于最小值`)
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return

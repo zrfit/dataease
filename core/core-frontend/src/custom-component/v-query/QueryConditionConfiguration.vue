@@ -1167,7 +1167,7 @@ const validate = () => {
         !isNaN(ele.defaultNumValueStart) &&
         ele.defaultNumValueEnd < ele.defaultNumValueStart
       ) {
-        ElMessage.error('数值区间最大值必须大于最小值')
+        ElMessage.error(t('v_query.the_minimum_value'))
         return true
       }
     }
