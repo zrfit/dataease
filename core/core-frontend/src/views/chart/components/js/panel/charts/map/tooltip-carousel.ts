@@ -6,19 +6,13 @@ import { parseJson } from '@/views/chart/components/js/util'
 import { Scene } from '@antv/l7-scene'
 import { deepCopy } from '@/utils/utils'
 
-export const configCarouselTooltip = (chart, view, data, scene, areaId?) => {
+export const configCarouselTooltip = (chart, view, data, scene) => {
   if (['bubble-map', 'map'].includes(chart.type)) {
     data = view.source.data.dataArray
       ?.filter(i => i.dimensionList?.length > 0)
       .reduce((acc, current) => {
         const existingItem = acc.find(obj => {
-          if (areaId.startsWith('000')) {
-            return obj.name === current.name
-          } else if (areaId.startsWith('156')) {
-            return obj.adcode === current.adcode
-          } else {
-            return obj.name === current.name
-          }
+          return obj.name === current.name || (obj.adcode && obj.adcode === current.adcode)
         })
         if (!existingItem) {
           acc.push(current)
