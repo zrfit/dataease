@@ -2,6 +2,7 @@
 import icon_edit_outlined from '@/assets/svg/icon_edit_outlined.svg'
 import icon_deleteTrash_outlined from '@/assets/svg/icon_delete-trash_outlined.svg'
 import eventBus from '@/utils/eventBus'
+import { isMobile } from '@/utils/utils'
 import { ElMessage } from 'element-plus-secondary'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import QueryConditionConfiguration from './QueryConditionConfiguration.vue'
@@ -256,6 +257,7 @@ const releaseSelect = id => {
 
 const queryDataForId = id => {
   let requiredName = ''
+  let numName = ''
   const emitterList = (element.value.propValue || [])
     .filter(ele => ele.id === id)
     .reduce((pre, next) => {
@@ -288,6 +290,22 @@ const queryDataForId = id => {
           requiredName = next.name
         }
       }
+
+      if (next.displayType === '22') {
+        if (
+          !isNaN(next.numValueEnd) &&
+          !isNaN(next.numValueStart) &&
+          next.numValueEnd < next.numValueStart
+        ) {
+          numName = next.name
+        }
+        if (
+          [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
+            .length === 1
+        ) {
+          requiredName = next.name
+        }
+      }
       const keyList = Object.entries(next.checkedFieldsMap)
         .filter(ele => next.checkedFields.includes(ele[0]))
         .filter(ele => !!ele[1])
@@ -297,6 +315,10 @@ const queryDataForId = id => {
     }, [])
   if (!!requiredName) {
     ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
+    return
+  }
+  if (!!numName) {
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return
@@ -339,6 +361,7 @@ onBeforeUnmount(() => {
 })
 
 const updateQueryCriteria = () => {
+  if (dvMainStore.mobileInPc && !isMobile()) return
   Array.isArray(element.value.propValue) &&
     element.value.propValue.forEach(ele => {
       if (ele.auto) {
@@ -380,6 +403,10 @@ onMounted(() => {
   emitter.on(`editQueryCriteria${element.value.id}`, editQueryCriteria)
   emitter.on(`updateQueryCriteria${element.value.id}`, updateQueryCriteria)
   updateQueryCriteria()
+
+  if (dvMainStore.mobileInPc && !isMobile()) {
+    queryData()
+  }
 })
 
 const dragover = () => {
@@ -597,11 +624,13 @@ const queryData = () => {
   }
 
   if (!!numName) {
-    ElMessage.error(`【${numName}】数值区间最大值必须大于最小值`)
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return
-  dvMainStore.setFirstLoadMap([...new Set([...emitterList, ...firstLoadMap.value])])
+  if (!(dvMainStore.mobileInPc && !isMobile())) {
+    dvMainStore.setFirstLoadMap([...new Set([...emitterList, ...firstLoadMap.value])])
+  }
   emitterList.forEach(ele => {
     emitter.emit(`query-data-${ele}`)
   })
