@@ -1155,6 +1155,8 @@ const validate = () => {
     }
 
     if (ele.displayType === '22' && ele.defaultValueCheck) {
+      ele.numValueEnd = ele.defaultNumValueEnd
+      ele.numValueStart = ele.defaultNumValueStart
       if (
         (ele.defaultNumValueEnd !== 0 && !ele.defaultNumValueEnd) ||
         (ele.defaultNumValueStart !== 0 && !ele.defaultNumValueStart)
