@@ -178,7 +178,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         })
       })
       chart.container = container
-      configCarouselTooltip(chart, view, data, null, areaId)
+      configCarouselTooltip(chart, view, data, null)
     })
     return view
   }
