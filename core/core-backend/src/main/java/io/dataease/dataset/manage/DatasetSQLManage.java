@@ -209,8 +209,6 @@ public class DatasetSQLManage {
                 String tablePrefix = "";
                 String tableSuffix = "";
                 if (ObjectUtils.isNotEmpty(currentSQLObj.getTableSchema())) {
-                    ts = currentSQLObj.getTableSchema() + ".";
-
                     if (isCross) {
                         tablePrefix = "`";
                         tableSuffix = "`";
@@ -219,6 +217,8 @@ public class DatasetSQLManage {
                         tablePrefix = datasourceType.getPrefix();
                         tableSuffix = datasourceType.getSuffix();
                     }
+
+                    ts = tablePrefix + currentSQLObj.getTableSchema() + tableSuffix + ".";
                 }
                 // build join
                 join.append(" ").append(joinType).append(" ")
