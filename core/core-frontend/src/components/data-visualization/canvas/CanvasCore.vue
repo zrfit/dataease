@@ -1519,6 +1519,7 @@ defineExpose({
     :style="editStyle"
     @contextmenu="handleContextMenu"
   >
+    <slot name="canvasDragTips" />
     <drag-info v-if="dragInfoShow"></drag-info>
     <canvas-opt-bar
       v-if="dvInfo.type === 'dataV'"
