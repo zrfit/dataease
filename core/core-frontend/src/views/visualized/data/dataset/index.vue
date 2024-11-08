@@ -6,10 +6,12 @@ import icon_intoItem_outlined from '@/assets/svg/icon_into-item_outlined.svg'
 import icon_rename_outlined from '@/assets/svg/icon_rename_outlined.svg'
 import dvNewFolder from '@/assets/svg/dv-new-folder.svg'
 import icon_fileAdd_outlined from '@/assets/svg/icon_file-add_outlined.svg'
+import { moveDatasetTree } from '@/api/dataset'
 import icon_searchOutline_outlined from '@/assets/svg/icon_search-outline_outlined.svg'
 import dvSortAsc from '@/assets/svg/dv-sort-asc.svg'
 import dvSortDesc from '@/assets/svg/dv-sort-desc.svg'
 import dvFolder from '@/assets/svg/dv-folder.svg'
+import { treeDraggble } from '@/utils/treeDraggble'
 import icon_add_outlined from '@/assets/svg/icon_add_outlined.svg'
 import icon_info_outlined from '@/assets/svg/icon_info_outlined.svg'
 import icon_dashboard_outlined from '@/assets/svg/icon_dashboard_outlined.svg'
@@ -246,6 +248,13 @@ const infoList = computed(() => {
     createTime: nodeInfo.createTime && timestampFormatDate(nodeInfo.createTime)
   }
 })
+
+const { handleDrop, allowDrop, handleDragStart } = treeDraggble(
+  state,
+  'datasetTree',
+  moveDatasetTree,
+  'dataset'
+)
 
 const generateColumns = (arr: Field[]) =>
   arr.map(ele => ({
@@ -852,6 +861,10 @@ const getMenuList = (val: boolean) => {
             :filter-node-method="filterNode"
             expand-on-click-node
             highlight-current
+            @node-drag-start="handleDragStart"
+            :allow-drop="allowDrop"
+            @node-drop="handleDrop"
+            draggable
             @node-expand="nodeExpand"
             @node-collapse="nodeCollapse"
             :default-expanded-keys="expandedKey"
