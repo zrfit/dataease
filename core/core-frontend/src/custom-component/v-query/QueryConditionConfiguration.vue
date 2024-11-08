@@ -684,6 +684,7 @@ const setParameters = field => {
     Object.values(field?.fields || {})
       .flat()
       .filter(ele => fieldArr.includes(ele.id) && !!ele.variableName)
+      .concat(curComponent.value.parameters)
   )
   nextTick(() => {
     if (isTimeParameter.value) {
