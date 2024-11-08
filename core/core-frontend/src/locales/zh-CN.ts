@@ -3191,6 +3191,14 @@ export default {
     description: '描述',
     tips: '提示'
   },
+  sync_summary: {
+    summary: '概览',
+    data_source_number: '数据源数量',
+    task_number: '任务数量',
+    execution_count: '执行次数',
+    execution_results_in_the_past_7_days: '过去7天执行情况',
+    sync_status_distribution: '同步状态分布'
+  },
   sync_task: {
     title: '任务管理',
     list: '任务列表',

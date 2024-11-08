@@ -1216,6 +1216,14 @@ export default {
     description: 'Description',
     tips: 'Tips'
   },
+  sync_summary: {
+    summary: 'Summary',
+    data_source_number: 'Number of data sources',
+    task_number: 'Number of task',
+    execution_count: 'Execution count',
+    execution_results_in_the_past_7_days: 'Execution performance in the past 7 days',
+    sync_status_distribution: 'Sync status distribution'
+  },
   sync_task: {
     title: 'Task Management',
     list: 'Task List',
@@ -1236,7 +1244,7 @@ export default {
     trigger_last_time: 'Last Execution Time',
     trigger_next_time: 'Next Execution Time',
     status_success: 'Success',
-    status_running: 'In Progress',
+    status_running: 'Syncing',
     status_failed: 'Failed',
     status_stopped: 'Task Stopped',
     status_waiting: 'Waiting for Sync',

@@ -3099,6 +3099,14 @@ export default {
     description: '描述',
     tips: '提示'
   },
+  sync_summary: {
+    summary: '概覽',
+    data_source_number: '數據源數量',
+    task_number: '任務數量',
+    execution_count: '執行次數',
+    execution_results_in_the_past_7_days: '過去7天執行情況',
+    sync_status_distribution: '同步狀態分佈'
+  },
   sync_task: {
     title: '任務管理',
     list: '任務列表',
