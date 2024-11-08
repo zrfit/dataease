@@ -149,7 +149,8 @@ const initSeriesLabel = () => {
       show: true,
       color: themeColor === 'dark' ? '#fff' : '#000',
       fontSize: COMPUTED_DEFAULT_LABEL.value.fontSize,
-      showExtremum: false
+      showExtremum: false,
+      position: 'top'
     } as SeriesFormatter
     if (seriesAxisMap[next[computedIdKey.value]]) {
       tmp = {
@@ -158,7 +159,8 @@ const initSeriesLabel = () => {
         show: seriesAxisMap[next[computedIdKey.value]].show,
         color: seriesAxisMap[next[computedIdKey.value]].color,
         fontSize: seriesAxisMap[next[computedIdKey.value]].fontSize,
-        showExtremum: seriesAxisMap[next[computedIdKey.value]].showExtremum
+        showExtremum: seriesAxisMap[next[computedIdKey.value]].showExtremum,
+        position: seriesAxisMap[next[computedIdKey.value]].position
       }
     } else {
       initFlag = true
@@ -188,11 +190,18 @@ const labelPositionH = [
   { name: t('chart.center'), value: 'middle' },
   { name: t('chart.text_pos_right'), value: 'right' }
 ]
-const labelPositionV = [
+const labelPositionVList = [
   { name: t('chart.text_pos_top'), value: 'top' },
   { name: t('chart.center'), value: 'middle' },
   { name: t('chart.text_pos_bottom'), value: 'bottom' }
 ]
+
+const labelPositionV = computed(() => {
+  if (['line', 'area-stack', 'area'].includes(chartType.value)) {
+    return labelPositionVList.filter(item => item.value !== 'middle')
+  }
+  return labelPositionVList
+})
 
 const chartType = computed(() => {
   const chart = JSON.parse(JSON.stringify(props.chart))
@@ -1136,6 +1145,28 @@ const noFullDisplay = computed(() => {
         </el-form-item>
 
         <div style="padding-left: 22px">
+          <el-form-item
+            v-if="showProperty('seriesLabelVPosition')"
+            class="form-item"
+            :class="'form-item-' + themes"
+            :label="t('chart.position')"
+          >
+            <el-select
+              :disabled="!curSeriesFormatter.show"
+              size="small"
+              :effect="themes"
+              v-model="curSeriesFormatter.position"
+              :placeholder="t('chart.label_position')"
+              @change="changeLabelAttr('seriesLabelFormatter')"
+            >
+              <el-option
+                v-for="option in labelPositionV"
+                :key="option.value"
+                :label="option.name"
+                :value="option.value"
+              />
+            </el-select>
+          </el-form-item>
           <el-space>
             <el-form-item class="form-item" :class="'form-item-' + themes" :label="t('chart.text')">
               <el-color-picker
