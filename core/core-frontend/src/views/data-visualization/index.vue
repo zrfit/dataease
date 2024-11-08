@@ -456,8 +456,6 @@ eventBus.on('handleNew', handleNew)
     :class="isDataEaseBi && !newWindowFromDiv && 'dataease-w-h'"
   >
     <DvToolbar />
-    <span style="color: blue">---{{ isSpaceDown }}</span>
-
     <div class="custom-dv-divider" />
     <el-container
       v-if="loadFinish"
