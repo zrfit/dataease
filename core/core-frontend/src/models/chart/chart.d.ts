@@ -143,6 +143,10 @@ declare interface SeriesFormatter extends Axis {
 
   optionLabel?: string
   optionShowName?: string
+  /**
+   * 位置
+   */
+  position?: string
 }
 
 declare interface Axis extends ChartViewField {
