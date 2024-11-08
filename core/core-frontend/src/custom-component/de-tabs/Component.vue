@@ -15,7 +15,7 @@
       :border-color="noBorderColor"
       :border-active-color="borderActiveColor"
     >
-      <template :key="tabItem.name" v-for="(tabItem, index) in element.propValue">
+      <template :key="tabItem.name" v-for="tabItem in element.propValue">
         <el-tab-pane
           class="el-tab-pane-custom"
           :lazy="isEditMode"
@@ -54,32 +54,39 @@
               </el-dropdown>
             </div>
           </template>
-          <de-canvas
-            v-if="isEdit && !mobileInPc"
-            :ref="'tabCanvas_' + index"
-            :component-data="tabItem.componentData"
-            :canvas-style-data="canvasStyleData"
-            :canvas-view-info="canvasViewInfo"
-            :canvas-id="element.id + '--' + tabItem.name"
-            :class="moveActive ? 'canvas-move-in' : ''"
-            :canvas-active="editableTabsValue === tabItem.name"
-          ></de-canvas>
-          <de-preview
-            v-else
-            :ref="'dashboardPreview'"
-            :dv-info="dvInfo"
-            :cur-gap="curPreviewGap"
-            :component-data="tabItem.componentData"
-            :canvas-style-data="{}"
-            :canvas-view-info="canvasViewInfo"
-            :canvas-id="element.id + '--' + tabItem.name"
-            :preview-active="editableTabsValue === tabItem.name"
-            :show-position="showPosition"
-            :outer-scale="scale"
-            :outer-search-count="searchCount"
-          ></de-preview>
         </el-tab-pane>
       </template>
+      <div
+        style="position: absolute; width: 100%; height: 100%"
+        :key="tabItem.name + '-content'"
+        v-for="(tabItem, index) in element.propValue"
+        :class="{ 'switch-hidden': editableTabsValue !== tabItem.name }"
+      >
+        <de-canvas
+          v-if="isEdit && !mobileInPc"
+          :ref="'tabCanvas_' + index"
+          :component-data="tabItem.componentData"
+          :canvas-style-data="canvasStyleData"
+          :canvas-view-info="canvasViewInfo"
+          :canvas-id="element.id + '--' + tabItem.name"
+          :class="moveActive ? 'canvas-move-in' : ''"
+          :canvas-active="editableTabsValue === tabItem.name"
+        ></de-canvas>
+        <de-preview
+          v-else
+          :ref="'dashboardPreview'"
+          :dv-info="dvInfo"
+          :cur-gap="curPreviewGap"
+          :component-data="tabItem.componentData"
+          :canvas-style-data="{}"
+          :canvas-view-info="canvasViewInfo"
+          :canvas-id="element.id + '--' + tabItem.name"
+          :preview-active="editableTabsValue === tabItem.name"
+          :show-position="showPosition"
+          :outer-scale="scale"
+          :outer-search-count="searchCount"
+        ></de-preview>
+      </div>
     </de-custom-tab>
     <el-dialog
       title="编辑标题"
@@ -328,8 +335,9 @@ const componentMoveIn = component => {
             component.style.left = 0
             component.style.top = 0
             tabItem.componentData.push(component)
+            refInstance.addItemBox(component) //在适当的时候初始化布局组件
             nextTick(() => {
-              refInstance.addItemBox(component) //在适当的时候初始化布局组件
+              refInstance.canvasInitImmediately()
             })
           }
         } else {
@@ -549,7 +557,6 @@ onBeforeMount(() => {
 }
 .el-tab-pane-custom {
   width: 100%;
-  height: 100%;
 }
 .canvas-move-in {
   border: 2px dotted transparent;
@@ -569,5 +576,10 @@ onBeforeMount(() => {
 .tab-head-center :deep(.ed-tabs__nav-scroll) {
   display: flex;
   justify-content: center;
+}
+
+.switch-hidden {
+  opacity: 0;
+  z-index: -1;
 }
 </style>

@@ -325,6 +325,16 @@ const setRules = () => {
       }
     ]
   }
+
+  if (form.value.type === 'es') {
+    configRules['configuration.url'] = [
+      {
+        required: true,
+        message: t('datasource.please_input_datasource_url'),
+        trigger: 'change'
+      }
+    ]
+  }
   rule.value = { ...cloneDeep(configRules), ...cloneDeep(defaultRule) }
 }
 

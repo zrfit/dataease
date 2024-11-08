@@ -53,6 +53,7 @@ const dashboardActive = computed(() => {
 
 const onBackgroundChange = val => {
   element.value.commonBackground = val
+  snapshotStore.recordSnapshotCacheToMobile('commonBackground')
   emits('onAttrChange', { custom: 'commonBackground' })
 }
 

@@ -106,7 +106,7 @@ const loadCanvasDataAsync = async (dvId, dvType, ignoreParams = false) => {
     }
   }
 
-  initCanvasData(
+  await initCanvasData(
     dvId,
     dvType,
     function ({
@@ -194,6 +194,7 @@ defineExpose({
       :cur-gap="state.curPreviewGap"
       :is-selector="props.isSelector"
       :download-status="downloadStatus"
+      :show-pop-bar="true"
     ></de-preview>
     <empty-background v-if="!state.initState" description="参数不能为空" img-type="noneWhite" />
   </div>
@@ -205,6 +206,9 @@ defineExpose({
 </template>
 
 <style lang="less" scoped>
+::-webkit-scrollbar {
+  display: none;
+}
 .content {
   background-color: #ffffff;
   width: 100%;
@@ -212,9 +216,5 @@ defineExpose({
   align-items: center;
   overflow-x: hidden;
   overflow-y: auto;
-  ::-webkit-scrollbar {
-    width: 0px !important;
-    height: 0px !important;
-  }
 }
 </style>

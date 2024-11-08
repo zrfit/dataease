@@ -58,7 +58,8 @@ const scaleMin = ref(100)
 
 const state = reactive({
   screenWidth: 1920,
-  screenHeight: 1080
+  screenHeight: 1080,
+  curScrollTop: 0
 })
 
 //仪表板矩阵信息适配，
@@ -131,6 +132,10 @@ const handleMouseDown = e => {
     dvMainStore.setInEditorStatus(true)
     dvMainStore.setCurComponent({ component: null, index: null })
   }
+}
+
+const canvasInitImmediately = () => {
+  cyGridster.value.canvasInit()
 }
 
 const canvasInit = (isFistLoad = true) => {
@@ -218,6 +223,7 @@ const moveOutFromTab = component => {
       componentData: componentData.value
     })
     addItemBox(component)
+    canvasInit()
   }, 500)
 }
 
@@ -261,6 +267,12 @@ const scrollTo = y => {
   })
 }
 
+const scrollCanvas = () => {
+  if (isMainCanvas(canvasId.value)) {
+    dvMainStore.mainScrollTop = canvasInner.value.scrollTop
+  }
+}
+
 watch(
   () => canvasActive.value,
   () => {
@@ -272,6 +284,8 @@ watch(
 
 defineExpose({
   addItemBox,
+  canvasInit,
+  canvasInitImmediately,
   getBaseMatrixSize
 })
 </script>
@@ -292,6 +306,7 @@ defineExpose({
       @drop="handleDrop"
       @dragover="handleDragOver"
       @mousedown="handleMouseDown"
+      @scroll="scrollCanvas"
     >
       <canvas-core
         ref="cyGridster"

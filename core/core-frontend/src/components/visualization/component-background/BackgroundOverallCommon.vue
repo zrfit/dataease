@@ -325,7 +325,6 @@ const upload = file => {
 }
 
 const onBackgroundChange = () => {
-  snapshotStore.recordSnapshotCacheToMobile('commonBackground')
   emits('onBackgroundChange', state.commonBackground)
 }
 

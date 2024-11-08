@@ -192,6 +192,10 @@ declare interface ChartViewField {
    * 字段类型
    */
   deType: number
+  /**
+   * 分组类型
+   */
+  groupType: 'q' | 'd'
 }
 
 declare interface Filter {

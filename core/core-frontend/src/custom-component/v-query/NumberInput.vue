@@ -2,6 +2,7 @@
 import { toRefs, onBeforeMount, type PropType, type Ref, inject, computed, nextTick } from 'vue'
 interface SelectConfig {
   id: string
+  defaultValueCheck: boolean
   defaultNumValueEnd: number
   numValueEnd: number
   numValueStart: number
@@ -26,7 +27,8 @@ const props = defineProps({
         defaultNumValueEnd: '',
         defaultNumValueStart: '',
         numValueEnd: '',
-        numValueStart: ''
+        numValueStart: '',
+        defaultValueCheck: false
       }
     }
   },
@@ -38,6 +40,11 @@ const props = defineProps({
 
 const { config } = toRefs(props)
 const setParams = () => {
+  if (!config.value.defaultValueCheck) {
+    config.value.numValueEnd = undefined
+    config.value.numValueStart = undefined
+    return
+  }
   const { defaultNumValueEnd, defaultNumValueStart } = config.value
   config.value.numValueEnd = defaultNumValueEnd
   config.value.numValueStart = defaultNumValueStart

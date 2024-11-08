@@ -362,9 +362,9 @@ public class ChartViewThresholdManage {
                     }
                 } else {
                     if (timeFlag == 4) {
-                        return now.withDayOfMonth(1).format(formatter);
+                        return now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).format(formatter);
                     } else if (timeFlag == 5) {
-                        return now.plusMonths(1).withDayOfMonth(1).minusDays(1).format(formatter);
+                        return now.plusMonths(1).withDayOfMonth(1).minusDays(1).withHour(0).withMinute(0).withSecond(0).format(formatter);
                     } else {
                         return getCustomTimeValue(format, 3, suffix, count, true);
                     }
@@ -381,7 +381,9 @@ public class ChartViewThresholdManage {
         LocalDateTime now = LocalDateTime.now();
         String fullFormat = "yyyy-MM-dd HH:mm:ss";
         int len = format.length();
-        if (!hasTime) {
+        if (hasTime) {
+            now = now.withHour(0).withMinute(0).withSecond(0);
+        } else {
             len = Math.min(len, 10);
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fullFormat.substring(0, len));

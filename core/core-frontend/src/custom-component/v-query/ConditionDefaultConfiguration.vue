@@ -69,7 +69,7 @@ const relativeToCurrentTypeList = computed(() => {
   }
   return [
     {
-      label: t('chart.chart'),
+      label: t('dynamic_time.year'),
       value: 'year'
     },
     {

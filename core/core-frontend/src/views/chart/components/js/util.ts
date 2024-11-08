@@ -1048,3 +1048,23 @@ export function svgStrToUrl(svgStr: string): string {
   } catch (e) {}
   return file
 }
+
+/**
+ * 获取非空数据的最小值
+ * @param sourceData
+ * @param field
+ * @private
+ */
+export function filterEmptyMinValue(sourceData, field) {
+  let notEmptyMinValue = 0
+  getMaxAndMinValueByData(
+    sourceData.filter(item => item[field]),
+    'value',
+    0,
+    0,
+    (max, min) => {
+      notEmptyMinValue = min
+    }
+  )
+  return notEmptyMinValue
+}

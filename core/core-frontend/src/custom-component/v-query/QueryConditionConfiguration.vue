@@ -684,13 +684,13 @@ const setParameters = field => {
     Object.values(field?.fields || {})
       .flat()
       .filter(ele => fieldArr.includes(ele.id) && !!ele.variableName)
+      .concat(curComponent.value.parameters.filter(ele => fieldArr.includes(ele.id)))
   )
   nextTick(() => {
     if (isTimeParameter.value) {
+      const timeParameter = curComponent.value.parameters.find(ele => ele.deType === 1)
       curComponent.value.timeGranularity =
-        typeTimeMap[
-          curComponent.value.parameters[0].type[1] || curComponent.value.parameters[0].type[0]
-        ]
+        typeTimeMap[timeParameter.type[1] || timeParameter.type[0]]
       curComponent.value.displayType = '1'
     }
 
@@ -1152,6 +1152,26 @@ const validate = () => {
     if (!ele.checkedFields?.length || ele.checkedFields.some(itx => !ele.checkedFieldsMap[itx])) {
       ElMessage.error(t('v_query.be_linked_first'))
       return true
+    }
+
+    if (ele.displayType === '22' && ele.defaultValueCheck) {
+      ele.numValueEnd = ele.defaultNumValueEnd
+      ele.numValueStart = ele.defaultNumValueStart
+      if (
+        (ele.defaultNumValueEnd !== 0 && !ele.defaultNumValueEnd) ||
+        (ele.defaultNumValueStart !== 0 && !ele.defaultNumValueStart)
+      ) {
+        ElMessage.error(t('v_query.cannot_be_empty_de'))
+        return true
+      }
+      if (
+        !isNaN(ele.defaultNumValueEnd) &&
+        !isNaN(ele.defaultNumValueStart) &&
+        ele.defaultNumValueEnd < ele.defaultNumValueStart
+      ) {
+        ElMessage.error(t('v_query.the_minimum_value'))
+        return true
+      }
     }
     let displayTypeField = null
     let errorTips = t('v_query.cannot_be_performed')
@@ -2491,7 +2511,11 @@ defineExpose({
           </el-checkbox-group>
         </div>
       </div>
-      <div v-if="!!curComponent" class="condition-configuration">
+      <div
+        v-if="!!curComponent"
+        class="condition-configuration"
+        :class="curComponent.auto && 'condition-configuration_hide'"
+      >
         <div class="mask condition" v-if="curComponent.auto"></div>
         <div class="title flex-align-center">
           {{ t('v_query.query_condition_configuration') }}
@@ -2979,7 +3003,7 @@ defineExpose({
                 <el-radio-group class="larger-radio" v-model="curComponent.conditionType">
                   <el-radio :label="0">{{ t('v_query.single_condition') }}</el-radio>
                   <el-radio :label="1" :disabled="!!curComponent.parameters.length">{{
-                    t('v_query.single_condition')
+                    t('v_query.with_condition')
                   }}</el-radio>
                   <el-radio :label="2" :disabled="!!curComponent.parameters.length">{{
                     t('v_query.or_condition')
@@ -3294,6 +3318,10 @@ defineExpose({
       width: 467px;
       position: relative;
       overflow-y: auto;
+
+      &.condition-configuration_hide {
+        overflow: hidden;
+      }
       .mask {
         left: -1px;
         width: calc(100% + 2px);

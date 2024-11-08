@@ -564,7 +564,7 @@ export function getConditions(chart: Chart) {
   if (conditions?.length > 0) {
     const { tableCell, basicStyle, tableHeader } = parseJson(chart.customAttr)
     const enableTableCrossBG = tableCell.enableTableCrossBG
-    const valueColor = tableCell.tableFontColor
+    const valueColor = isAlphaColor(tableCell.tableFontColor) ? tableCell.tableFontColor : hexColorToRGBA(tableCell.tableFontColor, basicStyle.alpha)
     const valueBgColor = enableTableCrossBG
       ? null
       : isAlphaColor(tableCell.tableItemBgColor)
@@ -629,7 +629,7 @@ export function getConditions(chart: Chart) {
 }
 
 export function mappingColor(value, defaultColor, field, type, filedValueMap?, rowData?) {
-  let color
+  let color = null
   for (let i = 0; i < field.conditions.length; i++) {
     let flag = false
     const t = field.conditions[i]
@@ -1426,29 +1426,35 @@ export async function exportPivotExcel(instance: PivotSheet, chart: ChartObj) {
   }
 }
 
-export function configMergeCells(chart: Chart, options: S2Options) {
+export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S2DataConfig) {
   const { mergeCells } = parseJson(chart.customAttr).tableCell
   const { showIndex } = parseJson(chart.customAttr).tableHeader
   if (mergeCells) {
-    const xAxis = chart.xAxis
-    const quotaIndex = xAxis.findIndex(axis => axis.groupType === 'q')
+    options.frozenColCount = 0
+    options.frozenRowCount = 0
+    const fields = chart.data.fields || []
+    const fieldsMap = fields.reduce((p, n) => {
+      p[n.dataeaseName] = n
+      return p
+    }, {}) || {}
+    const quotaIndex = dataConfig.meta.findIndex(m => fieldsMap[m.field].groupType === 'q')
     const data = chart.data?.tableRow
     if (quotaIndex === 0 || !data?.length) {
       return
     }
     const mergedColInfo: number[][][] = [[[0, data.length - 1]]]
     const mergedCellsInfo = []
-    const axisToMerge = xAxis.filter((a, i) => a.hide !== true && (i < quotaIndex || quotaIndex === -1))
+    const axisToMerge = dataConfig.meta.filter((_, i) => i < quotaIndex || quotaIndex === -1)
     axisToMerge.forEach((a, i) => {
       const preMergedColInfo = mergedColInfo[i]
       const curMergedColInfo = []
       mergedColInfo.push(curMergedColInfo)
       preMergedColInfo.forEach(range => {
         const [start, end] = range
-        let lastVal = data[start][a.dataeaseName]
+        let lastVal = data[start][a.field]
         let lastIndex = start
         for (let index = start; index <= end; index++) {
-          const curVal = data[index][a.dataeaseName]
+          const curVal = data[index][a.field]
           if (curVal !== lastVal || index === end) {
             const curRange = index - lastIndex
             if (curRange > 1 ||
@@ -1499,7 +1505,10 @@ export function configMergeCells(chart: Chart, options: S2Options) {
 }
 
 export function getRowIndex(mergedCellsInfo: MergedCellInfo[][], meta: ViewMeta): number {
-  let curRangeStartIndex = 0
+  if (!mergedCellsInfo?.length) {
+    return meta.rowIndex + 1
+  }
+  let curRangeStartIndex = meta.rowIndex
   const lostCells = mergedCellsInfo.reduce((p, n) => {
     if (n[0].colIndex !== 0) {
       return p

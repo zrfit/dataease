@@ -3,7 +3,13 @@ import {
   G2PlotDrawOptions
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Bar, BarOptions } from '@antv/g2plot/esm/plots/bar'
-import { getPadding, setGradientColor } from '@/views/chart/components/js/panel/common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  setGradientColor,
+  TOOLTIP_TPL
+} from '@/views/chart/components/js/panel/common/common_antv'
 import { cloneDeep } from 'lodash-es'
 import {
   flow,
@@ -93,7 +99,7 @@ export class HorizontalBar extends G2PlotChartView<BarOptions, Bar> {
     const newChart = new Bar(container, options)
 
     newChart.on('interval:click', action)
-
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -313,7 +319,10 @@ export class HorizontalStackBar extends HorizontalBar {
         const res = valueFormatter(param.value, tooltipAttr.tooltipFormatter)
         obj.value = res ?? ''
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,
@@ -423,7 +432,10 @@ export class HorizontalPercentageStackBar extends HorizontalStackBar {
         const obj = { name: param.category, value: param.value }
         obj.value = (Math.round(param.value * 10000) / 100).toFixed(l.reserveDecimalCount) + '%'
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

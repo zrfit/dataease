@@ -74,7 +74,7 @@ import {
 const embeddedStore = useEmbedded()
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
-const { canvasCollapse, curComponent, componentData, editMode, mobileInPc } =
+const { canvasCollapse, curComponent, componentData, editMode, mobileInPc, fullscreenFlag } =
   storeToRefs(dvMainStore)
 const router = useRouter()
 let componentNameEdit = ref(false)
@@ -3316,7 +3316,7 @@ const deleteChartFieldItem = id => {
               </el-row>
               <div
                 ref="elDrag"
-                v-loading="fieldLoading"
+                v-loading="fieldLoading && !fullscreenFlag"
                 style="height: calc(100% - 137px); min-height: 120px"
               >
                 <div

@@ -3,7 +3,12 @@ import {
   G2PlotDrawOptions
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Line as G2Line, LineOptions } from '@antv/g2plot/esm/plots/line'
-import { getPadding } from '../../common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  TOOLTIP_TPL
+} from '../../common/common_antv'
 import {
   flow,
   hexColorToRGBA,
@@ -116,6 +121,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
 
     newChart.on('point:click', action)
     extremumEvt(newChart, chart, options, container)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -279,7 +285,10 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
           }
         })
         return result
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

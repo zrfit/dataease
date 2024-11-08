@@ -5,6 +5,7 @@ import io.dataease.api.chart.ChartDataApi;
 import io.dataease.api.chart.dto.ViewDetailField;
 import io.dataease.api.chart.request.ChartExcelRequest;
 import io.dataease.api.chart.request.ChartExcelRequestInner;
+import io.dataease.auth.DeLinkPermit;
 import io.dataease.chart.constant.ChartConstants;
 import io.dataease.chart.manage.ChartDataManage;
 import io.dataease.constant.AuthConstant;
@@ -76,6 +77,7 @@ public class ChartDataServer implements ChartDataApi {
         return Math.toIntExact(Math.min(f2CLicLimitedManage.checkDatasetLimit(), limit));
     }
 
+    @DeLinkPermit("#p0.sceneId")
     @Override
     public ChartViewDTO getData(ChartViewDTO chartViewDTO) throws Exception {
         try {

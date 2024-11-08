@@ -4,6 +4,7 @@ import icon_italic_outlined from '@/assets/svg/icon_italic_outlined.svg'
 import icon_leftAlignment_outlined from '@/assets/svg/icon_left-alignment_outlined.svg'
 import icon_centerAlignment_outlined from '@/assets/svg/icon_center-alignment_outlined.svg'
 import icon_rightAlignment_outlined from '@/assets/svg/icon_right-alignment_outlined.svg'
+import icon_info_outlined from '@/assets/svg/icon_info_outlined.svg'
 import { computed, onMounted, PropType, reactive, watch } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { COLOR_PANEL, DEFAULT_TABLE_CELL } from '@/views/chart/components/editor/util/chart'
@@ -321,6 +322,7 @@ onMounted(() => {
       <el-checkbox
         size="small"
         :effect="themes"
+        :disabled="showProperty('mergeCells') && state.tableCellForm.mergeCells"
         v-model="state.tableCellForm.tableFreeze"
         @change="changeTableCell('tableFreeze')"
       >
@@ -339,7 +341,10 @@ onMounted(() => {
             :effect="themes"
             controls-position="right"
             v-model="state.tableCellForm.tableColumnFreezeHead"
-            :disabled="!state.tableCellForm.tableFreeze"
+            :disabled="
+              (showProperty('mergeCells') && state.tableCellForm.mergeCells) ||
+              !state.tableCellForm.tableFreeze
+            "
             :min="0"
             :max="100"
             @change="changeTableCell('tableColumnFreezeHead')"
@@ -357,7 +362,10 @@ onMounted(() => {
             :effect="themes"
             controls-position="right"
             v-model="state.tableCellForm.tableRowFreezeHead"
-            :disabled="!state.tableCellForm.tableFreeze"
+            :disabled="
+              (showProperty('mergeCells') && state.tableCellForm.mergeCells) ||
+              !state.tableCellForm.tableFreeze
+            "
             :min="0"
             :max="100"
             @change="changeTableCell('tableRowFreezeHead')"
@@ -376,7 +384,17 @@ onMounted(() => {
         v-model="state.tableCellForm.mergeCells"
         @change="changeTableCell('mergeCells')"
       >
-        {{ t('chart.merge_cells') }}
+        <span class="data-area-label">
+          <span style="margin-right: 4px">{{ t('chart.merge_cells') }}</span>
+          <el-tooltip class="item" effect="dark" placement="bottom">
+            <template #content>
+              <div>合并单元格后行列冻结会失效</div>
+            </template>
+            <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
+              <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
+            </el-icon>
+          </el-tooltip>
+        </span>
       </el-checkbox>
     </el-form-item>
     <el-form-item
@@ -481,5 +499,13 @@ onMounted(() => {
 
 .mobile-style {
   margin-top: 25px;
+}
+.data-area-label {
+  text-align: left;
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 </style>

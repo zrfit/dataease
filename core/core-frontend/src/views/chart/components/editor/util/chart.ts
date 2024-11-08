@@ -116,7 +116,7 @@ export const DEFAULT_COLOR_CASE_DARK: DeepPartial<ChartAttr> = {
     alpha: 100,
     gradient: false,
     mapStyle: 'darkblue',
-    areaBaseColor: '5470C6',
+    areaBaseColor: '#5470C6',
     areaBorderColor: '#EBEEF5',
     gaugeStyle: 'default',
     tableBorderColor: '#CCCCCC',

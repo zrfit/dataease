@@ -4,6 +4,7 @@ import icon_add_outlined from '@/assets/svg/icon_add_outlined.svg'
 import dvCopyDark from '@/assets/svg/dv-copy-dark.svg'
 import dvDelete from '@/assets/svg/dv-delete.svg'
 import dvMove from '@/assets/svg/dv-move.svg'
+import { treeDraggbleChart } from '@/utils/treeDraggbleChart'
 import dvRename from '@/assets/svg/dv-rename.svg'
 import dvDashboardSpine from '@/assets/svg/dv-dashboard-spine.svg'
 import dvScreenSpine from '@/assets/svg/dv-screen-spine.svg'
@@ -153,7 +154,11 @@ const resourceTypeList = computed(() => {
   ]
   return list
 })
-
+const { handleDrop, allowDrop, handleDragStart } = treeDraggbleChart(
+  state,
+  'resourceTree',
+  curCanvasType.value
+)
 const menuList = computed(() => {
   const list = [
     {
@@ -640,6 +645,10 @@ defineExpose({
         @node-expand="nodeExpand"
         @node-collapse="nodeCollapse"
         @node-click="nodeClick"
+        @node-drag-start="handleDragStart"
+        :allow-drop="allowDrop"
+        @node-drop="handleDrop"
+        draggable
       >
         <template #default="{ node, data }">
           <span class="custom-tree-node">
