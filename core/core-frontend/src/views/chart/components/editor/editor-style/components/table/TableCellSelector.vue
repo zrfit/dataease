@@ -322,7 +322,7 @@ onMounted(() => {
       <el-checkbox
         size="small"
         :effect="themes"
-        :disabled="state.tableCellForm.mergeCells"
+        :disabled="showProperty('mergeCells') && state.tableCellForm.mergeCells"
         v-model="state.tableCellForm.tableFreeze"
         @change="changeTableCell('tableFreeze')"
       >
@@ -341,7 +341,10 @@ onMounted(() => {
             :effect="themes"
             controls-position="right"
             v-model="state.tableCellForm.tableColumnFreezeHead"
-            :disabled="!state.tableCellForm.tableFreeze || state.tableCellForm.mergeCells"
+            :disabled="
+              (showProperty('mergeCells') && state.tableCellForm.mergeCells) ||
+              !state.tableCellForm.tableFreeze
+            "
             :min="0"
             :max="100"
             @change="changeTableCell('tableColumnFreezeHead')"
@@ -359,7 +362,10 @@ onMounted(() => {
             :effect="themes"
             controls-position="right"
             v-model="state.tableCellForm.tableRowFreezeHead"
-            :disabled="!state.tableCellForm.tableFreeze || state.tableCellForm.mergeCells"
+            :disabled="
+              (showProperty('mergeCells') && state.tableCellForm.mergeCells) ||
+              !state.tableCellForm.tableFreeze
+            "
             :min="0"
             :max="100"
             @change="changeTableCell('tableRowFreezeHead')"
