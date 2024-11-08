@@ -41,7 +41,13 @@ import { HandleMore } from '@/components/handle-more'
 import { Icon } from '@/components/icon-custom'
 import { fieldType } from '@/utils/attr'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { getHidePwById, listSyncRecord, uploadFile, perDeleteDatasource } from '@/api/datasource'
+import {
+  getHidePwById,
+  listSyncRecord,
+  uploadFile,
+  perDeleteDatasource,
+  getSimpleDs
+} from '@/api/datasource'
 import CreatDsGroup from './form/CreatDsGroup.vue'
 import type { Tree } from '../dataset/form/CreatDsGroup.vue'
 import { previewData, getById } from '@/api/datasource'
@@ -549,7 +555,11 @@ const handleNodeClick = data => {
     dsListTree.value.setCurrentKey(null)
     return
   }
-  return getHidePwById(data.id).then(res => {
+  let method = getHidePwById
+  if (data.weight < 7) {
+    method = getSimpleDs
+  }
+  return method(data.id).then(res => {
     let {
       name,
       createBy,
@@ -893,6 +903,7 @@ const operation = (cmd: string, data: Tree, nodeType: string) => {
 const handleClick = (tabName: TabPaneName) => {
   switch (tabName) {
     case 'config':
+      tableData.value = []
       listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
         tabList.value = res.data.map(ele => {
           const { name, tableName } = ele
@@ -1421,7 +1432,9 @@ const getMenuList = (val: boolean) => {
                   }}</BaseInfoItem>
                 </el-col>
               </el-row>
-              <template v-if="!['Excel', 'API', 'es'].includes(nodeInfo.type)">
+              <template
+                v-if="!['Excel', 'API', 'es'].includes(nodeInfo.type) && nodeInfo.weight >= 7"
+              >
                 <el-row :gutter="24" v-show="nodeInfo.configuration.urlType !== 'jdbcUrl'">
                   <el-col :span="12">
                     <BaseInfoItem :label="t('datasource.host')">{{
@@ -1552,7 +1565,7 @@ const getMenuList = (val: boolean) => {
                   </el-row>
                 </template>
               </template>
-              <template v-if="['es'].includes(nodeInfo.type)">
+              <template v-if="['es'].includes(nodeInfo.type) && nodeInfo.weight >= 7">
                 <el-row :gutter="24">
                   <el-col :span="12">
                     <BaseInfoItem :label="t('datasource.datasource_url')">{{
@@ -1564,7 +1577,7 @@ const getMenuList = (val: boolean) => {
             </template>
           </BaseInfoContent>
           <BaseInfoContent
-            v-if="nodeInfo.type === 'API'"
+            v-if="nodeInfo.type === 'API' && nodeInfo.weight >= 7"
             v-slot="slotProps"
             :name="t('datasource.data_table')"
           >

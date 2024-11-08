@@ -484,6 +484,23 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     @Override
+    public DatasourceDTO getSimpleDs(Long datasourceId) throws DEException {
+        CoreDatasource datasource = datasourceMapper.selectById(datasourceId);
+        if (datasource == null) {
+            DEException.throwException("不存在的数据源！");
+        }
+        if (datasource.getType().equalsIgnoreCase("api")) {
+            datasource.setConfiguration("[]");
+        } else {
+            datasource.setConfiguration("");
+        }
+        datasource.setConfiguration("");
+        DatasourceDTO datasourceDTO = new DatasourceDTO();
+        BeanUtils.copyBean(datasourceDTO, datasource);
+        return datasourceDTO;
+    }
+
+    @Override
     public DatasourceDTO get(Long datasourceId) throws DEException {
         return getDatasourceDTOById(datasourceId, false);
     }

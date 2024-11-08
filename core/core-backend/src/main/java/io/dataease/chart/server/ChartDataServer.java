@@ -126,17 +126,20 @@ public class ChartDataServer implements ChartDataApi {
                 request.setHeader(dsHeader);
                 request.setExcelTypes(dsTypes);
             }
-            for (Object[] objects : tableRow) {
-                for (int i = 0; i < viewDTO.getXAxis().size(); i++) {
-                    if (viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_INT) || viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_FLOAT)) {
-                        try {
-                            objects[i] = valueFormatter(BigDecimal.valueOf(Double.valueOf(objects[i].toString())), viewDTO.getXAxis().get(i).getFormatterCfg());
-                        } catch (Exception ignore) {
+            if (CollectionUtils.isNotEmpty(tableRow)) {
+                for (Object[] objects : tableRow) {
+                    for (int i = 0; i < viewDTO.getXAxis().size(); i++) {
+                        if (viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_INT) || viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_FLOAT)) {
+                            try {
+                                objects[i] = valueFormatter(BigDecimal.valueOf(Double.valueOf(objects[i].toString())), viewDTO.getXAxis().get(i).getFormatterCfg());
+                            } catch (Exception ignore) {
+                            }
                         }
                     }
                 }
             }
             request.setDetails(tableRow);
+            request.setData(chartViewInfo.getData());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
