@@ -684,13 +684,13 @@ const setParameters = field => {
     Object.values(field?.fields || {})
       .flat()
       .filter(ele => fieldArr.includes(ele.id) && !!ele.variableName)
+      .concat(curComponent.value.parameters.filter(ele => fieldArr.includes(ele.id)))
   )
   nextTick(() => {
     if (isTimeParameter.value) {
+      const timeParameter = curComponent.value.parameters.find(ele => ele.deType === 1)
       curComponent.value.timeGranularity =
-        typeTimeMap[
-          curComponent.value.parameters[0].type[1] || curComponent.value.parameters[0].type[0]
-        ]
+        typeTimeMap[timeParameter.type[1] || timeParameter.type[0]]
       curComponent.value.displayType = '1'
     }
 
