@@ -34,6 +34,7 @@ import {
   ElScrollbar,
   ElAside
 } from 'element-plus-secondary'
+import { treeDraggble } from '@/utils/treeDraggble'
 import GridTable from '@/components/grid-table/src/GridTable.vue'
 import ArrowSide from '@/views/common/DeResourceArrow.vue'
 import relationChart from '@/components/relation-chart/index.vue'
@@ -734,6 +735,13 @@ const handleEdit = async data => {
   editDatasource()
 }
 
+const { handleDrop, allowDrop, handleDragStart } = treeDraggble(
+  state,
+  'datasourceTree',
+  move,
+  'datasource'
+)
+
 const handleCopy = async data => {
   getById(data.id).then(res => {
     let {
@@ -1101,6 +1109,10 @@ const getMenuList = (val: boolean) => {
             :default-expanded-keys="expandedKey"
             :data="state.datasourceTree"
             :props="defaultProps"
+            @node-drag-start="handleDragStart"
+            :allow-drop="allowDrop"
+            @node-drop="handleDrop"
+            draggable
             @node-click="handleNodeClick"
           >
             <template #default="{ node, data }">
