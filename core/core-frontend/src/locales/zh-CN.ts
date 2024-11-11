@@ -3056,7 +3056,14 @@ export default {
     pvp: '密码有效期',
     defaultLogin: '默认登录方式',
     shareDisable: '禁用分享',
-    sharePeRequire: '分享有效期密码必填'
+    sharePeRequire: '分享有效期密码必填',
+    defaultSort: '资源默认排序方式'
+  },
+  resource_sort: {
+    time_asc: '按创建时间升序',
+    time_desc: '按创建时间降序',
+    name_asc: '按名称升序',
+    name_desc: '按名称降序'
   },
   setting_email: {
     title: '邮件设置',

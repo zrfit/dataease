@@ -71,6 +71,12 @@ const state = reactive({
     { value: '2', label: 'OIDC' },
     { value: '3', label: 'CAS' },
     { value: '9', label: 'OAUTH2' }
+  ],
+  sortOptions: [
+    { value: '0', label: t('resource_sort.time_asc') },
+    { value: '1', label: t('resource_sort.time_desc') },
+    { value: '2', label: t('resource_sort.name_asc') },
+    { value: '3', label: t('resource_sort.name_desc') }
   ]
 })
 let originData = []
@@ -133,6 +139,17 @@ const search = cb => {
             item.pval = state.loginOptions[0].label
           }
         }
+      } else if (item.pkey === 'basic.defaultSort') {
+        if (item.pval) {
+          const r = state.sortOptions.filter(cur => cur.value === item.pval)
+          if (r?.length) {
+            item.pval = r[0].label
+          } else {
+            item.pval = state.sortOptions[1].label
+          }
+        } else {
+          item.pval = state.sortOptions[1].label
+        }
       } else {
         item.pval = item.pval
       }
@@ -156,7 +173,8 @@ const edit = () => {
     cloneDeep(originData),
     cloneDeep(state.orgOptions),
     cloneDeep(state.roleOptions),
-    cloneDeep(state.loginOptions)
+    cloneDeep(state.loginOptions),
+    cloneDeep(state.sortOptions)
   )
 }
 const loadOrgOptions = async () => {
