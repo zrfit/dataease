@@ -42,7 +42,13 @@ import { HandleMore } from '@/components/handle-more'
 import { Icon } from '@/components/icon-custom'
 import { fieldType } from '@/utils/attr'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { getHidePwById, listSyncRecord, uploadFile, perDeleteDatasource } from '@/api/datasource'
+import {
+  getHidePwById,
+  listSyncRecord,
+  uploadFile,
+  perDeleteDatasource,
+  getSimpleDs
+} from '@/api/datasource'
 import CreatDsGroup from './form/CreatDsGroup.vue'
 import type { Tree } from '../dataset/form/CreatDsGroup.vue'
 import { previewData, getById } from '@/api/datasource'
@@ -81,6 +87,8 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { XpackComponent } from '@/components/plugin'
 import { iconFieldMap } from '@/components/icon-group/field-list'
 import { iconDatasourceMap } from '@/components/icon-group/datasource-list'
+import { querySymmetricKey } from '@/api/login'
+import { symmetricDecrypt } from '@/utils/encryption'
 const route = useRoute()
 const interactiveStore = interactiveStoreWithOut()
 interface Field {
@@ -458,6 +466,7 @@ const saveDsFolder = (params, successCb, finallyCb, cmd) => {
 
 const dsLoading = ref(false)
 const mounted = ref(false)
+const symmetricKey = ref('')
 
 const listDs = () => {
   rawDatasourceList.value = []
@@ -550,7 +559,11 @@ const handleNodeClick = data => {
     dsListTree.value.setCurrentKey(null)
     return
   }
-  return getHidePwById(data.id).then(res => {
+  let method = getHidePwById
+  if (data.weight < 7) {
+    method = getSimpleDs
+  }
+  return method(data.id).then(res => {
     let {
       name,
       createBy,
@@ -570,13 +583,13 @@ const handleNodeClick = data => {
       enableDataFill
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
-    }
-    if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
+    }
+    if (apiConfigurationStr) {
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     Object.assign(nodeInfo, {
       name,
@@ -697,13 +710,13 @@ const editDatasource = (editType?: number) => {
       enableDataFill
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
     }
     if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     let datasource = reactive<Node>(cloneDeep(defaultInfo))
     Object.assign(datasource, {
@@ -762,13 +775,13 @@ const handleCopy = async data => {
       lastSyncTime
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
     }
     if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     let datasource = reactive<Node>(cloneDeep(defaultInfo))
     Object.assign(datasource, {
@@ -901,6 +914,7 @@ const operation = (cmd: string, data: Tree, nodeType: string) => {
 const handleClick = (tabName: TabPaneName) => {
   switch (tabName) {
     case 'config':
+      tableData.value = []
       listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
         tabList.value = res.data.map(ele => {
           const { name, tableName } = ele
@@ -979,6 +993,9 @@ onMounted(() => {
   if (opt && opt === 'create') {
     datasourceEditor.value.init(null, null)
   }
+  querySymmetricKey().then(res => {
+    symmetricKey.value = res.data
+  })
 })
 
 const sideTreeStatus = ref(true)
@@ -1433,7 +1450,9 @@ const getMenuList = (val: boolean) => {
                   }}</BaseInfoItem>
                 </el-col>
               </el-row>
-              <template v-if="!['Excel', 'API', 'es'].includes(nodeInfo.type)">
+              <template
+                v-if="!['Excel', 'API', 'es'].includes(nodeInfo.type) && nodeInfo.weight >= 7"
+              >
                 <el-row :gutter="24" v-show="nodeInfo.configuration.urlType !== 'jdbcUrl'">
                   <el-col :span="12">
                     <BaseInfoItem :label="t('datasource.host')">{{
@@ -1564,7 +1583,7 @@ const getMenuList = (val: boolean) => {
                   </el-row>
                 </template>
               </template>
-              <template v-if="['es'].includes(nodeInfo.type)">
+              <template v-if="['es'].includes(nodeInfo.type) && nodeInfo.weight >= 7">
                 <el-row :gutter="24">
                   <el-col :span="12">
                     <BaseInfoItem :label="t('datasource.datasource_url')">{{
@@ -1576,7 +1595,7 @@ const getMenuList = (val: boolean) => {
             </template>
           </BaseInfoContent>
           <BaseInfoContent
-            v-if="nodeInfo.type === 'API'"
+            v-if="nodeInfo.type === 'API' && nodeInfo.weight >= 7"
             v-slot="slotProps"
             :name="t('datasource.data_table')"
           >
@@ -1633,7 +1652,7 @@ const getMenuList = (val: boolean) => {
             </el-button>
           </BaseInfoContent>
           <BaseInfoContent
-            v-if="nodeInfo.type === 'API'"
+            v-if="nodeInfo.type === 'API' && nodeInfo.weight >= 7"
             v-slot="slotProps"
             :name="t('dataset.update_setting')"
             :time="(nodeInfo.lastSyncTime as string)"
