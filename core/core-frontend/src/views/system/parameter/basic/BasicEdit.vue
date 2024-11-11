@@ -35,6 +35,12 @@ const state = reactive({
     { value: '2', label: 'OIDC' },
     { value: '3', label: 'CAS' },
     { value: '9', label: 'OAUTH2' }
+  ],
+  sortOptions: [
+    { value: '0', label: t('resource_sort.time_asc') },
+    { value: '1', label: t('resource_sort.time_desc') },
+    { value: '2', label: t('resource_sort.name_asc') },
+    { value: '3', label: t('resource_sort.name_desc') }
   ]
 })
 
@@ -119,10 +125,11 @@ const closeLoading = () => {
   loadingInstance.value?.close()
 }
 
-const edit = (list, orgOptions, roleOptions, loginOptions) => {
+const edit = (list, orgOptions, roleOptions, loginOptions, sortOptions) => {
   state.orgOptions = orgOptions || []
   state.roleOptions = roleOptions || []
   state.loginOptions = loginOptions || []
+  state.sortOptions = sortOptions || []
   state.settingList = list.map(item => {
     const pkey = item.pkey
     if (pkey === 'basic.logLiveTime' || pkey === 'basic.thresholdLogLiveTime') {
@@ -340,6 +347,13 @@ defineExpose({
         <div v-else-if="item.pkey === 'defaultLogin'">
           <el-radio-group v-model="state.form[item.pkey]">
             <el-radio v-for="item in state.loginOptions" :key="item.value" :label="item.value">
+              {{ item.label }}
+            </el-radio>
+          </el-radio-group>
+        </div>
+        <div v-else-if="item.pkey === 'defaultSort'">
+          <el-radio-group v-model="state.form[item.pkey]">
+            <el-radio v-for="item in state.sortOptions" :key="item.value" :label="item.value">
               {{ item.label }}
             </el-radio>
           </el-radio-group>

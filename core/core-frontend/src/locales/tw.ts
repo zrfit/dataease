@@ -2964,7 +2964,14 @@ export default {
     pvp: '密碼有效期',
     defaultLogin: '默認登錄方式',
     shareDisable: '禁用分享',
-    sharePeRequire: '分享有效期密碼必填'
+    sharePeRequire: '分享有效期密碼必填',
+    defaultSort: '資源默認排序方式'
+  },
+  resource_sort: {
+    time_asc: '按創建時間升序',
+    time_desc: '按創建時間降序',
+    name_asc: '按名稱升序',
+    name_desc: '按名稱降序'
   },
   setting_email: {
     title: '郵件設置',
