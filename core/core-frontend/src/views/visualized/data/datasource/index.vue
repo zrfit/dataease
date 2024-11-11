@@ -87,6 +87,8 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { XpackComponent } from '@/components/plugin'
 import { iconFieldMap } from '@/components/icon-group/field-list'
 import { iconDatasourceMap } from '@/components/icon-group/datasource-list'
+import { querySymmetricKey } from '@/api/login'
+import { symmetricDecrypt } from '@/utils/encryption'
 const route = useRoute()
 const interactiveStore = interactiveStoreWithOut()
 interface Field {
@@ -464,6 +466,7 @@ const saveDsFolder = (params, successCb, finallyCb, cmd) => {
 
 const dsLoading = ref(false)
 const mounted = ref(false)
+const symmetricKey = ref('')
 
 const listDs = () => {
   rawDatasourceList.value = []
@@ -580,13 +583,13 @@ const handleNodeClick = data => {
       enableDataFill
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
-    }
-    if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
+    }
+    if (apiConfigurationStr) {
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     Object.assign(nodeInfo, {
       name,
@@ -707,13 +710,13 @@ const editDatasource = (editType?: number) => {
       enableDataFill
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
     }
     if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     let datasource = reactive<Node>(cloneDeep(defaultInfo))
     Object.assign(datasource, {
@@ -772,13 +775,13 @@ const handleCopy = async data => {
       lastSyncTime
     } = res.data
     if (configuration) {
-      configuration = JSON.parse(Base64.decode(configuration))
+      configuration = JSON.parse(symmetricDecrypt(configuration, symmetricKey.value))
     }
     if (paramsStr) {
-      paramsStr = JSON.parse(Base64.decode(paramsStr))
+      paramsStr = JSON.parse(symmetricDecrypt(paramsStr, symmetricKey.value))
     }
     if (apiConfigurationStr) {
-      apiConfigurationStr = JSON.parse(Base64.decode(apiConfigurationStr))
+      apiConfigurationStr = JSON.parse(symmetricDecrypt(apiConfigurationStr, symmetricKey.value))
     }
     let datasource = reactive<Node>(cloneDeep(defaultInfo))
     Object.assign(datasource, {
@@ -990,6 +993,9 @@ onMounted(() => {
   if (opt && opt === 'create') {
     datasourceEditor.value.init(null, null)
   }
+  querySymmetricKey().then(res => {
+    symmetricKey.value = res.data
+  })
 })
 
 const sideTreeStatus = ref(true)
@@ -1646,7 +1652,7 @@ const getMenuList = (val: boolean) => {
             </el-button>
           </BaseInfoContent>
           <BaseInfoContent
-            v-if="nodeInfo.type === 'API'"
+            v-if="nodeInfo.type === 'API' && nodeInfo.weight >= 7"
             v-slot="slotProps"
             :name="t('dataset.update_setting')"
             :time="(nodeInfo.lastSyncTime as string)"

@@ -1,6 +1,5 @@
 package io.dataease.datasource.server;
 
-import com.mchange.rmi.NotAuthorizedException;
 import io.dataease.api.ds.EngineApi;
 import io.dataease.datasource.dao.auto.entity.CoreDeEngine;
 import io.dataease.datasource.dao.auto.mapper.CoreDeEngineMapper;
@@ -11,6 +10,7 @@ import io.dataease.extensions.datasource.dto.DatasourceDTO;
 import io.dataease.utils.AuthUtils;
 import io.dataease.utils.BeanUtils;
 import io.dataease.utils.IDUtils;
+import io.dataease.utils.RsaUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +41,9 @@ public class EngineServer implements EngineApi {
         if (CollectionUtils.isEmpty(deEngines)) {
             return datasourceDTO;
         }
-        return BeanUtils.copyBean(datasourceDTO, deEngines.get(0));
+        BeanUtils.copyBean(datasourceDTO, deEngines.get(0));
+        datasourceDTO.setConfiguration(RsaUtils.symmetricEncrypt(datasourceDTO.getConfiguration()));
+        return datasourceDTO;
     }
 
     @Override
