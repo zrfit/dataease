@@ -22,7 +22,6 @@ import PreviewCanvas from '@/views/data-visualization/PreviewCanvasMobile.vue'
 import TicketError from './TicketError.vue'
 import { ProxyInfo, shareProxy } from './ShareProxy'
 import Exp from './exp.vue'
-import router from '@/router/mobile'
 import LinkError from './error.vue'
 import PwdTips from './pwd.vue'
 const linkExist = ref(false)
@@ -53,16 +52,11 @@ onMounted(async () => {
   pwdValid.value = !!proxyInfo.pwdValid
   state.ticketValidVO = proxyInfo.ticketValidVO
   nextTick(() => {
-    if (curType.value === 'dashboard') {
-      const method = pcanvas?.value?.loadCanvasDataAsync
-      if (method) {
-        method(proxyInfo.resourceId, 'dashboard', null)
-      }
-      loading.value = false
-    } else {
-      loading.value = false
-      router.push('/dvCanvas')
+    const method = pcanvas?.value?.loadCanvasDataAsync
+    if (method) {
+      method(proxyInfo.resourceId, curType.value, null)
     }
+    loading.value = false
   })
 })
 </script>
