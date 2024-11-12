@@ -283,6 +283,8 @@ const dtLoading = ref(false)
 const isCreated = ref(false)
 const getData = () => {
   dtLoading.value = true
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
   const request = { busiFlag: 'dataset' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -292,12 +294,12 @@ const getData = () => {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasetTree = nodeData[0]['children'] || []
         originResourceTree = cloneDeep(unref(state.datasetTree))
-        sortTypeChange(state.curSortType)
+        sortTypeChange(curSortType)
         return
       }
       state.datasetTree = nodeData
       originResourceTree = cloneDeep(unref(state.datasetTree))
-      sortTypeChange(state.curSortType)
+      sortTypeChange(curSortType)
     })
     .finally(() => {
       dtLoading.value = false
@@ -407,6 +409,15 @@ const exportDatasetRequest = () => {
 
 const exportData = () => {
   useEmitt().emitter.emit('data-export-center', { activeName: 'IN_PROGRESS' })
+}
+
+const rowClick = (_, __, event) => {
+  const element = event.target.parentNode.parentNode
+  if ([...element.classList].includes('no-hide')) {
+    element.classList.remove('no-hide')
+    return
+  }
+  element.classList.add('no-hide')
 }
 
 const openMessageLoading = cb => {
@@ -1015,8 +1026,10 @@ const getMenuList = (val: boolean) => {
               <template v-if="activeName === 'dataPreview'">
                 <el-table
                   v-loading="dataPreviewLoading"
+                  class="dataset-preview_table"
                   header-class="header-cell"
                   :data="tableData"
+                  @row-click="rowClick"
                   key="dataPreview"
                   border
                   style="width: 100%; height: 100%"
@@ -1123,6 +1136,16 @@ const getMenuList = (val: boolean) => {
 
 <style lang="less" scoped>
 @import '@/style/mixin.less';
+
+:deep(.dataset-preview_table) {
+  .ed-table__body {
+    .ed-table__row:not(.no-hide) {
+      .cell {
+        white-space: nowrap;
+      }
+    }
+  }
+}
 
 .ed-table {
   --ed-table-header-bg-color: #f5f6f7;
