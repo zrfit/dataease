@@ -290,6 +290,7 @@ import dvStyleHeadFontActiveColor from '@/assets/svg/dv-style-headFontActiveColo
 import dvStyleHeadFontColor from '@/assets/svg/dv-style-headFontColor.svg'
 import dvStyleScrollSpeed from '@/assets/svg/dv-style-scroll-speed.svg'
 import dvStyleOpacity from '@/assets/svg/dv-style-opacity.svg'
+import dvStyleTabHead from '@/assets/svg/dv-style-tab-head.svg'
 import dvStyleFontSize from '@/assets/svg/dv-style-fontSize.svg'
 import dvStyleLetterSpacing from '@/assets/svg/dv-style-letterSpacing.svg'
 import dvStyleActiveFont from '@/assets/svg/dv-style-activeFont.svg'
@@ -369,6 +370,11 @@ const opacitySizeList = [
   { name: '0.8', value: 0.8 },
   { name: '0.9', value: 0.9 },
   { name: '1', value: 1 }
+]
+
+const titleHideList = [
+  { name: '隐藏', value: true },
+  { name: '显示', value: false }
 ]
 
 const styleForm = computed<any>(() => element.value.style)
@@ -466,6 +472,13 @@ const styleOptionKeyArray = [
     customOption: opacitySizeList,
     width: '90px',
     icon: dvStyleOpacity
+  },
+  {
+    value: 'titleHide',
+    label: '标题样式',
+    customOption: titleHideList,
+    width: '90px',
+    icon: dvStyleTabHead
   }
 ]
 

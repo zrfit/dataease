@@ -147,6 +147,11 @@ export function historyItemAdaptor(
       }
     })
   }
+
+  if (componentItem.component === 'DeTabs') {
+    componentItem.style['titleHide'] = componentItem.style['titleHide'] || false
+  }
+
   if (componentItem.component === 'Group') {
     componentItem.expand = componentItem.expand || false
   }

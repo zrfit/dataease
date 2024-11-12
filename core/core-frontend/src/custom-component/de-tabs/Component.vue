@@ -2,7 +2,12 @@
   <div
     v-if="state.tabShow"
     style="width: 100%; height: 100%"
-    :class="[headClass, `ed-tabs-${curThemes}`]"
+    :class="[
+      headClass,
+      `ed-tabs-${curThemes}`,
+      { 'title-hidde-tab': hideTitle },
+      { 'title-show-tab': !hideTitle }
+    ]"
     class="custom-tabs-head"
     ref="tabComponentRef"
   >
@@ -14,6 +19,7 @@
       :active-color="activeColor"
       :border-color="noBorderColor"
       :border-active-color="borderActiveColor"
+      :hide-title="hideTitle"
     >
       <template :key="tabItem.name" v-for="tabItem in element.propValue">
         <el-tab-pane
@@ -210,6 +216,19 @@ const editableTabsValue = ref(null)
 // 无边框
 const noBorderColor = ref('none')
 let currentInstance
+
+const hideTitle = computed(() => {
+  if (
+    element.value &&
+    element.value.style &&
+    element.value.style.titleHide &&
+    typeof element.value.style.titleHide === 'boolean'
+  ) {
+    return element.value.style.titleHide
+  } else {
+    return false
+  }
+})
 
 const isEditMode = computed(() => editMode.value === 'edit' && isEdit.value && !mobileInPc.value)
 const curThemes = isDashboard() ? 'light' : 'dark'
@@ -537,9 +556,18 @@ onBeforeMount(() => {
 })
 </script>
 <style lang="less" scoped>
-:deep(.ed-tabs__content) {
-  height: calc(100% - 46px) !important;
+.title-hidde-tab {
+  :deep(.ed-tabs__content) {
+    height: 100% !important;
+  }
 }
+
+.title-show-tab {
+  :deep(.ed-tabs__content) {
+    height: calc(100% - 46px) !important;
+  }
+}
+
 .ed-tabs-dark {
   :deep(.ed-tabs__new-tab) {
     margin-right: 25px;
