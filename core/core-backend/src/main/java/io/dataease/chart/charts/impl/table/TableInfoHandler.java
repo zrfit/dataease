@@ -98,7 +98,7 @@ public class TableInfoHandler extends DefaultChartHandler {
                     }
                 }
                 assert fieldDTO != null;
-                if (fieldDTO.isAgg()) {
+                if (fieldDTO != null && fieldDTO.isAgg()) {
                     sqlMeta.getXFields().get(i).setFieldName("'-'");
                 }
             }
