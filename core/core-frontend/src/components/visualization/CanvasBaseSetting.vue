@@ -6,7 +6,7 @@
           size="small"
           :effect="themes"
           v-model="canvasStyleData.popupButtonAvailable"
-          @change="onPopButtonChange"
+          @change="onThemeChange"
         >
           <div style="display: flex; line-height: 14px">
             <span style="margin-right: 4px">显示弹窗区查询按钮</span>
@@ -27,7 +27,7 @@
           size="small"
           :effect="themes"
           v-model="canvasStyleData.suspensionButtonAvailable"
-          @change="onPopButtonChange"
+          @change="onThemeChange"
         >
           <div style="display: flex; line-height: 14px">
             <span style="margin-right: 4px">显示放大、导出等悬浮按钮</span>
@@ -42,6 +42,16 @@
           </div>
         </el-checkbox>
       </el-form-item>
+
+      <el-form-item class="form-item no-margin-bottom" :class="'form-item-' + themes">
+        <el-checkbox
+          :effect="themes"
+          size="small"
+          v-model="canvasStyleData.dashboard.showGrid"
+          @change="onThemeChange"
+          >显示辅助网格</el-checkbox
+        >
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -51,14 +61,14 @@ import icon_info_outlined from '@/assets/svg/icon_info_outlined.svg'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
-import { ElIcon } from 'element-plus-secondary'
+import { ElFormItem, ElIcon } from 'element-plus-secondary'
 import Icon from '../icon-custom/src/Icon.vue'
 const snapshotStore = snapshotStoreWithOut()
 
 const dvMainStore = dvMainStoreWithOut()
 const { canvasStyleData } = storeToRefs(dvMainStore)
 
-const onPopButtonChange = () => {
+const onThemeChange = () => {
   snapshotStore.recordSnapshotCache()
 }
 

@@ -200,6 +200,15 @@
         </span>
       </el-checkbox>
     </el-form-item>
+    <el-form-item class="form-item" :class="'form-item-' + themes">
+      <el-checkbox
+        :effect="themes"
+        size="small"
+        v-model="canvasStyleData.dashboard.showGrid"
+        @change="themeChange"
+        >显示辅助网格</el-checkbox
+      >
+    </el-form-item>
   </el-form>
 </template>
 

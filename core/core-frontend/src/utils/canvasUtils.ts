@@ -227,6 +227,8 @@ export function historyAdaptor(
   canvasVersion
 ) {
   //历史字段适配
+  canvasStyleResult.dashboard['showGrid'] = canvasStyleResult.dashboard['showGrid'] || false
+  canvasStyleResult.dashboard['matrixBase'] = canvasStyleResult.dashboard['matrixBase'] || 4
   canvasStyleResult.component['seniorStyleSetting'] =
     canvasStyleResult.component['seniorStyleSetting'] || deepCopy(SENIOR_STYLE_SETTING_LIGHT)
   canvasStyleResult['suspensionButtonAvailable'] =
