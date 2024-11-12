@@ -74,7 +74,7 @@ router.beforeEach(async (to, from, next) => {
       if (permissionStore.getIsAddRouters) {
         let str = ''
         if (((from.query.redirect as string) || '?').split('?')[0] === to.path) {
-          str = ((from.query.redirect as string) || '?').split('?')[1]
+          str = ((window.location.hash as string) || '?').split('?').reverse()[0]
         }
         if (str) {
           to.fullPath += '?' + str
