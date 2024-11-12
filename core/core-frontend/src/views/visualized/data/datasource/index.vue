@@ -1087,8 +1087,8 @@ const getMenuList = (val: boolean) => {
           <el-dropdown @command="sortTypeChange" trigger="click">
             <el-icon class="filter-icon-span">
               <el-tooltip :offset="16" effect="dark" :content="sortTypeTip" placement="top">
-                <Icon v-if="state.curSortType.includes('asc')" name="dv-sort-asc" class="opt-icon"
-                  ><dvSortAsc class="svg-icon opt-icon"
+                <Icon name="dv-sort-asc" class="opt-icon"
+                  ><dvSortAsc v-if="state.curSortType.includes('asc')" class="svg-icon opt-icon"
                 /></Icon>
               </el-tooltip>
               <el-tooltip :offset="16" effect="dark" :content="sortTypeTip" placement="top">

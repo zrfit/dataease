@@ -1223,6 +1223,15 @@ const setDeTypeSelection = () => {
     obj.deType === 1 && obj.deExtractType === 0 ? [1, obj.dateFormatType] : [obj.deType]
 }
 
+const rowClick = (_, __, event) => {
+  const element = event.target.parentNode.parentNode
+  if ([...element.classList].includes('no-hide')) {
+    element.classList.remove('no-hide')
+    return
+  }
+  element.classList.add('no-hide')
+}
+
 let oldArrValue = []
 
 const cascaderChangeArr = val => {
@@ -1673,6 +1682,8 @@ const getDsIconName = data => {
             </div>
             <div class="preview-data">
               <el-table
+                class="dataset-preview_table"
+                @row-click="rowClick"
                 v-loading="datasetPreviewLoading"
                 header-class="header-cell"
                 :data="tableData"
@@ -2242,6 +2253,16 @@ const getDsIconName = data => {
 
 <style lang="less" scoped>
 @import '@/style/mixin.less';
+
+:deep(.dataset-preview_table) {
+  .ed-table__body {
+    .ed-table__row:not(.no-hide) {
+      .cell {
+        white-space: nowrap;
+      }
+    }
+  }
+}
 
 .ed-table {
   --ed-table-header-bg-color: #f5f6f7;
