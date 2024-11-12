@@ -197,17 +197,19 @@ const renderChart = (viewInfo: Chart, resetPageInfo: boolean) => {
     viewInfo.render,
     viewInfo.type
   ) as S2ChartView<any>
-  myChart = chartView.drawChart({
-    container: containerId,
-    chart: toRaw(actualChart),
-    chartObj: myChart,
-    pageInfo: state.pageInfo,
-    action,
-    resizeAction
-  })
-  myChart?.render()
-  dvMainStore.setViewInstanceInfo(viewInfo.id, myChart)
-  initScroll()
+  timer = setTimeout(() => {
+    myChart = chartView.drawChart({
+      container: containerId,
+      chart: toRaw(actualChart),
+      chartObj: myChart,
+      pageInfo: state.pageInfo,
+      action,
+      resizeAction
+    })
+    myChart?.render()
+    dvMainStore.setViewInstanceInfo(viewInfo.id, myChart)
+    initScroll()
+  }, 500)
 }
 
 const setupPage = (chart: ChartObj, resetPageInfo?: boolean) => {
@@ -573,8 +575,24 @@ const resize = (width, height) => {
     clearTimeout(timer)
   }
   timer = setTimeout(() => {
-    myChart?.changeSheetSize(width, height)
-    myChart?.facet.timer?.stop()
+    if (!myChart?.facet) {
+      const chartView = chartViewManager.getChartView(
+        actualChart.render,
+        actualChart.type
+      ) as S2ChartView<any>
+      myChart = chartView.drawChart({
+        container: containerId,
+        chart: toRaw(actualChart),
+        chartObj: myChart,
+        pageInfo: state.pageInfo,
+        action,
+        resizeAction
+      })
+      dvMainStore.setViewInstanceInfo(actualChart.id, myChart)
+    } else {
+      myChart?.facet?.timer?.stop()
+      myChart?.changeSheetSize(width, height)
+    }
     myChart?.render()
     initScroll()
   }, 500)
@@ -597,7 +615,7 @@ onMounted(() => {
     }
     preSize[0] = size.inlineSize
     preSize[1] = size.blockSize
-    resize(size.inlineSize, size.blockSize)
+    resize(size.inlineSize, Math.ceil(size.blockSize))
   })
 
   resizeObserver.observe(document.getElementById(containerId))
