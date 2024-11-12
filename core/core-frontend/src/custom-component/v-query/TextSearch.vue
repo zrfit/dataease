@@ -96,10 +96,18 @@ const handleValueChange = () => {
 const lineWidth = computed(() => {
   return { width: queryConditionWidth() - 15 + 'px' }
 })
+
+const handleInnerMouseDown = e => {
+  e.stopPropagation()
+}
 </script>
 
 <template>
-  <div class="text-search-select" :style="{ background: customStyle.background }">
+  <div
+    @mousedown="handleInnerMouseDown"
+    class="text-search-select"
+    :style="{ background: customStyle.background }"
+  >
     <div class="condition-type">
       <el-select
         class="condition-value-select"
