@@ -41,6 +41,7 @@ public class WhitelistUtils {
             "/wecom/qrinfo",
             "/wecom/token",
             "/sysParameter/requestTimeOut",
+            "/sysParameter/defaultSettings",
             "/setting/authentication/status",
             "/sysParameter/ui",
             "/sysParameter/defaultLogin",
