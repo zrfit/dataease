@@ -3,7 +3,7 @@ import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { onMounted, reactive } from 'vue'
 import DePreview from '@/components/data-visualization/canvas/DePreview.vue'
 import router from '@/router/mobile'
-import { initCanvasDataMobile } from '@/utils/canvasUtils'
+import { initCanvasDataMobile, initCanvasData } from '@/utils/canvasUtils'
 import { queryTargetVisualizationJumpInfo } from '@/api/visualization/linkJump'
 import { Base64 } from 'js-base64'
 import { getOuterParamsInfo } from '@/api/visualization/outerParams'
@@ -91,7 +91,9 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
       return
     }
   }
-  initCanvasDataMobile(
+
+  const req = dvType === 'dashboard' ? initCanvasDataMobile : initCanvasData
+  req(
     dvId,
     dvType,
     function ({
@@ -101,7 +103,7 @@ const loadCanvasDataAsync = async (dvId, dvType) => {
       canvasViewInfoPreview,
       curPreviewGap
     }) {
-      if (!dvInfo.mobileLayout) {
+      if (!dvInfo.mobileLayout && dvType === 'dashboard') {
         router.push('/DashboardEmpty')
         return
       }
