@@ -2,6 +2,7 @@ import router from './router'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import type { RouteRecordRaw } from 'vue-router'
+import { getDefaultSettings } from '@/api/common'
 import { useNProgress } from '@/hooks/web/useNProgress'
 import { usePermissionStoreWithOut, pathValid, getFirstAuthMenu } from '@/store/modules/permission'
 import { usePageLoading } from '@/hooks/web/usePageLoading'
@@ -60,6 +61,8 @@ router.beforeEach(async (to, from, next) => {
   }
   await appearanceStore.setAppearance()
   await appearanceStore.setFontList()
+  const defaultSort = await getDefaultSettings()
+  wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
   if ((wsCache.get('user.token') || isDesktop) && !to.path.startsWith('/de-link/')) {
     if (!userStore.getUid) {
       await userStore.setUser()

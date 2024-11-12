@@ -283,6 +283,8 @@ const dtLoading = ref(false)
 const isCreated = ref(false)
 const getData = () => {
   dtLoading.value = true
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
   const request = { busiFlag: 'dataset' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -292,12 +294,12 @@ const getData = () => {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasetTree = nodeData[0]['children'] || []
         originResourceTree = cloneDeep(unref(state.datasetTree))
-        sortTypeChange(state.curSortType)
+        sortTypeChange(curSortType)
         return
       }
       state.datasetTree = nodeData
       originResourceTree = cloneDeep(unref(state.datasetTree))
-      sortTypeChange(state.curSortType)
+      sortTypeChange(curSortType)
     })
     .finally(() => {
       dtLoading.value = false

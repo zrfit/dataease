@@ -233,14 +233,16 @@ const getTree = async () => {
   ) {
     dvMainStore.resetDvInfo()
   }
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get(`TreeSort-${curCanvasType.value}`) ?? curSortType
   if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
     state.originResourceTree = nodeData[0]['children'] || []
-    sortTypeChange(state.curSortType)
+    sortTypeChange(curSortType)
     afterTreeInit()
     return
   }
   state.originResourceTree = nodeData
-  sortTypeChange(state.curSortType)
+  sortTypeChange(curSortType)
   afterTreeInit()
 }
 

@@ -471,6 +471,8 @@ const symmetricKey = ref('')
 const listDs = () => {
   rawDatasourceList.value = []
   dsLoading.value = true
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
   const request = { busiFlag: 'datasource' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -480,12 +482,12 @@ const listDs = () => {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasourceTree = nodeData[0]['children'] || []
         originResourceTree = cloneDeep(unref(state.datasourceTree))
-        sortTypeChange(state.curSortType)
+        sortTypeChange(curSortType)
         return
       }
       originResourceTree = cloneDeep(unref(state.datasourceTree))
       state.datasourceTree = nodeData
-      sortTypeChange(state.curSortType)
+      sortTypeChange(curSortType)
     })
     .finally(() => {
       mounted.value = true
