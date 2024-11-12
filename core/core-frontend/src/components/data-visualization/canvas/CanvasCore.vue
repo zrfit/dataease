@@ -45,6 +45,7 @@ import DragInfo from '@/components/visualization/common/DragInfo.vue'
 import { activeWatermarkCheckUser } from '@/components/watermark/watermark'
 import PopArea from '@/custom-component/pop-area/Component.vue'
 import DatasetParamsComponent from '@/components/visualization/DatasetParamsComponent.vue'
+import DeGrid from '@/components/data-visualization/DeGrid.vue'
 
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
@@ -56,6 +57,10 @@ const { curComponent, dvInfo, editMode, tabMoveOutComponentId, canvasState } =
 const { editorMap, areaData } = storeToRefs(composeStore)
 const emits = defineEmits(['scrollCanvasToTop'])
 const props = defineProps({
+  themes: {
+    type: String,
+    default: 'dark'
+  },
   isEdit: {
     type: Boolean,
     default: true
@@ -168,7 +173,6 @@ const props = defineProps({
     default: true
   }
 })
-const userInfo = ref(null)
 
 const {
   baseWidth,
@@ -187,7 +191,8 @@ const {
   canvasId,
   canvasStyleData,
   componentData,
-  canvasViewInfo
+  canvasViewInfo,
+  themes
 } = toRefs(props)
 
 const editorX = ref(0)
@@ -274,6 +279,13 @@ const initWatermark = (waterDomId = 'editor-canvas-main') => {
     console.warn('Watermarks are not supported!')
   }
 }
+
+const matrixStyle = computed(() => {
+  return {
+    width: baseWidth.value,
+    height: baseHeight.value
+  }
+})
 
 const dragInfoShow = computed(() => {
   return (
@@ -1409,6 +1421,10 @@ const contextMenuShow = computed(() => {
 
 const markLineShow = computed(() => isMainCanvas(canvasId.value))
 
+const showGrid = computed(() => {
+  return Boolean(canvasStyleData.value.dashboard.showGrid) && isMainCanvas(canvasId.value)
+})
+
 // 批量设置
 
 const dataVBatchOptAdaptor = () => {
@@ -1540,6 +1556,7 @@ defineExpose({
       :show-position="'popEdit'"
     ></PopArea>
     <!-- 网格线 -->
+    <de-grid v-if="showGrid" :matrix-style="matrixStyle" :themes="themes"></de-grid>
     <drag-shadow
       v-if="infoBox && infoBox.moveItem && editMode !== 'preview'"
       :base-height="baseHeight"
