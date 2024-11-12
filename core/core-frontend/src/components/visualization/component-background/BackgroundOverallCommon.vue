@@ -68,6 +68,7 @@
         <div class="indented-item">
           <el-form-item class="form-item" :class="'form-item-' + themes">
             <el-color-picker
+              v-if="state.commonBackground.backgroundColor"
               v-model="state.commonBackground.backgroundColor"
               :effect="themes"
               :disabled="!state.commonBackground.backgroundColorSelect"
@@ -324,7 +325,6 @@ const upload = file => {
 }
 
 const onBackgroundChange = () => {
-  snapshotStore.recordSnapshotCacheToMobile('commonBackground')
   emits('onBackgroundChange', state.commonBackground)
 }
 

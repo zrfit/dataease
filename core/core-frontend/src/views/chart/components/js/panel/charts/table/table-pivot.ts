@@ -20,7 +20,7 @@ import { S2ChartView, S2DrawOptions } from '../../types/impl/s2'
 import { TABLE_EDITOR_PROPERTY_INNER } from './common'
 import { useI18n } from '@/hooks/web/useI18n'
 import { isNumber, keys, maxBy, merge, minBy, some, isEmpty, get } from 'lodash-es'
-import { copyContent } from '../../common/common_table'
+import { copyContent, CustomDataCell } from '../../common/common_table'
 import Decimal from 'decimal.js'
 
 type DataItem = Record<string, any>
@@ -262,6 +262,9 @@ export class TablePivot extends S2ChartView<PivotSheet> {
       dataSet: spreadSheet => new CustomPivotDataset(spreadSheet),
       interaction: {
         hoverHighlight: !(basicStyle.showHoverStyle === false)
+      },
+      dataCell: meta => {
+        return new CustomDataCell(meta, meta.spreadsheet)
       }
     }
     // options
@@ -350,7 +353,10 @@ export class TablePivot extends S2ChartView<PivotSheet> {
     if (!isAlphaColor(tableHeaderBgColor)) {
       tableHeaderBgColor = hexColorToRGBA(tableHeaderBgColor, basicStyle.alpha)
     }
-    const tableBorderColor = hexColorToRGBA(basicStyle.tableBorderColor, basicStyle.alpha)
+    let tableBorderColor = basicStyle.tableBorderColor
+    if (!isAlphaColor(tableBorderColor)) {
+      tableBorderColor = hexColorToRGBA(tableBorderColor, basicStyle.alpha)
+    }
     const tableHeaderFontColor = hexColorToRGBA(tableHeader.tableHeaderFontColor, basicStyle.alpha)
     const fontStyle = tableHeader.isItalic ? 'italic' : 'normal'
     const fontWeight = tableHeader.isBolder === false ? 'normal' : 'bold'

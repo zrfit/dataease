@@ -29,8 +29,15 @@ import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapsho
 import { deepCopy } from '@/utils/utils'
 import { ElMessage } from 'element-plus-secondary'
 const dvMainStore = dvMainStoreWithOut()
-const { curBatchOptComponents, dvInfo, canvasStyleData, componentData, canvasViewInfo, appData } =
-  storeToRefs(dvMainStore)
+const {
+  inMobile,
+  curBatchOptComponents,
+  dvInfo,
+  canvasStyleData,
+  componentData,
+  canvasViewInfo,
+  appData
+} = storeToRefs(dvMainStore)
 const snapshotStore = snapshotStoreWithOut()
 
 export function chartTransStr2Object(targetIn, copy) {
@@ -140,6 +147,11 @@ export function historyItemAdaptor(
       }
     })
   }
+
+  if (componentItem.component === 'DeTabs') {
+    componentItem.style['titleHide'] = componentItem.style['titleHide'] || false
+  }
+
   if (componentItem.component === 'Group') {
     componentItem.expand = componentItem.expand || false
   }
@@ -217,6 +229,10 @@ export function historyAdaptor(
   //历史字段适配
   canvasStyleResult.component['seniorStyleSetting'] =
     canvasStyleResult.component['seniorStyleSetting'] || deepCopy(SENIOR_STYLE_SETTING_LIGHT)
+  canvasStyleResult['suspensionButtonAvailable'] =
+    canvasStyleResult['suspensionButtonAvailable'] === undefined
+      ? false
+      : canvasStyleResult['suspensionButtonAvailable']
   canvasStyleResult['screenAdaptor'] = canvasStyleResult['screenAdaptor'] || 'widthFirst'
   canvasStyleResult['refreshBrowserEnable'] =
     canvasStyleResult['refreshBrowserEnable'] === undefined
@@ -258,15 +274,19 @@ export function refreshOtherComponent(dvId, busiFlag) {
       for (let i = 0; i < componentData.value.length; i++) {
         const component = componentData.value[i]
         if (refreshIdList.includes(component.id) && canvasDataResultMap[component.id]) {
-          const { top, left, height, width, fontSize } = componentData.value[i].style
-          canvasDataResultMap[component.id].style.top = top
-          canvasDataResultMap[component.id].style.left = left
-          canvasDataResultMap[component.id].style.height = height
-          canvasDataResultMap[component.id].style.width = width
-          if (fontSize) {
-            canvasDataResultMap[component.id].style.fontSize = fontSize
+          if (inMobile.value) {
+            componentData.value[i].propValue = canvasDataResultMap[component.id].propValue
+          } else {
+            const { top, left, height, width, fontSize } = componentData.value[i].style
+            canvasDataResultMap[component.id].style.top = top
+            canvasDataResultMap[component.id].style.left = left
+            canvasDataResultMap[component.id].style.height = height
+            canvasDataResultMap[component.id].style.width = width
+            if (fontSize) {
+              canvasDataResultMap[component.id].style.fontSize = fontSize
+            }
+            componentData.value[i] = canvasDataResultMap[component.id]
           }
-          componentData.value[i] = canvasDataResultMap[component.id]
         }
       }
     })
@@ -351,7 +371,7 @@ export async function initCanvasData(dvId, busiFlag, callBack) {
   )
 }
 
-export async function backCanvasData(dvId, busiFlag, callBack) {
+export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
   initCanvasDataPrepare(
     dvId,
     busiFlag,
@@ -361,11 +381,17 @@ export async function backCanvasData(dvId, busiFlag, callBack) {
       componentData.value.forEach(ele => {
         ele.inMobile = componentDataId.includes(ele.id)
         if (ele.inMobile) {
-          const { mx, my, mSizeX, mSizeY } = componentDataCopy.find(itx => itx.id === ele.id)
+          const { mx, my, mSizeX, mSizeY, mPropValue, mEvents, mCommonBackground } =
+            componentDataCopy.find(itx => itx.id === ele.id)
           ele.mx = mx
           ele.my = my
           ele.mSizeX = mSizeX
           ele.mSizeY = mSizeY
+          ele.mEvents = mEvents
+          ele.mCommonBackground = mCommonBackground
+          if (ele.component === 'VQuery') {
+            ele.mPropValue = mPropValue
+          }
           if (ele.component === 'DeTabs') {
             ele.propValue.forEach(tabItem => {
               tabItem.componentData.forEach(tabComponent => {
@@ -373,13 +399,25 @@ export async function backCanvasData(dvId, busiFlag, callBack) {
                 tabComponent.my = tabComponent.my
                 tabComponent.mSizeX = tabComponent.mSizeX
                 tabComponent.mSizeY = tabComponent.mSizeY
+                tabComponent.mEvents = tEvents
+                tabComponent.mCommonBackground = tCommonBackground
+                if (tabComponent.component === 'VQuery') {
+                  tabComponent.mPropValue = tPropValue
+                }
               })
             })
           }
         }
       })
+      Object.keys(mobileViewInfo).forEach(key => {
+        if (canvasViewInfo.value[key] && mobileViewInfo[key]) {
+          const { customAttrMobile, customStyleMobile } = mobileViewInfo[key]
+          // 此处作为还原移动设计使用
+          canvasViewInfo.value[key]['customStyleMobile'] = customStyleMobile
+          canvasViewInfo.value[key]['customAttrMobile'] = customAttrMobile
+        }
+      })
       dvMainStore.setComponentData(componentData.value)
-      dvMainStore.setCanvasViewInfo(canvasViewInfoPreview)
       const canvasStyleDataCopy = cloneDeep(canvasStyleData.value)
       if (!canvasStyleDataCopy.mobileSetting) {
         canvasStyleDataCopy.mobileSetting = {
@@ -405,15 +443,28 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
     function ({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview }) {
       const componentData = canvasDataResult.filter(ele => !!ele.inMobile)
       canvasDataResult.forEach(ele => {
-        const { mx, my, mSizeX, mSizeY, mStyle, mPropValue, mEvents, mCommonBackground } = ele
+        const {
+          mx,
+          my,
+          mSizeX,
+          mSizeY,
+          mStyle,
+          mPropValue,
+          mEvents,
+          mCommonBackground,
+          style,
+          propValue,
+          events,
+          commonBackground
+        } = ele
         ele.x = mx
         ele.y = my
         ele.sizeX = mSizeX
         ele.sizeY = mSizeY
-        ele.mStyle = mStyle || ele.Style
-        ele.mPropValue = mPropValue || ele.propValue
-        ele.mEvents = mEvents || ele.events
-        ele.mCommonBackground = mCommonBackground || ele.commonBackground
+        ele.style = mStyle || style
+        ele.propValue = mPropValue || propValue
+        ele.events = mEvents || events
+        ele.commonBackground = mCommonBackground || commonBackground
         if (ele.component === 'DeTabs') {
           ele.propValue.forEach(tabItem => {
             tabItem.componentData.forEach(tabComponent => {
@@ -421,6 +472,11 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
               tabComponent.y = tabComponent.my
               tabComponent.sizeX = tabComponent.mSizeX
               tabComponent.sizeY = tabComponent.mSizeY
+              tabComponent.style = tabComponent.mStyle || tabComponent.style
+              tabComponent.propValue = tabComponent.mPropValue || tabComponent.propValue
+              tabComponent.events = tabComponent.mEvents || tabComponent.events
+              tabComponent.commonBackground =
+                tabComponent.mCommonBackground || tabComponent.commonBackground
             })
           })
         }

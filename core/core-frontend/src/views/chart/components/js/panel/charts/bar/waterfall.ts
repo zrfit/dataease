@@ -2,7 +2,14 @@ import type { WaterfallOptions, Waterfall as G2Waterfall } from '@antv/g2plot/es
 import { G2PlotChartView, G2PlotDrawOptions } from '../../types/impl/g2plot'
 import { flow, hexColorToRGBA, parseJson } from '../../../util'
 import { valueFormatter } from '../../../formatter'
-import { getPadding, getTooltipSeriesTotalMap, setGradientColor } from '../../common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  getTooltipSeriesTotalMap,
+  setGradientColor,
+  TOOLTIP_TPL
+} from '../../common/common_antv'
 import { isEmpty } from 'lodash-es'
 import { useI18n } from '@/hooks/web/useI18n'
 const { t } = useI18n()
@@ -92,6 +99,7 @@ export class Waterfall extends G2PlotChartView<WaterfallOptions, G2Waterfall> {
     const { Waterfall: G2Waterfall } = await import('@antv/g2plot/esm/plots/waterfall')
     const newChart = new G2Waterfall(container, options)
     newChart.on('interval:click', action)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -224,7 +232,10 @@ export class Waterfall extends G2PlotChartView<WaterfallOptions, G2Waterfall> {
           }
         })
         return result
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

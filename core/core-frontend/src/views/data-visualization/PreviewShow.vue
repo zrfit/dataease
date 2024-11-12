@@ -17,9 +17,13 @@ import { download2AppTemplate, downloadCanvas2 } from '@/utils/imgUtils'
 import MultiplexPreviewShow from '@/views/data-visualization/MultiplexPreviewShow.vue'
 import DvPreview from '@/views/data-visualization/DvPreview.vue'
 import AppExportForm from '@/components/de-app/AppExportForm.vue'
-import { personInfoApi } from '@/api/user'
 import { ElMessage } from 'element-plus-secondary'
 import { useEmitt } from '@/hooks/web/useEmitt'
+
+import { useUserStoreWithOut } from '@/store/modules/user'
+const userStore = useUserStoreWithOut()
+
+const userName = computed(() => userStore.getName)
 
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewDataInfo } = storeToRefs(dvMainStore)
@@ -136,7 +140,7 @@ const downLoadToAppPre = () => {
       appName: state.dvInfo.name,
       icon: null,
       version: '2.0',
-      creator: state.userLoginInfo?.name,
+      creator: userName.value,
       required: '2.9.0',
       description: null
     })
@@ -170,8 +174,7 @@ const state = reactive({
   canvasStylePreview: null,
   canvasViewInfoPreview: null,
   dvInfo: null,
-  curPreviewGap: 0,
-  userLoginInfo: {}
+  curPreviewGap: 0
 })
 
 const sideTreeStatus = ref(true)
@@ -195,12 +198,6 @@ const downLoadApp = appAttachInfo => {
   fileDownload('app', appAttachInfo)
 }
 
-const findUserData = callback => {
-  personInfoApi().then(rsp => {
-    callback(rsp)
-  })
-}
-
 onMounted(() => {
   useEmitt({
     name: 'canvasDownload',
@@ -218,9 +215,6 @@ onBeforeMount(() => {
   if (props.showPosition === 'preview') {
     dvMainStore.canvasDataInit()
   }
-  findUserData(res => {
-    state.userLoginInfo = res.data
-  })
 })
 </script>
 
@@ -304,7 +298,7 @@ onBeforeMount(() => {
             <template #icon>
               <Icon name="icon_add_outlined"><icon_add_outlined class="svg-icon" /></Icon>
             </template>
-            {{ $t('commons.create') }}数据大屏
+            {{ $t('commons.create') }}{{ $t('work_branch.big_data_screen') }}
           </el-button>
         </empty-background>
       </template>

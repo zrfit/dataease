@@ -40,3 +40,15 @@ export const rsaEncryp = word => {
   crypt.setKey(pk)
   return crypt.encrypt(word)
 }
+
+export const symmetricDecrypt = (data, keyStr) => {
+  const iv = CryptoJS.enc.Utf8.parse('0000000000000000')
+  const key = CryptoJS.enc.Base64.parse(keyStr)
+  const decodedCiphertext = CryptoJS.enc.Base64.parse(data)
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext: decodedCiphertext }, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  })
+  return decrypted.toString(CryptoJS.enc.Utf8)
+}

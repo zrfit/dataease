@@ -155,11 +155,12 @@ const initMapCustomRange = () => {
 }
 /**
  * 计算自定义区间
+ * 最大最小值取等分区间的最大最小值
  */
 const calcMapCustomRange = () => {
   const customRange = getDynamicColorScale(
-    mapLegendDefaultRange.min,
-    mapLegendDefaultRange.max,
+    state.legendForm.miscForm.mapLegendMin,
+    state.legendForm.miscForm.mapLegendMax,
     state.legendForm.miscForm.mapLegendNumber
   )
   state.legendForm.miscForm.mapLegendCustomRange = []
@@ -178,9 +179,7 @@ const calcMapCustomRange = () => {
 const changeLegendCustomType = (prop?) => {
   const type = state.legendForm.miscForm.mapLegendRangeType
   if (type === 'custom') {
-    state.legendForm.miscForm.mapLegendCustomRange = cloneDeep(
-      mapLegendCustomRangeCacheList.slice(0, state.legendForm.miscForm.mapLegendNumber + 1)
-    )
+    calcMapCustomRange()
   } else {
     state.legendForm.miscForm.mapLegendCustomRange = []
   }
@@ -283,7 +282,7 @@ onMounted(() => {
         </el-tooltip>
       </el-form-item>
     </el-space>
-    <el-space>
+    <el-space style="width: 100%">
       <div v-if="chartType === 'map'">
         <el-row>
           <el-col>

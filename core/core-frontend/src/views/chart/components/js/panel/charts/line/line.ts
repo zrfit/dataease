@@ -3,7 +3,12 @@ import {
   G2PlotDrawOptions
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Line as G2Line, LineOptions } from '@antv/g2plot/esm/plots/line'
-import { getPadding } from '../../common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  TOOLTIP_TPL
+} from '../../common/common_antv'
 import {
   flow,
   hexColorToRGBA,
@@ -33,7 +38,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
   propertyInner = {
     ...LINE_EDITOR_PROPERTY_INNER,
     'basic-style-selector': [...LINE_EDITOR_PROPERTY_INNER['basic-style-selector'], 'seriesColor'],
-    'label-selector': ['seriesLabelFormatter', 'showExtremum'],
+    'label-selector': ['seriesLabelVPosition', 'seriesLabelFormatter', 'showExtremum'],
     'tooltip-selector': [
       ...LINE_EDITOR_PROPERTY_INNER['tooltip-selector'],
       'seriesTooltipFormatter'
@@ -116,6 +121,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
 
     newChart.on('point:click', action)
     extremumEvt(newChart, chart, options, container)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -127,7 +133,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
         label: false
       }
     }
-    const { label: labelAttr } = parseJson(chart.customAttr)
+    const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
     const formatterMap = labelAttr.seriesLabelFormatter?.reduce((pre, next) => {
       pre[next.id] = next
       return pre
@@ -136,7 +142,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
     const label = {
       fields: [],
       ...tmpOptions.label,
-      offsetY: -8,
+      layout: labelAttr.fullDisplay ? [{ type: 'limit-in-plot' }] : tmpOptions.label.layout,
       formatter: (data: Datum, _point) => {
         if (data.EXTREME) {
           return ''
@@ -151,13 +157,17 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
         if (!labelCfg.show) {
           return
         }
+        const position =
+          labelCfg.position === 'top'
+            ? -2 - basicStyle.lineSymbolSize
+            : 10 + basicStyle.lineSymbolSize
         const value = valueFormatter(data.value, labelCfg.formatterCfg)
         const group = new Group({})
         group.addShape({
           type: 'text',
           attrs: {
             x: 0,
-            y: 0,
+            y: position,
             text: value,
             textAlign: 'start',
             textBaseline: 'top',
@@ -279,7 +289,10 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
           }
         })
         return result
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return {
       ...options,

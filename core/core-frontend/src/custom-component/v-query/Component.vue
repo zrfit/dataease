@@ -2,6 +2,7 @@
 import icon_edit_outlined from '@/assets/svg/icon_edit_outlined.svg'
 import icon_deleteTrash_outlined from '@/assets/svg/icon_delete-trash_outlined.svg'
 import eventBus from '@/utils/eventBus'
+import { isMobile } from '@/utils/utils'
 import { ElMessage } from 'element-plus-secondary'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import QueryConditionConfiguration from './QueryConditionConfiguration.vue'
@@ -256,6 +257,7 @@ const releaseSelect = id => {
 
 const queryDataForId = id => {
   let requiredName = ''
+  let numName = ''
   const emitterList = (element.value.propValue || [])
     .filter(ele => ele.id === id)
     .reduce((pre, next) => {
@@ -288,6 +290,22 @@ const queryDataForId = id => {
           requiredName = next.name
         }
       }
+
+      if (next.displayType === '22') {
+        if (
+          !isNaN(next.numValueEnd) &&
+          !isNaN(next.numValueStart) &&
+          next.numValueEnd < next.numValueStart
+        ) {
+          numName = next.name
+        }
+        if (
+          [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
+            .length === 1
+        ) {
+          requiredName = next.name
+        }
+      }
       const keyList = Object.entries(next.checkedFieldsMap)
         .filter(ele => next.checkedFields.includes(ele[0]))
         .filter(ele => !!ele[1])
@@ -296,7 +314,11 @@ const queryDataForId = id => {
       return pre
     }, [])
   if (!!requiredName) {
-    ElMessage.error(`【${requiredName}】查询条件是必填项，请设置选项值后，再进行查询！`)
+    ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
+    return
+  }
+  if (!!numName) {
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return
@@ -339,6 +361,7 @@ onBeforeUnmount(() => {
 })
 
 const updateQueryCriteria = () => {
+  if (dvMainStore.mobileInPc && !isMobile()) return
   Array.isArray(element.value.propValue) &&
     element.value.propValue.forEach(ele => {
       if (ele.auto) {
@@ -380,6 +403,10 @@ onMounted(() => {
   emitter.on(`editQueryCriteria${element.value.id}`, editQueryCriteria)
   emitter.on(`updateQueryCriteria${element.value.id}`, updateQueryCriteria)
   updateQueryCriteria()
+
+  if (dvMainStore.mobileInPc && !isMobile()) {
+    queryData()
+  }
 })
 
 const dragover = () => {
@@ -488,6 +515,9 @@ const clearData = () => {
     })
   })
   ;(list.value || []).reduce((pre, next) => {
+    if (!next.visible) {
+      return pre
+    }
     next.selectValue = next.multiple || +next.displayType === 7 ? [] : undefined
     if (next.optionValueSource === 1 && next.defaultMapValue?.length) {
       next.mapValue = next.multiple ? [] : undefined
@@ -534,6 +564,7 @@ const boxWidth = computed(() => {
 
 const queryData = () => {
   let requiredName = ''
+  let numName = ''
   const emitterList = (element.value.propValue || []).reduce((pre, next) => {
     if (next.required) {
       if (!next.defaultValueCheck) {
@@ -564,6 +595,22 @@ const queryData = () => {
         requiredName = next.name
       }
     }
+
+    if (next.displayType === '22') {
+      if (
+        !isNaN(next.numValueEnd) &&
+        !isNaN(next.numValueStart) &&
+        next.numValueEnd < next.numValueStart
+      ) {
+        numName = next.name
+      }
+      if (
+        [next.numValueEnd, next.numValueStart].filter(itx => ![null, undefined, ''].includes(itx))
+          .length === 1
+      ) {
+        requiredName = next.name
+      }
+    }
     const keyList = Object.entries(next.checkedFieldsMap)
       .filter(ele => next.checkedFields.includes(ele[0]))
       .filter(ele => !!ele[1])
@@ -572,11 +619,18 @@ const queryData = () => {
     return pre
   }, [])
   if (!!requiredName) {
-    ElMessage.error(`【${requiredName}】查询条件是必填项，请设置选项值后，再进行查询！`)
+    ElMessage.error(`【${requiredName}】${t('v_query.before_querying')}`)
+    return
+  }
+
+  if (!!numName) {
+    ElMessage.error(`【${numName}】${t('v_query.the_minimum_value')}`)
     return
   }
   if (!emitterList.length) return
-  dvMainStore.setFirstLoadMap([...new Set([...emitterList, ...firstLoadMap.value])])
+  if (!(dvMainStore.mobileInPc && !isMobile())) {
+    dvMainStore.setFirstLoadMap([...new Set([...emitterList, ...firstLoadMap.value])])
+  }
   emitterList.forEach(ele => {
     emitter.emit(`query-data-${ele}`)
   })
@@ -640,13 +694,13 @@ const autoStyle = computed(() => {
     >
       <div v-if="!listVisible.length" class="no-list-label flex-align-center">
         <div class="container flex-align-center">
-          将右侧的字段拖拽到这里 或 点击
+          {{ t('v_query.here_or_click') }}
           <el-button
             :disabled="showPosition === 'preview' || mobileInPc"
             @click="addCriteriaConfigOut"
             text
           >
-            添加查询条件
+            {{ t('v_query.add_query_condition') }}
           </el-button>
         </div>
       </div>
@@ -677,12 +731,16 @@ const autoStyle = computed(() => {
                 class="label-wrapper-tooltip"
                 v-if="showPosition !== 'preview' && !dvMainStore.mobileInPc"
               >
-                <el-tooltip effect="dark" content="设置过滤条件" placement="top">
+                <el-tooltip
+                  effect="dark"
+                  :content="t('v_query.set_filter_condition')"
+                  placement="top"
+                >
                   <el-icon @click="editeQueryConfig(ele.id)">
                     <Icon name="icon_edit_outlined"><icon_edit_outlined class="svg-icon" /></Icon>
                   </el-icon>
                 </el-tooltip>
-                <el-tooltip effect="dark" content="删除条件" placement="top">
+                <el-tooltip effect="dark" :content="t('v_query.delete_condition')" placement="top">
                   <el-icon style="margin-left: 8px" @click="delQueryConfig(index)">
                     <Icon name="icon_delete-trash_outlined"
                       ><icon_deleteTrash_outlined class="svg-icon"
@@ -865,6 +923,7 @@ const autoStyle = computed(() => {
           height: 16px;
           line-height: 16px;
           color: #575757;
+          white-space: nowrap;
         }
       }
 

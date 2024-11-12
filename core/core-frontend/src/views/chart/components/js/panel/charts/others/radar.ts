@@ -1,7 +1,7 @@
 import type { RadarOptions, Radar as G2Radar } from '@antv/g2plot/esm/plots/radar'
 import { G2PlotChartView, G2PlotDrawOptions } from '../../types/impl/g2plot'
 import { flow, parseJson } from '../../../util'
-import { getPadding } from '../../common/common_antv'
+import { configPlotTooltipEvent, getPadding } from '../../common/common_antv'
 import { valueFormatter } from '../../../formatter'
 import type { Datum } from '@antv/g2plot/esm/types/common'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -117,6 +117,7 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
     const { Radar: G2Radar } = await import('@antv/g2plot/esm/plots/radar')
     const newChart = new G2Radar(container, options)
     newChart.on('point:click', action)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 

@@ -112,6 +112,7 @@ function prepare_de_run_base() {
    if [ "${DE_EXTERNAL_MYSQL}" = "false" ]; then
       sed -i -e "s/^      DE_MYSQL_HOST/      ${DE_MYSQL_HOST}/g" docker-compose.yml
       sed -i -e "s/^. DE_MYSQL_HOST/  ${DE_MYSQL_HOST}/g" docker-compose-mysql.yml
+      export DE_MYSQL_PORT=3306
    else
       sed -i -e "/^    depends_on/,+2d" docker-compose.yml
    fi
@@ -200,14 +201,16 @@ function install_docker() {
 EOF
       fi
 
+      log_content "启动 docker"
+      systemctl enable docker >/dev/null 2>&1; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
+         
       docker version >/dev/null 2>&1
       if [ $? -ne 0 ]; then
          log_content "docker 安装失败"
          exit 1
       else
          log_content "docker 安装成功"
-         log_content "启动 docker"
-         systemctl enable docker >/dev/null 2>&1; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
+
       fi
    fi
 }

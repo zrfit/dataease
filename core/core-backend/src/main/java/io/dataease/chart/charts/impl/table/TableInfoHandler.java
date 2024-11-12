@@ -98,7 +98,7 @@ public class TableInfoHandler extends DefaultChartHandler {
                     }
                 }
                 assert fieldDTO != null;
-                if (fieldDTO.isAgg()) {
+                if (fieldDTO != null && fieldDTO.isAgg()) {
                     sqlMeta.getXFields().get(i).setFieldName("'-'");
                 }
             }
@@ -154,7 +154,7 @@ public class TableInfoHandler extends DefaultChartHandler {
             if (CollectionUtils.isNotEmpty(assistFields)) {
                 var req = new DatasourceRequest();
                 req.setDsList(dsMap);
-                var assistSql = assistSQL(querySql, assistFields);
+                var assistSql = assistSQL(querySql, assistFields, dsMap);
                 req.setQuery(assistSql);
                 logger.debug("calcite assistSql sql: " + assistSql);
                 var assistData = (List<String[]>) provider.fetchResultField(req).get("data");

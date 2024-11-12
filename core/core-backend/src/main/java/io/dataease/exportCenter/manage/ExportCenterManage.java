@@ -631,6 +631,7 @@ public class ExportCenterManage implements BaseExportApi {
         boolean isCreated = directory.mkdir();
         TokenUserBO tokenUserBO = AuthUtils.getUser();
         Future future = scheduledThreadPoolExecutor.submit(() -> {
+            LicenseUtil.validate();
             AuthUtils.setUser(tokenUserBO);
             try {
                 exportTask.setExportStatus("IN_PROGRESS");
@@ -654,16 +655,18 @@ public class ExportCenterManage implements BaseExportApi {
                 cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
                 if (CollectionUtils.isEmpty(request.getMultiInfo())) {
-                    List<Object[]> details = request.getDetails();
-                    Integer[] excelTypes = request.getExcelTypes();
-                    details.add(0, request.getHeader());
-                    ViewDetailField[] detailFields = request.getDetailFields();
-                    Object[] header = request.getHeader();
+                    if(request.getViewInfo().getType().equalsIgnoreCase("chart-mix-dual-line")){
 
-                    //明细sheet
-                    Sheet detailsSheet = wb.createSheet("数据");
+                    }else {
+                        List<Object[]> details = request.getDetails();
+                        Integer[] excelTypes = request.getExcelTypes();
+                        details.add(0, request.getHeader());
+                        ViewDetailField[] detailFields = request.getDetailFields();
+                        Object[] header = request.getHeader();
+                        Sheet detailsSheet = wb.createSheet("数据");
+                        ChartDataServer.setExcelData(detailsSheet, cellStyle, header, details, detailFields, excelTypes);
+                    }
 
-                    ChartDataServer.setExcelData(detailsSheet, cellStyle, header, details, detailFields, excelTypes);
                 } else {
                     //多个sheet
                     for (int i = 0; i < request.getMultiInfo().size(); i++) {

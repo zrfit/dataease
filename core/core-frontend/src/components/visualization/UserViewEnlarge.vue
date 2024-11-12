@@ -183,7 +183,8 @@ const DETAIL_CHART_ATTR: DeepPartial<ChartObj> = {
     tableCell: {
       tableItemBgColor: '#FFFFFF',
       tableFontColor: '#7C7E81',
-      enableTableCrossBG: false
+      enableTableCrossBG: false,
+      mergeCells: false
     },
     tooltip: {
       show: false

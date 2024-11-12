@@ -4,6 +4,7 @@ import icon_add_outlined from '@/assets/svg/icon_add_outlined.svg'
 import dvCopyDark from '@/assets/svg/dv-copy-dark.svg'
 import dvDelete from '@/assets/svg/dv-delete.svg'
 import dvMove from '@/assets/svg/dv-move.svg'
+import { treeDraggbleChart } from '@/utils/treeDraggbleChart'
 import dvRename from '@/assets/svg/dv-rename.svg'
 import dvDashboardSpine from '@/assets/svg/dv-dashboard-spine.svg'
 import dvScreenSpine from '@/assets/svg/dv-screen-spine.svg'
@@ -73,7 +74,8 @@ const mounted = ref(false)
 const rootManage = ref(false)
 const anyManage = ref(false)
 const { curCanvasType, showPosition } = toRefs(props)
-const resourceLabel = curCanvasType.value === 'dataV' ? '数据大屏' : '仪表板'
+const resourceLabel =
+  curCanvasType.value === 'dataV' ? t('work_branch.big_data_screen') : t('work_branch.dashboard')
 const newResourceLabel = '新建' + resourceLabel
 const selectedNodeKey = ref(null)
 const filterText = ref(null)
@@ -139,7 +141,7 @@ const resourceTypeList = computed(() => {
       command: 'newLeaf'
     },
     {
-      label: '使用模板新建',
+      label: t('work_branch.new_using_template'),
       svgName: dvUseTemplate,
       command: 'newFromTemplate'
     },
@@ -152,7 +154,11 @@ const resourceTypeList = computed(() => {
   ]
   return list
 })
-
+const { handleDrop, allowDrop, handleDragStart } = treeDraggbleChart(
+  state,
+  'resourceTree',
+  curCanvasType.value
+)
 const menuList = computed(() => {
   const list = [
     {
@@ -219,17 +225,24 @@ const getTree = async () => {
   const nodeData = interactiveData.treeNodes
   rootManage.value = interactiveData.rootManage
   anyManage.value = interactiveData.anyManage
-  if (dvInfo.value && dvInfo.value.id && !JSON.stringify(nodeData).includes(dvInfo.value.id)) {
+  if (
+    dvInfo.value &&
+    dvInfo.value.id &&
+    !JSON.stringify(nodeData).includes(dvInfo.value.id) &&
+    showPosition.value !== 'multiplexing'
+  ) {
     dvMainStore.resetDvInfo()
   }
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get(`TreeSort-${curCanvasType.value}`) ?? curSortType
   if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
     state.originResourceTree = nodeData[0]['children'] || []
-    sortTypeChange(state.curSortType)
+    sortTypeChange(curSortType)
     afterTreeInit()
     return
   }
   state.originResourceTree = nodeData
-  sortTypeChange(state.curSortType)
+  sortTypeChange(curSortType)
   afterTreeInit()
 }
 
@@ -569,7 +582,7 @@ defineExpose({
                     <el-icon class="handle-icon">
                       <Icon name="dv-use-template"><dvUseTemplate class="svg-icon" /></Icon>
                     </el-icon>
-                    使用模板新建
+                    {{ t('work_branch.new_using_template') }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -634,6 +647,10 @@ defineExpose({
         @node-expand="nodeExpand"
         @node-collapse="nodeCollapse"
         @node-click="nodeClick"
+        @node-drag-start="handleDragStart"
+        :allow-drop="allowDrop"
+        @node-drop="handleDrop"
+        draggable
       >
         <template #default="{ node, data }">
           <span class="custom-tree-node">

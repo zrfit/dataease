@@ -29,6 +29,7 @@ import { deepCopy } from '@/utils/utils'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { trackBarStyleCheck } from '@/utils/canvasUtils'
 import { type SpreadSheet } from '@antv/s2'
+import { parseJson } from '../../js/util'
 
 const dvMainStore = dvMainStoreWithOut()
 const {
@@ -165,10 +166,19 @@ const renderChartFromDialog = (viewInfo: Chart, chartDataInfo) => {
   chartData.value = chartDataInfo
   renderChart(viewInfo, false)
 }
+// 处理存量图表的默认值
+const handleDefaultVal = (chart: Chart) => {
+  const customAttr = parseJson(chart.customAttr)
+  // 明细表默认合并单元格，存量的不合并
+  if (customAttr.tableCell.mergeCells === undefined) {
+    customAttr.tableCell.mergeCells = false
+  }
+}
 const renderChart = (viewInfo: Chart, resetPageInfo: boolean) => {
   if (!viewInfo) {
     return
   }
+  handleDefaultVal(viewInfo)
   // view 为引用对象 需要存库 view.data 直接赋值会导致保存不必要的数据
   actualChart = deepCopy({
     ...defaultsDeep(viewInfo, cloneDeep(BASE_VIEW_CONFIG)),

@@ -9,7 +9,21 @@
     element-loading-background="rgba(255, 255, 255, 1)"
     @dblclick="handleDbClick"
   >
-    <div v-if="showCheck" class="del-from-mobile" @click="delFromMobile">
+    <div
+      title="同步PC设计"
+      v-if="showCheck && ['VQuery'].includes(element.component)"
+      class="refresh-from-pc"
+      @click="updateFromMobile($event, 'syncPcDesign')"
+    >
+      <el-icon>
+        <Icon name="icon_replace_outlined"><replaceOutlined class="svg-icon" /></Icon>
+      </el-icon>
+    </div>
+    <div
+      v-if="showCheck"
+      class="del-from-mobile"
+      @click="updateFromMobile($event, 'delFromMobile')"
+    >
       <el-icon>
         <Icon name="mobile-checkbox"><mobileCheckbox class="svg-icon" /></Icon>
       </el-icon>
@@ -98,6 +112,7 @@
 
 <script setup lang="ts">
 import mobileCheckbox from '@/assets/svg/mobile-checkbox.svg'
+import replaceOutlined from '@/assets/svg/icon_replace_outlined.svg'
 import dvLock from '@/assets/svg/dv-lock.svg'
 import eventBus from '@/utils/eventBus'
 import calculateComponentPositionAndSize, {
@@ -141,7 +156,8 @@ const {
   tabCollisionActiveId,
   tabMoveInActiveId,
   tabMoveOutComponentId,
-  mobileInPc
+  mobileInPc,
+  mainScrollTop
 } = storeToRefs(dvMainStore)
 const { editorMap, areaData, isCtrlOrCmdDown } = storeToRefs(composeStore)
 const emit = defineEmits([
@@ -282,9 +298,13 @@ const showCheck = computed(() => {
   return mobileInPc.value && element.value.canvasId === 'canvas-main'
 })
 
-const delFromMobile = () => {
+const updateFromMobile = (e, type) => {
+  if (type === 'syncPcDesign') {
+    e.preventDefault()
+    e.stopPropagation()
+  }
   useEmitt().emitter.emit('onMobileStatusChange', {
-    type: 'delFromMobile',
+    type: type,
     value: element.value.id
   })
 }
@@ -539,7 +559,7 @@ const handleMouseDownOnShape = e => {
         mouseY:
           !isDashboard() && outerTabDom
             ? outerTabDom.offsetTop + curDom.offsetTop + offsetY + 100
-            : curY,
+            : curY + mainScrollTop.value,
         width: componentWidth,
         height: componentHeight
       })
@@ -865,9 +885,7 @@ const componentBackgroundStyle = computed(() => {
       innerPadding,
       borderRadius
     } = element.value.commonBackground
-    const innerPaddingTarget = ['Group', 'DeTabs'].includes(element.value.component)
-      ? 0
-      : innerPadding
+    const innerPaddingTarget = ['Group'].includes(element.value.component) ? 0 : innerPadding
     const style = {
       padding: innerPaddingTarget * scale.value + 'px',
       borderRadius: borderRadius + 'px'
@@ -1080,6 +1098,15 @@ onMounted(() => {
 <style lang="less" scoped>
 .shape {
   position: absolute;
+  .refresh-from-pc {
+    position: absolute;
+    right: 38px;
+    top: 12px;
+    z-index: 2;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--ed-color-primary);
+  }
   .del-from-mobile {
     position: absolute;
     right: 12px;

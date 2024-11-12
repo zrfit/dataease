@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author wangjiahao
@@ -25,5 +26,7 @@ public class ChartExcelRequest extends ChartExcelRequestInner {
     private boolean dataEaseBi = false;
 
     private String downloadType;
+
+    private Map<String, Object> data;
 
 }

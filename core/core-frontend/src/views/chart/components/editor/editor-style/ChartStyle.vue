@@ -30,7 +30,7 @@ import CommonEvent from '@/custom-component/common/CommonEvent.vue'
 import CommonBorderSetting from '@/custom-component/common/CommonBorderSetting.vue'
 
 const dvMainStore = dvMainStoreWithOut()
-const { dvInfo, batchOptStatus, curComponent } = storeToRefs(dvMainStore)
+const { dvInfo, batchOptStatus, mobileInPc } = storeToRefs(dvMainStore)
 const { t } = useI18n()
 
 const state = {
@@ -142,10 +142,6 @@ const eventsShow = computed(() => {
     ['indicator', 'rich-text'].includes(chart.value.type) &&
     props.eventInfo
   )
-})
-
-const pictureGroupShow = computed(() => {
-  return curComponent.value?.innerType === 'picture-group'
 })
 
 const showProperties = (property: EditorProperty) => properties.value?.includes(property)
@@ -413,6 +409,7 @@ watch(
               class="attr-selector"
               :chart="chart"
               :quota-fields="props.quotaData"
+              :mobile-in-pc="mobileInPc"
               @onMiscChange="onMiscChange"
             />
           </el-collapse-item>
@@ -449,8 +446,12 @@ watch(
               @onLabelChange="onLabelChange"
             />
           </collapse-switch-item>
+          <!-- tooltip 为鼠标悬停 移动端table看不到效果 不再单独配置 -->
           <collapse-switch-item
-            v-if="showProperties('tooltip-selector')"
+            v-if="
+              showProperties('tooltip-selector') &&
+              (!mobileInPc || (mobileInPc && chart.type.indexOf('table') === -1))
+            "
             v-model="chart.customAttr.tooltip.show"
             :themes="themes"
             :change-model="chart.customAttr.tooltip"

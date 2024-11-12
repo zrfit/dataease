@@ -19,8 +19,9 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import DatasetParamsComponent from '@/components/visualization/DatasetParamsComponent.vue'
 import DeFullscreen from '@/components/visualization/common/DeFullscreen.vue'
 import EmptyBackground from '../../empty-background/src/EmptyBackground.vue'
+import LinkOptBar from '@/components/data-visualization/canvas/LinkOptBar.vue'
 const dvMainStore = dvMainStoreWithOut()
-const { pcMatrixCount, curComponent, mobileInPc, canvasState } = storeToRefs(dvMainStore)
+const { pcMatrixCount, curComponent, mobileInPc, canvasState, inMobile } = storeToRefs(dvMainStore)
 const openHandler = ref(null)
 const customDatasetParamsRef = ref(null)
 const emits = defineEmits(['onResetLayout'])
@@ -77,6 +78,11 @@ const props = defineProps({
   isSelector: {
     type: Boolean,
     default: false
+  },
+  // 显示悬浮按钮
+  showPopBar: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -90,7 +96,8 @@ const {
   previewActive,
   downloadStatus,
   outerScale,
-  outerSearchCount
+  outerSearchCount,
+  showPopBar
 } = toRefs(props)
 const domId = 'preview-' + canvasId.value
 const scaleWidthPoint = ref(100)
@@ -234,7 +241,8 @@ const resetLayout = () => {
           baseComponentData.value,
           canvasStyleData.value,
           scaleMin.value || outerScale.value * 100,
-          scaleMinHeight || outerScale.value * 100
+          scaleMinHeight || outerScale.value * 100,
+          outerScale.value * 100
         )
         scaleMin.value = isMainCanvas(canvasId.value) ? scaleMin.value : outerScale.value * 100
       }
@@ -393,6 +401,19 @@ const datasetParamsInit = item => {
 const dataVPreview = computed(
   () => dvInfo.value.type === 'dataV' && canvasId.value === 'canvas-main'
 )
+
+const linkOptBarShow = computed(() => {
+  return Boolean(
+    canvasStyleData.value.suspensionButtonAvailable &&
+      !inMobile.value &&
+      !mobileInPc.value &&
+      showPopBar.value
+  )
+})
+
+const downloadAsPDF = () => {
+  // test
+}
 defineExpose({
   restore
 })
@@ -455,6 +476,13 @@ defineExpose({
   <de-fullscreen ref="fullScreeRef"></de-fullscreen>
   <dataset-params-component ref="customDatasetParamsRef"></dataset-params-component>
   <XpackComponent ref="openHandler" jsname="L2NvbXBvbmVudC9lbWJlZGRlZC1pZnJhbWUvT3BlbkhhbmRsZXI=" />
+  <link-opt-bar
+    v-if="linkOptBarShow"
+    ref="link-opt-bar"
+    :terminal="'pc'"
+    :canvas-style-data="canvasStyleData"
+    @link-export-pdf="downloadAsPDF"
+  />
 </template>
 
 <style lang="less" scoped>

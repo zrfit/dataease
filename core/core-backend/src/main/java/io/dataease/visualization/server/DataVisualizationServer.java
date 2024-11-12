@@ -11,6 +11,7 @@ import io.dataease.api.visualization.request.DataVisualizationBaseRequest;
 import io.dataease.api.visualization.request.VisualizationAppExportRequest;
 import io.dataease.api.visualization.request.VisualizationWorkbranchQueryRequest;
 import io.dataease.api.visualization.vo.*;
+import io.dataease.auth.DeLinkPermit;
 import io.dataease.chart.dao.auto.entity.CoreChartView;
 import io.dataease.chart.dao.auto.mapper.CoreChartViewMapper;
 import io.dataease.chart.manage.ChartDataManage;
@@ -142,6 +143,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
         }
     }
 
+    @DeLinkPermit("#p0.id")
     @DeLog(id = "#p0.id", ot = LogOT.READ, stExp = "#p0.busiFlag")
     @Override
     @XpackInteract(value = "dataVisualizationServer", original = true)
@@ -300,7 +302,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
                     coreDatasetTableFieldMapper.insert(dsTableFields);
                 });
 
-
+                List<String> dsGroupNameSave = new ArrayList<>();
                 // 持久化数据集
                 newDsGroupInfo.forEach(dsGroup -> {
                     dsTableIdMap.forEach((key, value) -> {
@@ -325,8 +327,10 @@ public class DataVisualizationServer implements DataVisualizationApi {
                         }
 
                     });
-
-
+                    if(dsGroupNameSave.contains(dsGroup.getName())){
+                        dsGroup.setName(dsGroup.getName()+"-"+UUID.randomUUID().toString());
+                    }
+                    dsGroupNameSave.add(dsGroup.getName());
                     datasetGroupManage.innerSave(dsGroup);
                 });
 

@@ -15,6 +15,7 @@ import {
 import { enumValueObj, type EnumValue, getEnumValue } from '@/api/dataset'
 import { cloneDeep, debounce } from 'lodash-es'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { useI18n } from '@/hooks/web/useI18n'
 
 interface SelectConfig {
   selectValue: any
@@ -45,6 +46,8 @@ interface SelectConfig {
     value: string
   }[]
 }
+
+const { t } = useI18n()
 
 const props = defineProps({
   config: {
@@ -83,7 +86,7 @@ const cascadeList = inject('cascade-list', Function, true)
 const setCascadeDefault = inject('set-cascade-default', Function, true)
 
 const placeholderText = computed(() => {
-  if (placeholder.value.placeholderShow) {
+  if (placeholder?.value?.placeholderShow) {
     return ['', undefined].includes(props.config.placeholder) ? ' ' : props.config.placeholder
   }
   return ' '
@@ -367,7 +370,7 @@ const setEmptyData = () => {
   const [s] = options.value
   if (showEmpty) {
     if (s?.value !== '_empty_$') {
-      options.value = [{ label: '空数据', value: '_empty_$' }, ...options.value]
+      options.value = [{ label: t('v_query.empty_data'), value: '_empty_$' }, ...options.value]
     }
   } else {
     if (s?.value === '_empty_$') {

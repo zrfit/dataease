@@ -28,34 +28,28 @@ const hanedleMessage = event => {
       ele.y = my
       ele.sizeX = mSizeX
       ele.sizeY = mSizeY
-      ele.style = mStyle || ele.style
+      ele.style = deepCopy(mStyle || ele.style)
       ele.commonBackground = deepCopy(mCommonBackground || ele.commonBackground)
       ele.events = deepCopy(mEvents || ele.events)
-      ele.propValue = deepCopy(mPropValue || ele.propValue)
+      if (ele.component === 'VQuery') {
+        ele.propValue = deepCopy(mPropValue || ele.propValue)
+      }
 
       if (ele.component === 'DeTabs') {
         ele.propValue.forEach(tabItem => {
           tabItem.componentData.forEach(tabComponent => {
             const {
-              mx: tx,
-              my: ty,
-              mSizeX: tSizeX,
-              mSizeY: tSizeY,
               mStyle: tStyle,
               mCommonBackground: tCommonBackground,
               mEvents: tEvents,
               mPropValue: tPropValue
             } = tabComponent
-            if (tSizeX && tSizeY) {
-              tabComponent.x = tx
-              tabComponent.y = ty
-              tabComponent.sizeX = tSizeX
-              tabComponent.sizeY = tSizeY
-              tabComponent.style = deepCopy(tStyle || tabComponent.style)
-              tabComponent.commonBackground = deepCopy(
-                tCommonBackground || tabComponent.commonBackground
-              )
-              tabComponent.events = deepCopy(tEvents || tabComponent.events)
+            tabComponent.style = deepCopy(tStyle || tabComponent.style)
+            tabComponent.commonBackground = deepCopy(
+              tCommonBackground || tabComponent.commonBackground
+            )
+            tabComponent.events = deepCopy(tEvents || tabComponent.events)
+            if (tabComponent.component === 'VQuery') {
               tabComponent.propValue = deepCopy(tPropValue || tabComponent.propValue)
             }
           })
@@ -73,7 +67,7 @@ const hanedleMessage = event => {
   }
   // 进行内部组件渲染 type render 渲染 calcData 计算  主组件渲染
   if (event.data.type === 'componentStyleChange') {
-    const { type, component } = event.data.value
+    const { type, component, otherComponent } = event.data.value
     if (type === 'renderChart') {
       mobileViewStyleSwitch(component)
       useEmitt().emitter.emit('renderChart-' + component.id, component)
@@ -83,9 +77,17 @@ const hanedleMessage = event => {
     } else if (type === 'updateTitle') {
       mobileViewStyleSwitch(component)
       useEmitt().emitter.emit('updateTitle-' + component.id)
-    } else if (['style', 'commonBackground', 'events'].includes(type)) {
+    } else if (['style', 'commonBackground', 'events', 'propValue'].includes(type)) {
       const mobileComponent = findComponentById(component.id)
       mobileComponent[type] = component[type]
+    } else if (['syncPcDesign'].includes(type)) {
+      const mobileComponent = findComponentById(component.id)
+      mobileComponent['style'] = component['style']
+      mobileComponent['commonBackground'] = component['commonBackground']
+      mobileComponent['events'] = component['events']
+      mobileComponent['propValue'] = component['propValue']
+      mobileViewStyleSwitch(otherComponent)
+      useEmitt().emitter.emit('renderChart-' + component.id, otherComponent)
     }
   }
 

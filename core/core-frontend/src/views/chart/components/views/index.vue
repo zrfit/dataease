@@ -417,7 +417,7 @@ const windowsJump = (url, jumpType, size = 'middle') => {
       )
     } else if ('_self' === jumpType) {
       newWindow = window.open(url, jumpType)
-      if (inMobile) {
+      if (inMobile.value) {
         window.location.reload()
       }
     } else {
@@ -470,7 +470,9 @@ const jumpClick = param => {
           if (jumpInfo.publicJumpId) {
             const url = `${embeddedBaseUrl}#/de-link/${
               jumpInfo.publicJumpId
-            }?jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+            }?fromLink=true&jumpInfoParam=${encodeURIComponent(
+              Base64.encode(JSON.stringify(param))
+            )}`
             const currentUrl = window.location.href
             localStorage.setItem('beforeJumpUrl', currentUrl)
             windowsJump(url, jumpInfo.jumpType, jumpInfo.windowSize)
@@ -480,8 +482,9 @@ const jumpClick = param => {
         } else {
           const url = `${embeddedBaseUrl}#/preview?dvId=${
             jumpInfo.targetDvId
-          }&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
-
+          }&fromLink=true&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+          const currentUrl = window.location.href
+          localStorage.setItem('beforeJumpUrl', currentUrl)
           if (isIframe.value || isDataEaseBi.value) {
             embeddedStore.clearState()
           }
@@ -624,7 +627,7 @@ const checkFieldIsAllowEmpty = (allField?) => {
       if (
         !value['allowEmpty'] &&
         value['limit'] &&
-        view.value?.[key]?.length < parseInt(value['limit'])
+        (!view.value?.[key] || view.value?.[key]?.length < parseInt(value['limit']))
       ) {
         showEmpty.value = true
         return false
@@ -914,6 +917,18 @@ const loadPluginCategory = data => {
 const allEmptyCheck = computed(() => {
   return ['rich-text', 'picture-group'].includes(element.value.innerType)
 })
+/**
+ * 标题提示的最大宽度
+ */
+const titleTooltipWidth = computed(() => {
+  if (inMobile.value) {
+    return `${screen.width - 10}px`
+  }
+  if (mobileInPc.value) {
+    return '270px'
+  }
+  return '500px'
+})
 </script>
 
 <template>
@@ -956,12 +971,12 @@ const allEmptyCheck = computed(() => {
           <el-tooltip :effect="toolTip" placement="top" v-if="state.title_remark.show">
             <template #content>
               <div
-                style="
-                  width: 500px;
-                  word-break: break-all;
-                  word-wrap: break-word;
-                  white-space: pre-wrap;
-                "
+                :style="{
+                  maxWidth: titleTooltipWidth,
+                  wordBreak: 'break-all',
+                  wordWrap: 'break-word',
+                  whiteSpace: 'pre-wrap'
+                }"
                 v-html="state.title_remark.remark"
               ></div>
             </template>

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   copyString,
   hexColorToRGBA,
@@ -28,7 +29,14 @@ import {
   InteractionStateName,
   InteractionName,
   DataCellBrushSelection,
-  TableDataCell
+  TableDataCell,
+  MergedCell,
+  getPolygonPoints,
+  renderPolygon,
+  MergedCellInfo,
+  ViewMeta,
+  updateShapeAttr,
+  SHAPE_STYLE_MAP
 } from '@antv/s2'
 import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
@@ -36,7 +44,6 @@ import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vu
 import Exceljs from 'exceljs'
 import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus-secondary'
-import { matrix } from 'mathjs'
 
 export function getCustomTheme(chart: Chart): S2Theme {
   const headerColor = hexColorToRGBA(
@@ -59,8 +66,12 @@ export function getCustomTheme(chart: Chart): S2Theme {
     },
     splitLine: {
       horizontalBorderColor: borderColor,
+      horizontalBorderColorOpacity: 1,
+      horizontalBorderWidth: 1,
       verticalBorderColor: borderColor,
-      horizontalBorderWidth: 0
+      verticalBorderColorOpacity: 1,
+      verticalBorderWidth: 1,
+      showShadow: false,
     },
     cornerCell: {
       cell: {
@@ -275,10 +286,11 @@ export function getCustomTheme(chart: Chart): S2Theme {
       merge(theme, tmpTheme)
       // 这边设置为 0 的话就会显示表头背景颜色，所以要判断一下表头是否关闭
       if (tableHeader.showHorizonBorder === false && tableHeader.showTableHeader !== false) {
-        const tmpTheme = {
+        const tmpTheme: S2Theme = {
           splitLine: {
             horizontalBorderColor: tableHeaderBgColor,
-            horizontalBorderWidth: 0
+            horizontalBorderWidth: 0,
+            horizontalBorderColorOpacity: 0
           },
           colCell: {
             cell: {
@@ -293,7 +305,8 @@ export function getCustomTheme(chart: Chart): S2Theme {
         const tmpTheme: S2Theme = {
           splitLine: {
             verticalBorderColor: tableHeaderBgColor,
-            verticalBorderWidth: 0
+            verticalBorderWidth: 0,
+            verticalBorderColorOpacity: 0
           },
           colCell: {
             cell: {
@@ -401,7 +414,11 @@ export function getCustomTheme(chart: Chart): S2Theme {
         merge(theme, tmpTheme)
       }
       if (tableCell.showVerticalBorder === false) {
-        const tmpTheme = {
+        const tmpTheme: S2Theme = {
+          splitLine: {
+            verticalBorderWidth: 0,
+            verticalBorderColorOpacity: 0
+          },
           dataCell: {
             cell: {
               verticalBorderColor: tableItemBgColor,
@@ -547,7 +564,7 @@ export function getConditions(chart: Chart) {
   if (conditions?.length > 0) {
     const { tableCell, basicStyle, tableHeader } = parseJson(chart.customAttr)
     const enableTableCrossBG = tableCell.enableTableCrossBG
-    const valueColor = tableCell.tableFontColor
+    const valueColor = isAlphaColor(tableCell.tableFontColor) ? tableCell.tableFontColor : hexColorToRGBA(tableCell.tableFontColor, basicStyle.alpha)
     const valueBgColor = enableTableCrossBG
       ? null
       : isAlphaColor(tableCell.tableItemBgColor)
@@ -612,7 +629,7 @@ export function getConditions(chart: Chart) {
 }
 
 export function mappingColor(value, defaultColor, field, type, filedValueMap?, rowData?) {
-  let color
+  let color = null
   for (let i = 0; i < field.conditions.length; i++) {
     let flag = false
     const t = field.conditions[i]
@@ -1030,7 +1047,7 @@ export function copyContent(s2Instance: SpreadSheet, event, fieldMeta) {
           if (metaObj) {
             fieldVal = metaObj.formatter(value)
           }
-          if (fieldVal === undefined) {
+          if (fieldVal === undefined || fieldVal === null) {
             fieldVal = ''
           }
           if (index !== arr.length - 1) {
@@ -1406,5 +1423,138 @@ export async function exportPivotExcel(instance: PivotSheet, chart: ChartObj) {
     exportGridPivot(instance, chart)
   } else {
     exportTreePivot(instance, chart)
+  }
+}
+
+export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S2DataConfig) {
+  const { mergeCells } = parseJson(chart.customAttr).tableCell
+  const { showIndex } = parseJson(chart.customAttr).tableHeader
+  if (mergeCells) {
+    options.frozenColCount = 0
+    options.frozenRowCount = 0
+    const fields = chart.data.fields || []
+    const fieldsMap = fields.reduce((p, n) => {
+      p[n.dataeaseName] = n
+      return p
+    }, {}) || {}
+    const quotaIndex = dataConfig.meta.findIndex(m => fieldsMap[m.field].groupType === 'q')
+    const data = chart.data?.tableRow
+    if (quotaIndex === 0 || !data?.length) {
+      return
+    }
+    const mergedColInfo: number[][][] = [[[0, data.length - 1]]]
+    const mergedCellsInfo = []
+    const axisToMerge = dataConfig.meta.filter((_, i) => i < quotaIndex || quotaIndex === -1)
+    axisToMerge.forEach((a, i) => {
+      const preMergedColInfo = mergedColInfo[i]
+      const curMergedColInfo = []
+      mergedColInfo.push(curMergedColInfo)
+      preMergedColInfo.forEach(range => {
+        const [start, end] = range
+        let lastVal = data[start][a.field]
+        let lastIndex = start
+        for (let index = start; index <= end; index++) {
+          const curVal = data[index][a.field]
+          if (curVal !== lastVal || index === end) {
+            const curRange = index - lastIndex
+            if (curRange > 1 ||
+               (index === end && curRange === 1 && lastVal === curVal)) {
+              const tmpMergeCells = []
+              const textIndex = curRange % 2 === 1 ? (curRange - 1) / 2 : curRange / 2 - 1
+              for (let j = 0; j < curRange; j++) {
+                tmpMergeCells.push({
+                  colIndex: showIndex ? i + 1 : i,
+                  rowIndex: lastIndex + j,
+                  showText: j === textIndex
+                })
+              }
+              if (index === end) {
+                tmpMergeCells.push({
+                  colIndex: showIndex ? i + 1 : i,
+                  rowIndex: index,
+                  showText: false
+                })
+              }
+              mergedCellsInfo.push(tmpMergeCells)
+              curMergedColInfo.push([lastIndex, index === end ? index : index - 1])
+            }
+            lastVal = curVal
+            lastIndex = index
+          }
+        }
+      })
+    })
+    if (showIndex) {
+      const indexMergedCells = mergedCellsInfo.filter(cells => cells[0].colIndex === 1)
+      indexMergedCells.forEach(cells => {
+        const tmpCells = cloneDeep(cells)
+        tmpCells.forEach(cell => {
+          cell.colIndex = 0
+        })
+        mergedCellsInfo.unshift(tmpCells)
+      })
+    }
+    options.mergedCellsInfo = mergedCellsInfo
+    options.mergedCell = (sheet, cells, meta) => {
+      if (showIndex && meta.colIndex === 0) {
+        meta.fieldValue = getRowIndex(mergedCellsInfo, meta)
+      }
+      return new CustomMergedCell(sheet, cells, meta)
+    }
+  }
+}
+
+export function getRowIndex(mergedCellsInfo: MergedCellInfo[][], meta: ViewMeta): number {
+  if (!mergedCellsInfo?.length) {
+    return meta.rowIndex + 1
+  }
+  let curRangeStartIndex = meta.rowIndex
+  const lostCells = mergedCellsInfo.reduce((p, n) => {
+    if (n[0].colIndex !== 0) {
+      return p
+    }
+    const start = n[0].rowIndex
+    const end = n[n.length - 1].rowIndex
+    const lost = end - start
+    if (meta.rowIndex >= start && meta.rowIndex <= end) {
+      curRangeStartIndex = start
+    }
+    if (meta.rowIndex > end) {
+      return p + lost
+    }
+    return p
+  }, 0)
+  return curRangeStartIndex - lostCells + 1
+}
+class CustomMergedCell extends MergedCell {
+  protected drawBackgroundShape() {
+    const allPoints = getPolygonPoints(this.cells)
+    // 处理条件样式，这里没有用透明度
+    // 因为合并的单元格是单独的图层，透明度降低的话会显示底下未合并的单元格，需要单独处理被覆盖的单元格
+    const { backgroundColor: fill, backgroundColorOpacity: fillOpacity } =
+      this.getBackgroundColor();
+    const cellTheme = this.theme.dataCell.cell
+    this.backgroundShape = renderPolygon(this, {
+      points: allPoints,
+      stroke: cellTheme.horizontalBorderColor,
+      fill,
+      lineHeight: cellTheme.horizontalBorderWidth,
+    })
+  }
+}
+
+export class CustomDataCell extends TableDataCell {
+  /**
+   * 重写这个方法是为了处理底部的汇总行取消 hover 状态时设置 border 为 1,
+   * 这样会导致单元格隐藏横边边框失败，出现一条白线
+   */
+  hideInteractionShape() {
+    this.stateShapes.forEach(shape => {
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundOpacity, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.backgroundColor, 'transparent')
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderOpacity, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderWidth, 0)
+      updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent')
+    })
   }
 }

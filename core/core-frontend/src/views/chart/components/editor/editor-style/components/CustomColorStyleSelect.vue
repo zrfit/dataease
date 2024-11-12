@@ -234,9 +234,13 @@ const changeColorOption = (option?) => {
   }
 }
 const resetCustomColor = () => {
-  state.value.basicStyleForm[seriesColorName.value] = []
-  changeBasicStyle(seriesColorName.value)
-  setupSeriesColor()
+  if (props.chart.type.includes('map')) {
+    changeColorOption()
+  } else {
+    state.value.basicStyleForm[seriesColorName.value] = []
+    changeBasicStyle(seriesColorName.value)
+    setupSeriesColor()
+  }
 }
 
 const switchColorCase = () => {

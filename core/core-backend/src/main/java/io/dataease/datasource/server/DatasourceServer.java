@@ -126,7 +126,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     public boolean checkRepeat(@RequestBody BusiDsRequest dataSourceDTO) {
-        if (Arrays.asList("API", "Excel", "folder").contains(dataSourceDTO.getType())) {
+        if (Arrays.asList("API", "Excel", "folder", "es").contains(dataSourceDTO.getType())) {
             return false;
         }
         BusiNodeRequest request = new BusiNodeRequest();
@@ -267,7 +267,11 @@ public class DatasourceServer implements DatasourceApi {
                 try {
                     datasourceSyncManage.createEngineTable(datasourceRequest.getTable(), tableFields);
                 } catch (Exception e) {
-                    DEException.throwException("Failed to create table " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    if (e.getMessage().toLowerCase().contains("Row size too large".toLowerCase())) {
+                        DEException.throwException("文本内容超出最大支持范围： " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    } else {
+                        DEException.throwException("Failed to create table " + datasourceRequest.getTable() + ", " + e.getMessage());
+                    }
                 }
             }
             commonThreadPool.addTask(() -> {
@@ -477,6 +481,23 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public DatasourceDTO hidePw(Long datasourceId) throws DEException {
         return getDatasourceDTOById(datasourceId, true);
+    }
+
+    @Override
+    public DatasourceDTO getSimpleDs(Long datasourceId) throws DEException {
+        CoreDatasource datasource = datasourceMapper.selectById(datasourceId);
+        if (datasource == null) {
+            DEException.throwException("不存在的数据源！");
+        }
+        if (datasource.getType().equalsIgnoreCase("api")) {
+            datasource.setConfiguration("[]");
+        } else {
+            datasource.setConfiguration("");
+        }
+        datasource.setConfiguration("");
+        DatasourceDTO datasourceDTO = new DatasourceDTO();
+        BeanUtils.copyBean(datasourceDTO, datasource);
+        return datasourceDTO;
     }
 
     @Override
@@ -1128,8 +1149,12 @@ public class DatasourceServer implements DatasourceApi {
                     params.add(apiDefinition);
                 }
             }
-            datasourceDTO.setApiConfigurationStr(new String(Base64.getEncoder().encode(Objects.requireNonNull(JsonUtil.toJSONString(apiDefinitionListWithStatus)).toString().getBytes())));
-            datasourceDTO.setParamsStr(new String(Base64.getEncoder().encode(Objects.requireNonNull(JsonUtil.toJSONString(params)).toString().getBytes())));
+            if(CollectionUtils.isNotEmpty(params)){
+                datasourceDTO.setParamsStr(RsaUtils.symmetricEncrypt(JsonUtil.toJSONString(params).toString()));
+            }
+            if(CollectionUtils.isNotEmpty(apiDefinitionListWithStatus)){
+                datasourceDTO.setApiConfigurationStr(RsaUtils.symmetricEncrypt(JsonUtil.toJSONString(apiDefinitionListWithStatus).toString()));
+            }
             if (success == apiDefinitionList.size()) {
                 datasourceDTO.setStatus("Success");
             } else {
@@ -1143,7 +1168,6 @@ public class DatasourceServer implements DatasourceApi {
             TaskDTO taskDTO = new TaskDTO();
             BeanUtils.copyBean(taskDTO, coreDatasourceTask);
             datasourceDTO.setSyncSetting(taskDTO);
-
             CoreDatasourceTask task = datasourceTaskServer.selectByDSId(datasourceDTO.getId());
             if (task != null) {
                 datasourceDTO.setLastSyncTime(task.getStartTime());
@@ -1153,13 +1177,12 @@ public class DatasourceServer implements DatasourceApi {
                 Provider provider = ProviderFactory.getProvider(datasourceDTO.getType());
                 provider.hidePW(datasourceDTO);
             }
-
         }
         if (datasourceDTO.getType().equalsIgnoreCase(DatasourceConfiguration.DatasourceType.Excel.toString())) {
             datasourceDTO.setFileName(ExcelUtils.getFileName(datasource));
             datasourceDTO.setSize(ExcelUtils.getSize(datasource));
         }
-        datasourceDTO.setConfiguration(new String(Base64.getEncoder().encode(datasourceDTO.getConfiguration().getBytes())));
+        datasourceDTO.setConfiguration(RsaUtils.symmetricEncrypt(datasourceDTO.getConfiguration()));
         datasourceDTO.setCreator(coreUserManage.getUserName(Long.valueOf(datasourceDTO.getCreateBy())));
         return datasourceDTO;
     }

@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -259,6 +260,7 @@ public class DatasetDataManage {
 
     public Long getDatasetTotal(Long datasetGroupId) throws Exception {
         DatasetGroupInfoDTO dto = datasetGroupManage.getForCount(datasetGroupId);
+        if (ObjectUtils.isEmpty(dto)) return 0L;
         if (StringUtils.equalsIgnoreCase(dto.getNodeType(), "dataset")) {
             return getDatasetTotal(dto, null, new ChartExtRequest());
         }
@@ -452,11 +454,17 @@ public class DatasetDataManage {
                 LinkedHashMap<String, Object> obj = new LinkedHashMap<>();
                 if (row.length > 0) {
                     for (int j = 0; j < fields.size(); j++) {
+                        String res = row[j];
+                        // 如果字段类型是数值类型的小数，则去除科学计数
+                        if (fields.get(j).getDeType() == 3 && StringUtils.containsIgnoreCase(res, "E")) {
+                            BigDecimal bigDecimal = new BigDecimal(res);
+                            res = String.format("%.8f", bigDecimal);
+                        }
                         if (desensitizationList.keySet().contains(fields.get(j).getDataeaseName())) {
-                            obj.put(fields.get(j).getDataeaseName(), ChartDataBuild.desensitizationValue(desensitizationList.get(fields.get(j).getDataeaseName()), String.valueOf(row[j])));
+                            obj.put(fields.get(j).getDataeaseName(), ChartDataBuild.desensitizationValue(desensitizationList.get(fields.get(j).getDataeaseName()), String.valueOf(res)));
                         } else {
                             obj.put(ObjectUtils.isNotEmpty(fields.get(j).getDataeaseName()) ?
-                                    fields.get(j).getDataeaseName() : fields.get(j).getOriginName(), row[j]);
+                                    fields.get(j).getDataeaseName() : fields.get(j).getOriginName(), res);
                         }
                     }
                 }

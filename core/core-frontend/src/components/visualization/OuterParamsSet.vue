@@ -166,7 +166,7 @@
                           filterable
                           clearable
                           style="width: 100%"
-                          placeholder="请选择"
+                          :placeholder="t('common.selectText')"
                         >
                           <template #header>
                             <el-tabs

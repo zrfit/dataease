@@ -81,6 +81,11 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
 
   async drawChart(drawOption: L7DrawConfig<L7Config>) {
     const { chart, container, action } = drawOption
+    const containerDom = document.getElementById(container)
+    const rect = containerDom?.getBoundingClientRect()
+    if (rect?.height <= 0) {
+      return new L7Wrapper(drawOption.chartObj?.getScene(), [])
+    }
     const xAxis = deepCopy(chart.xAxis)
     let basicStyle
     let miscStyle
@@ -331,12 +336,22 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
   }
 
   /**
+   * 清除 popup
+   * @param container
+   */
+  clearPopup = container => {
+    const containerElement = document.getElementById(container)
+    containerElement?.querySelectorAll('.l7-popup').forEach((element: Element) => element.remove())
+  }
+
+  /**
    * 构建 tooltip
    * @param chart
    * @param pointLayer
    */
   buildTooltip = (chart, container, pointLayer) => {
     const customAttr = chart.customAttr ? parseJson(chart.customAttr) : null
+    this.clearPopup(container)
     if (customAttr?.tooltip?.show) {
       const { tooltip } = deepCopy(customAttr)
       let showFields = tooltip.showFields || []

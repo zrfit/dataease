@@ -1,5 +1,6 @@
 import { hexColorToRGBA, parseJson } from '../../util'
 import {
+  DEFAULT_BASIC_STYLE,
   DEFAULT_XAXIS_STYLE,
   DEFAULT_YAXIS_EXT_STYLE,
   DEFAULT_YAXIS_STYLE
@@ -29,6 +30,8 @@ import { Scene } from '@antv/l7-scene'
 import { type IZoomControlOption } from '@antv/l7-component'
 import { PositionType } from '@antv/l7-core'
 import { centroid } from '@turf/centroid'
+import type { Plot } from '@antv/g2plot'
+import type { PickOptions } from '@antv/g2plot/lib/core/plot'
 
 export function getPadding(chart: Chart): number[] {
   if (chart.drill) {
@@ -123,7 +126,9 @@ export function getTheme(chart: Chart) {
             color: tooltipColor,
             fontSize: tooltipFontsize + 'px',
             background: tooltipBackgroundColor,
-            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.1)',
+            'z-index': 3000,
+            position: 'fixed'
           }
         }
       },
@@ -163,7 +168,8 @@ export function getLabel(chart: Chart) {
               'pie-donut',
               'radar',
               'waterfall',
-              't-heatmap'
+              't-heatmap',
+              'bar'
             ].includes(chart.type)
           ) {
             layout.push({ type: 'hide-overlap' })
@@ -205,7 +211,10 @@ export function getTooltip(chart: Chart) {
           formatter: function (param: Datum) {
             const value = valueFormatter(param.value, t.tooltipFormatter)
             return { name: param.field, value }
-          }
+          },
+          container: getTooltipContainer(`tooltip-${chart.id}`),
+          itemTpl: TOOLTIP_TPL,
+          enterable: true
         }
       } else {
         tooltip = false
@@ -256,7 +265,10 @@ export function getMultiSeriesTooltip(chart: Chart) {
         }
       })
       return result
-    }
+    },
+    container: getTooltipContainer(`tooltip-${chart.id}`),
+    itemTpl: TOOLTIP_TPL,
+    enterable: true
   }
   return tooltip
 }
@@ -1139,22 +1151,23 @@ export class CustomZoom extends Zoom {
 }
 export function configL7Zoom(chart: Chart, plot: L7Plot<PlotOptions> | Scene) {
   const { basicStyle } = parseJson(chart.customAttr)
-  if (
-    (basicStyle.suspension === false && basicStyle.showZoom === undefined) ||
-    basicStyle.showZoom === false
-  ) {
+  const plotScene = plot instanceof Scene ? plot : plot.scene
+  const zoomOption = plotScene?.getControlByName('zoom')
+  if (zoomOption) {
+    plotScene.removeControl(zoomOption)
+  }
+  if (shouldHideZoom(basicStyle)) {
     return
   }
-  const plotScene = plot instanceof Scene ? plot : plot.scene
-  plot.once('loaded', () => {
-    const zoomOptions = {
-      initZoom: plotScene.getZoom(),
-      center: plotScene.getCenter(),
+  if (!plotScene?.getControlByName('zoom')) {
+    const newZoomOptions = {
+      initZoom: basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5,
+      center: getCenter(basicStyle),
       buttonColor: basicStyle.zoomButtonColor,
       buttonBackground: basicStyle.zoomBackground
     } as any
-    plotScene.addControl(new CustomZoom(zoomOptions))
-  })
+    addCustomZoom(plotScene, newZoomOptions)
+  }
 }
 
 function setStyle(elements: HTMLElement[], styleProp: string, value) {
@@ -1176,3 +1189,142 @@ export function mapRendered(dom: HTMLElement | string) {
   }
   dom.classList.add('de-map-rendered')
 }
+
+/**
+ * 隐藏缩放控件
+ * @param basicStyle
+ */
+function shouldHideZoom(basicStyle: any): boolean {
+  return (
+    (basicStyle.suspension === false && basicStyle.showZoom === undefined) ||
+    basicStyle.showZoom === false
+  )
+}
+
+/**
+ * 获取地图中心点
+ * @param basicStyle
+ */
+function getCenter(basicStyle: any): [number, number] {
+  let center: [number, number] = [
+    DEFAULT_BASIC_STYLE.mapCenter.longitude,
+    DEFAULT_BASIC_STYLE.mapCenter.latitude
+  ]
+  if (basicStyle.autoFit === false) {
+    center = [basicStyle.mapCenter.longitude, basicStyle.mapCenter.latitude]
+  }
+  return center
+}
+
+/**
+ * 添加自定义缩放控件
+ * @param plotScene
+ * @param newZoomOptions
+ */
+function addCustomZoom(plotScene: Scene, newZoomOptions: any): void {
+  plotScene.addControl(new CustomZoom(newZoomOptions))
+}
+
+const G2_TOOLTIP_WRAPPER = 'g2-tooltip-wrapper'
+export function getTooltipContainer(id) {
+  let wrapperDom = document.getElementById(G2_TOOLTIP_WRAPPER)
+  if (!wrapperDom) {
+    wrapperDom = document.createElement('div')
+    wrapperDom.id = G2_TOOLTIP_WRAPPER
+    document.body.appendChild(wrapperDom)
+  }
+  const curDom = document.getElementById(id)
+  if (curDom) {
+    curDom.remove()
+  }
+  const g2Tooltip = document.createElement('div')
+  g2Tooltip.setAttribute('id', id)
+  g2Tooltip.classList.add('g2-tooltip')
+  // 最多半屏，鼠标移入可滚动
+  g2Tooltip.style.maxHeight = '50%'
+  g2Tooltip.style.overflowY = 'auto'
+  g2Tooltip.style.display = 'none'
+  g2Tooltip.style.position = 'fixed'
+  g2Tooltip.style.left = '0px'
+  g2Tooltip.style.top = '0px'
+  const g2TooltipTitle = document.createElement('div')
+  g2TooltipTitle.classList.add('g2-tooltip-title')
+  g2Tooltip.appendChild(g2TooltipTitle)
+
+  const g2TooltipList = document.createElement('ul')
+  g2TooltipList.classList.add('g2-tooltip-list')
+  g2Tooltip.appendChild(g2TooltipList)
+  const full = document.getElementsByClassName('fullscreen')
+  if (full.length) {
+    full.item(0).appendChild(g2Tooltip)
+  } else {
+    wrapperDom.appendChild(g2Tooltip)
+  }
+  return g2Tooltip
+}
+export function configPlotTooltipEvent<O extends PickOptions, P extends Plot<O>>(
+  chart: Chart,
+  plot: P
+) {
+  const { tooltip } = parseJson(chart.customAttr)
+  if (!tooltip.show) {
+    return
+  }
+  // 鼠标可移入, 移入之后保持显示, 移出之后隐藏
+  plot.options.tooltip.container.addEventListener('mouseenter', e => {
+    e.target.style.visibility = 'visible'
+    e.target.style.display = 'block'
+  })
+  plot.options.tooltip.container.addEventListener('mouseleave', e => {
+    e.target.style.visibility = 'hidden'
+    e.target.style.display = 'none'
+  })
+  // 手动处理 tooltip 的显示和隐藏事件，需配合源码理解
+  // https://github.com/antvis/G2/blob/master/src/chart/controller/tooltip.ts#showTooltip
+  plot.on('tooltip:show', () => {
+    const tooltipCtl = plot.chart.getController('tooltip')
+    if (!tooltipCtl) {
+      return
+    }
+    const event = plot.chart.interactions.tooltip?.context?.event
+    if (tooltipCtl.tooltip) {
+      // 处理视图放大后再关闭 tooltip 的 dom 被清除
+      const container = tooltipCtl.tooltip.cfg.container
+      container.style.display = 'block'
+      const dom = document.getElementById(container.id)
+      if (!dom) {
+        const full = document.getElementsByClassName('fullscreen')
+        if (full.length) {
+          full.item(0).appendChild(container)
+        } else {
+          const wrapperDom = document.getElementById(G2_TOOLTIP_WRAPPER)
+          wrapperDom.appendChild(container)
+        }
+      }
+    }
+    plot.chart.getOptions().tooltip.follow = false
+    tooltipCtl.title = Math.random().toString()
+    plot.chart.getTheme().components.tooltip.x = event.clientX
+    plot.chart.getTheme().components.tooltip.y = event.clientY
+  })
+  // https://github.com/antvis/G2/blob/master/src/chart/controller/tooltip.ts#hideTooltip
+  plot.on('plot:mouseleave', () => {
+    const tooltipCtl = plot.chart.getController('tooltip')
+    if (!tooltipCtl) {
+      return
+    }
+    plot.chart.getOptions().tooltip.follow = true
+    const container = tooltipCtl.tooltip?.cfg?.container
+    if (container) {
+      container.style.display = 'none'
+    }
+    tooltipCtl.hideTooltip()
+  })
+}
+
+export const TOOLTIP_TPL =
+  '<li class="g2-tooltip-list-item" data-index={index}>' +
+  '<span class="g2-tooltip-marker" style="background:{color}"></span>' +
+  '<span class="g2-tooltip-name">{name}</span>:' +
+  '<span class="g2-tooltip-value">{value}</span>' +
+  '</li>'

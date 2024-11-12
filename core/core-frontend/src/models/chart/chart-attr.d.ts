@@ -459,6 +459,10 @@ declare interface ChartTableCellAttr {
    * 冻结行
    */
   tableRowFreezeHead: number
+  /**
+   * 合并单元格
+   */
+  mergeCells: boolean
 }
 
 /**

@@ -309,13 +309,12 @@ const customSymbolicMapSizeRange = computed(() => {
   return ['symbolic-map'].includes(props.chart.type) && extBubble?.length > 0
 })
 const mapCustomRangeValidate = prop => {
-  if (!state.basicStyleForm.mapSymbolSizeMin || state.basicStyleForm.mapSymbolSizeMin < 0) {
-    state.basicStyleForm.mapSymbolSizeMin = 0
-  }
-  if (!state.basicStyleForm.mapSymbolSizeMax || state.basicStyleForm.mapSymbolSizeMax < 1) {
-    state.basicStyleForm.mapSymbolSizeMax = 1
-  }
-  if (state.basicStyleForm.mapSymbolSizeMax < state.basicStyleForm.mapSymbolSizeMin) {
+  const { mapSymbolSizeMax = '0', mapSymbolSizeMin = '1' } = state.basicStyleForm
+  let max = parseInt(mapSymbolSizeMax)
+  let min = parseInt(mapSymbolSizeMin)
+  state.basicStyleForm.mapSymbolSizeMin = Math.max(min, 0)
+  state.basicStyleForm.mapSymbolSizeMax = Math.max(max, 1)
+  if (max < min) {
     ElMessage.warning('第二个区间值必须大于第一个区间值')
     return
   }

@@ -63,6 +63,8 @@ import { setupStore } from '@/store'
 import { useEmbedded } from '@/store/modules/embedded'
 import { setupElementPlus, setupElementPlusIcons } from '@/plugins/element-plus'
 import { setupRouter } from '@/router/embedded'
+import { getDefaultSettings } from '@/api/common'
+import { useCache } from '@/hooks/web/useCache'
 
 const setupAll = async (
   dom: string,
@@ -75,10 +77,20 @@ const setupAll = async (
   dvId: string,
   pid: string,
   chartId: string,
-  resourceId: string
+  resourceId: string,
+  dfId: string
 ): Promise<App<Element>> => {
   const app = createApp(AppElement, { componentName: type })
-  app.provide('embeddedParams', { chartId, resourceId, dvId, pid, busiFlag, outerParams, suffixId })
+  app.provide('embeddedParams', {
+    chartId,
+    resourceId,
+    dfId,
+    dvId,
+    pid,
+    busiFlag,
+    outerParams,
+    suffixId
+  })
   await setupI18n(app)
   setupStore(app)
   setupRouter(app)
@@ -94,6 +106,7 @@ const setupAll = async (
   embeddedStore.setDvId(dvId)
   embeddedStore.setPid(pid)
   embeddedStore.setResourceId(resourceId)
+  embeddedStore.setDfId(dfId)
   const directive = await import('@/directive')
   directive.installDirective(app)
   const res = await import('@/store/modules/user')
@@ -105,6 +118,9 @@ const setupAll = async (
   const appearanceRes = await import('@/store/modules/appearance')
   const appearanceStore = appearanceRes.useAppearanceStoreWithOut()
   appearanceStore.setAppearance(true)
+  const defaultSort = await getDefaultSettings()
+  const { wsCache } = useCache()
+  wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
   app.mount(dom)
   return app
 }
@@ -131,11 +147,13 @@ class DataEaseBi {
     | 'Dashboard'
     | 'ScreenPanel'
     | 'DashboardPanel'
+    | 'DataFilling'
   dvId: string
   busiFlag: 'dashboard' | 'dataV'
   outerParams: string
   suffixId: string
   resourceId: string
+  dfId: string
   pid: string
   chartId: string
   deOptions: Options
@@ -152,6 +170,7 @@ class DataEaseBi {
     this.pid = options.pid
     this.chartId = options.chartId
     this.resourceId = options.resourceId
+    this.dfId = options.dfId
   }
 
   async initialize(options: Options) {
@@ -167,7 +186,8 @@ class DataEaseBi {
       this.dvId,
       this.pid,
       this.chartId,
-      this.resourceId
+      this.resourceId,
+      this.dfId
     )
   }
 
@@ -192,6 +212,7 @@ class DataEaseBi {
     this.pid = null
     this.chartId = null
     this.resourceId = null
+    this.dfId = null
     this.vm = null
   }
 }

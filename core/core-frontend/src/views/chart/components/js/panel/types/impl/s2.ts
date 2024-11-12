@@ -15,6 +15,7 @@ import {
 } from '@antv/s2'
 import {
   configHeaderInteraction,
+  configMergeCells,
   configTooltip,
   getConditions,
   getCustomTheme,
@@ -63,6 +64,10 @@ export abstract class S2ChartView<P extends SpreadSheet> extends AntVAbstractCha
     return getConditions(chart)
   }
 
+  protected configMergeCells(chart: Chart, option: S2Options, dataConfig: S2DataConfig) {
+    configMergeCells(chart, option, dataConfig)
+  }
+
   protected showTooltip(s2Instance: P, event, metaConfig: Meta[]) {
     const cell = s2Instance.getCell(event.target)
     const meta = cell.getMeta()
@@ -70,6 +75,7 @@ export abstract class S2ChartView<P extends SpreadSheet> extends AntVAbstractCha
     let field
     switch (cell.cellType) {
       case 'dataCell':
+      case 'mergedCell':
         if (meta.valueField === SERIES_NUMBER_FIELD) {
           content = meta.fieldValue.toString()
           break

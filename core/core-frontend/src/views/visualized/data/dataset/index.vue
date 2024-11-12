@@ -6,10 +6,12 @@ import icon_intoItem_outlined from '@/assets/svg/icon_into-item_outlined.svg'
 import icon_rename_outlined from '@/assets/svg/icon_rename_outlined.svg'
 import dvNewFolder from '@/assets/svg/dv-new-folder.svg'
 import icon_fileAdd_outlined from '@/assets/svg/icon_file-add_outlined.svg'
+import { moveDatasetTree } from '@/api/dataset'
 import icon_searchOutline_outlined from '@/assets/svg/icon_search-outline_outlined.svg'
 import dvSortAsc from '@/assets/svg/dv-sort-asc.svg'
 import dvSortDesc from '@/assets/svg/dv-sort-desc.svg'
 import dvFolder from '@/assets/svg/dv-folder.svg'
+import { treeDraggble } from '@/utils/treeDraggble'
 import icon_add_outlined from '@/assets/svg/icon_add_outlined.svg'
 import icon_info_outlined from '@/assets/svg/icon_info_outlined.svg'
 import icon_dashboard_outlined from '@/assets/svg/icon_dashboard_outlined.svg'
@@ -247,6 +249,13 @@ const infoList = computed(() => {
   }
 })
 
+const { handleDrop, allowDrop, handleDragStart } = treeDraggble(
+  state,
+  'datasetTree',
+  moveDatasetTree,
+  'dataset'
+)
+
 const generateColumns = (arr: Field[]) =>
   arr.map(ele => ({
     key: ele.dataeaseName,
@@ -274,6 +283,8 @@ const dtLoading = ref(false)
 const isCreated = ref(false)
 const getData = () => {
   dtLoading.value = true
+  let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
+  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
   const request = { busiFlag: 'dataset' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -283,12 +294,12 @@ const getData = () => {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasetTree = nodeData[0]['children'] || []
         originResourceTree = cloneDeep(unref(state.datasetTree))
-        sortTypeChange(state.curSortType)
+        sortTypeChange(curSortType)
         return
       }
       state.datasetTree = nodeData
       originResourceTree = cloneDeep(unref(state.datasetTree))
-      sortTypeChange(state.curSortType)
+      sortTypeChange(curSortType)
     })
     .finally(() => {
       dtLoading.value = false
@@ -398,6 +409,15 @@ const exportDatasetRequest = () => {
 
 const exportData = () => {
   useEmitt().emitter.emit('data-export-center', { activeName: 'IN_PROGRESS' })
+}
+
+const rowClick = (_, __, event) => {
+  const element = event.target.parentNode.parentNode
+  if ([...element.classList].includes('no-hide')) {
+    element.classList.remove('no-hide')
+    return
+  }
+  element.classList.add('no-hide')
 }
 
 const openMessageLoading = cb => {
@@ -852,6 +872,10 @@ const getMenuList = (val: boolean) => {
             :filter-node-method="filterNode"
             expand-on-click-node
             highlight-current
+            @node-drag-start="handleDragStart"
+            :allow-drop="allowDrop"
+            @node-drop="handleDrop"
+            draggable
             @node-expand="nodeExpand"
             @node-collapse="nodeCollapse"
             :default-expanded-keys="expandedKey"
@@ -1002,8 +1026,10 @@ const getMenuList = (val: boolean) => {
               <template v-if="activeName === 'dataPreview'">
                 <el-table
                   v-loading="dataPreviewLoading"
+                  class="dataset-preview_table"
                   header-class="header-cell"
                   :data="tableData"
+                  @row-click="rowClick"
                   key="dataPreview"
                   border
                   style="width: 100%; height: 100%"
@@ -1110,6 +1136,16 @@ const getMenuList = (val: boolean) => {
 
 <style lang="less" scoped>
 @import '@/style/mixin.less';
+
+:deep(.dataset-preview_table) {
+  .ed-table__body {
+    .ed-table__row:not(.no-hide) {
+      .cell {
+        white-space: nowrap;
+      }
+    }
+  }
+}
 
 .ed-table {
   --ed-table-header-bg-color: #f5f6f7;

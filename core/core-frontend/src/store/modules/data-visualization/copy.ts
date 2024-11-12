@@ -200,7 +200,12 @@ function deepCopyHelper(data, idMap) {
   const newComponentId = generateID()
   idMap[data.id] = newComponentId
   result.id = newComponentId
+  // 复制清理移动端样式
   result.inMobile = false
+  delete result.mStyle
+  delete result.mEvents
+  delete result.mPropValue
+  delete result.mCommonBackground
   if (result.component === 'Group') {
     result.propValue.forEach((component, i) => {
       result.propValue[i] = deepCopyHelper(component, idMap)

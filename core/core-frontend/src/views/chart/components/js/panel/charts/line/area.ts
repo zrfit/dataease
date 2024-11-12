@@ -3,7 +3,13 @@ import {
   G2PlotDrawOptions
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Area as G2Area, AreaOptions } from '@antv/g2plot/esm/plots/area'
-import { getPadding, setGradientColor } from '@/views/chart/components/js/panel/common/common_antv'
+import {
+  configPlotTooltipEvent,
+  getPadding,
+  getTooltipContainer,
+  setGradientColor,
+  TOOLTIP_TPL
+} from '@/views/chart/components/js/panel/common/common_antv'
 import { cloneDeep } from 'lodash-es'
 import {
   flow,
@@ -35,7 +41,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
       'gradient',
       'seriesColor'
     ],
-    'label-selector': ['seriesLabelFormatter', 'showExtremum'],
+    'label-selector': ['seriesLabelVPosition', 'seriesLabelFormatter', 'showExtremum'],
     'tooltip-selector': [
       ...LINE_EDITOR_PROPERTY_INNER['tooltip-selector'],
       'seriesTooltipFormatter'
@@ -116,6 +122,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
 
     newChart.on('point:click', action)
     extremumEvt(newChart, chart, options, container)
+    configPlotTooltipEvent(chart, newChart)
     return newChart
   }
 
@@ -127,7 +134,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
         label: false
       }
     }
-    const { label: labelAttr } = parseJson(chart.customAttr)
+    const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
     const formatterMap = labelAttr.seriesLabelFormatter?.reduce((pre, next) => {
       pre[next.id] = next
       return pre
@@ -136,6 +143,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
     const label = {
       fields: [],
       ...tmpOptions.label,
+      layout: labelAttr.fullDisplay ? [{ type: 'limit-in-plot' }] : tmpOptions.label.layout,
       formatter: (data: Datum, _point) => {
         if (data.EXTREME) {
           return ''
@@ -150,13 +158,17 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
         if (!labelCfg.show) {
           return
         }
+        const position =
+          labelCfg.position === 'top'
+            ? -2 - basicStyle.lineSymbolSize
+            : 10 + basicStyle.lineSymbolSize
         const value = valueFormatter(data.value, labelCfg.formatterCfg)
         const group = new Group({})
         group.addShape({
           type: 'text',
           attrs: {
             x: 0,
-            y: 0,
+            y: position,
             text: value,
             textAlign: 'start',
             textBaseline: 'top',
@@ -284,7 +296,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
 export class StackArea extends Area {
   propertyInner = {
     ...this['propertyInner'],
-    'label-selector': ['fontSize', 'color', 'labelFormatter'],
+    'label-selector': ['vPosition', 'fontSize', 'color', 'labelFormatter'],
     'tooltip-selector': ['fontSize', 'color', 'tooltipFormatter', 'show']
   }
   axisConfig = {
@@ -297,8 +309,7 @@ export class StackArea extends Area {
     }
   }
   protected configLabel(chart: Chart, options: AreaOptions): AreaOptions {
-    const customAttr = parseJson(chart.customAttr)
-    const labelAttr = customAttr.label
+    const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
     if (!labelAttr?.show) {
       return {
         ...options,
@@ -309,10 +320,14 @@ export class StackArea extends Area {
     if (!labelAttr.fullDisplay) {
       const tmpOptions = super.configLabel(chart, options)
       layout.push(...tmpOptions.label.layout)
+    } else {
+      layout.push({ type: 'limit-in-plot' })
     }
+    const position =
+      labelAttr.position === 'top' ? -2 - basicStyle.lineSymbolSize : 8 + basicStyle.lineSymbolSize
     const label: Label = {
       position: labelAttr.position as any,
-      offsetY: -8,
+      offsetY: position,
       layout,
       style: {
         fill: labelAttr.color,
@@ -352,7 +367,10 @@ export class StackArea extends Area {
           value: valueFormatter(param.value, tooltipAttr.tooltipFormatter)
         }
         return obj
-      }
+      },
+      container: getTooltipContainer(`tooltip-${chart.id}`),
+      itemTpl: TOOLTIP_TPL,
+      enterable: true
     }
     return { ...options, tooltip }
   }

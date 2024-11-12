@@ -3,21 +3,27 @@ import {
   S2DataConfig,
   S2Event,
   S2Options,
+  S2Theme,
   TableColCell,
   TableDataCell,
   TableSheet,
   ViewMeta
 } from '@antv/s2'
 import { formatterItem, valueFormatter } from '../../../formatter'
-import { parseJson } from '../../../util'
+import { hexColorToRGBA, isAlphaColor, parseJson } from '../../../util'
 import { S2ChartView, S2DrawOptions } from '../../types/impl/s2'
 import { TABLE_EDITOR_PROPERTY, TABLE_EDITOR_PROPERTY_INNER } from './common'
 import { useI18n } from '@/hooks/web/useI18n'
-import { isNumber } from 'lodash-es'
-import { copyContent, SortTooltip } from '@/views/chart/components/js/panel/common/common_table'
+import { isNumber, merge } from 'lodash-es'
+import {
+  copyContent,
+  CustomDataCell,
+  getRowIndex,
+  SortTooltip
+} from '@/views/chart/components/js/panel/common/common_table'
 
 const { t } = useI18n()
-class ImageCell extends TableDataCell {
+class ImageCell extends CustomDataCell {
   protected drawTextShape(): void {
     const img = new Image()
     const { x, y, width, height, fieldValue } = this.meta
@@ -66,7 +72,8 @@ export class TableInfo extends S2ChartView<TableSheet> {
       ...TABLE_EDITOR_PROPERTY_INNER['table-cell-selector'],
       'tableFreeze',
       'tableColumnFreezeHead',
-      'tableRowFreezeHead'
+      'tableRowFreezeHead',
+      'mergeCells'
     ]
   }
   axis: AxisType[] = ['xAxis', 'filter', 'drill']
@@ -191,12 +198,19 @@ export class TableInfo extends S2ChartView<TableSheet> {
         return new ImageCell(viewMeta, viewMeta?.spreadsheet)
       }
       if (viewMeta.colIndex === 0 && s2Options.showSeriesNumber) {
-        viewMeta.fieldValue = pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
+        if (tableCell.mergeCells) {
+          viewMeta.fieldValue = getRowIndex(s2Options.mergedCellsInfo, viewMeta)
+        } else {
+          viewMeta.fieldValue =
+            pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
+        }
       }
-      return new TableDataCell(viewMeta, viewMeta?.spreadsheet)
+      return new CustomDataCell(viewMeta, viewMeta?.spreadsheet)
     }
     // tooltip
     this.configTooltip(chart, s2Options)
+    // 合并单元格
+    this.configMergeCells(chart, s2Options, s2DataConfig)
     // 隐藏表头，保留顶部的分割线, 禁用表头横向 resize
     if (tableHeader.showTableHeader === false) {
       s2Options.style.colCfg.height = 1
@@ -251,7 +265,12 @@ export class TableInfo extends S2ChartView<TableSheet> {
         }, 0)
         const containerWidth = containerDom.getBoundingClientRect().width
         if (containerWidth <= totalWidthWithImg) {
-          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，不处理
+          // 图库计算的布局宽度已经大于等于容器宽度，不需要再扩大，但是需要处理非整数宽度值，不然会出现透明细线
+          ev.colLeafNodes.reduce((p, n) => {
+            n.width = Math.round(n.width)
+            n.x = p
+            return p + n.width
+          }, 0)
           return
         }
         // 图片字段固定 120, 剩余宽度按比例均摊到其他字段进行扩大
@@ -299,11 +318,14 @@ export class TableInfo extends S2ChartView<TableSheet> {
       }
       action(param)
     })
+    // 合并的单元格直接复用数据单元格的事件
+    newChart.on(S2Event.MERGED_CELLS_CLICK, e => newChart.emit(S2Event.DATA_CELL_CLICK, e))
     // tooltip
     const { show } = tooltip
     if (show) {
       newChart.on(S2Event.COL_CELL_HOVER, event => this.showTooltip(newChart, event, meta))
       newChart.on(S2Event.DATA_CELL_HOVER, event => this.showTooltip(newChart, event, meta))
+      newChart.on(S2Event.MERGED_CELLS_HOVER, event => this.showTooltip(newChart, event, meta))
     }
     // header resize
     newChart.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, ev => resizeAction(ev))
@@ -312,8 +334,65 @@ export class TableInfo extends S2ChartView<TableSheet> {
     // theme
     const customTheme = this.configTheme(chart)
     newChart.setThemeCfg({ theme: customTheme })
-
     return newChart
+  }
+
+  protected configTheme(chart: Chart): S2Theme {
+    const theme = super.configTheme(chart)
+    const { basicStyle, tableCell } = parseJson(chart.customAttr)
+    if (tableCell.mergeCells) {
+      const tableFontColor = hexColorToRGBA(tableCell.tableFontColor, basicStyle.alpha)
+      let tableItemBgColor = tableCell.tableItemBgColor
+      if (!isAlphaColor(tableItemBgColor)) {
+        tableItemBgColor = hexColorToRGBA(tableItemBgColor, basicStyle.alpha)
+      }
+      const { tableBorderColor } = basicStyle
+      const { tableItemAlign, tableItemFontSize } = tableCell
+      const fontStyle = tableCell.isItalic ? 'italic' : 'normal'
+      const fontWeight = tableCell.isBolder === false ? 'normal' : 'bold'
+      const mergeCellTheme: S2Theme = {
+        mergedCell: {
+          cell: {
+            backgroundColor: tableItemBgColor,
+            crossBackgroundColor: tableItemBgColor,
+            horizontalBorderColor: tableBorderColor,
+            verticalBorderColor: tableBorderColor,
+            horizontalBorderWidth: tableCell.showHorizonBorder ? 1 : 0,
+            verticalBorderWidth: tableCell.showVerticalBorder ? 1 : 0
+          },
+          bolderText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          text: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          measureText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          },
+          seriesText: {
+            fill: tableFontColor,
+            textAlign: tableItemAlign,
+            fontSize: tableItemFontSize,
+            fontStyle,
+            fontWeight
+          }
+        }
+      }
+      merge(theme, mergeCellTheme)
+    }
+    return theme
   }
 
   constructor() {
