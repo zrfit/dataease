@@ -1092,11 +1092,8 @@ const getMenuList = (val: boolean) => {
                 /></Icon>
               </el-tooltip>
               <el-tooltip :offset="16" effect="dark" :content="sortTypeTip" placement="top">
-                <Icon
-                  v-show="state.curSortType.includes('desc')"
-                  name="dv-sort-desc"
-                  class="opt-icon"
-                  ><dvSortDesc class="svg-icon opt-icon"
+                <Icon name="dv-sort-desc" class="opt-icon"
+                  ><dvSortDesc v-if="state.curSortType.includes('desc')" class="svg-icon opt-icon"
                 /></Icon>
               </el-tooltip>
             </el-icon>
