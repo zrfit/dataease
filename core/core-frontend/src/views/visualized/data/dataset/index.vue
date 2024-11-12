@@ -411,6 +411,15 @@ const exportData = () => {
   useEmitt().emitter.emit('data-export-center', { activeName: 'IN_PROGRESS' })
 }
 
+const rowClick = (_, __, event) => {
+  const element = event.target.parentNode.parentNode
+  if ([...element.classList].includes('no-hide')) {
+    element.classList.remove('no-hide')
+    return
+  }
+  element.classList.add('no-hide')
+}
+
 const openMessageLoading = cb => {
   const iconClass = `el-icon-loading`
   const customClass = `de-message-loading de-message-export`
@@ -1017,8 +1026,10 @@ const getMenuList = (val: boolean) => {
               <template v-if="activeName === 'dataPreview'">
                 <el-table
                   v-loading="dataPreviewLoading"
+                  class="dataset-preview_table"
                   header-class="header-cell"
                   :data="tableData"
+                  @row-click="rowClick"
                   key="dataPreview"
                   border
                   style="width: 100%; height: 100%"
@@ -1125,6 +1136,16 @@ const getMenuList = (val: boolean) => {
 
 <style lang="less" scoped>
 @import '@/style/mixin.less';
+
+:deep(.dataset-preview_table) {
+  .ed-table__body {
+    .ed-table__row:not(.no-hide) {
+      .cell {
+        white-space: nowrap;
+      }
+    }
+  }
+}
 
 .ed-table {
   --ed-table-header-bg-color: #f5f6f7;
