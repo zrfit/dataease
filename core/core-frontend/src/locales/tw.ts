@@ -1072,6 +1072,7 @@ export default {
     api_table_not_empty: 'API 數據表不能為空',
     has_repeat_name: 'API 數據表名稱重復',
     has_repeat_field_name: '字段名重復，請修改后再選擇',
+    primary_key_change: '主鍵不能改變:',
     api_field_not_empty: '字段不能為空',
     success_copy: '復制成功',
     valid: '有效',

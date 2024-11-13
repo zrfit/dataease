@@ -78,34 +78,43 @@ public class H2EngineProvider extends EngineProvider {
     }
 
     private String createTableSql(final List<TableField> tableFields) {
-        StringBuilder Column_Fields = new StringBuilder("`");
+        StringBuilder columnFields = new StringBuilder("`");
+        StringBuilder key = new StringBuilder();
         for (TableField tableField : tableFields) {
-            Column_Fields.append(tableField.getName()).append("` ");
+            if (tableField.isPrimaryKey()) {
+                key.append("`").append(tableField.getName()).append("`, ");
+            }
+            columnFields.append(tableField.getName()).append("` ");
             int size = tableField.getPrecision() * 4;
             switch (tableField.getDeType()) {
                 case 0:
-                    Column_Fields.append("varchar(2048)").append(",`");
+                    columnFields.append("varchar(2048)").append(",`");
                     break;
                 case 1:
-                    Column_Fields.append("varchar(2048)").append(",`");
+                    columnFields.append("varchar(2048)").append(",`");
                     break;
                 case 2:
-                    Column_Fields.append("bigint(20)").append(",`");
+                    columnFields.append("bigint(20)").append(",`");
                     break;
                 case 3:
-                    Column_Fields.append("varchar(100)").append(",`");
+                    columnFields.append("varchar(100)").append(",`");
                     break;
                 case 4:
-                    Column_Fields.append("TINYINT(length)".replace("length", String.valueOf(tableField.getPrecision()))).append(",`");
+                    columnFields.append("TINYINT(length)".replace("length", String.valueOf(tableField.getPrecision()))).append(",`");
                     break;
                 default:
-                    Column_Fields.append("varchar(2048)").append(",`");
+                    columnFields.append("varchar(2048)").append(",`");
                     break;
             }
         }
-
-        Column_Fields = new StringBuilder(Column_Fields.substring(0, Column_Fields.length() - 2));
-        Column_Fields = new StringBuilder("(" + Column_Fields + ")\n");
-        return Column_Fields.toString();
+        if (StringUtils.isEmpty(key.toString())) {
+            columnFields = new StringBuilder(columnFields.substring(0, columnFields.length() - 2));
+        } else {
+            key = new StringBuilder(key.substring(0, key.length() - 2));
+            columnFields = new StringBuilder(columnFields.substring(0, columnFields.length() - 1));
+            columnFields.append("PRIMARY KEY (PRIMARYKEY)".replace("PRIMARYKEY", key.toString()));
+        }
+        columnFields = new StringBuilder("(" + columnFields + ")");
+        return columnFields.toString();
     }
 }

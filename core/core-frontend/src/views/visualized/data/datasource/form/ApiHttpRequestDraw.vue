@@ -20,6 +20,7 @@ export interface Field {
   name: string
   value: Array<{}>
   checked: boolean
+  primaryKey: boolean
   children?: Array<{}>
 }
 
@@ -46,6 +47,7 @@ export interface JsonField {
   children: null
   name: string
   checked: false
+  primaryKey: false
   extField: number
   jsonPath: string
   type: string
@@ -61,6 +63,7 @@ const originFieldItem = reactive({
 
 let apiItemList = reactive<ApiConfiguration[]>([])
 let paramsList = reactive<ApiConfiguration[]>([])
+let fields = reactive<Field[]>([])
 
 let apiItem = reactive<ApiItem>({
   status: '',
@@ -157,13 +160,18 @@ const rule = reactive<FormRules>({
   ]
 })
 const activeName = ref('table')
+const editItem = ref(false)
 provide('api-active-name', activeName)
-const initApiItem = (val: ApiItem, from, name) => {
+const initApiItem = (val: ApiItem, from, name, edit) => {
   activeName.value = name
+  editItem.value = edit
   apiItemList = from.apiConfiguration
-  paramsList = from.paramsConfiguration
-  if (val.type !== 'params') {
-    valueList.value = []
+  fields = val.fields
+  if (from.paramsConfiguration) {
+    paramsList = from.paramsConfiguration
+  }
+  valueList.value = []
+  if (val.type !== 'params' && paramsList) {
     for (let i = 0; i < paramsList.length; i++) {
       valueList.value = valueList.value.concat(paramsList[i].fields)
     }
@@ -236,12 +244,46 @@ const saveItem = () => {
       }
     }
   }
+
   for (let i = 0; i < apiItem.fields.length - 1; i++) {
     for (let j = i + 1; j < apiItem.fields.length; j++) {
       if (apiItem.fields[i].name === apiItem.fields[j].name) {
         ElMessage.error(apiItem.fields[i].name + ', ' + t('datasource.has_repeat_field_name'))
         return
       }
+    }
+  }
+  if (editItem.value) {
+    let msg = ''
+    for (let i = 0; i < apiItem.fields.length; i++) {
+      if (apiItem.fields[i].primaryKey) {
+        let find = false
+        for (let j = 0; j < fields.length - 1; j++) {
+          if (fields[j].name === apiItem.fields[i].name && fields[j].primaryKey) {
+            find = true
+          }
+        }
+        if (!find) {
+          msg = msg + ' ' + apiItem.fields[i].name
+        }
+      }
+    }
+    for (let i = 0; i < fields.length - 1; i++) {
+      if (fields[i].primaryKey) {
+        let find = false
+        for (let j = i + 1; j < apiItem.fields.length; j++) {
+          if (fields[i].name === apiItem.fields[j].name && apiItem.fields[j].primaryKey) {
+            find = true
+          }
+        }
+        if (!find) {
+          msg = msg + ' ' + fields[i].name
+        }
+      }
+    }
+    if (msg !== '') {
+      ElMessage.error(t('datasource.primary_key_change') + msg)
+      return
     }
   }
   returnAPIItem('returnItem', cloneDeep(apiItem))
@@ -646,7 +688,7 @@ defineExpose({
             <el-table-column
               prop="deExtractType"
               :label="t('datasource.field_type')"
-              :disabled="apiItem.type == 'params'"
+              :disabled="apiItem.type === 'params'"
             >
               <template #default="scope">
                 <el-select
@@ -688,6 +730,23 @@ defineExpose({
                     }}</span>
                   </el-option>
                 </el-select>
+              </template>
+            </el-table-column>
+
+            <el-table-column
+              prop="primaryKey"
+              class-name="checkbox-table"
+              :label="t('datasource.set_key')"
+              v-if="apiItem.type !== 'params'"
+              width="155"
+            >
+              <template #default="scope">
+                <el-checkbox
+                  :key="scope.row.jsonPath"
+                  v-model="scope.row.primaryKey"
+                  :disabled="editItem || !scope.row.checked"
+                >
+                </el-checkbox>
               </template>
             </el-table-column>
           </el-table>
