@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash-es'
 
-const treeDraggble = (state, key, req, type) => {
+const treeDraggble = (state, key, req, type, originResourceTree) => {
   let dragNodeParentId = ''
   let dragNodeId = ''
   let dragNodeIndex = 0
@@ -106,14 +106,18 @@ const treeDraggble = (state, key, req, type) => {
       dfsTreeNodeBack(state[key], '0', params)
     }
 
-    req(params).catch(() => {
-      if (dragNodeParentId === '0') {
-        state[key].splice(dragNodeIndex, 0, draggingNode.data)
-        return
-      }
+    req(params)
+      .then(() => {
+        originResourceTree.value = cloneDeep(state[key])
+      })
+      .catch(() => {
+        if (dragNodeParentId === '0') {
+          state[key].splice(dragNodeIndex, 0, draggingNode.data)
+          return
+        }
 
-      dfsTreeNodeReset(state[key], draggingNode.data)
-    })
+        dfsTreeNodeReset(state[key], draggingNode.data)
+      })
   }
 
   return {

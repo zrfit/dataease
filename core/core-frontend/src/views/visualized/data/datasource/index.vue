@@ -210,10 +210,10 @@ const selectDataset = row => {
     })
 }
 
-let originResourceTree = []
+const originResourceTree = shallowRef([])
 
 const sortTypeChange = sortType => {
-  state.datasourceTree = treeSort(originResourceTree, sortType)
+  state.datasourceTree = treeSort(originResourceTree.value, sortType)
   state.curSortType = sortType
   wsCache.set('TreeSort-datasource', state.curSortType)
 }
@@ -481,11 +481,11 @@ const listDs = () => {
       if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasourceTree = nodeData[0]['children'] || []
-        originResourceTree = cloneDeep(unref(state.datasourceTree))
+        originResourceTree.value = cloneDeep(unref(state.datasourceTree))
         sortTypeChange(curSortType)
         return
       }
-      originResourceTree = cloneDeep(unref(state.datasourceTree))
+      originResourceTree.value = cloneDeep(unref(state.datasourceTree))
       state.datasourceTree = nodeData
       sortTypeChange(curSortType)
     })
@@ -754,7 +754,8 @@ const { handleDrop, allowDrop, handleDragStart } = treeDraggble(
   state,
   'datasourceTree',
   move,
-  'datasource'
+  'datasource',
+  originResourceTree
 )
 
 const handleCopy = async data => {
