@@ -46,6 +46,7 @@ import { activeWatermarkCheckUser } from '@/components/watermark/watermark'
 import PopArea from '@/custom-component/pop-area/Component.vue'
 import DatasetParamsComponent from '@/components/visualization/DatasetParamsComponent.vue'
 import DeGrid from '@/components/data-visualization/DeGrid.vue'
+import DeGridScreen from '@/components/data-visualization/DeGridScreen.vue'
 
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
@@ -1422,7 +1423,19 @@ const contextMenuShow = computed(() => {
 const markLineShow = computed(() => isMainCanvas(canvasId.value))
 
 const showGrid = computed(() => {
-  return Boolean(canvasStyleData.value.dashboard.showGrid) && isMainCanvas(canvasId.value)
+  return (
+    Boolean(canvasStyleData.value.dashboard.showGrid) &&
+    isMainCanvas(canvasId.value) &&
+    isDashboard()
+  )
+})
+
+const showGridScreen = computed(() => {
+  return (
+    Boolean(canvasStyleData.value.dashboard.showGrid) &&
+    isMainCanvas(canvasId.value) &&
+    !isDashboard()
+  )
 })
 
 // 批量设置
@@ -1557,6 +1570,11 @@ defineExpose({
     ></PopArea>
     <!-- 网格线 -->
     <de-grid v-if="showGrid" :matrix-style="matrixStyle" :themes="themes"></de-grid>
+    <de-grid-screen
+      v-if="showGridScreen"
+      :matrix-style="matrixStyle"
+      :themes="themes"
+    ></de-grid-screen>
     <drag-shadow
       v-if="infoBox && infoBox.moveItem && editMode !== 'preview'"
       :base-height="baseHeight"
