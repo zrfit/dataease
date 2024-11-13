@@ -1039,7 +1039,7 @@ const getMenuList = (val: boolean) => {
                     v-for="(column, index) in columns"
                     :prop="column.dataKey"
                     :label="column.title"
-                    :width="columns.length - 1 === index ? 150 : 'auto'"
+                    :min-width="150"
                     :fixed="columns.length - 1 === index ? 'right' : false"
                   >
                     <template #header>
