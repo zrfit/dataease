@@ -7,6 +7,7 @@ interface SelectConfig {
   id: string
   conditionValueOperatorF: string
   conditionValueF: string
+  queryConditionWidth: string
   hideConditionSwitching: boolean
   conditionValueOperatorS: string
   conditionValueS: string
@@ -46,6 +47,7 @@ const props = defineProps({
       return {
         id: '',
         conditionType: 0,
+        queryConditionWidth: 0,
         conditionValueOperatorF: 'eq',
         conditionValueF: '',
         conditionValueOperatorS: 'like',
@@ -82,8 +84,18 @@ onBeforeMount(() => {
 const queryConditionWidth = inject('com-width', Function, true)
 const customStyle = inject<{ background: string }>('$custom-style-filter')
 const isConfirmSearch = inject('is-confirm-search', Function, true)
+
+const getCustomWidth = () => {
+  if (placeholder?.value?.placeholderShow) {
+    if (props.config.queryConditionWidth === undefined) {
+      return queryConditionWidth()
+    }
+    return props.config.queryConditionWidth
+  }
+  return 227
+}
 const selectStyle = computed(() => {
-  return { width: queryConditionWidth() + 'px' }
+  return { width: getCustomWidth() + 'px' }
 })
 const handleValueChange = () => {
   if (!props.isConfig) {
@@ -94,7 +106,7 @@ const handleValueChange = () => {
   }
 }
 const lineWidth = computed(() => {
-  return { width: queryConditionWidth() - 15 + 'px' }
+  return { width: getCustomWidth() - 15 + 'px' }
 })
 
 const handleInnerMouseDown = e => {

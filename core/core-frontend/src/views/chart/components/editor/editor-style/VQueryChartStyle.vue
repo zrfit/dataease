@@ -113,7 +113,8 @@ watch(
 
 const currentPlaceholder = ref()
 const currentSearch = ref({
-  placeholder: ''
+  placeholder: '',
+  queryConditionWidth: 227
 })
 
 const handleCurrentPlaceholder = val => {
@@ -124,6 +125,10 @@ const handleCurrentPlaceholder = val => {
   }
   if (obj.placeholder === undefined) {
     obj.placeholder = ''
+  }
+
+  if (obj.queryConditionWidth === undefined) {
+    obj.queryConditionWidth = 227
   }
   currentSearch.value = obj
   snapshotStore.recordSnapshotCacheToMobile('propValue')
@@ -463,7 +468,7 @@ initParams()
                 @change="handleCurrentPlaceholderCustomChange"
                 v-model="chart.customStyle.component.placeholderShow"
               >
-                提示词
+                {{ t('v_query.custom_condition_style') }}
               </el-checkbox>
             </el-form-item>
             <el-form-item
@@ -521,6 +526,20 @@ initParams()
                 v-model.lazy="currentSearch.placeholder"
               />
             </el-form-item>
+            <el-form-item
+              :label="t('v_query.query_condition_width')"
+              class="form-item"
+              style="padding-left: 20px"
+              :class="'form-item-' + themes"
+            >
+              <el-input-number
+                :effect="themes"
+                controls-position="right"
+                @change="handleCurrentPlaceholderChange"
+                :disabled="!chart.customStyle.component.placeholderShow || !currentPlaceholder"
+                v-model.lazy="currentSearch.queryConditionWidth"
+              />
+            </el-form-item>
             <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
               <el-checkbox
                 :effect="themes"
@@ -542,19 +561,6 @@ initParams()
                 v-model="chart.customStyle.component.bgColor"
                 :disabled="!chart.customStyle.component.bgColorShow"
                 :predefine="predefineColors"
-              />
-            </el-form-item>
-            <el-form-item
-              :effect="themes"
-              class="form-item"
-              label="查询条件宽度"
-              :class="'form-item-' + themes"
-            >
-              <el-input-number
-                v-model="chart.customStyle.component.queryConditionWidth"
-                :min="0"
-                :effect="themes"
-                controls-position="right"
               />
             </el-form-item>
             <el-form-item

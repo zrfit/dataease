@@ -22,6 +22,7 @@ interface SelectConfig {
   defaultValue: any
   defaultValueCheck: boolean
   id: string
+  queryConditionWidth: number
   displayType: string
   timeGranularity: DatePickType
   timeGranularityMultiple: DatePickType
@@ -38,6 +39,7 @@ const props = defineProps({
       return {
         selectValue: '',
         defaultValue: '',
+        queryConditionWidth: 0,
         defaultValueCheck: false,
         displayType: '1',
         timeGranularity: 'date',
@@ -167,13 +169,21 @@ const init = () => {
 }
 
 const queryConditionWidth = inject('com-width', Function, true)
+const getCustomWidth = () => {
+  if (placeholder?.value?.placeholderShow) {
+    if (props.config.queryConditionWidth === undefined) {
+      return queryConditionWidth()
+    }
+    return props.config.queryConditionWidth
+  }
+  return 227
+}
 const isConfirmSearch = inject('is-confirm-search', Function, true)
 const selectStyle = computed(() => {
   return props.isConfig
     ? {}
     : {
-        width:
-          (multiple.value ? queryConditionWidth() * 2 : queryConditionWidth()) + 'px !important'
+        width: (multiple.value ? getCustomWidth() * 2 : getCustomWidth()) + 'px !important'
       }
 })
 
