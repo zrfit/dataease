@@ -203,13 +203,26 @@ const componentBackgroundStyle = computed(() => {
       innerPadding,
       borderRadius
     } = config.value.commonBackground
-    const style = {
+    let style = {
       padding: innerPadding * deepScale.value + 'px',
       borderRadius: borderRadius + 'px'
     }
     let colorRGBA = ''
     if (backgroundColorSelect && backgroundColor) {
       colorRGBA = backgroundColor
+    }
+    if (config.value.innerType === 'VQuery') {
+      if (backgroundColorSelect) {
+        style = {
+          padding: innerPadding * deepScale.value + 'px',
+          borderRadius: borderRadius + 'px'
+        }
+      } else {
+        style = {
+          padding: 12 * deepScale.value + 'px',
+          borderRadius: '0'
+        }
+      }
     }
     if (config.value.innerType === 'VQuery' && backgroundColorSelect) {
       if (backgroundType === 'outerImage' && typeof outerImage === 'string') {
