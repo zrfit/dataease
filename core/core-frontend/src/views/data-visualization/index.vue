@@ -45,6 +45,7 @@ import DeRuler from '@/custom-component/common/DeRuler.vue'
 import { useRequestStoreWithOut } from '@/store/modules/request'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 import ChartStyleBatchSet from '@/views/chart/components/editor/editor-style/ChartStyleBatchSet.vue'
+import CustomTabsSort from '@/custom-component/de-tabs/CustomTabsSort.vue'
 const interactiveStore = interactiveStoreWithOut()
 const embeddedStore = useEmbedded()
 const { wsCache } = useCache()
@@ -62,6 +63,7 @@ const eventCheck = e => {
   }
 }
 const mainCanvasCoreRef = ref(null)
+const customTabsSortRef = ref(null)
 const appStore = useAppStoreWithOut()
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const dvMainStore = dvMainStoreWithOut()
@@ -106,6 +108,12 @@ const state = reactive({
   baseWidth: 10,
   baseHeight: 10
 })
+
+const tabSort = () => {
+  if (curComponent.value) {
+    customTabsSortRef.value.sortInit(curComponent.value)
+  }
+}
 
 // 启用拖动
 const enableDragging = e => {
@@ -449,6 +457,8 @@ const popComponentData = computed(() =>
 )
 
 eventBus.on('handleNew', handleNew)
+
+eventBus.on('tabSort', tabSort)
 </script>
 
 <template>
@@ -604,6 +614,7 @@ eventBus.on('handleNew', handleNew)
     :canvas-view-info-preview="canvasViewInfo"
     :dv-info="dvInfo"
   ></dv-preview>
+  <custom-tabs-sort ref="customTabsSortRef"></custom-tabs-sort>
 </template>
 
 <style lang="less">

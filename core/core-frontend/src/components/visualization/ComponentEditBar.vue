@@ -198,7 +198,7 @@
       </template>
       <fields-list :fields="state.curFields" :element="element" />
     </el-popover>
-    <custom-tabs-sort ref="customTabsSortRef" :element="element"></custom-tabs-sort>
+    <custom-tabs-sort ref="customTabsSortRef"></custom-tabs-sort>
   </div>
 </template>
 
@@ -227,7 +227,6 @@ import { ElMessage, ElTooltip, ElButton } from 'element-plus-secondary'
 import CustomTabsSort from '@/custom-component/de-tabs/CustomTabsSort.vue'
 import { exportPivotExcel } from '@/views/chart/components/js/panel/common/common_table'
 import { XpackComponent } from '@/components/plugin'
-import DatasetParamsComponent from '@/components/visualization/DatasetParamsComponent.vue'
 const dvMainStore = dvMainStoreWithOut()
 const snapshotStore = snapshotStoreWithOut()
 const copyStore = copyStoreWithOut()
@@ -356,7 +355,7 @@ const state = reactive({
 })
 
 const tabSort = () => {
-  customTabsSortRef.value.sortInit()
+  customTabsSortRef.value.sortInit(element.value)
 }
 
 const downloadClick = () => {

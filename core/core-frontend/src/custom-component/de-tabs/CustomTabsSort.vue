@@ -40,35 +40,27 @@ import { ElButton } from 'element-plus-secondary'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import eventBus from '@/utils/eventBus'
 const snapshotStore = snapshotStoreWithOut()
-const props = defineProps({
-  element: {
-    type: Object,
-    required: true
-  }
-})
 
-onMounted(() => {
-  init()
-})
-const { element } = toRefs(props)
+const config = ref(null)
 
 const sortList = ref([])
 const dialogShow = ref(false)
-const sortInit = () => {
-  init()
+const sortInit = component => {
+  init(component)
   dialogShow.value = true
 }
-const init = () => {
-  sortList.value = deepCopy(element.value.propValue)
+const init = component => {
+  config.value = component
+  sortList.value = deepCopy(config.value.propValue)
 }
 
 const closeDialog = () => {
   dialogShow.value = false
 }
 const save = () => {
-  element.value.propValue = deepCopy(sortList.value)
+  config.value.propValue = deepCopy(sortList.value)
   snapshotStore.recordSnapshotCache()
-  eventBus.emit('onTabSortChange-' + element.value.id)
+  eventBus.emit('onTabSortChange-' + config.value.id)
   closeDialog()
 }
 
