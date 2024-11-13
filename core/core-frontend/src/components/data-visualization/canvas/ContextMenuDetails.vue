@@ -188,6 +188,11 @@ const bottomComponent = () => {
   menuOpt('bottomComponent')
 }
 
+const customSort = () => {
+  // do customSort
+  eventBus.emit('tabSort')
+}
+
 const componentCompose = () => {
   composeStore.compose()
   snapshotStore.recordSnapshotCache('componentCompose')
@@ -291,6 +296,7 @@ const editQueryCriteria = () => {
           <li @click="downComponent">下移一层</li>
           <li @click="topComponent">置于顶层</li>
           <li @click="bottomComponent">置于底层</li>
+          <li @click="customSort" v-if="curComponent.component === 'DeTabs'">排序</li>
           <xpack-component
             :chart="curComponent"
             is-screen
