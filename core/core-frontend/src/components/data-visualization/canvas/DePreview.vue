@@ -463,7 +463,7 @@ defineExpose({
         :style="getShapeItemShowStyle(item)"
         :show-position="showPosition"
         :search-count="curSearchCount"
-        :scale="mobileInPc ? 100 : scaleMin"
+        :scale="mobileInPc && isDashboard() ? 100 : scaleMin"
         :is-selector="props.isSelector"
         @userViewEnlargeOpen="userViewEnlargeOpen($event, item)"
         @datasetParamsInit="datasetParamsInit(item)"
