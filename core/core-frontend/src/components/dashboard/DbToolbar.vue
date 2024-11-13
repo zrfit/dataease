@@ -138,7 +138,7 @@ const previewOuter = () => {
     return
   }
   canvasSave(() => {
-    const url = '#/preview?ignoreParams=true&dvId=' + dvInfo.value.id
+    const url = '#/preview?dvId=' + dvInfo.value.id + '&ignoreParams=true'
     const newWindow = window.open(url, '_blank')
     initOpenHandler(newWindow)
   })
