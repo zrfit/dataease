@@ -15,6 +15,7 @@ public class TableField implements Serializable {
     private long size;
     private int scale;
     private boolean checked = false;
+    private boolean primaryKey = false;
     private String fieldType;
     private Integer deType;
     private Integer deExtractType;
