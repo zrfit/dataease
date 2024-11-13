@@ -102,7 +102,9 @@ const state = reactive({
   canvasInitStatus: false,
   sourcePid: null,
   resourceId: null,
-  opt: null
+  opt: null,
+  baseWidth: 10,
+  baseHeight: 10
 })
 
 // 启用拖动
@@ -484,8 +486,13 @@ eventBus.on('handleNew', handleNew)
             <Icon name="dv-ruler"><dvRuler class="svg-icon" /></Icon>
           </el-icon>
         </div>
-        <de-ruler ref="deWRulerRef"></de-ruler>
-        <de-ruler direction="vertical" :size="mainHeight" ref="deHRulerRef"></de-ruler>
+        <de-ruler ref="deWRulerRef" @update:tickSize="val => (state.baseWidth = val)"></de-ruler>
+        <de-ruler
+          direction="vertical"
+          @update:tickSize="val => (state.baseHeight = val)"
+          :size="mainHeight"
+          ref="deHRulerRef"
+        ></de-ruler>
         <el-scrollbar
           ref="canvasOut"
           @scroll="scrollCanvas"
@@ -516,6 +523,8 @@ eventBus.on('handleNew', handleNew)
                 :canvas-style-data="canvasStyleData"
                 :canvas-view-info="canvasViewInfo"
                 :canvas-id="state.canvasId"
+                :base-height="state.baseHeight"
+                :base-width="state.baseWidth"
               >
                 <template v-slot:canvasDragTips>
                   <div class="canvas-drag-tip">按住空格可拖动画布</div>
