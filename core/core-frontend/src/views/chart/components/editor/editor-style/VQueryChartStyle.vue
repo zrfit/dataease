@@ -301,6 +301,44 @@ initParams()
                 自定义组件背景
               </el-checkbox>
             </el-form-item>
+            <el-row style="padding-left: 20px" :gutter="8">
+              <el-col :span="12">
+                <el-form-item
+                  :label="t('visualization.inner_padding')"
+                  class="form-item w100"
+                  :class="'form-item-' + themes"
+                >
+                  <el-input-number
+                    style="width: 100%"
+                    :effect="themes"
+                    controls-position="right"
+                    size="middle"
+                    :min="0"
+                    :max="100"
+                    v-model="commonBackgroundPop.innerPadding"
+                    @change="onBackgroundChange"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item
+                  :label="t('visualization.board_radio')"
+                  class="form-item w100"
+                  :class="'form-item-' + themes"
+                >
+                  <el-input-number
+                    style="width: 100%"
+                    :effect="themes"
+                    controls-position="right"
+                    size="middle"
+                    :min="0"
+                    :max="100"
+                    v-model="commonBackgroundPop.borderRadius"
+                    @change="onBackgroundChange"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-form-item
               style="padding-left: 20px"
               class="form-item margin-bottom-8"
