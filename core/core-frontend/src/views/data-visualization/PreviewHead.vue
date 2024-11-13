@@ -35,7 +35,7 @@ const preview = () => {
     baseUrl = baseUrl.replace('oidcbi/', '')
     baseUrl = baseUrl.replace('casbi/', '')
   }
-  const url = baseUrl + '#/preview?&ignoreParams=true&dvId=' + dvInfo.value.id
+  const url = baseUrl + '#/preview?dvId=' + dvInfo.value.id + '&ignoreParams=true'
   const newWindow = window.open(url, '_blank')
   initOpenHandler(newWindow)
 }
