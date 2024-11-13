@@ -152,10 +152,10 @@ const resourceOptFinish = param => {
   }
 }
 
-let originResourceTree = []
+const originResourceTree = shallowRef([])
 
 const sortTypeChange = sortType => {
-  state.datasetTree = treeSort(originResourceTree, sortType)
+  state.datasetTree = treeSort(originResourceTree.value, sortType)
   state.curSortType = sortType
   wsCache.set('TreeSort-dataset', state.curSortType)
 }
@@ -253,7 +253,8 @@ const { handleDrop, allowDrop, handleDragStart } = treeDraggble(
   state,
   'datasetTree',
   moveDatasetTree,
-  'dataset'
+  'dataset',
+  originResourceTree
 )
 
 const generateColumns = (arr: Field[]) =>
@@ -293,12 +294,12 @@ const getData = () => {
       if (nodeData.length && nodeData[0]['id'] === '0' && nodeData[0]['name'] === 'root') {
         rootManage.value = nodeData[0]['weight'] >= 7
         state.datasetTree = nodeData[0]['children'] || []
-        originResourceTree = cloneDeep(unref(state.datasetTree))
+        originResourceTree.value = cloneDeep(unref(state.datasetTree))
         sortTypeChange(curSortType)
         return
       }
       state.datasetTree = nodeData
-      originResourceTree = cloneDeep(unref(state.datasetTree))
+      originResourceTree.value = cloneDeep(unref(state.datasetTree))
       sortTypeChange(curSortType)
     })
     .finally(() => {
@@ -1039,7 +1040,7 @@ const getMenuList = (val: boolean) => {
                     v-for="(column, index) in columns"
                     :prop="column.dataKey"
                     :label="column.title"
-                    :width="columns.length - 1 === index ? 150 : 'auto'"
+                    :min-width="150"
                     :fixed="columns.length - 1 === index ? 'right' : false"
                   >
                     <template #header>

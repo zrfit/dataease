@@ -26,6 +26,7 @@ interface SelectConfig {
   displayType: string
   showEmpty: boolean
   id: string
+  queryConditionWidth: number
   placeholder: string
   resultMode: number
   displayId: string
@@ -55,6 +56,7 @@ const props = defineProps({
     default: () => {
       return {
         selectValue: '',
+        queryConditionWidth: 0,
         resultMode: 0,
         defaultValue: '',
         displayType: '',
@@ -561,8 +563,18 @@ const init = () => {
   debounceOptions(optionValueSource)
 }
 
+const getCustomWidth = () => {
+  if (placeholder?.value?.placeholderShow) {
+    if (props.config.queryConditionWidth === undefined) {
+      return queryConditionWidth()
+    }
+    return props.config.queryConditionWidth
+  }
+  return 227
+}
+
 const selectStyle = computed(() => {
-  return props.isConfig ? {} : { width: queryConditionWidth() + 'px' }
+  return props.isConfig ? {} : { width: getCustomWidth() + 'px' }
 })
 
 const mult = ref()
@@ -640,6 +652,9 @@ defineExpose({
 <style lang="less">
 .filter-select-popper_class {
   --ed-fill-color-light: #f5f7fa47;
+  .ed-vl__window.ed-select-dropdown__list {
+    min-width: 200px;
+  }
   .ed-select-dropdown__option-item {
     .ed-checkbox__label:hover {
       color: #1f2329;

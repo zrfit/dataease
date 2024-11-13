@@ -2643,7 +2643,9 @@ export default {
     time_selection: '时间选择',
     select_a_field: '层级字段不能为空,请选择字段!',
     add_level: '添加层级',
-    tree_query_field: '下拉树查询字段'
+    tree_query_field: '下拉树查询字段',
+    query_condition_width: '查询条件宽度',
+    custom_condition_style: '自定义条件样式'
   },
   panel: {
     column_name: '字段名称'

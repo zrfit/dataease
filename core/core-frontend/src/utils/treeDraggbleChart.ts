@@ -114,14 +114,18 @@ const treeDraggbleChart = (state, key, type) => {
       dfsTreeNodeBack(state[key], '0', params)
     }
 
-    moveResource(params).catch(() => {
-      if (dragNodeParentId === '0') {
-        state[key].splice(dragNodeIndex, 0, draggingNode.data)
-        return
-      }
+    moveResource(params)
+      .then(() => {
+        state.originResourceTree = cloneDeep(state[key])
+      })
+      .catch(() => {
+        if (dragNodeParentId === '0') {
+          state[key].splice(dragNodeIndex, 0, draggingNode.data)
+          return
+        }
 
-      dfsTreeNodeReset(state[key], draggingNode.data)
-    })
+        dfsTreeNodeReset(state[key], draggingNode.data)
+      })
   }
 
   return {
