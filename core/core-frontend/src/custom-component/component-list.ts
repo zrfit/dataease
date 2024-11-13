@@ -546,7 +546,8 @@ const list = [
       activeFontSize: 18,
       headHorizontalPosition: 'left',
       headFontColor: '#000000',
-      headFontActiveColor: '#000000'
+      headFontActiveColor: '#000000',
+      titleHide: false
     }
   },
   {
