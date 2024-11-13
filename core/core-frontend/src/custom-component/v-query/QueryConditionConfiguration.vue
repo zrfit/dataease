@@ -266,11 +266,14 @@ const showTypeError = computed(() => {
       ele => checkId === ele.id
     )
     if (!field) return false
-    if (displayTypeField === null) {
+    if (displayTypeField === null && Array.isArray(field.type)) {
       displayTypeField = field
       return false
     }
     if (displayTypeField?.deType === field?.deType && displayTypeField?.deType === 1) {
+      if (!Array.isArray(field.type)) {
+        return false
+      }
       if (!displayTypeField.type?.length && !field.type?.length) {
         return false
       }
@@ -1243,11 +1246,14 @@ const validate = () => {
           itx => checkId === itx.id
         )
         if (!field) return false
-        if (displayTypeField === null) {
+        if (displayTypeField === null && Array.isArray(field.type)) {
           displayTypeField = field
           return false
         }
         if (displayTypeField?.deType === field?.deType && displayTypeField?.deType === 1) {
+          if (!Array.isArray(field.type)) {
+            return false
+          }
           if (!displayTypeField.type?.length && !field.type?.length) {
             return false
           }
