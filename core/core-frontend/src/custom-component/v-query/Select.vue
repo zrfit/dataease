@@ -640,6 +640,9 @@ defineExpose({
 <style lang="less">
 .filter-select-popper_class {
   --ed-fill-color-light: #f5f7fa47;
+  .ed-vl__window.ed-select-dropdown__list {
+    min-width: 200px;
+  }
   .ed-select-dropdown__option-item {
     .ed-checkbox__label:hover {
       color: #1f2329;
