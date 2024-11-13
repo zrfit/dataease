@@ -489,7 +489,6 @@ export function getStyle(chart: Chart, dataConfig: S2DataConfig): Style {
             : baseWidth * 10
           const resultWidth = parseInt(tmpWidth.toFixed(0))
           if (fullFilled) {
-            widthArr.push(resultWidth)
             if (widthArr.length === dataConfig.meta.length - 1) {
               const curTotalWidth = widthArr.reduce((p, n) => {
                 return p + n
@@ -499,6 +498,7 @@ export function getStyle(chart: Chart, dataConfig: S2DataConfig): Style {
                 return restWidth
               }
             }
+            widthArr.push(resultWidth)
           }
           return resultWidth
         }
