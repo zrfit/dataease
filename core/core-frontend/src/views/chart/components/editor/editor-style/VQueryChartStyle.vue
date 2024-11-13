@@ -315,6 +315,7 @@ initParams()
                 >
                   <el-input-number
                     style="width: 100%"
+                    :disabled="!commonBackgroundPop.backgroundColorSelect"
                     :effect="themes"
                     controls-position="right"
                     size="middle"
@@ -334,6 +335,7 @@ initParams()
                   <el-input-number
                     style="width: 100%"
                     :effect="themes"
+                    :disabled="!commonBackgroundPop.backgroundColorSelect"
                     controls-position="right"
                     size="middle"
                     :min="0"

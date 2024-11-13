@@ -886,13 +886,27 @@ const componentBackgroundStyle = computed(() => {
       borderRadius
     } = element.value.commonBackground
     const innerPaddingTarget = ['Group'].includes(element.value.component) ? 0 : innerPadding
-    const style = {
+    let style = {
       padding: innerPaddingTarget * scale.value + 'px',
       borderRadius: borderRadius + 'px'
     }
     let colorRGBA = ''
     if (backgroundColorSelect && backgroundColor) {
       colorRGBA = backgroundColor
+    }
+
+    if (element.value.innerType === 'VQuery') {
+      if (backgroundColorSelect) {
+        style = {
+          padding: innerPadding * scale.value + 'px',
+          borderRadius: borderRadius + 'px'
+        }
+      } else {
+        style = {
+          padding: 12 * scale.value + 'px',
+          borderRadius: '0'
+        }
+      }
     }
 
     if (element.value.innerType === 'VQuery' && backgroundColorSelect) {
