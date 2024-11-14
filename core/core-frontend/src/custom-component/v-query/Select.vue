@@ -582,6 +582,8 @@ const single = ref()
 
 const getOptionFromCascade = () => {
   if (config.value.optionValueSource !== 1 || ![0, 2, 5].includes(+config.value.displayType)) return
+  config.value.selectValue = config.value.multiple ? [] : undefined
+  selectValue.value = config.value.multiple ? [] : undefined
   debounceOptions(1)
 }
 
