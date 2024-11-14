@@ -772,9 +772,13 @@ const handleMouseDownOnPoint = (point, e) => {
     dashboardActive.value && emit('onResizing', moveEvent)
     element.value['resizing'] = true
     //如果当前组件是Group分组或者Tab 则要进行内部组件深度计算
-    if (['DeTabs', 'Group'].includes(element.value.component)) {
+    if (
+      ['Group'].includes(element.value.component) ||
+      (['DeTabs'].includes(element.value.component) && !element.value.resizeInnerKeep)
+    ) {
       groupSizeStyleAdaptor(element.value)
     }
+
     //如果当前画布是Group内部画布 则对应组件定位在resize时要还原到groupStyle中
     if (isGroupCanvas(canvasId.value) || isTabCanvas(canvasId.value)) {
       groupStyleRevert(element.value, {

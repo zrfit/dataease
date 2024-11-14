@@ -152,9 +152,8 @@ export function historyItemAdaptor(
     componentItem.style['titleHide'] = componentItem.style['titleHide'] || false
   }
 
-  if (componentItem.component === 'Group') {
-    componentItem.expand = componentItem.expand || false
-  }
+  componentItem['expand'] = componentItem['expand'] || false
+  componentItem['resizeInnerKeep'] = componentItem['resizeInnerKeep'] || false
 
   if (componentItem.component === 'Picture') {
     componentItem.style['adaptation'] = componentItem.style['adaptation'] || 'adaptation'

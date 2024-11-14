@@ -17,6 +17,20 @@
         </el-form-item>
       </el-col>
     </el-row>
+    <el-form-item
+      v-if="curComponent && curComponent.component === 'DeTabs'"
+      class="form-item"
+      :class="'form-item-' + themes"
+    >
+      <el-checkbox
+        size="small"
+        :effect="themes"
+        v-model="curComponent['resizeInnerKeep']"
+        @change="snapshotChange"
+      >
+        调整大小保持内部组件尺寸
+      </el-checkbox>
+    </el-form-item>
     <el-form-item class="form-item" :class="'form-item-' + themes">
       <el-checkbox
         v-if="curComponent"
@@ -183,6 +197,10 @@ const maintainRadioChange = () => {
 }
 const multiDimensionalChange = () => {
   // do change
+  snapshotStore.recordSnapshotCache()
+}
+
+const snapshotChange = () => {
   snapshotStore.recordSnapshotCache()
 }
 
