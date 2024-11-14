@@ -78,6 +78,7 @@ import ComposeShow from '@/components/data-visualization/canvas/ComposeShow.vue'
 import { composeStoreWithOut } from '@/store/modules/data-visualization/compose'
 import RealTimeGroup from '@/components/data-visualization/RealTimeGroup.vue'
 import { contextmenuStoreWithOut } from '@/store/modules/data-visualization/contextmenu'
+import RealTimeTab from '@/components/data-visualization/RealTimeTab.vue'
 const dropdownMore = ref(null)
 const lockStore = lockStoreWithOut()
 
@@ -504,7 +505,7 @@ const canvasChange = () => {
               >
                 <div style="width: 22px; padding-left: 3px">
                   <el-icon
-                    v-show="getComponent(index)?.component === 'Group'"
+                    v-show="['Group', 'DeTabs'].includes(getComponent(index)?.component)"
                     class="component-expand"
                     @click="expandClick(getComponent(index))"
                   >
@@ -611,6 +612,14 @@ const canvasChange = () => {
               </div>
               <div v-if="getComponent(index)?.component === 'Group' && getComponent(index)?.expand">
                 <real-time-group :component-data="getComponent(index).propValue"></real-time-group>
+              </div>
+              <div
+                v-if="getComponent(index)?.component === 'DeTabs' && getComponent(index)?.expand"
+              >
+                <real-time-tab
+                  :tab-element="getComponent(index)"
+                  :component-data="getComponent(index).propValue"
+                ></real-time-tab>
               </div>
             </div>
           </template>

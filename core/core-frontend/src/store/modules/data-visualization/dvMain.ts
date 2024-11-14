@@ -59,6 +59,7 @@ export const dvMainStore = defineStore('dataVisualization', {
       isInEditor: false, // 是否在编辑器中，用于判断复制、粘贴组件时是否生效，如果在编辑器外，则无视这些操作
       componentData: [], // 画布组件数据
       curComponent: null,
+      curTabName: null, // 当前选中的tabName 大屏图层区域使用
       curComponentIndex: null,
       curCanvasScaleMap: {},
       // 预览仪表板缩放信息
@@ -264,7 +265,11 @@ export const dvMainStore = defineStore('dataVisualization', {
     setCurComponentMobileConfig(component) {
       this.curComponent = component
     },
+    setCurTabName(val) {
+      this.curTabName = val
+    },
     setCurComponent({ component, index }) {
+      this.setCurTabName(null)
       if (!component && this.curComponent) {
         this.curComponent['editing'] = false
         this.curComponent['resizing'] = false

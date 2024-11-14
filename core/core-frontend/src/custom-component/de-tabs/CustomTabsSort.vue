@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import drag from '@/assets/svg/drag.svg'
 import draggable from 'vuedraggable'
-import { onMounted, ref, toRefs } from 'vue'
+import { ref } from 'vue'
 import { deepCopy } from '@/utils/utils'
 import { ElButton } from 'element-plus-secondary'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
