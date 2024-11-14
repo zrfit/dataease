@@ -28,6 +28,7 @@ const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
 const route = useRoute()
 import { useCache } from '@/hooks/web/useCache'
+import { useI18n } from '@/hooks/web/useI18n'
 const { wsCache } = useCache('localStorage')
 const aiBaseUrl = ref('https://maxkb.fit2cloud.com/ui/chat/2ddd8b594ce09dbb?mode=embed')
 const handleIconClick = () => {
@@ -38,7 +39,7 @@ const handleIconClick = () => {
 const handleAiClick = () => {
   useEmitt().emitter.emit('aiComponentChange')
 }
-
+const { t } = useI18n()
 const handleCopilotClick = () => {
   push('/copilot/index')
 }
@@ -158,7 +159,7 @@ onMounted(() => {
       >
         <Icon name="dv-ai"><dvAi @click="handleAiClick" class="svg-icon" /></Icon>
       </el-icon>
-      <el-tooltip effect="dark" content="数据导出中心" placement="bottom">
+      <el-tooltip effect="dark" :content="t('data_export.export_center')" placement="bottom">
         <el-icon
           class="preview-download_icon"
           :class="navigateBg === 'light' && 'is-light-setting'"
