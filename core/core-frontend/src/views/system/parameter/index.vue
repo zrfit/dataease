@@ -68,4 +68,3 @@ const addTable = tab => {
   border-radius: 4px;
 }
 </style>
-<style lang="less" scoped></style>
