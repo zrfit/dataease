@@ -3770,5 +3770,35 @@ export default {
     switch_chart: '切换图表类型',
     switch_table: '切换至明细表',
     download: '下载'
+  },
+  userCenter: {
+    enable: '启用',
+    invalid: '失效',
+    binding_settings: '绑定设置',
+    wechat: '企业微信',
+    wechat_desc: '绑定后，您可通过企业微信扫码进行登录',
+    dingtalk: '钉钉',
+    dingtalk_desc: '绑定后，您可通过钉钉扫码进行登录',
+    lark: '飞书',
+    lark_desc: '绑定后，您可通过飞书扫码进行登录',
+    international_lark: '国际飞书',
+    international_lark_desc: '绑定后，您可通过国际飞书扫码进行登录',
+    bind: '绑定',
+    unbind_success: '解绑成功',
+    confirm_unbind_dingtalk: '确定解除钉钉绑定吗？',
+    pls_use: '请使用',
+    bind_use_qr: '扫描二维码绑定',
+    pls_use_dingtalk: '请使用钉钉扫描二维码登录',
+    api_limit_5: '最多支持创建5个ApiKey',
+    tips: '提示',
+    create: '创建',
+    click_to_hind: '点击隐藏',
+    click_to_show: '点击显示',
+    view_api: '查看API',
+    enable_success: '启用成功',
+    disabled_success: '禁用成功',
+    delete_api_key: '确定删除该 API key 吗? ',
+    api_key_desc:
+      'API Key 是您访问 DataEase API 的密钥，具有账户的完全权限，请您务必妥善保管！不要以任何方式公开 API Key 到外部渠道，避免被他人利用造成安全威胁。'
   }
 }
