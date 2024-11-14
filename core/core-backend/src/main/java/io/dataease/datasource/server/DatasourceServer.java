@@ -288,7 +288,7 @@ public class DatasourceServer implements DatasourceApi {
             if (StringUtils.equalsIgnoreCase(coreDatasourceTask.getSyncRate(), RIGHTNOW.toString())) {
                 coreDatasourceTask.setCron(null);
             } else {
-                if (StringUtils.equalsIgnoreCase(coreDatasourceTask.getEndLimit(), "1") && coreDatasourceTask.getStartTime() > coreDatasourceTask.getEndTime()) {
+                if (coreDatasourceTask.getEndTime() != null && coreDatasourceTask.getEndTime() > 0 && coreDatasourceTask.getStartTime() > coreDatasourceTask.getEndTime()) {
                     DEException.throwException("结束时间不能小于开始时间！");
                 }
             }
@@ -377,7 +377,7 @@ public class DatasourceServer implements DatasourceApi {
                 coreDatasourceTask.setStartTime(System.currentTimeMillis() - 20 * 1000);
                 coreDatasourceTask.setCron(null);
             } else {
-                if (StringUtils.equalsIgnoreCase(coreDatasourceTask.getEndLimit(), "1") && coreDatasourceTask.getStartTime() > coreDatasourceTask.getEndTime()) {
+                if (coreDatasourceTask.getEndTime() != null && coreDatasourceTask.getEndTime() > 0 && coreDatasourceTask.getStartTime() > coreDatasourceTask.getEndTime()) {
                     DEException.throwException("结束时间不能小于开始时间！");
                 }
             }
@@ -1149,10 +1149,10 @@ public class DatasourceServer implements DatasourceApi {
                     params.add(apiDefinition);
                 }
             }
-            if(CollectionUtils.isNotEmpty(params)){
+            if (CollectionUtils.isNotEmpty(params)) {
                 datasourceDTO.setParamsStr(RsaUtils.symmetricEncrypt(JsonUtil.toJSONString(params).toString()));
             }
-            if(CollectionUtils.isNotEmpty(apiDefinitionListWithStatus)){
+            if (CollectionUtils.isNotEmpty(apiDefinitionListWithStatus)) {
                 datasourceDTO.setApiConfigurationStr(RsaUtils.symmetricEncrypt(JsonUtil.toJSONString(apiDefinitionListWithStatus).toString()));
             }
             if (success == apiDefinitionList.size()) {

@@ -38,25 +38,23 @@ public class DataSourceInitStartListener implements ApplicationListener<Applicat
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         try {
             engineManage.initSimpleEngine();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         try {
             calciteProvider.initConnectionPool();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         List<CoreDatasourceTask> list = datasourceTaskServer.listAll();
         for (CoreDatasourceTask task : list) {
             try {
                 if (!StringUtils.equalsIgnoreCase(task.getSyncRate(), DatasourceTaskServer.ScheduleType.RIGHTNOW.toString())) {
-                    if (StringUtils.equalsIgnoreCase(task.getEndLimit(), "1")) {
-                        if (task.getEndTime() != null && task.getEndTime() > 0) {
-                            if (task.getEndTime() > System.currentTimeMillis()) {
-                                datasourceSyncManage.addSchedule(task);
-                            }
-                        } else {
+                    if (task.getEndTime() != null && task.getEndTime() > 0) {
+                        if (task.getEndTime() > System.currentTimeMillis()) {
                             datasourceSyncManage.addSchedule(task);
+                        } else {
+                            datasourceSyncManage.deleteSchedule(task);
                         }
                     } else {
                         datasourceSyncManage.addSchedule(task);
@@ -70,12 +68,11 @@ public class DataSourceInitStartListener implements ApplicationListener<Applicat
         try {
             List<CoreSysSetting> coreSysSettings = sysParameterManage.groupList("basic.");
             datasourceServer.addJob(coreSysSettings);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-
 
 
 }
