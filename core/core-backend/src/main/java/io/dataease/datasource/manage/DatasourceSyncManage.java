@@ -324,18 +324,14 @@ public class DatasourceSyncManage {
                     scheduleManager.getDefaultJobDataMap(datasourceTask.getDsId().toString(), datasourceTask.getCron(), datasourceTask.getId().toString(), datasourceTask.getUpdateType()));
         } else {
             Date endTime;
-            if (StringUtils.equalsIgnoreCase(datasourceTask.getEndLimit().toString(), "1")) {
-                if (datasourceTask.getEndTime() == null || datasourceTask.getEndTime() == 0) {
-                    endTime = null;
-                } else {
-                    endTime = new Date(datasourceTask.getEndTime());
-                    if (endTime.before(new Date())) {
-                        deleteSchedule(datasourceTask);
-                        return;
-                    }
-                }
-            } else {
+            if (datasourceTask.getEndTime() == null || datasourceTask.getEndTime() == 0) {
                 endTime = null;
+            } else {
+                endTime = new Date(datasourceTask.getEndTime());
+                if (endTime.before(new Date())) {
+                    deleteSchedule(datasourceTask);
+                    return;
+                }
             }
 
             scheduleManager.addOrUpdateCronJob(new JobKey(datasourceTask.getId().toString(), datasourceTask.getDsId().toString()),
