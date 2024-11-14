@@ -2732,7 +2732,7 @@ const getDsIconName = data => {
 
 .cascader-panel {
   .ed-scrollbar__wrap {
-    height: 210px;
+    height: 210px !important;
   }
   .ed-cascader-node__label {
     display: flex;
