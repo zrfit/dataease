@@ -2730,19 +2730,6 @@ const getDsIconName = data => {
   line-height: 14px;
 }
 
-.cascader-panel {
-  .ed-scrollbar__wrap {
-    height: 210px !important;
-  }
-  .ed-cascader-node__label {
-    display: flex;
-    align-items: center;
-    .ed-icon {
-      margin-right: 5px;
-    }
-  }
-}
-
 .batch-operate {
   width: 100%;
   height: 64px;
@@ -2798,6 +2785,18 @@ const getDsIconName = data => {
 </style>
 
 <style lang="less">
+.cascader-panel {
+  .ed-scrollbar__wrap {
+    height: 210px !important;
+  }
+  .ed-cascader-node__label {
+    display: flex;
+    align-items: center;
+    .ed-icon {
+      margin-right: 5px;
+    }
+  }
+}
 .select-type {
   .ed-input__wrapper {
     padding-left: 32px;
@@ -2827,11 +2826,6 @@ const getDsIconName = data => {
   .ed-dialog__footer {
     padding-top: 24px;
     border: 1px solid rgba(31, 35, 41, 0.15);
-  }
-}
-.cascader-panel {
-  .ed-scrollbar__wrap {
-    height: 210px;
   }
 }
 </style>
