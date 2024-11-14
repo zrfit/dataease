@@ -2946,13 +2946,13 @@ defineExpose({
                       <span> {{ t('data_fill.form.option_value') }} </span>
                       <div :key="index" v-for="(_, index) in valueSource" class="select-item">
                         <el-input
-                          maxlength="20"
+                          maxlength="64"
                           v-if="curComponent.displayType === '2'"
                           @blur="weightlessness"
                           v-model.number="valueSource[index]"
                         ></el-input>
                         <el-input
-                          maxlength="20"
+                          maxlength="64"
                           v-else
                           @blur="weightlessness"
                           v-model="valueSource[index]"
