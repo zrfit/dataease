@@ -2556,6 +2556,8 @@ export default {
     variable_mgm: '参数设置'
   },
   v_query: {
+    msg_center: '消息中心',
+    to_be_filled: '待填报',
     the_minimum_value: '数值区间最大值必须大于最小值',
     before_querying: '查询条件是必填项，请设置选项值后，再进行查询！',
     here_or_click: '将右侧的字段拖拽到这里 或 点击',
@@ -3463,6 +3465,7 @@ export default {
   },
   data_fill: {
     data_fill: '数据填报',
+    fill_in_the_task: '填报任务',
     data_fill_name: '数据填报名称',
     p_data_fill_name: '请输入数据填报名称',
     save_df_success: '保存数据填报成功',
