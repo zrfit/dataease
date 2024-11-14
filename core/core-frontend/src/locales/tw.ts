@@ -3672,5 +3672,35 @@ export default {
     switch_chart: '切換圖表類型',
     switch_table: '切換至明細表',
     download: '下載'
+  },
+  userCenter: {
+    enable: '啟用',
+    invalid: '無效',
+    binding_settings: '綁定設置',
+    wechat: '企業微信',
+    wechat_desc: '綁定後，您可通過企業微信掃碼進行登錄',
+    dingtalk: '釘釘',
+    dingtalk_desc: '綁定後的描述錯誤，應為“您可通過釘釘掃碼進行登錄”',
+    lark: '飛書',
+    lark_desc: '綁定後的描述錯誤，應調整為符合飛書的描述',
+    international_lark: '國際飛書',
+    international_lark_desc: '綁定後的描述錯誤，應調整為“您可通過國際飛書掃碼進行登錄”',
+    bind: '綁定',
+    unbind_success: '解绑成功',
+    confirm_unbind_dingtalk: '確定解除釘釘綁定嗎？',
+    pls_use: '請使用',
+    bind_use_qr: '掃描二維碼綁定',
+    pls_use_dingtalk: '請使用釘釘掃描二維碼登錄',
+    api_limit_5: '最多支援創建5個ApiKey',
+    tips: '提示',
+    create: '創建',
+    click_to_hind: '點擊隱藏',
+    click_to_show: '點擊顯示',
+    view_api: '查看API',
+    enable_success: '啟用成功',
+    disabled_success: '禁用成功',
+    delete_api_key: '確定刪除該 API key 嗎? ',
+    api_key_desc:
+      'API Key 是您訪問 DataEase API 的密鑰，具有帳戶的完全權限，請您務必妥善保管！不要以任何方式公開 API Key 到外部渠道，避免被他人利用造成安全威脅。'
   }
 }

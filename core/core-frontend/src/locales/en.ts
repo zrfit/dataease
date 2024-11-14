@@ -1412,5 +1412,36 @@ export default {
     done: 'Done',
     connection_lost: 'Connection Lost',
     task_name: 'Task Name'
+  },
+  userCenter: {
+    enable: 'enable',
+    invalid: 'invalid',
+    binding_settings: 'binding settings',
+    wechat: 'WeChat Work',
+    wechat_desc: 'After binding, you can log in by scanning the QR code with WeChat Work.',
+    dingtalk: 'DingTalk',
+    dingtalk_desc: 'After binding, you can log in by scanning the QR code with DingTalk.',
+    lark: 'Lark',
+    lark_desc: 'After binding, you can log in by scanning the QR code with Lark.',
+    international_lark: 'International Lark',
+    international_lark_desc:
+      'After binding, you can log in by scanning the QR code with International Lark.',
+    bind: 'bind',
+    unbind_success: 'unbind successfully',
+    confirm_unbind_dingtalk: 'Are you sure you want to unbind your DingTalk account?',
+    pls_use: 'please use',
+    bind_use_qr: 'scan the QR code to bind',
+    pls_use_dingtalk: 'Please use DingTalk to scan the QR code and log in.',
+    api_limit_5: 'You can create up to 5 API keys.',
+    tips: 'tips',
+    create: 'create',
+    click_to_hind: 'click to hide',
+    click_to_show: 'click to show',
+    view_api: 'view API',
+    enable_success: 'enabled successfully',
+    disabled_success: 'disabled successfully',
+    delete_api_key: 'Are you sure you want to delete this API key?',
+    api_key_desc:
+      'The API Key is your access key to the DataEase API, which has full account permissions. Please keep it safe and do not disclose it to external channels to avoid security threats.'
   }
 }
