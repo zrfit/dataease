@@ -17,6 +17,7 @@ import sysParameter from '@/assets/svg/sys-parameter.svg'
 import variable from '@/assets/svg/variable.svg'
 import watermark from '@/assets/svg/watermark.svg'
 import icon_font from '@/assets/svg/icon_font.svg'
+import icon_msg_fill from '@/assets/svg/icon_msg_fill.svg'
 
 const iconMap = {
   appearance: appearance,
@@ -28,6 +29,7 @@ const iconMap = {
   variable: variable,
   watermark: watermark,
   icon_font: icon_font,
+  icon_msg_fill,
   auth: auth,
   association: association,
   threshold: threshold,
