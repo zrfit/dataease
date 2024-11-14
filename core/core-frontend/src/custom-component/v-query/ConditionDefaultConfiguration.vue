@@ -3,6 +3,7 @@ import icon_admin_outlined from '@/assets/svg/icon_admin_outlined.svg'
 import { ElSelect } from 'element-plus-secondary'
 import { computed, ref, toRefs } from 'vue'
 import RangeFilterTime from '@/custom-component/v-query/RangeFilterTime.vue'
+import FilterTime from '@/custom-component/v-query/FilterTime.vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import DynamicTime from '@/custom-component/v-query/DynamicTime.vue'
 import DynamicTimeRange from '@/custom-component/v-query/DynamicTimeRange.vue'
@@ -408,7 +409,7 @@ defineExpose({
       </el-radio-group>
     </div>
   </div>
-  <div v-if="curComponent.displayType === '7' && showFlag" class="list-item">
+  <div v-if="['7', '1'].includes(curComponent.displayType) && showFlag" class="list-item">
     <div class="label">
       <el-checkbox v-model="curComponent.setTimeRange" :label="t('v_query.time_filter_range')" />
     </div>
@@ -435,8 +436,14 @@ defineExpose({
           </el-button>
         </template>
         <RangeFilterTime
+          v-if="curComponent.displayType === '7'"
           :timeRange="curComponent.timeRange"
           :timeGranularityMultiple="curComponent.timeGranularityMultiple"
+        />
+        <FilterTime
+          v-else
+          :timeRange="curComponent.timeRange"
+          :timeGranularity="curComponent.timeGranularity"
         />
       </el-popover>
       <span

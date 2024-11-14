@@ -240,7 +240,7 @@ interface TimeRange {
   timeNumRange: number
   relativeToCurrentTypeRange: ManipulateType
   aroundRange: string
-  timeGranularityMultiple: string
+  timeGranularityMultiple?: string
 }
 export {
   TimeRange,
