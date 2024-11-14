@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import logo from '@/assets/svg/logo.svg'
 import copilot from '@/assets/svg/copilot.svg'
+import msgNotice from '@/assets/svg/msg-notice.svg'
 import dvAi from '@/assets/svg/dv-ai.svg'
 import dvPreviewDownload from '@/assets/svg/dv-preview-download.svg'
 import { computed, onMounted, ref } from 'vue'
@@ -109,6 +110,10 @@ const aiTipsConfirm = () => {
   showOverlay.value = false
 }
 
+const msgNoticePush = () => {
+  push('/msg/msg-fill')
+}
+
 const copilotConfirm = () => {
   wsCache.set('DE-COPILOT-TIPS-CHECK', 'CHECKED')
   showOverlayCopilot.value = false
@@ -177,6 +182,18 @@ onMounted(() => {
       />
       <ToolboxCfg v-if="showToolbox" />
       <TopDoc v-if="appearanceStore.getShowDoc" />
+      <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
+        <el-icon
+          class="preview-download_icon"
+          style="margin-right: 10px"
+          :class="navigateBg === 'light' && 'is-light-setting'"
+        >
+          <Icon name="dv-preview-download"
+            ><msgNotice @click="msgNoticePush" class="svg-icon"
+          /></Icon>
+        </el-icon>
+      </el-tooltip>
+
       <SystemCfg v-if="showSystem" />
       <AccountOperator />
       <ai-component
