@@ -443,6 +443,8 @@ const formatDate = computed(() => {
     v-else
     :key="config.timeGranularity + 1"
     v-model="selectValue"
+    @visible-change="visibleChange"
+    :disabled-date="disabledDate"
     :type="config.timeGranularity"
     @change="handleValueChange"
     :style="selectStyle"
