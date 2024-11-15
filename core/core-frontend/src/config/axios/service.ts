@@ -118,9 +118,6 @@ service.interceptors.request.use(
       const val = mapping[key] || key
       ;(config.headers as AxiosRequestHeaders)['Accept-Language'] = val
     }
-    ;(config.headers as AxiosRequestHeaders)['out_auth_platform'] = wsCache.get('out_auth_platform')
-      ? wsCache.get('out_auth_platform')
-      : 'default'
 
     if (config.method === 'get' && config.params) {
       let url = config.url as string
