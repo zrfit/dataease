@@ -364,7 +364,7 @@ const componentMoveIn = component => {
           dvMainStore.deleteComponent(curIndex)
           dvMainStore.setCurComponent({ component: null, index: null })
           component.canvasId = element.value.id + '--' + tabItem.name
-          dataVTabComponentAdd(component, element.value.style)
+          dataVTabComponentAdd(component, element.value)
           tabItem.componentData.push(component)
         }
       }

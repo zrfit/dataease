@@ -278,6 +278,16 @@ function groupItemStyleAdaptor(component, parentStyle) {
   component.style.height = parentStyle.height * styleScale.height
 }
 
+export function groupStyleRevertBatch(groupComponent, parentStyle) {
+  if (groupComponent.component === 'DeTabs') {
+    groupComponent.propValue.forEach(tabItem => {
+      tabItem.componentData.forEach(tabComponent => {
+        groupStyleRevert(tabComponent, parentStyle)
+      })
+    })
+  }
+}
+
 export function groupStyleRevert(innerComponent, parentStyle) {
   const innerStyle = { ...innerComponent.style }
   innerComponent.groupStyle.left = innerStyle.left / parentStyle.width
@@ -297,11 +307,11 @@ export function groupSizeStyleAdaptor(groupComponent) {
   }
 }
 
-export function dataVTabComponentAdd(innerComponent, parentStyle) {
+export function dataVTabComponentAdd(innerComponent, parentComponent) {
   //do dataVTabComponentAdd
   innerComponent.style.top = 0
   innerComponent.style.left = 0
-  const parentStyleAdaptor = { ...parentStyle }
+  const parentStyleAdaptor = { ...parentComponent.style }
   // 去掉tab头部高度
   parentStyleAdaptor.height = parentStyleAdaptor.height - 48
   groupStyleRevert(innerComponent, parentStyleAdaptor)
