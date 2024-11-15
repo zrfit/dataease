@@ -17,6 +17,7 @@ import io.dataease.exception.DEException;
 import io.dataease.exportCenter.manage.ExportCenterManage;
 import io.dataease.extensions.datasource.dto.DatasetTableFieldDTO;
 import io.dataease.extensions.view.dto.ChartViewDTO;
+import io.dataease.extensions.view.dto.ChartViewFieldBaseDTO;
 import io.dataease.extensions.view.dto.ChartViewFieldDTO;
 import io.dataease.extensions.view.dto.FormatterCfgDTO;
 import io.dataease.license.manage.F2CLicLimitedManage;
@@ -129,12 +130,14 @@ public class ChartDataServer implements ChartDataApi {
                 request.setExcelTypes(dsTypes);
             }
             if (CollectionUtils.isNotEmpty(tableRow)) {
+                FormatterCfgDTO formatterCfgDTO = new FormatterCfgDTO();
                 for (Object[] objects : tableRow) {
                     for (int i = 0; i < viewDTO.getXAxis().size(); i++) {
                         if (viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_INT) || viewDTO.getXAxis().get(i).getDeType().equals(DeTypeConstants.DE_FLOAT)) {
                             try {
-                                objects[i] = valueFormatter(BigDecimal.valueOf(Double.valueOf(objects[i].toString())), viewDTO.getXAxis().get(i).getFormatterCfg());
+                                objects[i] = valueFormatter(new BigDecimal(String.valueOf(objects[i])), viewDTO.getXAxis().get(i).getFormatterCfg() == null ? formatterCfgDTO : viewDTO.getXAxis().get(i).getFormatterCfg());
                             } catch (Exception ignore) {
+                                ignore.printStackTrace();
                             }
                         }
                     }
@@ -149,7 +152,7 @@ public class ChartDataServer implements ChartDataApi {
     }
 
     public static String valueFormatter(BigDecimal value, FormatterCfgDTO formatter) {
-        if (value == null || formatter == null) {
+        if (value == null) {
             return null;
         }
         String result;
