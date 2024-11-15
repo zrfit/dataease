@@ -171,6 +171,8 @@ public class DataVisualizationVO implements Serializable {
      */
     private Integer weight;
 
+    private int ext;
+
     /**
      * 应用信息
      */

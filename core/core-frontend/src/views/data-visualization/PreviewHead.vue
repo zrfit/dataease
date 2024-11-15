@@ -18,6 +18,7 @@ import ShareVisualHead from '@/views/share/share/ShareVisualHead.vue'
 import { XpackComponent } from '@/components/plugin'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useShareStoreWithOut } from '@/store/modules/share'
+import { exportPermission } from '@/utils/utils'
 const shareStore = useShareStoreWithOut()
 
 const dvMainStore = dvMainStoreWithOut()
@@ -37,7 +38,9 @@ const preview = () => {
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
 const shareDisable = computed(() => shareStore.getShareDisable)
-
+const exportPermissions = computed(() =>
+  exportPermission(dvInfo.value['weight'], dvInfo.value['ext'])
+)
 const reload = () => {
   emit('reload', dvInfo.value.id)
 }
@@ -197,7 +200,7 @@ const initOpenHandler = newWindow => {
                   <el-dropdown-item style="width: 118px" @click="downloadAsAppTemplate('app')">{{
                     t('visualization.apply_template')
                   }}</el-dropdown-item>
-                  <el-dropdown-item @click="download('img')">{{
+                  <el-dropdown-item v-if="exportPermissions[0]" @click="download('img')">{{
                     t('chart.image')
                   }}</el-dropdown-item>
                 </el-dropdown-menu>
