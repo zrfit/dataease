@@ -124,7 +124,8 @@
               v-if="
                 !['picture-group', 'rich-text'].includes(element.innerType) &&
                 barShowCheck('download') &&
-                showDownload
+                showDownload &&
+                (exportPermissions[0] || exportPermissions[1])
               "
               @click.prevent
             >
@@ -138,14 +139,18 @@
                 </div>
                 <template #dropdown>
                   <el-dropdown-menu style="width: 120px">
-                    <el-dropdown-item @click="exportAsExcel">Excel</el-dropdown-item>
+                    <el-dropdown-item v-if="exportPermissions[1]" @click="exportAsExcel"
+                      >Excel</el-dropdown-item
+                    >
                     <el-dropdown-item
-                      v-if="element.innerType === 'table-pivot'"
+                      v-if="exportPermissions[1] && element.innerType === 'table-pivot'"
                       @click="exportAsFormattedExcel"
                     >
                       <span>Excel(带格式)</span>
                     </el-dropdown-item>
-                    <el-dropdown-item @click="exportAsImage">图片</el-dropdown-item>
+                    <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage"
+                      >图片</el-dropdown-item
+                    >
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -169,7 +174,8 @@
         !['picture-group', 'rich-text'].includes(element.innerType) &&
         barShowCheck('previewDownload') &&
         authShow &&
-        showDownload
+        showDownload &&
+        (exportPermissions[0] || exportPermissions[1])
       "
     >
       <el-icon @click="downloadClick" class="bar-base-icon">
@@ -179,14 +185,18 @@
       </el-icon>
       <template #dropdown>
         <el-dropdown-menu style="width: 118px">
-          <el-dropdown-item @click="exportAsExcel">Excel</el-dropdown-item>
+          <el-dropdown-item @click="exportAsExcel" v-if="exportPermissions[1]"
+            >Excel</el-dropdown-item
+          >
           <el-dropdown-item
-            v-if="element.innerType === 'table-pivot'"
+            v-if="exportPermissions[1] && element.innerType === 'table-pivot'"
             @click="exportAsFormattedExcel"
           >
             <span>Excel(带格式)</span>
           </el-dropdown-item>
-          <el-dropdown-item @click="exportAsImage">图片</el-dropdown-item>
+          <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage"
+            >图片</el-dropdown-item
+          >
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -227,11 +237,15 @@ import { ElMessage, ElTooltip, ElButton } from 'element-plus-secondary'
 import CustomTabsSort from '@/custom-component/de-tabs/CustomTabsSort.vue'
 import { exportPivotExcel } from '@/views/chart/components/js/panel/common/common_table'
 import { XpackComponent } from '@/components/plugin'
+import { exportPermission } from '@/utils/utils'
 const dvMainStore = dvMainStoreWithOut()
 const snapshotStore = snapshotStoreWithOut()
 const copyStore = copyStoreWithOut()
 const customTabsSortRef = ref(null)
 const authShow = computed(() => !dvInfo.value.weight || dvInfo.value.weight > 3)
+const exportPermissions = computed(() =>
+  exportPermission(dvInfo.value['weight'], dvInfo.value['ext'])
+)
 const emits = defineEmits([
   'userViewEnlargeOpen',
   'datasetParamsInit',
