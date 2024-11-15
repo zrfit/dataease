@@ -26,6 +26,10 @@ public interface ChartDataApi {
     @PostMapping("innerExportDetails")
     void innerExportDetails(@RequestBody ChartExcelRequest request, HttpServletResponse response) throws Exception;
 
+    @Operation(summary = "导出明细数据")
+    @PostMapping("innerExportDataSetDetails")
+    void innerExportDataSetDetails(@RequestBody ChartExcelRequest request, HttpServletResponse response) throws Exception;
+
     @Operation(summary = "获取字段值")
     @PostMapping("getFieldData/{fieldId}/{fieldType}")
     List<String> getFieldData(@RequestBody ChartViewDTO view, @PathVariable Long fieldId, @PathVariable String fieldType) throws Exception;
