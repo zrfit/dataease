@@ -15,8 +15,6 @@ public abstract class ExtDDLProvider {
 
     public final String DEFAULT_DATE_FORMAT_STR = "yyyy-MM-dd HH:mm:ss";
 
-    public abstract boolean supportDataFilling();
-
     public abstract String createTableSql(String table, List<ExtTableField> formFields);
 
     public abstract String getTableFieldsSql(String table);
