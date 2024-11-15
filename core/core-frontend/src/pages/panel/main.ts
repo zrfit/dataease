@@ -63,7 +63,6 @@ import { setupStore } from '@/store'
 import { useEmbedded } from '@/store/modules/embedded'
 import { setupElementPlus, setupElementPlusIcons } from '@/plugins/element-plus'
 import { setupRouter } from '@/router/embedded'
-import { getDefaultSettings } from '@/api/common'
 import { useCache } from '@/hooks/web/useCache'
 
 const setupAll = async (
@@ -118,7 +117,8 @@ const setupAll = async (
   const appearanceRes = await import('@/store/modules/appearance')
   const appearanceStore = appearanceRes.useAppearanceStoreWithOut()
   appearanceStore.setAppearance(true)
-  const defaultSort = await getDefaultSettings()
+  const getDefaultSort = await import('@/api/common')
+  const defaultSort = await getDefaultSort.getDefaultSettings()
   const { wsCache } = useCache()
   wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
   app.mount(dom)
