@@ -7,7 +7,7 @@ import { getGeoJson } from '@/api/map'
 import { computed, toRaw } from 'vue'
 import { Options } from '@antv/g2plot/esm'
 import { PickOptions } from '@antv/g2plot/esm/core/plot'
-import { innerExportDetails } from '@/api/chart'
+import { innerExportDataSetDetails, innerExportDetails } from '@/api/chart'
 import { ElMessage } from 'element-plus-secondary'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useLinkStoreWithOut } from '@/store/modules/link'
@@ -498,6 +498,7 @@ export const exportExcelDownload = (chart, callBack?) => {
   const excelName = chart.title
   let request: any = {
     proxy: null,
+    dvId: chart.sceneId,
     viewId: chart.id,
     viewInfo: chart,
     viewName: excelName,
@@ -530,7 +531,8 @@ export const exportExcelDownload = (chart, callBack?) => {
   if (isDataEaseBi.value || appStore.getIsIframe) {
     request.dataEaseBi = true
   }
-  innerExportDetails(request)
+  const method = request.downloadType === 'dataset' ? innerExportDataSetDetails : innerExportDetails
+  method(request)
     .then(res => {
       if (linkStore.getLinkToken || isDataEaseBi.value || appStore.getIsIframe) {
         const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' })

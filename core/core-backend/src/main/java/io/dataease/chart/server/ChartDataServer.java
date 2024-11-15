@@ -296,6 +296,12 @@ public class ChartDataServer implements ChartDataApi {
         }
     }
 
+    @Override
+    public void innerExportDataSetDetails(ChartExcelRequest request, HttpServletResponse response) throws Exception {
+        this.innerExportDetails(request, response);
+    }
+
+
 
     public static void setExcelData(Sheet detailsSheet, CellStyle cellStyle, Object[] header, List<Object[]> details, ViewDetailField[] detailFields, Integer[] excelTypes) {
         boolean mergeHead = false;
