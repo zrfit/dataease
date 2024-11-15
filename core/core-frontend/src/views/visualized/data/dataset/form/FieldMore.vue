@@ -219,7 +219,7 @@ const handleChange = () => {
       box-shadow: 0px 4px 8px 0px rgba(31, 35, 41, 0.1);
       border-right: none;
       &:nth-child(2) {
-        margin-top: 32px;
+        margin-top: 20px;
         > div {
           height: 210px;
         }
