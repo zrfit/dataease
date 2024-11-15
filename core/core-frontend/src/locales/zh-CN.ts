@@ -176,6 +176,13 @@ export default {
     all_source: '全部来源'
   },
   data_set: {
+    to_nth_digits: '保留第M至N位',
+    the_column_permissions: '确定删除列权限吗?',
+    last_n_digits: '保留前M位,后N位',
+    rule_preview: '规则预览',
+    prohibit_viewing: '禁止查看',
+    set_desensitization_rules: '设置脱敏规则',
+    the_row_permissions: '确定删除行权限吗?',
     ten_wan: '10万',
     can_go_to: '后台导出中,可前往',
     progress_and_download: '查看进度，进行下载',
