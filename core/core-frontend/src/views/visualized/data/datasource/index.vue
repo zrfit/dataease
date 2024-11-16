@@ -1582,6 +1582,12 @@ const getMenuList = (val: boolean) => {
                     </el-col>
                   </el-row>
                 </template>
+
+                <!--    数据填报      -->
+                <XpackComponent
+                  :nodeInfo="nodeInfo"
+                  jsname="L2NvbXBvbmVudC9kYXRhLWZpbGxpbmcvRGF0YXNvdXJjZURhdGFGaWxsaW5nSW5mbw=="
+                />
               </template>
               <template v-if="['es'].includes(nodeInfo.type) && nodeInfo.weight >= 7">
                 <el-row :gutter="24">
