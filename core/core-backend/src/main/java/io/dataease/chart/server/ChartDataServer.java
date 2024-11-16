@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
  * @Author Junjun
  */
 @RestController
-@RequestMapping("chartData")
+@RequestMapping("/chartData")
 public class ChartDataServer implements ChartDataApi {
     @Resource
     private ChartDataManage chartDataManage;
@@ -230,6 +230,7 @@ public class ChartDataServer implements ChartDataApi {
     }
 
 
+    @DeLinkPermit("#p0.dvId")
     @Override
     public void innerExportDetails(ChartExcelRequest request, HttpServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -299,6 +300,7 @@ public class ChartDataServer implements ChartDataApi {
         }
     }
 
+    @DeLinkPermit("#p0.dvId")
     @Override
     public void innerExportDataSetDetails(ChartExcelRequest request, HttpServletResponse response) throws Exception {
         this.innerExportDetails(request, response);

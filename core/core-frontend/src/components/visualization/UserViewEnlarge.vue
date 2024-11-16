@@ -73,7 +73,11 @@
       >
         <span>导出Excel(带格式)</span>
       </el-button>
-      <el-divider class="close-divider" direction="vertical" v-if="authShow" />
+      <el-divider
+        class="close-divider"
+        direction="vertical"
+        v-if="exportPermissions[0] || exportPermissions[1] || exportPermissions[2]"
+      />
     </div>
     <div
       v-loading="downLoading"
@@ -212,8 +216,6 @@ const DETAIL_TABLE_ATTR: DeepPartial<ChartObj> = {
   showPosition: 'dialog'
 }
 
-const authShow = computed(() => editMode.value === 'edit' || dvInfo.value.weight > 3)
-
 const exportPermissions = computed(() =>
   exportPermission(dvInfo.value['weight'], dvInfo.value['ext'])
 )
@@ -337,7 +339,8 @@ const downloadViewDetails = (downloadType = 'view') => {
     chartExtRequest,
     data: viewDataInfo,
     type: sourceViewType.value,
-    downloadType: downloadType
+    downloadType: downloadType,
+    busiFlag: dvInfo.value.type
   }
   exportLoading.value = true
   exportExcelDownload(chart, () => {

@@ -502,6 +502,7 @@ export const exportExcelDownload = (chart, callBack?) => {
     viewId: chart.id,
     viewInfo: chart,
     viewName: excelName,
+    busiFlag: chart.busiFlag,
     downloadType: chart.downloadType
   }
   if (chart.type.includes('chart-mix')) {

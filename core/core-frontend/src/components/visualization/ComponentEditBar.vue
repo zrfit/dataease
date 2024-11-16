@@ -173,7 +173,6 @@
       v-if="
         !['picture-group', 'rich-text'].includes(element.innerType) &&
         barShowCheck('previewDownload') &&
-        authShow &&
         showDownload &&
         (exportPermissions[0] || exportPermissions[1])
       "
@@ -242,7 +241,6 @@ const dvMainStore = dvMainStoreWithOut()
 const snapshotStore = snapshotStoreWithOut()
 const copyStore = copyStoreWithOut()
 const customTabsSortRef = ref(null)
-const authShow = computed(() => !dvInfo.value.weight || dvInfo.value.weight > 3)
 const exportPermissions = computed(() =>
   exportPermission(dvInfo.value['weight'], dvInfo.value['ext'])
 )
