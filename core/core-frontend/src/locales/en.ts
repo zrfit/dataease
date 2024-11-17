@@ -419,7 +419,7 @@ export default {
     error_link_hint: 'Link format is incorrect. Please refill!',
     password_null_hint: 'Password cannot be empty. Please re-enter!',
     password_hint:
-      'Password must be a 4-10 character string containing numbers, letters, and special characters [!@#$%^&*()_+]',
+      "Password must be a 4-10 character string containing numbers, letters, and special characters [!{'@'}#$%^&*()_+]",
     max_ticket_count: 'Supports up to 5 Tickets creation',
     last: 'Previous',
     next: 'Next',

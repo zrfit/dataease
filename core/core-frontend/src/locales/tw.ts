@@ -166,7 +166,7 @@ export default {
     error_password_hint: '密碼格式錯誤，請重新填寫！',
     error_link_hint: '鏈接格式錯誤，請重新填寫！',
     password_null_hint: '密碼不能為空，請重新輸入！',
-    password_hint: '密碼必須是包含數字、字母、特殊字符[!@#$%^&*()_+]的4-10位字符串',
+    password_hint: "密碼必須是包含數字、字母、特殊字符[!{'@'}#$%^&*()_+]的4-10位字符串",
     max_ticket_count: '最多支持創建5個Ticket',
     last: '上一個',
     next: '下一個',
