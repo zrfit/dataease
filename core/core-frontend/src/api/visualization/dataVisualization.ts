@@ -68,7 +68,7 @@ export const moveResource = data => request.post({ url: '/dataVisualization/move
 export const copyResource = data => request.post({ url: '/dataVisualization/copy', data })
 
 export const deleteLogic = (dvId, busiFlag) =>
-  request.delete({ url: '/dataVisualization/deleteLogic/' + dvId + '/' + busiFlag })
+  request.post({ url: '/dataVisualization/deleteLogic/' + dvId + '/' + busiFlag })
 
 export const querySubjectWithGroupApi = data =>
   request.post({ url: '/visualizationSubject/querySubjectWithGroup', data })
@@ -76,7 +76,7 @@ export const querySubjectWithGroupApi = data =>
 export const saveOrUpdateSubject = data =>
   request.post({ url: '/visualizationSubject/update', data })
 
-export const deleteSubject = id => request.delete({ url: '/visualizationSubject/delete/' + id })
+export const deleteSubject = id => request.post({ url: '/visualizationSubject/delete/' + id })
 
 export const dvNameCheck = async data => request.post({ url: '/dataVisualization/nameCheck', data })
 
