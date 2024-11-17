@@ -17,6 +17,8 @@ public class ChartExcelRequest extends ChartExcelRequestInner {
 
     private String dvId;
 
+    private String busiFlag;
+
     private String viewId;
 
     private String viewName;

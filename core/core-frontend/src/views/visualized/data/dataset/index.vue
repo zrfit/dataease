@@ -81,6 +81,7 @@ import { XpackComponent } from '@/components/plugin'
 import { useCache } from '@/hooks/web/useCache'
 import { RefreshLeft } from '@element-plus/icons-vue'
 import { iconFieldMap } from '@/components/icon-group/field-list'
+import { exportPermission } from '@/utils/utils'
 const { t } = useI18n()
 const interactiveStore = interactiveStoreWithOut()
 const { wsCache } = useCache()
@@ -100,6 +101,7 @@ interface Node {
   nodeType: string
   createTime: number
   weight: number
+  ext?: number
 }
 const appStore = useAppStoreWithOut()
 const rootManage = ref(false)
@@ -141,6 +143,7 @@ const mounted = ref(false)
 
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
+const exportPermissions = computed(() => exportPermission(nodeInfo.weight, nodeInfo.ext))
 const createPanel = path => {
   const baseUrl = `#/${path}?opt=create&id=${nodeInfo.id}`
   window.open(baseUrl, '_blank')
@@ -356,6 +359,7 @@ const handleNodeClick = (data: BusiTreeNode) => {
     const nodeData = res as unknown as Node[]
     Object.assign(nodeInfo, nodeData)
     nodeInfo.weight = data.weight
+    nodeInfo.ext = data.ext || 0
     columnsPreview = []
     dataPreview = []
     activeName.value = 'dataPreview'
@@ -968,7 +972,7 @@ const getMenuList = (val: boolean) => {
                   /></Icon> </template
                 >{{ t('data_set.new_data_screen') }}
               </el-button>
-              <el-button secondary @click="exportDataset">
+              <el-button v-if="exportPermissions[0]" secondary @click="exportDataset">
                 <template #icon>
                   <Icon name="icon_download_outlined"
                     ><icon_download_outlined class="svg-icon"

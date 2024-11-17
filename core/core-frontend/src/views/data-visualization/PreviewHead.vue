@@ -180,7 +180,7 @@ const initOpenHandler = newWindow => {
               style="width: 100%; overflow: hidden"
               trigger="hover"
               placement="left-start"
-              v-if="dvInfo.weight > 3"
+              v-if="exportPermissions[0]"
             >
               <div class="ed-dropdown-menu__item flex-align-center icon">
                 <el-icon><Download /></el-icon>
@@ -200,7 +200,7 @@ const initOpenHandler = newWindow => {
                   <el-dropdown-item style="width: 118px" @click="downloadAsAppTemplate('app')">{{
                     t('visualization.apply_template')
                   }}</el-dropdown-item>
-                  <el-dropdown-item v-if="exportPermissions[0]" @click="download('img')">{{
+                  <el-dropdown-item @click="download('img')">{{
                     t('chart.image')
                   }}</el-dropdown-item>
                 </el-dropdown-menu>

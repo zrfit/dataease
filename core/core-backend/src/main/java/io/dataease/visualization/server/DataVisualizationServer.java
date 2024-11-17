@@ -135,7 +135,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
 
     @Override
     public DataVisualizationVO findCopyResource(Long dvId, String busiFlag) {
-        DataVisualizationVO result = findById(new DataVisualizationBaseRequest(dvId, busiFlag));
+        DataVisualizationVO result = Objects.requireNonNull(CommonBeanFactory.proxy(this.getClass())).findById(new DataVisualizationBaseRequest(dvId, busiFlag));
         if (result != null && result.getPid() == -1) {
             return result;
         } else {
