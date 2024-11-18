@@ -525,7 +525,8 @@ public class ExportCenterManage implements BaseExportApi {
                     Sheet detailsSheet = null;
                     List<List<String>> details = new ArrayList<>();
                     for (Long p = 0L; p < pageSize; p++) {
-                        String querySQL = SQLProvider.createQuerySQLWithLimit(sqlMeta, false, needOrder, false, p.intValue() * extractPageSize, extractPageSize);
+                        int beforeCount = (int) ((s - 1) * sheetLimit);
+                        String querySQL = SQLProvider.createQuerySQLWithLimit(sqlMeta, false, needOrder, false, beforeCount + p.intValue() * extractPageSize, extractPageSize);
                         if (pageSize == 1) {
                             querySQL = SQLProvider.createQuerySQLWithLimit(sqlMeta, false, needOrder, false, 0, sheetSize.intValue());
                         }
@@ -655,9 +656,9 @@ public class ExportCenterManage implements BaseExportApi {
                 cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
                 if (CollectionUtils.isEmpty(request.getMultiInfo())) {
-                    if(request.getViewInfo().getType().equalsIgnoreCase("chart-mix-dual-line")){
+                    if (request.getViewInfo().getType().equalsIgnoreCase("chart-mix-dual-line")) {
 
-                    }else {
+                    } else {
                         List<Object[]> details = request.getDetails();
                         Integer[] excelTypes = request.getExcelTypes();
                         details.add(0, request.getHeader());
