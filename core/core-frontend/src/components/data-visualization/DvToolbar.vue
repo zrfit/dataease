@@ -26,7 +26,13 @@ import MediaGroup from '@/custom-component/component-group/MediaGroup.vue'
 import TextGroup from '@/custom-component/component-group/TextGroup.vue'
 import CommonGroup from '@/custom-component/component-group/CommonGroup.vue'
 import DeResourceGroupOpt from '@/views/common/DeResourceGroupOpt.vue'
-import { canvasSave, initCanvasData } from '@/utils/canvasUtils'
+import {
+  canvasSave,
+  checkCanvasChangePre,
+  checkCanvasHistory,
+  confirmUpdateCanvas,
+  initCanvasData
+} from '@/utils/canvasUtils'
 import { changeSizeWithScale } from '@/utils/changeComponentsSizeWithScale'
 import MoreComGroup from '@/custom-component/component-group/MoreComGroup.vue'
 import { XpackComponent } from '@/components/plugin'
@@ -41,6 +47,7 @@ import DeAppApply from '@/views/common/DeAppApply.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import TabsGroup from '@/custom-component/component-group/TabsGroup.vue'
+import { checkCanvasChange } from '@/api/visualization/dataVisualization'
 let nameEdit = ref(false)
 let inputName = ref('')
 let nameInput = ref(null)
@@ -150,7 +157,9 @@ const saveCanvasWithCheck = () => {
     }
     return
   }
-  saveResource()
+  checkCanvasChangePre(() => {
+    saveResource()
+  })
 }
 
 const saveResource = () => {

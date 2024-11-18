@@ -52,6 +52,9 @@ export const findDvType = async dvId =>
 
 export const save = data => request.post({ url: '/dataVisualization/save', data })
 
+export const checkCanvasChange = data =>
+  request.post({ url: '/dataVisualization/checkCanvasChange', data, loading: true })
+
 export const saveCanvas = data =>
   request.post({ url: '/dataVisualization/saveCanvas', data, loading: true })
 

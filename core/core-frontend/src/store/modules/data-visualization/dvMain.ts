@@ -1348,7 +1348,8 @@ export const dvMainStore = defineStore('dataVisualization', {
         selfWatermarkStatus: null,
         watermarkInfo: {},
         type: null,
-        mobileLayout: false
+        mobileLayout: false,
+        contentId: 0
       }
       this.mainScrollTop = 0
     },
@@ -1396,12 +1397,15 @@ export const dvMainStore = defineStore('dataVisualization', {
     getViewDetails(viewId) {
       return this.canvasViewInfo[viewId]
     },
-    updateDvInfoId(newId) {
+    updateDvInfoId(newId, contentId?) {
       if (this.dvInfo) {
         this.dvInfo.dataState = 'ready'
         this.dvInfo.optType = null
         if (newId) {
           this.dvInfo.id = newId
+        }
+        if (contentId) {
+          this.dvInfo.contentId = contentId
         }
       }
     },
@@ -1430,7 +1434,8 @@ export const dvMainStore = defineStore('dataVisualization', {
         status: 1,
         selfWatermarkStatus: true,
         watermarkInfo: watermarkInfo,
-        mobileLayout: false
+        mobileLayout: false,
+        contentId: '0'
       }
       const canvasStyleDataNew =
         dvType === 'dashboard'
@@ -1472,7 +1477,8 @@ export const dvMainStore = defineStore('dataVisualization', {
         selfWatermarkStatus: null,
         watermarkInfo: {},
         type: null,
-        mobileLayout: false
+        mobileLayout: false,
+        contentId: '0'
       }
       this.canvasStyleData = { ...deepCopy(DEFAULT_CANVAS_STYLE_DATA_DARK), backgroundColor: null }
     },

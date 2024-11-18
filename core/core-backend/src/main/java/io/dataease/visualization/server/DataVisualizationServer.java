@@ -429,6 +429,25 @@ public class DataVisualizationServer implements DataVisualizationApi {
         }
     }
 
+    @Override
+    public String checkCanvasChange(DataVisualizationBaseRequest request) {
+        Long dvId = request.getId();
+        Boolean checkHistory = request.getCheckHistory();
+        if (dvId == null) {
+            DEException.throwException("ID can not be null");
+        }
+        // 内容ID校验
+        if(checkHistory !=null && checkHistory){
+            QueryWrapper<DataVisualizationInfo> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("content_id", request.getContentId());
+            queryWrapper.eq("id", dvId);
+            if (visualizationInfoMapper.exists(queryWrapper)) {
+                return "Repeat";
+            }
+        }
+        return null;
+    }
+
     @DeLog(id = "#p0.id", ot = LogOT.MODIFY, stExp = "#p0.type")
     @Override
     @Transactional
