@@ -71,6 +71,9 @@ import {
   iconFieldCalculatedMap,
   iconFieldCalculatedQMap
 } from '@/components/icon-group/field-calculated-list'
+import { useCache } from '@/hooks/web/useCache'
+
+const { wsCache } = useCache('localStorage')
 const embeddedStore = useEmbedded()
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
@@ -1399,7 +1402,8 @@ const addDsWindow = () => {
   const path =
     embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded-form' : '/dataset-form'
   let routeData = router.resolve(path)
-  const newWindow = window.open(routeData.href, '_blank')
+  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const newWindow = window.open(routeData.href, openType)
   initOpenHandler(newWindow)
 }
 const editDs = () => {
@@ -1411,7 +1415,8 @@ const editDs = () => {
       id: view.value.tableId
     }
   })
-  const newWindow = window.open(routeData.href, '_blank')
+  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const newWindow = window.open(routeData.href, openType)
   initOpenHandler(newWindow)
 }
 

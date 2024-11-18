@@ -410,9 +410,10 @@ const windowsJump = (url, jumpType, size = 'middle') => {
       const width = screen.width * sizeX
       const left = screen.width * ((1 - sizeX) / 2)
       const top = screen.height * ((1 - sizeY) / 2)
+      const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
       newWindow = window.open(
         url,
-        '_blank',
+        openType,
         `width=${width},height=${height},left=${left},top=${top},toolbar=no,scrollbars=yes,resizable=yes,location=no`
       )
     } else if ('_self' === jumpType) {

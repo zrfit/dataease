@@ -7,6 +7,7 @@ import { downloadCanvas2, imgUrlTrans } from '@/utils/imgUtils'
 import ComponentEditBar from '@/components/visualization/ComponentEditBar.vue'
 import ComponentSelector from '@/components/visualization/ComponentSelector.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { useCache } from '@/hooks/web/useCache'
 import Board from '@/components/de-board/Board.vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { activeWatermarkCheckUser, removeActiveWatermark } from '@/components/watermark/watermark'
@@ -15,7 +16,7 @@ const componentWrapperInnerRef = ref(null)
 const componentEditBarRef = ref(null)
 const dvMainStore = dvMainStoreWithOut()
 const downLoading = ref(false)
-
+const { wsCache } = useCache('localStorage')
 const commonFilterAttrs = ['width', 'height', 'top', 'left', 'rotate']
 const commonFilterAttrsFilterBorder = [
   'width',
@@ -316,9 +317,10 @@ const onWrapperClick = e => {
       try {
         let newWindow
         if ('newPop' === jumpType) {
+          const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
           window.open(
             url,
-            '_blank',
+            openType,
             'width=800,height=600,left=200,top=100,toolbar=no,scrollbars=yes,resizable=yes,location=no'
           )
         } else {

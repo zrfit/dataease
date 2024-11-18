@@ -19,20 +19,22 @@ import { XpackComponent } from '@/components/plugin'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useShareStoreWithOut } from '@/store/modules/share'
 import { exportPermission } from '@/utils/utils'
-const shareStore = useShareStoreWithOut()
+import { useCache } from '@/hooks/web/useCache'
 
+const shareStore = useShareStoreWithOut()
+const { wsCache } = useCache('localStorage')
 const dvMainStore = dvMainStoreWithOut()
 const appStore = useAppStoreWithOut()
 const { dvInfo } = storeToRefs(dvMainStore)
 const emit = defineEmits(['reload', 'download', 'downloadAsAppTemplate'])
 const { t } = useI18n()
 const embeddedStore = useEmbedded()
-
+const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
 const favorited = ref(false)
 const preview = () => {
   const baseUrl = isDataEaseBi.value ? embeddedStore.baseUrl : ''
   const url = baseUrl + '#/preview?dvId=' + dvInfo.value.id + '&ignoreParams=true'
-  const newWindow = window.open(url, '_blank')
+  const newWindow = window.open(url, openType)
   initOpenHandler(newWindow)
 }
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
@@ -67,7 +69,7 @@ const dvEdit = () => {
     return
   }
   const baseUrl = dvInfo.value.type === 'dataV' ? '#/dvCanvas?dvId=' : '#/dashboard?resourceId='
-  const newWindow = window.open(baseUrl + dvInfo.value.id, '_blank')
+  const newWindow = window.open(baseUrl + dvInfo.value.id, openType)
   initOpenHandler(newWindow)
 }
 

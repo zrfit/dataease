@@ -281,7 +281,7 @@ const afterTreeInit = () => {
 }
 
 const copyLoading = ref(false)
-
+const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
 const emit = defineEmits(['nodeClick'])
 
 const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
@@ -337,7 +337,7 @@ const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
           )
           return
         }
-        const newWindow = window.open(baseUrl, '_blank')
+        const newWindow = window.open(baseUrl, openType)
         initOpenHandler(newWindow)
       })
       .finally(() => {
@@ -372,9 +372,9 @@ const addOperation = (
       return
     }
     if (data?.id) {
-      newWindow = window.open(baseUrl + `&pid=${data.id}`, '_blank')
+      newWindow = window.open(baseUrl + `&pid=${data.id}`, openType)
     } else {
-      newWindow = window.open(baseUrl, '_blank')
+      newWindow = window.open(baseUrl, openType)
     }
     initOpenHandler(newWindow)
   } else if (cmd === 'newFromTemplate') {
@@ -409,7 +409,7 @@ const resourceEdit = resourceId => {
     return
   }
 
-  const newWindow = window.open(baseUrl + resourceId, '_blank')
+  const newWindow = window.open(baseUrl + resourceId, openType)
   initOpenHandler(newWindow)
 }
 
@@ -440,9 +440,9 @@ const resourceCreateFinish = templateData => {
   }
 
   if (state.templateCreatePid) {
-    newWindow = window.open(baseUrl + `&pid=${state.templateCreatePid}`, '_blank')
+    newWindow = window.open(baseUrl + `&pid=${state.templateCreatePid}`, openType)
   } else {
-    newWindow = window.open(baseUrl, '_blank')
+    newWindow = window.open(baseUrl, openType)
   }
   initOpenHandler(newWindow)
 }

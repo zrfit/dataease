@@ -14,10 +14,13 @@ import dayjs from 'dayjs'
 import { propTypes } from '@/utils/propTypes'
 import ShareHandler from './ShareHandler.vue'
 import { interactiveStoreWithOut } from '@/store/modules/interactive'
+import { useCache } from '@/hooks/web/useCache'
+
 const props = defineProps({
   activeName: propTypes.string.def('')
 })
 
+const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
 const interactiveStore = interactiveStoreWithOut()
 
@@ -44,7 +47,8 @@ const triggerFilterPanel = () => {
 }
 const preview = id => {
   const routeUrl = `/#/preview?dvId=${id}`
-  window.open(routeUrl, '_blank')
+  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  window.open(routeUrl, openType)
 }
 const formatterTime = (_, _column, cellValue) => {
   if (!cellValue) {

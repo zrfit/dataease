@@ -65,7 +65,8 @@ const showOverlayCopilot = ref(true)
 const handleSelect = (index: string) => {
   // 自定义事件
   if (isExternal(index)) {
-    window.open(index, '_blank')
+    const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+    window.open(index, openType)
   } else {
     push(index)
   }

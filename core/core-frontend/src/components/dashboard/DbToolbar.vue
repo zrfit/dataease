@@ -139,7 +139,8 @@ const previewOuter = () => {
   }
   canvasSave(() => {
     const url = '#/preview?dvId=' + dvInfo.value.id + '&ignoreParams=true'
-    const newWindow = window.open(url, '_blank')
+    const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+    const newWindow = window.open(url, openType)
     initOpenHandler(newWindow)
   })
 }

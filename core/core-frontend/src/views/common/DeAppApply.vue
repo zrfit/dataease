@@ -148,6 +148,9 @@ import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
 import { deepCopy } from '@/utils/utils'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
+import { useCache } from '@/hooks/web/useCache'
+
+const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
 const emits = defineEmits(['closeDraw', 'saveAppCanvas'])
 const appSaveForm = ref(null)
@@ -182,8 +185,9 @@ const dvPreName = computed(() =>
 )
 const addDsWindow = () => {
   // do addDsWindow
+  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
   const url = '#/data/datasource?opt=create'
-  window.open(url, '_blank')
+  window.open(url, openType)
 }
 
 const state = reactive({
