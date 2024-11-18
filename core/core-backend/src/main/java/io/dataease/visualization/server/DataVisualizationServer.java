@@ -234,8 +234,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
                         }
                     }
                 });
-                datasourceIdMap.putAll(appData.getDatasourceInfo().stream()
-                        .collect(Collectors.toMap(AppCoreDatasourceVO::getId, AppCoreDatasourceVO::getSystemDatasourceId)));
+                datasourceIdMap.putAll(appData.getDatasourceInfo().stream().collect(Collectors.toMap(AppCoreDatasourceVO::getId, AppCoreDatasourceVO::getSystemDatasourceId)));
                 Long datasetFolderPid = request.getDatasetFolderPid();
                 String datasetFolderName = request.getDatasetFolderName();
                 //新建数据集分组
@@ -327,8 +326,8 @@ public class DataVisualizationServer implements DataVisualizationApi {
                         }
 
                     });
-                    if(dsGroupNameSave.contains(dsGroup.getName())){
-                        dsGroup.setName(dsGroup.getName()+"-"+UUID.randomUUID().toString());
+                    if (dsGroupNameSave.contains(dsGroup.getName())) {
+                        dsGroup.setName(dsGroup.getName() + "-" + UUID.randomUUID().toString());
                     }
                     dsGroupNameSave.add(dsGroup.getName());
                     datasetGroupManage.innerSave(dsGroup);
@@ -727,26 +726,19 @@ public class DataVisualizationServer implements DataVisualizationApi {
         List<VisualizationLinkJumpInfoVO> linkJumpInfoVOInfo = appTemplateMapper.findAppLinkJumpInfoInfo(dvId);
         List<VisualizationLinkJumpTargetViewInfoVO> listJumpTargetViewInfoVO = appTemplateMapper.findAppLinkJumpTargetViewInfoInfo(dvId);
 
-        return new VisualizationExport2AppVO(chartViewVOInfo, datasetGroupVOInfo, datasetTableVOInfo,
-                datasetTableFieldVOInfo, datasourceVOInfo, datasourceTaskVOInfo,
-                linkJumpVOInfo, linkJumpInfoVOInfo, listJumpTargetViewInfoVO, linkageVOInfo, linkageFieldVOInfo);
+        return new VisualizationExport2AppVO(chartViewVOInfo, datasetGroupVOInfo, datasetTableVOInfo, datasetTableFieldVOInfo, datasourceVOInfo, datasourceTaskVOInfo, linkJumpVOInfo, linkJumpInfoVOInfo, listJumpTargetViewInfoVO, linkageVOInfo, linkageFieldVOInfo);
     }
 
 
     @Override
     public void nameCheck(DataVisualizationBaseRequest request) {
         QueryWrapper<DataVisualizationInfo> wrapper = new QueryWrapper<>();
-        if (DataVisualizationConstants.RESOURCE_OPT_TYPE.MOVE.equals(request.getOpt())
-                || DataVisualizationConstants.RESOURCE_OPT_TYPE.RENAME.equals(request.getOpt())
-                || DataVisualizationConstants.RESOURCE_OPT_TYPE.EDIT.equals(request.getOpt())
-                || DataVisualizationConstants.RESOURCE_OPT_TYPE.COPY.equals(request.getOpt())) {
+        if (DataVisualizationConstants.RESOURCE_OPT_TYPE.MOVE.equals(request.getOpt()) || DataVisualizationConstants.RESOURCE_OPT_TYPE.RENAME.equals(request.getOpt()) || DataVisualizationConstants.RESOURCE_OPT_TYPE.EDIT.equals(request.getOpt()) || DataVisualizationConstants.RESOURCE_OPT_TYPE.COPY.equals(request.getOpt())) {
             if (request.getPid() == null) {
                 DataVisualizationInfo result = visualizationInfoMapper.selectById(request.getId());
                 request.setPid(result.getPid());
             }
-            if (DataVisualizationConstants.RESOURCE_OPT_TYPE.MOVE.equals(request.getOpt())
-                    || DataVisualizationConstants.RESOURCE_OPT_TYPE.RENAME.equals(request.getOpt())
-                    || DataVisualizationConstants.RESOURCE_OPT_TYPE.EDIT.equals(request.getOpt())) {
+            if (DataVisualizationConstants.RESOURCE_OPT_TYPE.MOVE.equals(request.getOpt()) || DataVisualizationConstants.RESOURCE_OPT_TYPE.RENAME.equals(request.getOpt()) || DataVisualizationConstants.RESOURCE_OPT_TYPE.EDIT.equals(request.getOpt())) {
                 wrapper.ne("id", request.getId());
             }
         }
@@ -793,12 +785,10 @@ public class DataVisualizationServer implements DataVisualizationApi {
     }
 
     public void getParent(List<DataVisualizationInfo> list, DataVisualizationInfo dataVisualizationInfo) {
-        if (ObjectUtils.isNotEmpty(dataVisualizationInfo)) {
-            if (dataVisualizationInfo.getPid() != null) {
-                DataVisualizationInfo d = visualizationInfoMapper.selectById(dataVisualizationInfo.getPid());
-                list.add(d);
-                getParent(list, d);
-            }
+        if (ObjectUtils.isNotEmpty(dataVisualizationInfo) && dataVisualizationInfo.getPid() != null && !dataVisualizationInfo.getPid().equals(dataVisualizationInfo.getId())) {
+            DataVisualizationInfo d = visualizationInfoMapper.selectById(dataVisualizationInfo.getPid());
+            list.add(d);
+            getParent(list, d);
         }
     }
 
