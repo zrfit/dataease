@@ -3065,7 +3065,8 @@ export default {
     defaultLogin: '默認登錄方式',
     shareDisable: '禁用分享',
     sharePeRequire: '分享有效期密碼必填',
-    defaultSort: '資源默認排序方式'
+    defaultSort: '資源默認排序方式',
+    defaultOpen: '頁面打開方式'
   },
   resource_sort: {
     time_asc: '按創建時間升序',
