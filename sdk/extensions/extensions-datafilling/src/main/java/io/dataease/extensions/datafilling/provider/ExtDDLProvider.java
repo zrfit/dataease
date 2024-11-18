@@ -46,4 +46,7 @@ public abstract class ExtDDLProvider {
     public abstract String whereSql(String tableName, List<TableField> searchFields);
 
     public abstract String getLowerCaseTaleNames();
+
+    public abstract Integer getColumnType(String name);
+
 }
