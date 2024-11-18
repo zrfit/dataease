@@ -507,6 +507,12 @@ public class SqlparserUtils {
         if (StringUtils.isEmpty(sql)) {
             DEException.throwException(Translator.get("i18n_sql_not_empty"));
         }
+        try {
+            removeVariables(sql, "");
+        } catch (Exception e) {
+            DEException.throwException(e);
+        }
+
         sql = sql.trim();
         if (sql.endsWith(";")) {
             sql = sql.substring(0, sql.length() - 1);
