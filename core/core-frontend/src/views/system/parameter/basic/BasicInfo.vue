@@ -77,6 +77,10 @@ const state = reactive({
     { value: '1', label: t('resource_sort.time_desc') },
     { value: '2', label: t('resource_sort.name_asc') },
     { value: '3', label: t('resource_sort.name_desc') }
+  ],
+  openOptions: [
+    { value: '0', label: t('open_opt.new_page') },
+    { value: '1', label: t('open_opt.local_page') }
   ]
 })
 let originData = []
@@ -150,6 +154,17 @@ const search = cb => {
         } else {
           item.pval = state.sortOptions[1].label
         }
+      } else if (item.pkey === 'basic.defaultOpen') {
+        if (item.pval) {
+          const r = state.openOptions.filter(cur => cur.value === item.pval)
+          if (r?.length) {
+            item.pval = r[0].label
+          } else {
+            item.pval = state.openOptions[0].label
+          }
+        } else {
+          item.pval = state.openOptions[0].label
+        }
       } else {
         item.pval = item.pval
       }
@@ -174,7 +189,8 @@ const edit = () => {
     cloneDeep(state.orgOptions),
     cloneDeep(state.roleOptions),
     cloneDeep(state.loginOptions),
-    cloneDeep(state.sortOptions)
+    cloneDeep(state.sortOptions),
+    cloneDeep(state.openOptions)
   )
 }
 const loadOrgOptions = async () => {

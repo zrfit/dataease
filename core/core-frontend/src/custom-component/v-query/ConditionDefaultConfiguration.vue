@@ -127,6 +127,10 @@ const relativeToCurrentList = computed(() => {
           value: 'monthBeginning'
         },
         {
+          label: t('dynamic_time.endOfMonth'),
+          value: 'monthEnd'
+        },
+        {
           label: t('dynamic_time.firstOfYear'),
           value: 'yearBeginning'
         }
@@ -145,6 +149,10 @@ const relativeToCurrentList = computed(() => {
         {
           label: t('dynamic_time.firstOfMonth'),
           value: 'monthBeginning'
+        },
+        {
+          label: t('dynamic_time.endOfMonth'),
+          value: 'monthEnd'
         },
         {
           label: t('dynamic_time.firstOfYear'),
