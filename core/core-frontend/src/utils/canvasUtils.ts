@@ -11,7 +11,9 @@ import eventBus from '@/utils/eventBus'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import {
   appCanvasNameCheck,
+  checkCanvasChange,
   decompression,
+  deleteLogic,
   dvNameCheck,
   findById,
   findCopyResource,
@@ -27,7 +29,8 @@ import {
 } from '@/views/chart/components/editor/util/chart'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { deepCopy } from '@/utils/utils'
-import { ElMessage } from 'element-plus-secondary'
+import { ElMessage, ElMessageBox } from 'element-plus-secondary'
+import { guid } from '@/views/visualized/data/dataset/form/util'
 const dvMainStore = dvMainStoreWithOut()
 const {
   inMobile,
@@ -332,6 +335,7 @@ export function initCanvasDataPrepare(dvId, busiFlag, callBack) {
       watermarkInfo: watermarkInfo,
       weight: canvasInfo.weight,
       ext: canvasInfo.ext,
+      contentId: canvasInfo.contentId,
       mobileLayout: canvasInfo.mobileLayout || false
     }
     const canvasVersion = canvasInfo.version
@@ -517,6 +521,34 @@ export function checkIsBatchOptView(viewId) {
   return curBatchOptComponents.value.includes(viewId)
 }
 
+export function checkCanvasHistory(callBack) {
+  ElMessageBox.confirm('当前存在变更是否覆盖', {
+    confirmButtonType: 'danger',
+    type: 'warning',
+    tip: '确认覆盖',
+    autofocus: false,
+    showClose: false
+  }).then(() => {
+    callBack()
+  })
+}
+
+export function checkCanvasChangePre(callBack) {
+  // do pre
+  const isUpdate = dvInfo.value.id && dvInfo.value.optType !== 'copy'
+  if (isUpdate) {
+    checkCanvasChange(dvInfo.value).then(rsp => {
+      if (rsp.data === 'Repeat') {
+        checkCanvasHistory(() => {
+          callBack()
+        })
+      }
+    })
+  } else {
+    callBack()
+  }
+}
+
 export async function canvasSave(callBack) {
   dvMainStore.removeGroupArea()
   const componentDataToSave = cloneDeep(componentData.value)
@@ -535,12 +567,14 @@ export async function canvasSave(callBack) {
       })
     }
   })
+  const newContentId = guid()
   const canvasInfo = {
     canvasStyleData: JSON.stringify(canvasStyleData.value),
     componentData: JSON.stringify(componentDataToSave),
     canvasViewInfo: canvasViewInfo.value,
     appData: appData.value,
     ...dvInfo.value,
+    contentId: newContentId,
     watermarkInfo: null
   }
 
@@ -557,7 +591,6 @@ export async function canvasSave(callBack) {
     ElMessage.error('数据集分组名称已存在')
     return
   }
-
   const method = dvInfo.value.id && dvInfo.value.optType !== 'copy' ? updateCanvas : saveCanvas
   if (method === updateCanvas) {
     await dvNameCheck({
