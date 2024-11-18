@@ -29,7 +29,7 @@ const { dvInfo } = storeToRefs(dvMainStore)
 const emit = defineEmits(['reload', 'download', 'downloadAsAppTemplate'])
 const { t } = useI18n()
 const embeddedStore = useEmbedded()
-const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
 const favorited = ref(false)
 const preview = () => {
   const baseUrl = isDataEaseBi.value ? embeddedStore.baseUrl : ''

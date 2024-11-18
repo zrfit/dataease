@@ -287,7 +287,7 @@ const saveResource = () => {
             emits('finish')
             ElMessage.success('保存成功')
             if (cmd.value === 'copy') {
-              const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+              const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
               const baseUrl =
                 curCanvasType.value === 'dataV'
                   ? '#/dvCanvas?opt=copy&dvId='

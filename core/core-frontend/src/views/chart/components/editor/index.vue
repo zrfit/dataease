@@ -1402,7 +1402,7 @@ const addDsWindow = () => {
   const path =
     embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded-form' : '/dataset-form'
   let routeData = router.resolve(path)
-  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
   const newWindow = window.open(routeData.href, openType)
   initOpenHandler(newWindow)
 }
@@ -1415,7 +1415,7 @@ const editDs = () => {
       id: view.value.tableId
     }
   })
-  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
   const newWindow = window.open(routeData.href, openType)
   initOpenHandler(newWindow)
 }
