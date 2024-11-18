@@ -61,6 +61,7 @@ router.beforeEach(async (to, from, next) => {
   await appearanceStore.setFontList()
   const defaultSort = await getDefaultSettings()
   wsCache.set('TreeSort-backend', defaultSort['basic.defaultSort'] ?? '1')
+  wsCache.set('open-backend', defaultSort['basic.defaultOpen'] ?? '0')
   if ((wsCache.get('user.token') || isDesktop) && !to.path.startsWith('/de-link/')) {
     if (!userStore.getUid) {
       await userStore.setUser()

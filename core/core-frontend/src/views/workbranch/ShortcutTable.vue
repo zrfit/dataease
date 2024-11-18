@@ -97,12 +97,13 @@ const getBusiListWithPermission = () => {
 const triggerFilterPanel = () => {
   loadTableData()
 }
+const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
 const preview = id => {
   const routeUrl = resolve({
     path: '/preview',
     query: { dvId: id }
   })
-  window.open(routeUrl.href, '_blank')
+  window.open(routeUrl.href, openType)
 }
 
 const openDataset = id => {
@@ -110,7 +111,7 @@ const openDataset = id => {
     path: '/dataset-form',
     query: { id: id }
   })
-  window.open(routeUrl.href, '_blank')
+  window.open(routeUrl.href, openType)
 }
 const formatterTime = (_, _column, cellValue) => {
   return dayjs(new Date(cellValue)).format('YYYY-MM-DD HH:mm:ss')

@@ -3,6 +3,7 @@ import dvFolder from '@/assets/svg/dv-folder.svg'
 import icon_searchOutline_outlined from '@/assets/svg/icon_search-outline_outlined.svg'
 import { ref, reactive, computed, watch, toRefs, nextTick } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
+import { useCache } from '@/hooks/web/useCache'
 import nothingTree from '@/assets/img/nothing-tree.png'
 import { BusiTreeNode } from '@/models/tree/TreeNode'
 import {
@@ -24,7 +25,7 @@ const props = defineProps({
 })
 
 const { curCanvasType } = toRefs(props)
-
+const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
 
 const state = reactive({
@@ -286,11 +287,12 @@ const saveResource = () => {
             emits('finish')
             ElMessage.success('保存成功')
             if (cmd.value === 'copy') {
+              const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
               const baseUrl =
                 curCanvasType.value === 'dataV'
                   ? '#/dvCanvas?opt=copy&dvId='
                   : '#/dashboard?opt=copy&resourceId='
-              window.open(baseUrl + data.data, '_blank')
+              window.open(baseUrl + data.data, openType)
             }
           })
           .finally(() => {

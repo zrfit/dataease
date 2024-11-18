@@ -1777,8 +1777,12 @@ const sortSave = list => {
 
 const handleCustomClick = async () => {
   if (sortComputed.value || curComponent.value.sort !== 'customSort') return
-  const list = await enumValueObj({ queryId: curComponent.value.sortId, searchText: '' })
-  customSortFilterRef.value.sortInit([...new Set(list.map(ele => ele[curComponent.value.sortId]))])
+  let list = cloneDeep(curComponent.value.sortList || [])
+  if (!list.length) {
+    const arr = await enumValueObj({ queryId: curComponent.value.sortId, searchText: '' })
+    list = arr.map(ele => ele[curComponent.value.sortId])
+  }
+  customSortFilterRef.value.sortInit([...new Set(list)])
 }
 
 const sortComputed = computed(() => {

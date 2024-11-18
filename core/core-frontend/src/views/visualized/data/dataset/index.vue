@@ -140,13 +140,13 @@ const state = reactive({
 const resourceGroupOpt = ref()
 const curCanvasType = ref('')
 const mounted = ref(false)
-
+const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
 const exportPermissions = computed(() => exportPermission(nodeInfo.weight, nodeInfo.ext))
 const createPanel = path => {
   const baseUrl = `#/${path}?opt=create&id=${nodeInfo.id}`
-  window.open(baseUrl, '_blank')
+  window.open(baseUrl, openType)
 }
 
 const resourceOptFinish = param => {
@@ -187,7 +187,7 @@ const resourceCreate = (pid, name) => {
   }
   save(canvasInfo).then(() => {
     const baseUrl = curCanvasType.value === 'dataV' ? '#/dvCanvas?dvId=' : '#/dashboard?resourceId='
-    window.open(baseUrl + newResourceId, '_blank')
+    window.open(baseUrl + newResourceId, openType)
   })
 }
 

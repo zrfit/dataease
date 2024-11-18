@@ -15,7 +15,10 @@ import {
 import { ElMessage, ElMessageBox, Action } from 'element-plus-secondary'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useEmitt } from '@/hooks/web/useEmitt'
+import { useCache } from '@/hooks/web/useCache'
+
 const dialogVisible = ref(false)
+const { wsCache } = useCache('localStorage')
 const { t } = useI18n()
 const userStore = useUserStoreWithOut()
 const license: F2CLicense = reactive({
@@ -59,7 +62,8 @@ const beforeUpload = file => {
 
 const support = () => {
   const url = 'https://support.fit2cloud.com/'
-  window.open(url, '_blank')
+  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  window.open(url, openType)
 }
 
 const getLicenseInfo = () => {
