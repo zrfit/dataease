@@ -42,9 +42,7 @@ const demoTips = computed(() => {
   if (!showDempTips.value) {
     return ''
   }
-  return (
-    appearanceStore.getDemoTipsContent || '账号：admin 密码：DataEase@123456 每晚 00:00 重置数据'
-  )
+  return appearanceStore.getDemoTipsContent || ''
 })
 const state = reactive({
   loginForm: {
