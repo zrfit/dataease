@@ -3048,7 +3048,8 @@ export default {
   plugin: {
     'flag-all': '全部',
     'flag-ds': '数据源插件',
-    'flag-view': '图表插件'
+    'flag-view': '图表插件',
+    'flag-df': '数据填报插件'
   },
   online_map: {
     geometry: '地理信息',
