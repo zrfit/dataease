@@ -83,7 +83,9 @@ export default {
     confirm_export: '确定导出日志吗',
     export_success: '导出成功',
     excel_file_name: 'DataEase操作日志',
-    relevant_content_found: '没有找到相关内容'
+    relevant_content_found: '没有找到相关内容',
+    mobile: '移动端',
+    client: '客户端'
   },
   template_manage: {
     name_already_exists_type: '分类名称已存在',

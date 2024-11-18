@@ -14,6 +14,7 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { useLinkStoreWithOut } from '@/store/modules/link'
 import { config } from './config'
 import { configHandler } from './refresh'
+import { isMobile } from '@/utils/utils'
 
 type AxiosErrorWidthLoading<T> = T & {
   config: {
@@ -108,6 +109,9 @@ service.interceptors.request.use(
       config.baseURL = PATH_URL
     }
 
+    if (isMobile()) {
+      ;(config.headers as AxiosRequestHeaders)['X-DE-MOBILE'] = true
+    }
     if (linkStore.getLinkToken) {
       ;(config.headers as AxiosRequestHeaders)['X-DE-LINK-TOKEN'] = linkStore.getLinkToken
     } else if (embeddedStore.token) {
