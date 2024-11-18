@@ -97,7 +97,7 @@ const getBusiListWithPermission = () => {
 const triggerFilterPanel = () => {
   loadTableData()
 }
-const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
 const preview = id => {
   const routeUrl = resolve({
     path: '/preview',

@@ -140,7 +140,7 @@ const state = reactive({
 const resourceGroupOpt = ref()
 const curCanvasType = ref('')
 const mounted = ref(false)
-const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const isIframe = computed(() => appStore.getIsIframe)
 const exportPermissions = computed(() => exportPermission(nodeInfo.weight, nodeInfo.ext))

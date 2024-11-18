@@ -60,7 +60,7 @@ const handleClose = () => {
   clearInterval(timer)
 }
 const { wsCache } = useCache()
-const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
 const xpack = wsCache.get('xpack-model-distributed')
 
 onUnmounted(() => {

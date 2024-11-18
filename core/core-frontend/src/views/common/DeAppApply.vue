@@ -185,7 +185,7 @@ const dvPreName = computed(() =>
 )
 const addDsWindow = () => {
   // do addDsWindow
-  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
   const url = '#/data/datasource?opt=create'
   window.open(url, openType)
 }

@@ -317,7 +317,7 @@ const onWrapperClick = e => {
       try {
         let newWindow
         if ('newPop' === jumpType) {
-          const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+          const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
           window.open(
             url,
             openType,

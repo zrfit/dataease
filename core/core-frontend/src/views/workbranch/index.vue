@@ -40,7 +40,7 @@ const router = useRouter()
 const resourceCreateOpt = ref(null)
 const embeddedStore = useEmbedded()
 const appStore = useAppStoreWithOut()
-const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
 const quickCreationList = shallowRef([
   {
     icon: icon_dashboard_outlined,

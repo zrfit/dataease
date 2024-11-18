@@ -495,7 +495,7 @@ const apply = template => {
     )
     return
   }
-  const openType = wsCache.get('open-backend') === '0' ? '_self' : '_blank'
+  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
   if (state.pid) {
     newWindow = window.open(baseUrl + `&pid=${state.pid}`, openType)
   } else {
