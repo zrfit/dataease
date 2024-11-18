@@ -10,6 +10,7 @@ import {
   getToday,
   getYesterday,
   getMonthBeginning,
+  getMonthEnd,
   getYearBeginning,
   getCustomTime
 } from './time-format'
@@ -140,6 +141,9 @@ const init = () => {
         break
       case 'monthBeginning':
         selectValue.value = getMonthBeginning()
+        break
+      case 'monthEnd':
+        selectValue.value = getMonthEnd()
         break
       case 'yearBeginning':
         selectValue.value = getYearBeginning()

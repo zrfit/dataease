@@ -407,6 +407,7 @@ export default {
     today: '今天',
     yesterday: '昨天',
     firstOfMonth: '月初',
+    endOfMonth: '月底',
     firstOfYear: '年初',
     custom: '自定义',
     date: '日',
