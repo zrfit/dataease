@@ -2858,7 +2858,7 @@ export default {
     fullscreen_preview: '全屏预览',
     new_tab_preview: '新Tab页预览',
     select_panel_from_left: '请从左侧选择仪表板',
-    template_nale: '模板名称',
+    template_name: '模板名称',
     template: '模板',
     category: '分类',
     all_org: '所有组织',
