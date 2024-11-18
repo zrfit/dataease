@@ -2235,6 +2235,7 @@ export default {
     version_num: '版本號',
     standard: '社區版',
     enterprise: '企業版',
+    Professional: '專業版',
     Embedded: '嵌入式版',
     support: '獲取技術支持',
     update_success: '更新成功',
