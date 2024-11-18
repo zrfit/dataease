@@ -26,6 +26,7 @@ interface SelectConfig {
   displayType: string
   showEmpty: boolean
   id: string
+  sortList?: string[]
   queryConditionWidth: number
   placeholder: string
   resultMode: number
@@ -287,6 +288,14 @@ const setOldMapValue = arr => {
   return defaultValue
 }
 
+const customSort = () => {
+  if (config.value.sortList?.length && config.value.sort === 'customSort') {
+    options.value.sort(
+      (a, b) => config.value.sortList.indexOf(a.value) - config.value.sortList.indexOf(b.value)
+    )
+  }
+}
+
 const handleFieldIdChange = (val: EnumValue) => {
   loading.value = true
   enumValueObj(val)
@@ -313,6 +322,7 @@ const handleFieldIdChange = (val: EnumValue) => {
           checked: oldArr.includes(ele)
         }
       })
+      customSort()
     })
     .finally(() => {
       loading.value = false
@@ -348,16 +358,6 @@ const handleFieldIdChange = (val: EnumValue) => {
 }
 
 const visible = ref(false)
-const visibleChange = (val: boolean) => {
-  setTimeout(() => {
-    visible.value = !val
-    if (!val) {
-      isFromRemote.value = false
-      searchText.value = ''
-      remoteMethod('')
-    }
-  }, 50)
-}
 
 watch(
   () => config.value.showEmpty,
@@ -449,6 +449,11 @@ watch(
   }
 )
 
+watch([() => config.value.sortList], val => {
+  if (!val?.length || config.value.sort !== 'customSort') return
+  customSort()
+})
+
 watch(
   () => config.value.optionValueSource,
   (valNew, newOld) => {
@@ -474,16 +479,6 @@ watch(
 
 const searchText = ref('')
 const isFromRemote = ref(false)
-const clear = () => {
-  remoteMethod('')
-}
-
-const remoteMethod = (query: string) => {
-  if (config.value.optionValueSource !== 1) return
-  isFromRemote.value = true
-  searchText.value = query
-  debounceOptions(1)
-}
 
 watch(
   () => config.value.valueSource,
@@ -520,7 +515,7 @@ const setOptions = (num: number) => {
         handleFieldIdChange({
           queryId: field.id,
           displayId: displayId || field.id,
-          sort,
+          sort: sort === 'customSort' ? '' : sort,
           sortId,
           resultMode: config.value.resultMode || 0,
           searchText: searchText.value,
@@ -612,7 +607,6 @@ defineExpose({
     v-loading="loading"
     filterable
     @change="handleValueChange"
-    @visible-change="visibleChange"
     :popper-class="
       visible ? 'load-select filter-select-popper_class' : 'filter-select-popper_class'
     "
@@ -635,9 +629,7 @@ defineExpose({
     ref="single"
     :style="selectStyle"
     filterable
-    @clear="clear"
     radio
-    @visible-change="visibleChange"
     :popper-class="
       visible ? 'load-select filter-select-popper_class' : 'filter-select-popper_class'
     "

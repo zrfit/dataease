@@ -2564,6 +2564,8 @@ export default {
     variable_mgm: '参数设置'
   },
   v_query: {
+    display_sort: '显示字段和排序字段不一致，无法进行自定义排序',
+    custom_sort: '自定义排序',
     msg_center: '消息中心',
     to_be_filled: '待填报',
     the_minimum_value: '数值区间最大值必须大于最小值',
