@@ -3073,6 +3073,10 @@ export default {
     name_asc: '按名稱升序',
     name_desc: '按名稱降序'
   },
+  open_opt: {
+    new_page: '新頁面打開',
+    local_page: '當前頁面打開'
+  },
   setting_email: {
     title: '郵件設置',
     host: 'SMTP主機',

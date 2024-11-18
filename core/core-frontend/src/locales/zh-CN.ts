@@ -3083,6 +3083,10 @@ export default {
     name_asc: '按名称升序',
     name_desc: '按名称降序'
   },
+  open_opt: {
+    new_page: '新页面打开',
+    local_page: '当前页面打开'
+  },
   setting_email: {
     title: '邮件设置',
     host: 'SMTP主机',

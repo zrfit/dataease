@@ -74,6 +74,9 @@ public class SysParameterServer implements SysParameterApi {
             if (StringUtils.isNotBlank(settingItemVO.getPkey()) && settingItemVO.getPkey().equalsIgnoreCase(XpackSettingConstants.DEFAULT_SORT) && StringUtils.isNotBlank(settingItemVO.getPval())) {
                 map.put(XpackSettingConstants.DEFAULT_SORT, settingItemVO.getPval());
             }
+            if (StringUtils.isNotBlank(settingItemVO.getPkey()) && settingItemVO.getPkey().equalsIgnoreCase(XpackSettingConstants.DEFAULT_OPEN) && StringUtils.isNotBlank(settingItemVO.getPval())) {
+                map.put(XpackSettingConstants.DEFAULT_OPEN, settingItemVO.getPval());
+            }
         }
         return map;
     }
