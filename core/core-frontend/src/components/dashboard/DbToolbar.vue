@@ -36,7 +36,7 @@ import MultiplexingCanvas from '@/views/common/MultiplexingCanvas.vue'
 import { useI18n } from '@/hooks/web/useI18n'
 import { getPanelAllLinkageInfo, saveLinkage } from '@/api/visualization/linkage'
 import { queryVisualizationJumpInfo } from '@/api/visualization/linkJump'
-import { canvasSave, initCanvasData } from '@/utils/canvasUtils'
+import { canvasSave, checkCanvasChangePre, initCanvasData } from '@/utils/canvasUtils'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { copyStoreWithOut } from '@/store/modules/data-visualization/copy'
 import TabsGroup from '@/custom-component/component-group/TabsGroup.vue'
@@ -206,7 +206,9 @@ const saveCanvasWithCheck = () => {
       return
     }
   }
-  saveResource()
+  checkCanvasChangePre(() => {
+    saveResource()
+  })
 }
 
 const saveResource = () => {
