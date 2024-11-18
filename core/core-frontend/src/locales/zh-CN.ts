@@ -3077,7 +3077,8 @@ export default {
     defaultLogin: '默认登录方式',
     shareDisable: '禁用分享',
     sharePeRequire: '分享有效期密码必填',
-    defaultSort: '资源默认排序方式'
+    defaultSort: '资源默认排序方式',
+    defaultOpen: '页面打开方式'
   },
   resource_sort: {
     time_asc: '按创建时间升序',
