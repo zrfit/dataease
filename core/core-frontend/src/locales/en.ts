@@ -1603,6 +1603,12 @@ export default {
     execution_results_in_the_past_7_days: 'Execution performance in the past 7 days',
     sync_status_distribution: 'Sync status distribution'
   },
+  plugin: {
+    'flag-all': 'All Plugins',
+    'flag-ds': 'Datasource',
+    'flag-view': 'View',
+    'flag-df': 'DataFilling'
+  },
   sync_task: {
     title: 'Task Management',
     task_list: 'Task List',
