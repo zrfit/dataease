@@ -148,6 +148,7 @@ public class DataVisualizationVO implements Serializable {
     /**
      * 内容标识
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private String contentId;
 
     /**

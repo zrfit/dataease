@@ -26,13 +26,7 @@ import MediaGroup from '@/custom-component/component-group/MediaGroup.vue'
 import TextGroup from '@/custom-component/component-group/TextGroup.vue'
 import CommonGroup from '@/custom-component/component-group/CommonGroup.vue'
 import DeResourceGroupOpt from '@/views/common/DeResourceGroupOpt.vue'
-import {
-  canvasSave,
-  checkCanvasChangePre,
-  checkCanvasHistory,
-  confirmUpdateCanvas,
-  initCanvasData
-} from '@/utils/canvasUtils'
+import { canvasSave, checkCanvasChangePre, initCanvasData } from '@/utils/canvasUtils'
 import { changeSizeWithScale } from '@/utils/changeComponentsSizeWithScale'
 import MoreComGroup from '@/custom-component/component-group/MoreComGroup.vue'
 import { XpackComponent } from '@/components/plugin'

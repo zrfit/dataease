@@ -13,7 +13,6 @@ import {
   appCanvasNameCheck,
   checkCanvasChange,
   decompression,
-  deleteLogic,
   dvNameCheck,
   findById,
   findCopyResource,
@@ -32,16 +31,11 @@ import { deepCopy } from '@/utils/utils'
 import { ElMessage, ElMessageBox } from 'element-plus-secondary'
 import { guid } from '@/views/visualized/data/dataset/form/util'
 const dvMainStore = dvMainStoreWithOut()
-const {
-  inMobile,
-  curBatchOptComponents,
-  dvInfo,
-  canvasStyleData,
-  componentData,
-  canvasViewInfo,
-  appData
-} = storeToRefs(dvMainStore)
+const { inMobile, dvInfo, canvasStyleData, componentData, canvasViewInfo, appData } =
+  storeToRefs(dvMainStore)
 const snapshotStore = snapshotStoreWithOut()
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export function chartTransStr2Object(targetIn, copy) {
   const target = copy === 'Y' ? cloneDeep(targetIn) : targetIn
@@ -517,31 +511,27 @@ export function initCanvasDataMobile(dvId, busiFlag, callBack) {
   )
 }
 
-export function checkIsBatchOptView(viewId) {
-  return curBatchOptComponents.value.includes(viewId)
-}
-
-export function checkCanvasHistory(callBack) {
-  ElMessageBox.confirm('当前存在变更是否覆盖', {
-    confirmButtonType: 'danger',
-    type: 'warning',
-    tip: '确认覆盖',
-    autofocus: false,
-    showClose: false
-  }).then(() => {
-    callBack()
-  })
-}
-
 export function checkCanvasChangePre(callBack) {
   // do pre
   const isUpdate = dvInfo.value.id && dvInfo.value.optType !== 'copy'
   if (isUpdate) {
-    checkCanvasChange(dvInfo.value).then(rsp => {
-      if (rsp.data === 'Repeat') {
-        checkCanvasHistory(() => {
+    const params = { ...dvInfo.value, watermarkInfo: null }
+    const tips =
+      (dvInfo.value.type === 'dashboard'
+        ? t('work_branch.dashboard')
+        : t('work_branch.big_data_screen')) + '已被他人更新，是否覆盖保存？'
+    checkCanvasChange(params).then(rsp => {
+      if (rsp && rsp.data === 'Repeat') {
+        ElMessageBox.confirm(tips, {
+          confirmButtonType: 'danger',
+          type: 'warning',
+          autofocus: false,
+          showClose: false
+        }).then(() => {
           callBack()
         })
+      } else {
+        callBack()
       }
     })
   } else {
@@ -602,7 +592,7 @@ export async function canvasSave(callBack) {
     })
   }
   method(canvasInfo).then(res => {
-    dvMainStore.updateDvInfoId(res.data)
+    dvMainStore.updateDvInfoId(res.data, newContentId)
     snapshotStore.resetStyleChangeTimes()
     callBack(res)
   })
