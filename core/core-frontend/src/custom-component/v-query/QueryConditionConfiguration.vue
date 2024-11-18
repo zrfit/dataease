@@ -23,6 +23,8 @@ import {
   unref
 } from 'vue'
 import { storeToRefs } from 'pinia'
+import { enumValueObj } from '@/api/dataset'
+import CustomSortFilter from './CustomSortFilter.vue'
 import { addQueryCriteriaConfig } from './options'
 import { getCustomTime } from './time-format'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
@@ -1755,6 +1757,35 @@ const getOptions = (id, component) => {
   })
 }
 
+const handleSortChange = () => {
+  handleFieldChange()
+  curComponent.value.sortList = []
+  resetSort()
+}
+
+const resetSort = () => {
+  if (sortComputed.value) {
+    curComponent.value.sort = ''
+  }
+}
+
+const customSortFilterRef = ref()
+
+const sortSave = list => {
+  curComponent.value.sortList = cloneDeep(list)
+}
+
+const handleCustomClick = async () => {
+  if (sortComputed.value || curComponent.value.sort !== 'customSort') return
+  const list = await enumValueObj({ queryId: curComponent.value.sortId, searchText: '' })
+  customSortFilterRef.value.sortInit([...new Set(list.map(ele => ele[curComponent.value.sortId]))])
+}
+
+const sortComputed = computed(() => {
+  const { sortId, displayId } = curComponent.value
+  return sortId && displayId && sortId !== displayId
+})
+
 const treeDialog = ref()
 const startTreeDesign = () => {
   const [comId] = curComponent.value.checkedFields
@@ -2804,6 +2835,7 @@ defineExpose({
                     :placeholder="t('v_query.display_field')"
                     class="search-field"
                     v-model="curComponent.displayId"
+                    @change="resetSort"
                   >
                     <template v-if="curComponent.displayId" #prefix>
                       <el-icon>
@@ -2865,7 +2897,7 @@ defineExpose({
                     :placeholder="t('v_query.the_sorting_field')"
                     v-model="curComponent.sortId"
                     class="sort-field"
-                    @change="handleFieldChange"
+                    @change="handleSortChange"
                   >
                     <template v-if="curComponent.sortId" #prefix>
                       <el-icon>
@@ -2919,6 +2951,13 @@ defineExpose({
                   >
                     <el-option :label="t('chart.asc')" value="asc" />
                     <el-option :label="t('chart.desc')" value="desc" />
+                    <el-option
+                      @click="handleCustomClick"
+                      :title="sortComputed ? $t('v_query.display_sort') : ''"
+                      :disabled="sortComputed"
+                      :label="t('v_query.custom_sort')"
+                      value="customSort"
+                    />
                   </el-select>
                 </div>
               </template>
@@ -3081,6 +3120,7 @@ defineExpose({
       <el-button type="primary" @click="numTypeChange">{{ t('dataset.confirm') }}</el-button>
     </template>
   </el-dialog>
+  <customSortFilter ref="customSortFilterRef" @save="sortSave"></customSortFilter>
   <CascadeDialog @saveCascade="saveCascade" ref="cascadeDialog"></CascadeDialog>
 </template>
 
