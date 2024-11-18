@@ -394,7 +394,11 @@ const save = ({ logic, items, errorMessage }) => {
   exportDatasetLoading.value = true
   exportDatasetData(table.value)
     .then(res => {
-      openMessageLoading(exportData)
+      if (res.code === 0) {
+        openMessageLoading(exportData)
+      } else {
+        ElMessage.error(res.msg)
+      }
     })
     .finally(() => {
       exportDatasetLoading.value = false
