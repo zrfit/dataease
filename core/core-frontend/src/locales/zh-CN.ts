@@ -2242,6 +2242,7 @@ export default {
     version_num: '版本号',
     standard: '社区版',
     enterprise: '企业版',
+    Professional: '专业版',
     Embedded: '嵌入式版',
     support: '获取技术支持',
     update_success: '更新成功',

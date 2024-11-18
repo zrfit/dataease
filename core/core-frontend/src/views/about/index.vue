@@ -228,6 +228,8 @@ const syncFree = () => {
               ? $t('about.standard')
               : license.edition === 'Embedded'
               ? $t('about.Embedded')
+              : license.edition === 'Professional'
+              ? $t('about.Professional')
               : $t('about.enterprise')
           }}
         </div>
