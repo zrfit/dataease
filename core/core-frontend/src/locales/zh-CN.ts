@@ -639,6 +639,7 @@ export default {
     edit_embedded_application: '编辑嵌入式应用',
     application_name: '应用名称',
     cross_domain_settings: '跨域设置',
+    embedded_secret_len_change: '密钥长度变化，密钥即将重置，是否确认',
     embedded_management: '嵌入式管理',
     to_5_applications: '最多支持创建5个应用',
     update_app_secret: '确定更新APP Secret吗？',
@@ -691,7 +692,8 @@ export default {
     the_minimum_date: '请选择最小日期',
     the_maximum_date: '请选择最大日期',
     on_the_left_p: '请选择左侧变量',
-    edit_variable_value: '编辑变量值'
+    edit_variable_value: '编辑变量值',
+    secret_length: '密钥长度'
   },
   components: {
     dashboard_style: '仪表板风格',
