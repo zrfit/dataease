@@ -349,7 +349,8 @@ public class ExportCenterManage implements BaseExportApi {
         startViewTask(exportTask, request);
     }
 
-    public void addTask(Long exportFrom, String exportFromType, DataSetExportRequest request) {
+    public void addTask(Long exportFrom, String exportFromType, DataSetExportRequest request)throws Exception{
+        datasetGroupManage.getDatasetGroupInfoDTO(exportFrom, null);
         CoreExportTask exportTask = new CoreExportTask();
         exportTask.setId(UUID.randomUUID().toString());
         exportTask.setUserId(AuthUtils.getUser().getUserId());
