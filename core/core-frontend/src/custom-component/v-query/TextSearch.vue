@@ -142,9 +142,9 @@ const handleInnerMouseDown = e => {
       <div :style="lineWidth" class="bottom-line"></div>
     </div>
     <div class="condition-type" v-if="[1, 2].includes(config.conditionType)">
-      <sapn class="condition-type-tip">{{
+      <span class="condition-type-tip">{{
         config.conditionType === 1 ? t('chart.and') : t('chart.or')
-      }}</sapn>
+      }}</span>
       <el-select
         v-if="!config.hideConditionSwitching"
         class="condition-value-select"

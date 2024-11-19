@@ -354,9 +354,9 @@ defineExpose({
         <div class="bottom-line"></div>
       </div>
       <div class="condition-type" v-if="[1, 2].includes(curComponent.conditionType)">
-        <sapn class="condition-type-tip">{{
+        <span class="condition-type-tip">{{
           curComponent.conditionType === 1 ? t('chart.and') : t('chart.or')
-        }}</sapn>
+        }}</span>
         <el-select
           v-if="!curComponent.hideConditionSwitching"
           class="condition-value-select"
