@@ -4,14 +4,23 @@
     :label-tooltips="tooltips"
     setting-key="basic"
     :setting-title="t('system.basic_settings')"
-    :setting-data="state.templateList"
+    :setting-data="baseInfoSettings"
+    @edit="edit"
+  />
+  <InfoTemplate
+    ref="loginTemplate"
+    class="login-setting-template"
+    :label-tooltips="tooltips"
+    setting-key="basic"
+    :setting-title="t('system.login_settings')"
+    :setting-data="loginInoSettings"
     @edit="edit"
   />
   <basic-edit ref="editor" @saved="refresh" />
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import InfoTemplate from '../../common/InfoTemplate.vue'
 import BasicEdit from './BasicEdit.vue'
 import request from '@/config/axios'
@@ -22,6 +31,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 const { t } = useI18n()
 const editor = ref()
 const infoTemplate = ref()
+const loginTemplate = ref()
 const showDefaultLogin = ref(false)
 const pvpOptions = [
   { value: '0', label: t('commons.date.permanent') },
@@ -47,6 +57,14 @@ const tooltips = [
     key: 'setting_basic.shareDisable',
     val: '开启后仪表板以及大屏分享无效'
   }
+]
+const loginSettings = [
+  'setting_basic.dip',
+  'setting_basic.pvp',
+  'setting_basic.defaultLogin',
+  'setting_basic.loginLimit',
+  'setting_basic.loginLimitRate',
+  'setting_basic.loginLimitTime'
 ]
 const state = reactive({
   templateList: [] as SettingRecord[],
@@ -89,10 +107,21 @@ const selectedOName = ref('')
 const selectedRid = ref<string[]>([])
 const selectedRName = ref<string[]>([])
 const selectedPvp = ref('0')
+
+const baseInfoSettings = computed(() =>
+  state.templateList.filter(item => !loginSettings.includes(item.pkey))
+)
+const loginInoSettings = computed(() => {
+  const list = state.templateList.filter(item => loginSettings.includes(item.pkey))
+  console.log(list)
+  return list
+})
+
 const search = cb => {
   const url = '/sysParameter/basic/query'
   originData = []
   state.templateList = []
+  const resultList = []
   request.get({ url }).then(async res => {
     originData = cloneDeep(res.data)
     const data = res.data
@@ -103,7 +132,8 @@ const search = cb => {
         item.pkey === 'basic.dip' ||
         item.pkey === 'basic.pwdStrategy' ||
         item.pkey === 'basic.shareDisable' ||
-        item.pkey === 'basic.sharePeRequire'
+        item.pkey === 'basic.sharePeRequire' ||
+        item.pkey === 'basic.loginLimit'
       ) {
         item.pval = item.pval === 'true' ? t('chart.open') : t('system.not_enabled')
       } else if (item.pkey === 'basic.platformOid') {
@@ -170,15 +200,19 @@ const search = cb => {
       }
       item.pkey = 'setting_' + item.pkey
       if (!item.pkey.includes('defaultLogin') || showDefaultLogin.value) {
-        state.templateList.push(item)
+        resultList.push(item)
       }
     }
+    state.templateList.splice(0, resultList.length, ...resultList)
     cb && cb()
   })
 }
 const refresh = () => {
   search(() => {
-    infoTemplate?.value.init()
+    nextTick(() => {
+      infoTemplate?.value.init()
+      loginTemplate?.value.init()
+    })
   })
 }
 refresh()
@@ -275,3 +309,11 @@ const resetDefaultLogin = () => {
   }
 }
 </script>
+<style lang="less" scoped>
+.login-setting-template {
+  padding-top: 0;
+  :deep(button) {
+    display: none;
+  }
+}
+</style>

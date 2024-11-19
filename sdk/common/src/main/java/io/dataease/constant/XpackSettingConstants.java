@@ -13,4 +13,7 @@ public class XpackSettingConstants {
     public static final String THRSHOLD_LOG_LIVE_TIME = "basic.thresholdLogLiveTime";
     public static final String DEFAULT_SORT = "basic.defaultSort";
     public static final String DEFAULT_OPEN = "basic.defaultOpen";
+    public static final String LOGIN_LIMIT = "basic.loginLimit";
+    public static final String LOGIN_LIMIT_RATE = "basic.loginLimitRate";
+    public static final String LOGIN_LIMIT_TIME = "basic.loginLimitTime";
 }
