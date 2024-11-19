@@ -186,7 +186,9 @@ const menuList = computed(() => {
   return list
 })
 
-const dvId = embeddedStore.dvId || router.currentRoute.value.query.dvId
+const infoId = wsCache.get(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+const dvId = embeddedStore.dvId || infoId
+wsCache.delete(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
 if (dvId && showPosition.value === 'preview') {
   selectedNodeKey.value = dvId
   returnMounted.value = true
