@@ -3825,5 +3825,8 @@ export default {
     delete_api_key: '确定删除该 API key 吗? ',
     api_key_desc:
       'API Key 是您访问 DataEase API 的密钥，具有账户的完全权限，请您务必妥善保管！不要以任何方式公开 API Key 到外部渠道，避免被他人利用造成安全威胁。'
+  },
+  free: {
+    title: '游离资源管理'
   }
 }
