@@ -742,7 +742,7 @@ export default {
     reset_success: '重置成功',
     modify_cur_pwd: '修改當前用戶密碼后需要重新登錄',
     switch_success: '切換成功',
-    user_name_pattern_error: '只允許數字字母以及._-且必須數字或字母開頭',
+    user_name_pattern_error: "只允許數字字母以及{'@'}._-且必須數字或字母開頭",
     pwd_pattern_error: '6-20位且至少一位大寫字母、小寫字母、數字、特殊字符',
     special_characters_are_not_supported: '不允許特殊字符',
     phone_format: '請填寫正確格式手機號',
