@@ -290,9 +290,11 @@ const setOldMapValue = arr => {
 
 const customSort = () => {
   if (config.value.sortList?.length && config.value.sort === 'customSort') {
-    options.value.sort(
-      (a, b) => config.value.sortList.indexOf(a.value) - config.value.sortList.indexOf(b.value)
-    )
+    options.value = [
+      ...options.value.sort(
+        (a, b) => config.value.sortList.indexOf(a.value) - config.value.sortList.indexOf(b.value)
+      )
+    ]
   }
 }
 
