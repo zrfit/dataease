@@ -51,28 +51,42 @@ const state = reactive({
   },
   footContent: ''
 })
-const checkUsername = value => {
-  if (!value) {
-    return true
+const checkUsername = (rule: any, value: any, callback: any) => {
+  if (!value || activeName.value === 'ldap') {
+    return callback()
   }
   const pattern = /^[a-zA-Z0-9][a-zA-Z0-9\@._-]*$/
   const reg = new RegExp(pattern)
-  return reg.test(value)
+  if (!reg.test(value)) {
+    const msg = t('user.user_name_pattern_error')
+    callback(new Error(msg))
+  }
+  return callback()
 }
 
-const validatePwd = value => {
-  if (!value) {
-    return true
+const validatePwd = (rule: any, value: any, callback: any) => {
+  if (!value || activeName.value === 'ldap') {
+    return callback()
   }
   const pattern =
     /^.*(?=.{6,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+\-\={}|":<>?`[\];',.\/])[a-zA-Z0-9~!@#$%^&*()_+\-\={}|":<>?`[\];',.\/]*$/
   const regep = new RegExp(pattern)
-  return regep.test(value)
+  if (!regep.test(value)) {
+    const msg = t('user.pwd_pattern_error')
+    callback(new Error(msg))
+  }
+  return callback()
 }
 
 const rules = reactive<FormRules>({
-  username: [{ required: true, message: t('common.required'), trigger: 'blur' }],
-  password: [{ required: true, message: t('common.required'), trigger: 'blur' }]
+  username: [
+    { required: true, message: t('common.required'), trigger: 'blur' },
+    { required: true, validator: checkUsername, trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: t('common.required'), trigger: 'blur' },
+    { required: true, validator: validatePwd, trigger: 'blur' }
+  ]
 })
 
 const activeName = ref('simple')
@@ -91,10 +105,10 @@ const handleLogin = () => {
   if (!formRef.value) return
   formRef.value.validate(async (valid: boolean) => {
     if (valid) {
-      if (!checkUsername(state.loginForm.username) || !validatePwd(state.loginForm.password)) {
+      /* if (!checkUsername(state.loginForm.username) || !validatePwd(state.loginForm.password)) {
         ElMessage.error('用户名或密码错误')
         return
-      }
+      } */
       const name = state.loginForm.username.trim()
       const pwd = state.loginForm.password
       if (!wsCache.get(appStore.getDekey)) {
