@@ -492,6 +492,7 @@ export default {
     click_to_show: '点击显示',
     click_to_hide: '点击隐藏',
     basic_settings: '基础设置',
+    login_settings: '登录设置',
     and_0_seconds: '0分0秒',
     time_0_seconds: '分钟（执行时间：0秒）',
     and_0_seconds_de: '小时（执行时间：0分0秒）',
@@ -3080,7 +3081,10 @@ export default {
     shareDisable: '禁用分享',
     sharePeRequire: '分享有效期密码必填',
     defaultSort: '资源默认排序方式',
-    defaultOpen: '页面打开方式'
+    defaultOpen: '页面打开方式',
+    loginLimit: '限制登录',
+    loginLimitRate: '限制登录失败次数(次)',
+    loginLimitTime: '限制登录失败时间(分)'
   },
   resource_sort: {
     time_asc: '按创建时间升序',
