@@ -168,7 +168,7 @@ const firstChangeActiveName = ref(false)
 
 watch(
   () => tablePaneList.value.length,
-  (v1, v2) => {
+  () => {
     if (tablePaneList.value.length > 0 && !firstChangeActiveName.value) {
       firstChangeActiveName.value = true
       activeName.value = tablePaneList.value[0].name
