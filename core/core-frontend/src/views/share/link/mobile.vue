@@ -1,5 +1,11 @@
 <template>
   <div class="mobile-link-container" v-loading="loading">
+    <ErrorTemplate
+      v-if="!loading && (disableError || peRequireError)"
+      :msg="
+        disableError ? '已禁用分享功能，请联系管理员！' : '已设置有效期密码必填，当前链接无效！'
+      "
+    />
     <LinkError v-if="!loading && !linkExist" />
     <Exp v-else-if="!loading && linkExp" />
     <PwdTips v-else-if="!loading && !pwdValid" />
@@ -24,6 +30,9 @@ import { ProxyInfo, shareProxy } from './ShareProxy'
 import Exp from './exp.vue'
 import LinkError from './error.vue'
 import PwdTips from './pwd.vue'
+import ErrorTemplate from './ErrorTemplate.vue'
+const disableError = ref(true)
+const peRequireError = ref(true)
 const linkExist = ref(false)
 const loading = ref(true)
 const linkExp = ref(false)
@@ -43,13 +52,33 @@ onMounted(async () => {
   curType.value = proxyInfo.type || 'dashboard'
   dvMainStore.setInMobile(true)
   dvMainStore.setMobileInPc(curType.value === 'dashboard')
+  if (proxyInfo?.shareDisable) {
+    loading.value = false
+    disableError.value = true
+    return
+  }
+  disableError.value = false
+  if (proxyInfo && !proxyInfo.peRequireValid) {
+    loading.value = false
+    peRequireError.value = true
+    return
+  }
+  peRequireError.value = false
   if (!proxyInfo?.resourceId) {
     loading.value = false
     return
   }
   linkExist.value = true
   linkExp.value = !!proxyInfo.exp
+  if (!!proxyInfo.exp) {
+    loading.value = false
+    return
+  }
   pwdValid.value = !!proxyInfo.pwdValid
+  if (!proxyInfo.pwdValid) {
+    loading.value = false
+    return
+  }
   state.ticketValidVO = proxyInfo.ticketValidVO
   nextTick(() => {
     const method = pcanvas?.value?.loadCanvasDataAsync
