@@ -123,6 +123,7 @@ const handleLogin = () => {
           const { token, exp } = res.data
           userStore.setToken(token)
           userStore.setExp(exp)
+          userStore.setTime(Date.now())
           if (!xpackLoadFail.value && xpackInvalidPwd.value?.invokeMethod) {
             const param = {
               methodName: 'init'
