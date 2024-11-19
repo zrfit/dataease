@@ -2,7 +2,7 @@ INSERT INTO `core_sys_setting`(`id`, `pkey`, `pval`, `type`, `sort`)
 VALUES (1048232869488627719, 'basic.defaultSort', '1', 'text', 13);
 
 INSERT INTO `core_sys_setting`(`id`, `pkey`, `pval`, `type`, `sort`)
-VALUES (1048232869488627719, 'basic.defaultOpen', '0', 'text', 14);
+VALUES (1048232869488627720, 'basic.defaultOpen', '0', 'text', 14);
 
 INSERT INTO `core_menu` VALUES (70, 0, 1, 'msg', NULL, 200, NULL, '/msg', 1, 1, 0);
 
