@@ -1,5 +1,6 @@
 <script lang="tsx" setup>
 import icon_upload_outlined from '@/assets/svg/icon_upload_outlined.svg'
+import icon_refresh_outlined from '@/assets/svg/icon_refresh_outlined.svg'
 import { Icon } from '@/components/icon-custom'
 import { ElIcon } from 'element-plus-secondary'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -404,6 +405,10 @@ const appendReplaceExcel = response => {
 }
 
 const status = ref(false)
+const currentMode = ref('preview')
+const refreshData = () => {
+  currentMode.value = 'preview'
+}
 
 const uploadStatus = val => {
   status.value = val
@@ -527,8 +532,34 @@ defineExpose({
           :tab-list="tabList"
         ></SheetTabs>
 
+        <div class="table-select_mode">
+          <div class="btn-select">
+            <el-button
+              @click="currentMode = 'preview'"
+              :class="[currentMode === 'preview' && 'is-active']"
+              text
+            >
+              {{ t('chart.data_preview') }}
+            </el-button>
+            <el-button
+              @click="currentMode = 'select'"
+              :class="[currentMode === 'select' && 'is-active']"
+              text
+            >
+              {{ t('data_set.field_selection') }}
+            </el-button>
+          </div>
+          <el-button @click="refreshData" secondary>
+            <template #icon>
+              <el-icon>
+                <Icon><icon_refresh_outlined class="svg-icon" /></Icon>
+              </el-icon>
+            </template>
+            {{ t('data_set.refresh_data') }}
+          </el-button>
+        </div>
         <div class="info-table" v-if="isResize">
-          <el-auto-resizer>
+          <el-auto-resizer v-if="currentMode === 'preview'">
             <template #default="{ height, width }">
               <el-table-v2
                 :columns="columns"
@@ -540,6 +571,28 @@ defineExpose({
               />
             </template>
           </el-auto-resizer>
+          <el-table header-class="header-cell" v-else :data="columns" style="width: 100%">
+            <el-table-column type="selection" width="55" />
+            <el-table-column :label="t('data_set.field_name')">
+              <template #default="scope">{{ scope.row.title }}</template>
+            </el-table-column>
+            <el-table-column :label="t('data_set.field_type')">
+              <template #default="scope">
+                <div class="flex-align-center">
+                  <el-icon>
+                    <Icon>
+                      <component
+                        :class="`svg-icon field-icon-${fieldType[scope.row.fieldType]}`"
+                        :is="iconFieldMap[fieldType[scope.row.fieldType]]"
+                      ></component>
+                    </Icon>
+                  </el-icon>
+
+                  {{ t(`dataset.${fieldType[scope.row.fieldType]}`) }}
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </template>
     </div>
@@ -554,6 +607,40 @@ defineExpose({
   margin: -8px -24px 0 -24px;
   .ed-form-item {
     margin-bottom: 16px;
+  }
+
+  .table-select_mode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f5f6f7;
+    padding: 16px;
+    .btn-select {
+      width: 164px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px solid #bbbfc4;
+      border-radius: 4px;
+
+      .is-active {
+        background: var(--ed-color-primary-1a, rgba(51, 112, 255, 0.1));
+      }
+
+      .ed-button:not(.is-active) {
+        color: #1f2329;
+      }
+      .ed-button.is-text {
+        height: 24px;
+        width: 74px;
+        line-height: 24px;
+      }
+      .ed-button + .ed-button {
+        margin-left: 4px;
+      }
+    }
   }
 
   .detail-operate {
@@ -601,7 +688,7 @@ defineExpose({
 
     .info-table {
       width: 100%;
-      height: calc(100% - 315px);
+      height: calc(100% - 379px);
     }
   }
 }
