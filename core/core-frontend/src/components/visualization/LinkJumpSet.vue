@@ -347,110 +347,123 @@
                         </div>
                       </template>
                       <template v-if="state.activeCollapse === 'filter'">
-                        <el-row style="margin-bottom: 8px" :gutter="8">
-                          <el-col :span="12"> 源条件 </el-col>
-                          <el-col :span="1"></el-col>
-                          <el-col :span="10" style="margin-left: -2.9%"> 联动外部参数 </el-col>
-                        </el-row>
-                        <div class="main-scrollbar-container">
-                          <el-scrollbar height="fit-content" max-height="178px">
-                            <div
-                              style="display: flex; margin-bottom: 6px"
-                              v-for="(
-                                targetViewInfo, index
-                              ) in state.linkJumpInfo.targetViewInfoList.filter(
-                                item => item.targetType === 'outerParams'
-                              )"
-                              :key="index"
-                            >
-                              <div style="flex: 1">
-                                <el-select
-                                  v-model="targetViewInfo.sourceFieldActiveId"
-                                  :placeholder="'请选择字段'"
-                                  style="width: 100%"
-                                >
-                                  <el-option
-                                    v-for="curFilterField in state.linkJumpCurFilterFieldArray"
-                                    :key="curFilterField.id"
-                                    :label="curFilterField.name"
-                                    :value="curFilterField.id"
-                                  >
-                                    <span class="custom-option">
-                                      <Icon
-                                        ><component
-                                          class="svg-icon"
-                                          style="width: 14px; height: 14px"
-                                          :is="iconChartMap['filter']"
-                                        ></component
-                                      ></Icon>
-                                      <span
-                                        style="float: left; margin-left: 4px; font-size: 14px"
-                                        >{{ curFilterField.name }}</span
-                                      >
-                                    </span>
-                                  </el-option>
-                                </el-select>
-                              </div>
-                              <div class="icon-center">
-                                <Icon name="dv-link-target"
-                                  ><dvLinkTarget style="width: 20px; height: 20px" class="svg-icon"
-                                /></Icon>
-                              </div>
-                              <div style="flex: 1">
-                                <el-select
-                                  v-model="targetViewInfo.targetViewId"
-                                  :disabled="!targetViewInfo.sourceFieldActiveId"
-                                  :placeholder="'请选择参数'"
-                                  style="width: 100%"
-                                  @change="viewInfoOnChange(targetViewInfo)"
-                                >
-                                  <el-option
-                                    v-for="item in state.currentOutParams"
-                                    :key="item.id"
-                                    :label="item.title"
-                                    :value="item.id"
-                                  >
-                                    <span class="custom-option">
-                                      <Icon
-                                        ><component
-                                          class="svg-icon view-type-icon"
-                                          style="width: 14px; height: 14px"
-                                          :is="iconChartMap[item.type]"
-                                        ></component
-                                      ></Icon>
-                                      <span
-                                        style="float: left; margin-left: 4px; font-size: 14px"
-                                        >{{ item.title }}</span
-                                      >
-                                    </span>
-                                  </el-option>
-                                </el-select>
-                              </div>
-
-                              <el-button
-                                class="m-del-icon-btn"
-                                text
-                                @click="deleteLinkJumpField(index)"
-                              >
-                                <el-icon size="20px">
-                                  <Icon name="icon_delete-trash_outlined"
-                                    ><icon_deleteTrash_outlined class="svg-icon"
-                                  /></Icon>
-                                </el-icon>
-                              </el-button>
-                            </div>
-                          </el-scrollbar>
-                          <el-button
-                            style="margin-top: 8px"
-                            :disabled="!state.linkJumpInfo.targetDvId"
-                            type="primary"
-                            icon="Plus"
-                            text
-                            @click="addLinkJumpField('outerParams')"
+                        <template v-if="state.currentOutParams.length === 0">
+                          <span
+                            >目标仪表板无外部参数，因此无法携带条件查询，如有需要，<a
+                              class="target_jump"
+                              @click="resourceEdit(state.linkJumpInfo.targetDvId)"
+                              >请前往设置外部参数</a
+                            ></span
                           >
-                            {{ t('visualization.add_jump_field') }}
-                          </el-button>
-                        </div>
+                        </template>
+                        <template v-if="state.currentOutParams.length > 0">
+                          <el-row style="margin-bottom: 8px" :gutter="8">
+                            <el-col :span="12"> 源条件 </el-col>
+                            <el-col :span="1"></el-col>
+                            <el-col :span="10" style="margin-left: -2.9%"> 联动外部参数 </el-col>
+                          </el-row>
+                          <div class="main-scrollbar-container">
+                            <el-scrollbar height="fit-content" max-height="178px">
+                              <div
+                                style="display: flex; margin-bottom: 6px"
+                                v-for="(
+                                  targetViewInfo, index
+                                ) in state.linkJumpInfo.targetViewInfoList.filter(
+                                  item => item.targetType === 'outerParams'
+                                )"
+                                :key="index"
+                              >
+                                <div style="flex: 1">
+                                  <el-select
+                                    v-model="targetViewInfo.sourceFieldActiveId"
+                                    :placeholder="'请选择字段'"
+                                    style="width: 100%"
+                                  >
+                                    <el-option
+                                      v-for="curFilterField in state.linkJumpCurFilterFieldArray"
+                                      :key="curFilterField.id"
+                                      :label="curFilterField.name"
+                                      :value="curFilterField.id"
+                                    >
+                                      <span class="custom-option">
+                                        <Icon
+                                          ><component
+                                            class="svg-icon"
+                                            style="width: 14px; height: 14px"
+                                            :is="iconChartMap['filter']"
+                                          ></component
+                                        ></Icon>
+                                        <span
+                                          style="float: left; margin-left: 4px; font-size: 14px"
+                                          >{{ curFilterField.name }}</span
+                                        >
+                                      </span>
+                                    </el-option>
+                                  </el-select>
+                                </div>
+                                <div class="icon-center">
+                                  <Icon name="dv-link-target"
+                                    ><dvLinkTarget
+                                      style="width: 20px; height: 20px"
+                                      class="svg-icon"
+                                  /></Icon>
+                                </div>
+                                <div style="flex: 1">
+                                  <el-select
+                                    v-model="targetViewInfo.targetViewId"
+                                    :disabled="!targetViewInfo.sourceFieldActiveId"
+                                    :placeholder="'请选择参数'"
+                                    style="width: 100%"
+                                    @change="viewInfoOnChange(targetViewInfo)"
+                                  >
+                                    <el-option
+                                      v-for="item in state.currentOutParams"
+                                      :key="item.id"
+                                      :label="item.title"
+                                      :value="item.id"
+                                    >
+                                      <span class="custom-option">
+                                        <Icon
+                                          ><component
+                                            class="svg-icon view-type-icon"
+                                            style="width: 14px; height: 14px"
+                                            :is="iconChartMap[item.type]"
+                                          ></component
+                                        ></Icon>
+                                        <span
+                                          style="float: left; margin-left: 4px; font-size: 14px"
+                                          >{{ item.title }}</span
+                                        >
+                                      </span>
+                                    </el-option>
+                                  </el-select>
+                                </div>
+
+                                <el-button
+                                  class="m-del-icon-btn"
+                                  text
+                                  @click="deleteLinkJumpField(index)"
+                                >
+                                  <el-icon size="20px">
+                                    <Icon name="icon_delete-trash_outlined"
+                                      ><icon_deleteTrash_outlined class="svg-icon"
+                                    /></Icon>
+                                  </el-icon>
+                                </el-button>
+                              </div>
+                            </el-scrollbar>
+                            <el-button
+                              style="margin-top: 8px"
+                              :disabled="!state.linkJumpInfo.targetDvId"
+                              type="primary"
+                              icon="Plus"
+                              text
+                              @click="addLinkJumpField('outerParams')"
+                            >
+                              {{ t('visualization.add_jump_field') }}
+                            </el-button>
+                          </div>
+                        </template>
                       </template>
                     </el-form>
                   </template>
@@ -547,6 +560,10 @@
         </el-button>
       </el-row>
     </div>
+    <XpackComponent
+      ref="openHandler"
+      jsname="L2NvbXBvbmVudC9lbWJlZGRlZC1pZnJhbWUvT3BlbkhhbmRsZXI="
+    />
   </el-dialog>
 </template>
 
@@ -579,12 +596,20 @@ import { Search } from '@element-plus/icons-vue'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import EmptyBackground from '@/components/empty-background/src/EmptyBackground.vue'
 import { filterEmptyFolderTree } from '@/utils/canvasUtils'
+import { useEmitt } from '@/hooks/web/useEmitt'
+import { useAppStoreWithOut } from '@/store/modules/app'
+import { XpackComponent } from '@/components/plugin'
+import { useCache } from '@/hooks/web/useCache'
+import { useEmbedded } from '@/store/modules/embedded'
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewInfo, componentData } = storeToRefs(dvMainStore)
 const linkJumpInfoTree = ref(null)
 const { t } = useI18n()
 const dialogShow = ref(false)
 const snapshotStore = snapshotStoreWithOut()
+const appStore = useAppStoreWithOut()
+const { wsCache } = useCache()
+const embeddedStore = useEmbedded()
 
 const resourceType = computed(() =>
   dvInfo.value.type === 'dashboard' ? t('work_branch.dashboard') : t('work_branch.big_data_screen')
@@ -939,6 +964,39 @@ const outerContentShow = computed(() => {
 
 const filterNodeMethod = (value, data) => {
   return !value || data.checked
+}
+
+const isEmbedded = computed(() => appStore.getIsDataEaseBi || appStore.getIsIframe)
+const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
+
+const resourceEdit = resourceId => {
+  const baseUrl = dvInfo.value.type === 'dataV' ? '#/dvCanvas?dvId=' : '#/dashboard?resourceId='
+  if (isEmbedded.value) {
+    embeddedStore.clearState()
+    if (dvInfo.value.type === 'dataV') {
+      embeddedStore.setDvId(resourceId)
+    } else {
+      embeddedStore.setResourceId(resourceId)
+    }
+    useEmitt().emitter.emit(
+      'changeCurrentComponent',
+      dvInfo.value.type === 'dataV' ? 'VisualizationEditor' : 'DashboardEditor'
+    )
+    return
+  }
+  const newWindow = window.open(baseUrl + resourceId, openType)
+  initOpenHandler(newWindow)
+}
+
+const openHandler = ref(null)
+const initOpenHandler = newWindow => {
+  if (openHandler?.value) {
+    const pm = {
+      methodName: 'initOpenHandler',
+      args: newWindow
+    }
+    openHandler.value.invokeMethod(pm)
+  }
 }
 
 watch(
@@ -1439,5 +1497,10 @@ span {
   :deep(.ed-tabs__item):not(.is-active) {
     color: #646a73;
   }
+}
+
+.target_jump {
+  color: var(--ed-color-primary);
+  cursor: pointer;
 }
 </style>
