@@ -14,31 +14,34 @@ import {
 } from '@/views/chart/components/editor/util/chart'
 import {
   BaseTooltip,
-  getAutoAdjustPosition,
-  getTooltipDefaultOptions,
-  S2Theme,
-  setTooltipContainerStyle,
-  Style,
-  S2Options,
-  SERIES_NUMBER_FIELD,
-  type PivotSheet,
-  type Node,
-  type Meta,
-  S2DataConfig,
-  SpreadSheet,
-  InteractionStateName,
-  InteractionName,
   DataCellBrushSelection,
-  TableDataCell,
-  MergedCell,
+  getAutoAdjustPosition,
+  getEmptyPlaceholder,
   getPolygonPoints,
-  renderPolygon,
+  getTooltipDefaultOptions,
+  InteractionName,
+  InteractionStateName,
+  MergedCell,
   MergedCellInfo,
-  ViewMeta,
+  type Meta,
+  type Node,
+  type PivotSheet,
+  renderPolygon,
+  renderText,
+  S2DataConfig,
+  S2Options,
+  S2Theme,
+  SERIES_NUMBER_FIELD,
+  setTooltipContainerStyle,
+  SHAPE_STYLE_MAP,
+  SpreadSheet,
+  Style,
+  TableColCell,
+  TableDataCell,
   updateShapeAttr,
-  SHAPE_STYLE_MAP
+  ViewMeta
 } from '@antv/s2'
-import { keys, intersection, filter, cloneDeep, merge, find, repeat } from 'lodash-es'
+import { cloneDeep, filter, find, intersection, keys, merge, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
 import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vue'
 import Exceljs from 'exceljs'
@@ -1557,4 +1560,179 @@ export class CustomDataCell extends TableDataCell {
       updateShapeAttr(shape, SHAPE_STYLE_MAP.borderColor, 'transparent')
     })
   }
+
+  /**
+   * 重写绘制文本内容的方法
+   * @protected
+   */
+  protected drawTextShape() {
+    if (this.meta.autoWrap) {
+      drawTextShape(this, false)
+    } else {
+      super.drawTextShape()
+    }
+  }
+}
+
+export class CustomTableColCell extends TableColCell {
+
+  /**
+   * 重写是为了表头文本内容的换行
+   * @protected
+   */
+  protected drawTextShape() {
+    if (this.meta.autoWrap) {
+      drawTextShape(this, true)
+    } else {
+      super.drawTextShape()
+    }
+  }
+}
+
+/**
+ * 绘制文本 换行
+ * @param cell
+ * @param isHeader
+ */
+const drawTextShape = (cell, isHeader) => {
+  // 换行符
+  const lineBreak = '\n'
+  // 省略号
+  const ellipsis = '...'
+  // 用户配置的最大行数
+  const maxLines = cell.meta.maxLines ?? 1
+  const {
+    options: { placeholder },
+  } = cell.spreadsheet;
+  const emptyPlaceholder = getEmptyPlaceholder(this, placeholder);
+  // 单元格文本
+  const { formattedValue } = cell.getFormattedFieldValue()
+  // 获取文本样式
+  const textStyle = cell.getTextStyle()
+  // 宽度能放几个字符，就放几个，放不下就换行
+  let wrapText = getWrapText(formattedValue ? formattedValue?.toString() : emptyPlaceholder, textStyle, cell.meta.width, cell.spreadsheet)
+  const lines = wrapText.split(lineBreak)
+
+  // 不是表头，处理文本高度和换行
+  if (!isHeader) {
+    const textHeight = cell.spreadsheet.measureTextHeight(wrapText.replaceAll(lineBreak, ''), textStyle)
+    const lineCountInCell = Math.floor(cell.meta.height / textHeight)
+    const wrapTextArr = lines.slice(0, lineCountInCell)
+
+    // 根据行数调整换行后的文本内容
+    wrapText = lineCountInCell === 1
+      ? lines[0].slice(0, -1) + ellipsis
+      : wrapTextArr.join(lineBreak) || ellipsis
+  }
+  const resultWrapArr = wrapText.split(lineBreak)
+  // 控制最大行数
+  if (lines.length > maxLines) {
+    const temp = resultWrapArr.slice(0, maxLines)
+    if (!temp[temp.length - 1].endsWith(ellipsis)) {
+      temp[temp.length - 1] = temp[temp.length - 1][0] + ellipsis
+    }
+    wrapText = temp.join(lineBreak)
+  }
+
+  // 设置最终文本和其宽度
+  cell.actualText = wrapText
+  cell.actualTextWidth = cell.spreadsheet.measureTextWidth(wrapText, textStyle)
+
+  // 获取文本位置并渲染文本
+  const position = cell.getTextPosition()
+  // 绘制文本
+  cell.textShape = renderText(cell, [cell.textShape], position.x, position.y, wrapText, textStyle)
+
+  // 将文本形状添加到形状数组
+  cell.textShapes.push(cell.textShape)
+}
+
+/**
+ * 计算表头高度
+ * @param info 单元格信息
+ * @param newChart
+ * @param tableHeader 表头配置
+ * @param basicStyle 表格基础样式
+ * @param layoutResult
+ */
+export const calculateHeaderHeight = (info, newChart, tableHeader, basicStyle, layoutResult) => {
+  const ev = layoutResult || newChart.facet.layoutResult
+  const maxLines = basicStyle.maxLines ?? 1
+  const textStyle = { ...newChart.theme.cornerCell.text }
+  const sourceText = info.info.meta.value
+  let maxHeight = getWrapTextHeight(getWrapText(sourceText, textStyle, info.info.resizedWidth, ev.spreadsheet), textStyle, ev.spreadsheet, maxLines)
+
+  // 获取最大高度的列，排除当前列
+  const maxHeightCol = ev.colLeafNodes.filter(n => n.colIndex !== info.info.meta.colIndex)
+    .reduce((maxHeightNode, currentNode) => {
+      const wrapTextHeight = getWrapTextHeight(getWrapText(currentNode.value, textStyle, currentNode.width, currentNode.spreadsheet), textStyle, currentNode.spreadsheet, maxLines)
+      return wrapTextHeight > maxHeightNode.height
+        ? { height: wrapTextHeight, colIndex: currentNode.colIndex }
+        : maxHeightNode
+    }, { height: 0 })
+
+  // 使用最大高度
+  maxHeight = Math.max(maxHeight, maxHeightCol.height) + textStyle.fontSize + 10.5
+
+  if (layoutResult) {
+    if (basicStyle.tableColumnMode === 'adapt') maxHeight -= textStyle.fontSize - 2
+    ev.colLeafNodes.forEach(n => n.height = maxHeight)
+    ev.colsHierarchy.height = maxHeight
+  }
+
+  newChart.store.set('autoCalcHeight', maxHeight)
+}
+
+/**
+ * 获取换行文本
+ * 累加字符串单个字符的宽度，超过单元格宽度时，添加换行
+ * @param sourceText
+ * @param textStyle
+ * @param cellWidth
+ * @param spreadsheet
+ */
+const getWrapText = (sourceText, textStyle, cellWidth, spreadsheet) => {
+  if (!sourceText && sourceText !== 0) return ''
+  sourceText = sourceText.toString().trim()
+  const getTextWidth = text => spreadsheet.measureTextWidthRoughly(text, textStyle)
+
+  let resultWrapText = ''
+  let restText = ''
+  let restTextWidth = 0
+  for (let i = 0; i < sourceText.length; i++) {
+    const char = sourceText[i]
+    const charWidth = getTextWidth(char)
+    restTextWidth += charWidth
+    restText += char
+    // 中文时，需要单元格宽度减去16个文字宽度，否则会超出单元格宽度
+    const cWidth = char.charCodeAt(0) >= 128 ? 16 : 0
+    // 添加换行
+    if (restTextWidth >= cellWidth - textStyle.fontSize - cWidth) {
+      // 最后一个字符不添加换行符
+      resultWrapText += restText + (i !== sourceText.length - 1 ? '\n' : '')
+      restText = ''
+      restTextWidth = 0
+    }
+  }
+
+  resultWrapText += restText
+  return resultWrapText
+}
+/**
+ * 计算文本行高
+ * @param wrapText
+ * @param textStyle
+ * @param spreadsheet
+ * @param maxLines 最大行数
+ */
+const getWrapTextHeight = (wrapText, textStyle, spreadsheet, maxLines) => {
+  // 行内最高
+  let maxHeight = 0
+  // 获取最高字符的高度
+  for (const char of wrapText) {
+    maxHeight = Math.max(maxHeight, spreadsheet.measureTextHeight(char, textStyle))
+  }
+  // 行数
+  const lines = wrapText.split('\n').length
+  return Math.min(lines, maxLines) * maxHeight
 }

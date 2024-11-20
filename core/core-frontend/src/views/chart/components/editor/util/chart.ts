@@ -1604,7 +1604,9 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   },
   zoomLevel: 7,
   customIcon: '',
-  showHoverStyle: true
+  showHoverStyle: true,
+  autoWrap: false,
+  maxLines: 3
 }
 
 export const BASE_VIEW_CONFIG = {
