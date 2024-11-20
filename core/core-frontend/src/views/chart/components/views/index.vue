@@ -466,14 +466,42 @@ const jumpClick = param => {
     // 内部仪表板跳转
     if (jumpInfo.linkType === 'inner') {
       if (jumpInfo.targetDvId) {
+        const filterOuterParams = {}
+        const curFilter = dvMainStore.getLastViewRequestInfo(param.viewId)
+        const targetViewInfoList = jumpInfo.targetViewInfoList
+        if (
+          curFilter &&
+          curFilter.filter &&
+          curFilter.filter.length > 0 &&
+          targetViewInfoList &&
+          targetViewInfoList.length > 0
+        ) {
+          // do filter
+          curFilter.filter.forEach(filterItem => {
+            targetViewInfoList.forEach(targetViewInfo => {
+              if (targetViewInfo.sourceFieldActiveId === filterItem.filterId) {
+                filterOuterParams[targetViewInfo.outerParamsName] = filterItem.value
+              }
+            })
+          })
+        }
+        let attachParamsInfo
+        if (Object.keys(filterOuterParams).length > 0) {
+          attachParamsInfo =
+            '&attachParams=' + encodeURIComponent(Base64.encode(JSON.stringify(filterOuterParams)))
+        }
+        // 携带外部参数
         if (publicLinkStatus.value) {
           // 判断是否有公共链接ID
           if (jumpInfo.publicJumpId) {
-            const url = `${embeddedBaseUrl}#/de-link/${
+            let url = `${embeddedBaseUrl}#/de-link/${
               jumpInfo.publicJumpId
             }?fromLink=true&jumpInfoParam=${encodeURIComponent(
               Base64.encode(JSON.stringify(param))
             )}`
+            if (attachParamsInfo) {
+              url = url + attachParamsInfo
+            }
             const currentUrl = window.location.href
             localStorage.setItem('beforeJumpUrl', currentUrl)
             windowsJump(url, jumpInfo.jumpType, jumpInfo.windowSize)
@@ -481,9 +509,12 @@ const jumpClick = param => {
             ElMessage.warning(t('visualization.public_link_tips'))
           }
         } else {
-          const url = `${embeddedBaseUrl}#/preview?dvId=${
+          let url = `${embeddedBaseUrl}#/preview?dvId=${
             jumpInfo.targetDvId
           }&fromLink=true&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+          if (attachParamsInfo) {
+            url = url + attachParamsInfo
+          }
           const currentUrl = window.location.href
           localStorage.setItem('beforeJumpUrl', currentUrl)
           if (isIframe.value || isDataEaseBi.value) {

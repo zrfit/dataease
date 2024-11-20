@@ -13,3 +13,5 @@ ALTER TABLE `visualization_link_jump_target_view_info`
 ALTER TABLE `visualization_link_jump_target_view_info`
     MODIFY COLUMN `target_view_id` varchar(50) NULL DEFAULT NULL COMMENT '目标图表ID' AFTER `source_field_active_id`,
     MODIFY COLUMN `target_field_id` varchar(50) NULL DEFAULT NULL COMMENT '目标字段ID' AFTER `target_view_id`;
+
+update visualization_link_jump_target_view_info set target_type = 'view';
