@@ -73,7 +73,7 @@ public class VisualizationOuterParamsService implements VisualizationOuterParams
         List<VisualizationOuterParamsInfo> paramsInfoNameIdList = extOuterParamsMapper.getVisualizationOuterParamsInfoBase(visualizationId);
         if(!CollectionUtils.isEmpty(paramsInfoNameIdList)){
             paramsInfoNameIdMap = paramsInfoNameIdList.stream()
-                    .collect(Collectors.toMap(VisualizationOuterParamsInfo::getParamName, VisualizationOuterParamsInfo::getParamsId));
+                    .collect(Collectors.toMap(VisualizationOuterParamsInfo::getParamName, VisualizationOuterParamsInfo::getParamsInfoId));
         }
         //清理原有数据
         extOuterParamsMapper.deleteOuterParamsTargetWithVisualizationId(visualizationId);
