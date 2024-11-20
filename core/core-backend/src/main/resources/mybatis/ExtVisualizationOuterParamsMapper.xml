@@ -142,7 +142,7 @@
         <select id="getVisualizationOuterParamsInfoBase" resultType="io.dataease.visualization.dao.auto.entity.VisualizationOuterParamsInfo">
            SELECT
            	vopi.param_name,
-           	vopi.params_id
+           	vopi.params_info_id
            FROM
            	visualization_outer_params_info vopi
            	INNER JOIN visualization_outer_params vop ON vop.params_id = vopi.params_id
