@@ -2672,6 +2672,7 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    out_params_no_select: '外部参数无需选择',
     filter_no_select: '过滤组件无需选择',
     forbidden_copy: '当前组件不允许复制',
     url_check_error: '跳转错误，URL不合法',

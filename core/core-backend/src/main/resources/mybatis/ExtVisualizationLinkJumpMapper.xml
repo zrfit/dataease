@@ -155,6 +155,19 @@
         WHERE core_chart_view.id = #{viewId}
     </select>
 
+        <select id="queryOutParamsTargetWithDvId" resultType="io.dataease.api.visualization.vo.VisualizationOutParamsJumpVO">
+            SELECT
+            	vopi.params_id as id,
+            	vopi.param_name as name,
+            	vopi.param_name as title,
+            	'outerParams' as type
+            FROM
+            	visualization_outer_params_info vopi
+            	LEFT JOIN visualization_outer_params vop ON vopi.params_id = vop.params_id
+            WHERE
+            	vop.visualization_id = #{dvId}
+        </select>
+
     <delete id="deleteJumpTargetViewInfo">
         DELETE
         ljtv
