@@ -98,7 +98,9 @@ const handleNewFromCanvasMain = newComponentInfo => {
     adaptCurThemeCommonStyle(component)
     nextTick(() => {
       cyGridster.value.addItemBox(component) //在适当的时候初始化布局组件
-      scrollTo(component.y)
+      nextTick(() => {
+        scrollTo(component.y)
+      })
     })
     snapshotStore.recordSnapshotCache('renderChart', component.id)
   }
