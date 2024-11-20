@@ -199,7 +199,7 @@
                       <div class="jump-com-list">
                         <el-tabs size="small" v-model="state.activeCollapse">
                           <el-tab-pane label="联动图表" name="view"> </el-tab-pane>
-                          <el-tab-pane label="携带查询条件" name="filter-params"> </el-tab-pane>
+                          <el-tab-pane label="携带查询条件" name="filter"> </el-tab-pane>
                         </el-tabs>
                       </div>
                       <template v-if="state.activeCollapse === 'view'">
@@ -215,8 +215,11 @@
                           <el-scrollbar height="fit-content" max-height="178px">
                             <div
                               style="display: flex; margin-bottom: 6px"
-                              v-for="(targetViewInfo, index) in state.linkJumpInfo
-                                .targetViewInfoList"
+                              v-for="(
+                                targetViewInfo, index
+                              ) in state.linkJumpInfo.targetViewInfoList.filter(
+                                item => item.targetType === 'view'
+                              )"
                               :key="index"
                             >
                               <div style="flex: 1">
@@ -262,7 +265,9 @@
                                   @change="viewInfoOnChange(targetViewInfo)"
                                 >
                                   <el-option
-                                    v-for="item in state.currentLinkPanelViewArray"
+                                    v-for="item in state.currentLinkPanelViewArray.filter(
+                                      item => item.type !== 'outerParams'
+                                    )"
                                     :key="item.id"
                                     :label="item.title"
                                     :value="item.id"
@@ -335,7 +340,7 @@
                             type="primary"
                             icon="Plus"
                             text
-                            @click="addLinkJumpField"
+                            @click="addLinkJumpField('view')"
                           >
                             {{ t('visualization.add_jump_field') }}
                           </el-button>
@@ -343,12 +348,9 @@
                       </template>
                       <template v-if="state.activeCollapse === 'filter'">
                         <el-row style="margin-bottom: 8px" :gutter="8">
-                          <el-col :span="7"> 源字段 </el-col>
-                          <el-col :span="2"></el-col>
-                          <el-col :span="7" style="margin-left: -2.9%">
-                            {{ t('visualization.link_view_field') }}
-                          </el-col>
-                          <el-col :span="8"></el-col>
+                          <el-col :span="12"> 源条件 </el-col>
+                          <el-col :span="1"></el-col>
+                          <el-col :span="10" style="margin-left: -2.9%"> 联动外部参数 </el-col>
                         </el-row>
                         <div class="main-scrollbar-container">
                           <el-scrollbar height="fit-content" max-height="178px">
@@ -357,7 +359,7 @@
                               v-for="(
                                 targetViewInfo, index
                               ) in state.linkJumpInfo.targetViewInfoList.filter(
-                                item => item.type === 'outerParams'
+                                item => item.targetType === 'outerParams'
                               )"
                               :key="index"
                             >
@@ -368,23 +370,22 @@
                                   style="width: 100%"
                                 >
                                   <el-option
-                                    v-for="curViewField in state.linkJumpCurViewFieldArray"
-                                    :key="curViewField.id"
-                                    :label="curViewField.name"
-                                    :value="curViewField.id"
+                                    v-for="curFilterField in state.linkJumpCurFilterFieldArray"
+                                    :key="curFilterField.id"
+                                    :label="curFilterField.name"
+                                    :value="curFilterField.id"
                                   >
                                     <span class="custom-option">
                                       <Icon
                                         ><component
                                           class="svg-icon"
                                           style="width: 14px; height: 14px"
-                                          :class="`field-icon-${fieldType[curViewField.deType]}`"
-                                          :is="iconFieldMap[fieldType[curViewField.deType]]"
+                                          :is="iconChartMap['filter']"
                                         ></component
                                       ></Icon>
                                       <span
                                         style="float: left; margin-left: 4px; font-size: 14px"
-                                        >{{ curViewField.name }}</span
+                                        >{{ curFilterField.name }}</span
                                       >
                                     </span>
                                   </el-option>
@@ -445,7 +446,7 @@
                             type="primary"
                             icon="Plus"
                             text
-                            @click="addLinkJumpField"
+                            @click="addLinkJumpField('outerParams')"
                           >
                             {{ t('visualization.add_jump_field') }}
                           </el-button>
@@ -627,6 +628,7 @@ const state = reactive({
   linkJumpInfoArray: [],
   linkJumpInfoXArray: [],
   linkJumpCurViewFieldArray: [],
+  linkJumpCurFilterFieldArray: [], //当前过滤条件明细
   mapJumpInfoArray: {},
   panelList: [],
   linkJumpInfo: null,
@@ -663,6 +665,7 @@ const dialogInit = viewItem => {
 const init = viewItem => {
   state.initState = false
   state.viewId = viewItem.id
+  state.activeCollapse = 'view'
   const chartDetails = canvasViewInfo.value[state.viewId] as ChartObj
   state.curJumpViewInfo = chartDetails
   let checkAllAxisStr =
@@ -701,12 +704,27 @@ const init = viewItem => {
     state.panelList = filterEmptyFolderTree(state.panelList)
   })
 
+  // 获取当前过滤条件明细 过滤原则：1.在当前仪表板或者大屏 2.作用于当前图表
+  state.linkJumpCurFilterFieldArray = []
+  componentData.value.forEach(componentItem => {
+    if (componentItem.component === 'VQuery') {
+      componentItem.propValue.forEach(filterItem => {
+        if (filterItem.checkedFields.includes(state.viewId)) {
+          state.linkJumpCurFilterFieldArray.push({
+            id: filterItem.id,
+            name: filterItem.name,
+            deType: 'filter'
+          })
+        }
+      })
+    }
+  })
+
   if (chartDetails.tableId) {
     // 获取当前数据集信息
     getDatasetDetails(chartDetails.tableId).then(res => {
       state.curDatasetInfo = res || {}
     })
-
     // 获取当前图表的字段信息
     listFieldByDatasetGroup(chartDetails.tableId).then(rsp => {
       state.linkJumpCurViewFieldArray = []
@@ -864,9 +882,10 @@ const dvNodeClick = data => {
     getPanelViewList(data.id)
   }
 }
-const addLinkJumpField = () => {
+const addLinkJumpField = (type = 'view') => {
   state.linkJumpInfo.targetViewInfoList.push({
     targetViewId: '',
+    targetType: type,
     targetFieldId: ''
   })
 }

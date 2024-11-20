@@ -30,4 +30,9 @@ public class VisualizationLinkJumpTargetViewInfoVO {
      * 联动目标类型 view 图表 filter 过滤组件 outParams 外部参数
      */
     private String targetType;
+
+    /**
+     * 外部参数名称 当targetType==outParams时 实时查询对应名称
+     */
+    private String outerParamsName;
 }
