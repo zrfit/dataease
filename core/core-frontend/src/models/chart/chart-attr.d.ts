@@ -326,6 +326,14 @@ declare interface ChartBasicStyle {
    * 表格鼠标悬浮样式
    */
   showHoverStyle: boolean
+  /**
+   * 明细表单元格自动换行
+   */
+  autoWrap: boolean
+  /**
+   * 最大行数
+   */
+  maxLines?: boolean
 }
 /**
  * 表头属性
