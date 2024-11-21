@@ -11,7 +11,6 @@ import { formatRoute } from '@/router/establish'
 import HeaderMenuItem from './HeaderMenuItem.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { Icon } from '@/components/icon-custom'
-import { ElHeader, ElMenu } from 'element-plus-secondary'
 import SystemCfg from './SystemCfg.vue'
 import ToolboxCfg from './ToolboxCfg.vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -30,6 +29,7 @@ const { push } = useRouter()
 const route = useRoute()
 import { useCache } from '@/hooks/web/useCache'
 import { useI18n } from '@/hooks/web/useI18n'
+import { msgCountApi } from '@/api/msg'
 const { wsCache } = useCache('localStorage')
 const aiBaseUrl = ref('https://maxkb.fit2cloud.com/ui/chat/2ddd8b594ce09dbb?mode=embed')
 const handleIconClick = () => {
@@ -125,6 +125,10 @@ onMounted(() => {
   initShowToolbox()
   initAiBase()
   initCopilotBase()
+
+  msgCountApi().then(res => {
+    console.log(res.data)
+  })
 })
 </script>
 
