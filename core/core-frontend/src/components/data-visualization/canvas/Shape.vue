@@ -881,6 +881,8 @@ const padding3D = computed(() => {
 const componentBackgroundStyle = computed(() => {
   if (element.value.commonBackground && element.value.component !== 'GroupArea') {
     const {
+      backdropFilterEnable,
+      backdropFilter,
       backgroundColorSelect,
       backgroundColor,
       backgroundImageEnable,
@@ -930,6 +932,9 @@ const componentBackgroundStyle = computed(() => {
     }
     if (element.value.component !== 'UserView') {
       style['overflow'] = 'hidden'
+    }
+    if (backdropFilterEnable) {
+      style['backdrop-filter'] = 'blur(' + backdropFilter + 'px)'
     }
     return style
   }
