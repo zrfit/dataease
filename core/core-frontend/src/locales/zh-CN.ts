@@ -3827,6 +3827,22 @@ export default {
       'API Key 是您访问 DataEase API 的密钥，具有账户的完全权限，请您务必妥善保管！不要以任何方式公开 API Key 到外部渠道，避免被他人利用造成安全威胁。'
   },
   free: {
-    title: '游离资源管理'
+    title: '游离资源管理',
+    no_data: '暂无游离资源',
+    sync: '迁移',
+    quick: '一键',
+    batch: '批量',
+    resource: '资源',
+    view_association: '查看血缘关系',
+    quick_sync_tips: '所有仪表板、数据大屏、数据集、数据源，将全部迁移到【迁移资源】文件夹。',
+    batch_sync_tips:
+      '1. 与选中资源相关的仪表板、数据大屏、数据集、数据源，也将一并迁移到对应资源的【迁移资源】文件夹；',
+    batch_sync_tips1: '2. 迁移文件夹将同时迁移该文件夹下的子文件夹和资源。',
+    quick_del_confirm: '确定删除所有游离资源吗？',
+    quick_del_tips: '资源删除后，不可撤销。',
+    quick_sync_confirm: '确定迁移所有游离资源吗？',
+    quick_sync_confirm_tips: '迁移删除后，不可撤销，请谨慎操作。',
+    batch_sync_confirm: '确定迁移 {0} 项及其相关游离资源吗？',
+    single_sync_confirm: '确定迁移该资源吗'
   }
 }
