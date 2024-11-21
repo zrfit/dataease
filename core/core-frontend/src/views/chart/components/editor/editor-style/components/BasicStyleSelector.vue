@@ -706,6 +706,7 @@ onMounted(() => {
             v-model="state.basicStyleForm.areaBorderColor"
             :effect="themes"
             is-custom
+            show-alpha
             :trigger-width="108"
             class="color-picker-style"
             :predefine="predefineColors"
@@ -725,6 +726,7 @@ onMounted(() => {
             :persistent="false"
             v-model="state.basicStyleForm.areaBaseColor"
             is-custom
+            show-alpha
             :effect="themes"
             :trigger-width="108"
             class="color-picker-style"
