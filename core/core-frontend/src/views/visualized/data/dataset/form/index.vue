@@ -38,7 +38,7 @@ import EmptyBackground from '@/components/empty-background/src/EmptyBackground.v
 import { Icon } from '@/components/icon-custom'
 import { useWindowSize } from '@vueuse/core'
 import CalcFieldEdit from './CalcFieldEdit.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import UnionEdit from './UnionEdit.vue'
 import type { FormInstance } from 'element-plus-secondary'
 import type { BusiTreeNode } from '@/models/tree/TreeNode'
@@ -78,6 +78,7 @@ const appStore = useAppStoreWithOut()
 const embeddedStore = useEmbedded()
 const { t } = useI18n()
 const route = useRoute()
+const { push } = useRouter()
 const quotaTableHeight = ref(238)
 const creatDsFolder = ref()
 const editCalcField = ref(false)
@@ -251,7 +252,16 @@ const pushDataset = () => {
   }
   const routeName = embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded' : 'dataset'
   wsCache.set(`${routeName}-info-id`, nodeInfo.id)
-  history.back()
+  if (!!history.state.back) {
+    history.back()
+  } else {
+    push({
+      name: routeName,
+      params: {
+        id: nodeInfo.id
+      }
+    })
+  }
 }
 
 const backToMain = () => {

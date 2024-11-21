@@ -287,7 +287,11 @@ const backHandler = (url: string) => {
   }
   wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
   wsCache.set('db-info-id', dvInfo.value.id)
-  history.back()
+  if (!!history.state.back) {
+    history.back()
+  } else {
+    window.open(url, '_self')
+  }
 }
 
 const multiplexingCanvasOpen = () => {
