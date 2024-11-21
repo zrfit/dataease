@@ -43,6 +43,7 @@
         <result column="publicJumpId" jdbcType="VARCHAR" property="publicJumpId"/>
         <collection property="targetViewInfoList"
                     ofType="io.dataease.api.visualization.vo.VisualizationLinkJumpTargetViewInfoVO">
+            <result column="target_id" jdbcType="BIGINT" property="targetId"/>
             <result column="target_view_id" jdbcType="BIGINT" property="targetViewId"/>
             <result column="target_field_id" jdbcType="BIGINT" property="targetFieldId"/>
             <result column="source_field_active_id" jdbcType="VARCHAR" property="sourceFieldActiveId"/>
@@ -87,6 +88,7 @@
             xpack_share.uuid AS publicJumpId,
             ifnull( visualization_link_jump_info.checked, 0 ) AS checked,
             ifnull( visualization_link_jump_info.attach_params, 0 ) AS attach_params,
+            visualization_link_jump_target_view_info.target_id,
             visualization_link_jump_target_view_info.target_view_id,
             visualization_link_jump_target_view_info.target_field_id,
             visualization_link_jump_target_view_info.target_type,
