@@ -236,7 +236,11 @@ const backHandler = (url: string) => {
   dvMainStore.canvasStateChange({ key: 'curPointArea', value: 'base' })
   wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
   wsCache.set('dv-info-id', dvInfo.value.id)
-  history.back()
+  if (!!history.state.back) {
+    history.back()
+  } else {
+    window.open(url, '_self')
+  }
 }
 const openHandler = ref(null)
 
