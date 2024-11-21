@@ -324,7 +324,7 @@
                               <el-button
                                 class="m-del-icon-btn"
                                 text
-                                @click="deleteLinkJumpField(index)"
+                                @click="deleteLinkJumpFieldById(targetViewInfo.targetId)"
                               >
                                 <el-icon size="20px">
                                   <Icon name="icon_delete-trash_outlined"
@@ -442,7 +442,7 @@
                                 <el-button
                                   class="m-del-icon-btn"
                                   text
-                                  @click="deleteLinkJumpField(index)"
+                                  @click="deleteLinkJumpFieldById(targetViewInfo.targetId)"
                                 >
                                   <el-icon size="20px">
                                     <Icon name="icon_delete-trash_outlined"
@@ -601,6 +601,7 @@ import { useAppStoreWithOut } from '@/store/modules/app'
 import { XpackComponent } from '@/components/plugin'
 import { useCache } from '@/hooks/web/useCache'
 import { useEmbedded } from '@/store/modules/embedded'
+import { guid } from '@/views/visualized/data/dataset/form/util'
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewInfo, componentData } = storeToRefs(dvMainStore)
 const linkJumpInfoTree = ref(null)
@@ -909,14 +910,25 @@ const dvNodeClick = data => {
 }
 const addLinkJumpField = (type = 'view') => {
   state.linkJumpInfo.targetViewInfoList.push({
+    targetId: guid(),
     targetViewId: '',
     targetType: type,
     targetFieldId: ''
   })
 }
 
-const deleteLinkJumpFieldById = index => {
-  state.linkJumpInfo.targetViewInfoList.splice(index, 1)
+const deleteLinkJumpFieldById = targetId => {
+  if (targetId) {
+    let indexResult
+    state.linkJumpInfo.targetViewInfoList.forEach((item, index) => {
+      if (targetId === item.targetId) {
+        indexResult = index
+      }
+    })
+    if (indexResult !== undefined) {
+      state.linkJumpInfo.targetViewInfoList.splice(indexResult, 1)
+    }
+  }
 }
 
 const deleteLinkJumpField = index => {
