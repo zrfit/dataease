@@ -761,7 +761,8 @@ export const DEFAULT_THRESHOLD: ChartThreshold = {
   liquidThreshold: '',
   labelThreshold: [],
   tableThreshold: [],
-  textLabelThreshold: []
+  textLabelThreshold: [],
+  lineLabelThreshold: []
 }
 export const DEFAULT_SCROLL: ScrollCfg = {
   open: false,

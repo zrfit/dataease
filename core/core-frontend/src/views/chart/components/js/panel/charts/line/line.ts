@@ -358,7 +358,8 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
       this.configXAxis,
       this.configYAxis,
       this.configSlider,
-      this.configAnalyse
+      this.configAnalyse,
+      this.configConditions
     )(chart, options)
   }
 
