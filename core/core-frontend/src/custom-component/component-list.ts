@@ -177,12 +177,14 @@ export const MULTI_DIMENSIONAL = {
 
 export const COMMON_COMPONENT_BACKGROUND_BASE = {
   backgroundColorSelect: true,
+  backdropFilterEnable: false,
   backgroundImageEnable: false,
   backgroundType: 'innerImage',
   innerImage: 'board/board_1.svg',
   outerImage: null,
   innerPadding: 12,
-  borderRadius: 0
+  borderRadius: 0,
+  backdropFilter: 4
 }
 
 export const COMMON_COMPONENT_BACKGROUND_LIGHT = {
@@ -455,7 +457,8 @@ const list = [
     style: {
       width: 40,
       height: 40,
-      color: ''
+      color: '',
+      backdropFilter: 'blur(0px)'
     }
   },
   {
@@ -474,7 +477,8 @@ const list = [
     style: {
       width: 600,
       height: 300,
-      color: 'rgb(255, 255, 255,1)'
+      color: 'rgb(255, 255, 255,1)',
+      backdropFilter: 'blur(0px)'
     }
   },
   {
@@ -487,7 +491,8 @@ const list = [
       width: 200,
       height: 200,
       backgroundColor: 'rgba(236,231,231,0.1)',
-      borderActive: true
+      borderActive: true,
+      backdropFilter: 'blur(0px)'
     }
   },
   {
@@ -502,7 +507,8 @@ const list = [
       borderWidth: 1,
       borderStyle: 'solid',
       borderColor: '#cccccc',
-      backgroundColor: 'rgba(236,231,231,0.1)'
+      backgroundColor: 'rgba(236,231,231,0.1)',
+      backdropFilter: 'blur(0px)'
     }
   },
   {
@@ -516,7 +522,8 @@ const list = [
       height: 200,
       borderWidth: 1,
       borderColor: '#cccccc',
-      backgroundColor: 'rgba(236,231,231,0.1)'
+      backgroundColor: 'rgba(236,231,231,0.1)',
+      backdropFilter: 'blur(0px)'
     }
   },
   {

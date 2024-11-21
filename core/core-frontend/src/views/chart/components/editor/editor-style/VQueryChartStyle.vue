@@ -297,6 +297,33 @@ initParams()
                 :predefine="COLOR_PANEL"
               />
             </el-form-item>
+
+            <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
+              <el-checkbox
+                size="small"
+                :effect="themes"
+                v-model="commonBackgroundPop.backdropFilterEnable"
+              >
+                {{ $t('chart.backdrop_blur') }}
+              </el-checkbox>
+            </el-form-item>
+            <el-form-item
+              style="padding-left: 20px"
+              class="form-item margin-bottom-8"
+              :class="'form-item-' + themes"
+            >
+              <el-input-number
+                style="width: 100%"
+                :effect="themes"
+                controls-position="right"
+                size="middle"
+                :min="0"
+                :max="30"
+                :disabled="!commonBackgroundPop.backdropFilterEnable"
+                v-model="commonBackgroundPop.backdropFilter"
+              />
+            </el-form-item>
+
             <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
               <el-checkbox
                 :effect="themes"
