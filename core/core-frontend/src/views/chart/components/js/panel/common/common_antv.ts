@@ -1334,8 +1334,11 @@ export function getConditions(chart: Chart) {
   const annotations = []
   if (!threshold.enable) return annotations
   const conditions = threshold.lineThreshold ?? []
-
+  const yAxisIds = chart.yAxis.map(i => i.id)
   for (const field of conditions) {
+    if (!yAxisIds.includes(field.fieldId)) {
+      continue
+    }
     for (const t of field.conditions) {
       if ([2, 3, 4].includes(field.field.deType)) {
         const annotation = {

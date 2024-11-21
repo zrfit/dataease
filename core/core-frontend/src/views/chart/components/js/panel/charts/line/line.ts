@@ -11,6 +11,8 @@ import {
 } from '../../common/common_antv'
 import {
   flow,
+  getLineConditions,
+  getLineLabelColorByCondition,
   hexColorToRGBA,
   parseJson,
   setUpGroupSeriesColor
@@ -134,6 +136,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
       }
     }
     const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
+    const conditions = getLineConditions(chart)
     const formatterMap = labelAttr.seriesLabelFormatter?.reduce((pre, next) => {
       pre[next.id] = next
       return pre
@@ -162,6 +165,9 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
             ? -2 - basicStyle.lineSymbolSize
             : 10 + basicStyle.lineSymbolSize
         const value = valueFormatter(data.value, labelCfg.formatterCfg)
+        const color =
+          getLineLabelColorByCondition(conditions, data.value, data.quotaList[0].id) ||
+          labelCfg.color
         const group = new Group({})
         group.addShape({
           type: 'text',
@@ -172,7 +178,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
-            fill: labelCfg.color
+            fill: color
           }
         })
         return group
