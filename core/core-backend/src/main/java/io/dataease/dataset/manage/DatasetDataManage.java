@@ -113,8 +113,9 @@ public class DatasetDataManage {
                 sql = provider.transSqlDialect(sql, datasourceRequest.getDsList());
             } else {
                 // parser sql params and replace default value
-                String originSql = provider.replaceComment(new String(Base64.getDecoder().decode(tableInfoDTO.getSql())));
-                originSql = SqlparserUtils.handleVariableDefaultValue(originSql, datasetTableDTO.getSqlVariableDetails(), false, false, null, false, datasourceRequest.getDsList(), pluginManage);
+                String s = new String(Base64.getDecoder().decode(tableInfoDTO.getSql()));
+                String originSql = SqlparserUtils.handleVariableDefaultValue(s, datasetTableDTO.getSqlVariableDetails(), false, false, null, false, datasourceRequest.getDsList(), pluginManage);
+                originSql = provider.replaceComment(originSql);
                 // add sql table schema
 
                 sql = SQLUtils.buildOriginPreviewSql(SqlPlaceholderConstants.TABLE_PLACEHOLDER, 0, 0);
@@ -403,8 +404,9 @@ public class DatasetDataManage {
 
         // parser sql params and replace default value
 
-        String originSql = provider.replaceComment(new String(Base64.getDecoder().decode(dto.getSql())));
-        originSql = SqlparserUtils.handleVariableDefaultValue(datasetSQLManage.subPrefixSuffixChar(originSql), dto.getSqlVariableDetails(), true, true, null, false, dsMap, pluginManage);
+        String s = new String(Base64.getDecoder().decode(dto.getSql()));
+        String originSql = SqlparserUtils.handleVariableDefaultValue(datasetSQLManage.subPrefixSuffixChar(s), dto.getSqlVariableDetails(), true, true, null, false, dsMap, pluginManage);
+        originSql = provider.replaceComment(originSql);
 
         // sql 作为临时表，外层加上limit
         String sql;
