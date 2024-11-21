@@ -606,7 +606,11 @@ public class SqlparserUtils {
                     && sqlVariableDetails.getDeType() == 0) {
                 return "N'" + String.join("', N'", sqlVariableDetails.getValue()) + "'";
             } else {
-                return "'" + String.join("','", sqlVariableDetails.getValue()) + "'";
+                if (sqlVariableDetails.getDeType() == 2 || sqlVariableDetails.getDeType() == 3) {
+                    return String.join(",", sqlVariableDetails.getValue());
+                } else {
+                    return "'" + String.join("','", sqlVariableDetails.getValue()) + "'";
+                }
             }
         } else if (sqlVariableDetails.getOperator().equals("between")) {
             if (sqlVariableDetails.getDeType() == 1) {
