@@ -223,6 +223,7 @@ export function historyAdaptor(
   canvasVersion
 ) {
   //历史字段适配
+  canvasStyleResult['fontFamily'] = canvasStyleResult['fontFamily'] || 'PingFang'
   canvasStyleResult.dashboard['showGrid'] = canvasStyleResult.dashboard['showGrid'] || false
   canvasStyleResult.dashboard['matrixBase'] = canvasStyleResult.dashboard['matrixBase'] || 4
   canvasStyleResult.component['seniorStyleSetting'] =

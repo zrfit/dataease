@@ -27,6 +27,21 @@
       v-if="dvInfo.type === 'dashboard'"
       class="form-item"
       :class="'form-item-' + themes"
+      label="仪表板字体选择"
+    >
+      <el-select :effect="themes" v-model="canvasStyleData.fontFamily" @change="styleChange">
+        <el-option
+          v-for="option in fontFamily"
+          :key="option.value"
+          :label="option.name"
+          :value="option.value"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item
+      v-if="dvInfo.type === 'dashboard'"
+      class="form-item"
+      :class="'form-item-' + themes"
       :label="t('visualization.component_gap')"
     >
       <el-radio-group v-model="canvasStyleData.dashboard.gap" @change="themeChange">
@@ -225,6 +240,7 @@ import {
   LIGHT_THEME_DASHBOARD_BACKGROUND
 } from '@/utils/canvasStyle'
 import {
+  CHART_FONT_FAMILY,
   DEFAULT_COLOR_CASE_DARK,
   DEFAULT_COLOR_CASE_LIGHT,
   DEFAULT_TAB_COLOR_CASE_DARK,
@@ -245,8 +261,11 @@ import {
   COMMON_COMPONENT_BACKGROUND_DARK,
   COMMON_COMPONENT_BACKGROUND_LIGHT
 } from '@/custom-component/component-list'
-import { ElFormItem, ElIcon, ElMessage, ElSpace } from 'element-plus-secondary'
+import { ElFormItem, ElIcon, ElSpace } from 'element-plus-secondary'
 import Icon from '@/components/icon-custom/src/Icon.vue'
+import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
+const appearanceStore = useAppearanceStoreWithOut()
+
 const snapshotStore = snapshotStoreWithOut()
 const props = defineProps({
   themes: {
@@ -254,6 +273,12 @@ const props = defineProps({
     default: 'light'
   }
 })
+const fontFamily = CHART_FONT_FAMILY.concat(
+  appearanceStore.fontList.map(ele => ({
+    name: ele.name,
+    value: ele.name
+  }))
+)
 const toolTip = computed(() => {
   return props.themes === 'dark' ? 'ndark' : 'dark'
 })
@@ -270,6 +295,9 @@ const onRefreshChange = val => {
     canvasStyleData.value.refreshTime = 3600
   }
   themeChange()
+}
+const styleChange = () => {
+  snapshotStore.recordSnapshotCache('renderChart')
 }
 
 const themeChange = (modifyName?) => {
