@@ -251,13 +251,15 @@ listenGlobalKeyDown()
 
 const initScroll = () => {
   nextTick(() => {
-    const { width, height } = canvasStyleData.value
-    const mainWidth = canvasCenterRef.value.clientWidth
-    mainHeight.value = canvasCenterRef.value.clientHeight
-    const scrollX = (1.5 * width - mainWidth) / 2
-    const scrollY = (1.5 * height - mainHeight.value) / 2 + 20
-    // 设置画布初始滚动条位置
-    canvasOut.value.scrollTo(scrollX, scrollY)
+    if (canvasCenterRef.value) {
+      const { width, height } = canvasStyleData.value
+      const mainWidth = canvasCenterRef.value.clientWidth
+      mainHeight.value = canvasCenterRef.value.clientHeight
+      const scrollX = (1.5 * width - mainWidth) / 2
+      const scrollY = (1.5 * height - mainHeight.value) / 2 + 20
+      // 设置画布初始滚动条位置
+      canvasOut.value.scrollTo(scrollX, scrollY)
+    }
   })
 }
 const doUseCache = flag => {
@@ -477,7 +479,7 @@ eventBus.on('tabSort', tabSort)
     <div class="custom-dv-divider" />
     <el-container
       v-if="loadFinish"
-      v-loading="requestStore.loadingMap[permissionStore.currentPath]"
+      v-loading="requestStore.loadingMap && requestStore.loadingMap[permissionStore.currentPath]"
       element-loading-background="rgba(0, 0, 0, 0)"
       class="dv-layout-container"
       :class="{ 'preview-layout-container': previewStatus }"
