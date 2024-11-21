@@ -104,7 +104,7 @@
                 LEFT JOIN visualization_link_jump_target_view_info ON visualization_link_jump_info.id = visualization_link_jump_target_view_info.link_jump_info_id
                 LEFT JOIN xpack_share ON xpack_share.creator = #{uid}
                 AND visualization_link_jump_info.target_dv_id = xpack_share.resource_id
-                left join visualization_outer_params_info on visualization_outer_params_info.params_id = visualization_link_jump_target_view_info.target_view_id
+                left join visualization_outer_params_info on visualization_outer_params_info.params_info_id = visualization_link_jump_target_view_info.target_view_id
         WHERE
             core_chart_view.id = #{source_view_id}
           AND core_chart_view.type != 'VQuery'
@@ -164,7 +164,7 @@
 
         <select id="queryOutParamsTargetWithDvId" resultType="io.dataease.api.visualization.vo.VisualizationOutParamsJumpVO">
             SELECT
-            	vopi.params_id as id,
+            	vopi.params_info_id as id,
             	vopi.param_name as name,
             	vopi.param_name as title,
             	'outerParams' as type
