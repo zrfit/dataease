@@ -119,6 +119,7 @@ const copilotConfirm = () => {
   wsCache.set('DE-COPILOT-TIPS-CHECK', 'CHECKED')
   showOverlayCopilot.value = false
 }
+const badgeCount = ref(0)
 
 onMounted(() => {
   initShowSystem()
@@ -127,7 +128,7 @@ onMounted(() => {
   initCopilotBase()
 
   msgCountApi().then(res => {
-    console.log(res.data)
+    badgeCount.value = res?.data || 0
   })
 })
 </script>
@@ -188,15 +189,17 @@ onMounted(() => {
       <ToolboxCfg v-if="showToolbox" />
       <TopDoc v-if="appearanceStore.getShowDoc" />
       <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
-        <el-icon
-          class="preview-download_icon"
-          style="margin-right: 10px"
-          :class="navigateBg === 'light' && 'is-light-setting'"
-        >
-          <Icon name="dv-preview-download"
-            ><msgNotice @click="msgNoticePush" class="svg-icon"
-          /></Icon>
-        </el-icon>
+        <el-badge :hidden="badgeCount === 0" :value="badgeCount" class="item">
+          <el-icon
+            class="preview-download_icon"
+            style="margin-right: 10px"
+            :class="navigateBg === 'light' && 'is-light-setting'"
+          >
+            <Icon name="dv-preview-download"
+              ><msgNotice @click="msgNoticePush" class="svg-icon"
+            /></Icon>
+          </el-icon>
+        </el-badge>
       </el-tooltip>
 
       <SystemCfg v-if="showSystem" />
