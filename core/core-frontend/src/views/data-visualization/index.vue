@@ -216,6 +216,9 @@ const handleDragOver = e => {
 
 const handleMouseDown = e => {
   // e.stopPropagation()
+  if (isSpaceDown.value) {
+    return
+  }
   dvMainStore.setClickComponentStatus(false)
   // 点击画布的空区域 提前清空curComponent 防止右击菜单内容抖动
   dvMainStore.setCurComponent({ component: null, index: null })
@@ -224,6 +227,9 @@ const handleMouseDown = e => {
 }
 
 const deselectCurComponent = e => {
+  if (isSpaceDown.value) {
+    return
+  }
   if (!isClickComponent.value) {
     curComponent.value && dvMainStore.setCurComponent({ component: null, index: null })
   }
@@ -513,7 +519,6 @@ eventBus.on('tabSort', tabSort)
           @mousemove="onMouseMove"
           @mouseleave="disableDragging"
         >
-          <div v-if="isSpaceDown" class="canvas-drag" :style="contentStyle"></div>
           <div
             id="canvas-dv-outer"
             ref="canvasInner"
@@ -523,6 +528,7 @@ eventBus.on('tabSort', tabSort)
             @mousedown="handleMouseDown"
             @mouseup="deselectCurComponent"
           >
+            <div v-if="isSpaceDown" class="canvas-drag"></div>
             <div class="canvas-dv-inner">
               <canvas-core
                 class="canvas-area-shadow editor-main"
@@ -715,6 +721,8 @@ eventBus.on('tabSort', tabSort)
   z-index: 1;
   opacity: 0.3;
   cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
 
 .canvas-drag-tip {
