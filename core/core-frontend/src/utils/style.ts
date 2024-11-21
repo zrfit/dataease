@@ -200,7 +200,8 @@ export function getCanvasStyle(canvasStyleData, canvasId = 'canvas-main') {
     backgroundColor,
     backgroundImageEnable,
     fontSize,
-    mobileSetting
+    mobileSetting,
+    fontFamily
   } = canvasStyleData
   const style = { fontSize: fontSize + 'px', color: canvasStyleData.color }
   if (isMainCanvas(canvasId)) {
@@ -225,6 +226,7 @@ export function getCanvasStyle(canvasStyleData, canvasId = 'canvas-main') {
         style['background'] = `url(${imgUrlTrans(background)}) no-repeat`
       }
     }
+    style['font-family'] = fontFamily
   }
 
   return style
