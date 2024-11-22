@@ -353,7 +353,7 @@ onMounted(() => {
       </el-col>
       <el-col :span="12">
         <el-form-item
-          :label="t('chart.tbale_row_freeze_tip')"
+          :label="t('chart.table_row_freeze_tip')"
           class="form-item"
           :class="'form-item-' + themes"
           v-if="showProperty('tableRowFreezeHead')"
