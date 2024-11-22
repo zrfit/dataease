@@ -8,7 +8,7 @@
     />
     <div v-else class="pic-upload">
       <span
-        ><el-button @click="uploadImg" text style="color: #646a73" icon="Plus"
+        ><el-button @click="uploadImg" text style="font-family: inherit; color: #646a73" icon="Plus"
           >请上传图片...</el-button
         ></span
       >

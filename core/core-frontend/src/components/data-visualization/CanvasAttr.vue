@@ -24,7 +24,8 @@ const canvasAttrActiveNames = ref(['size', 'baseSetting', 'background', 'color']
 const screenAdaptorList = [
   { label: '宽度优先', value: 'widthFirst' },
   { label: '高度优先', value: 'heightFirst' },
-  { label: '铺满全屏', value: 'full' }
+  { label: '铺满全屏', value: 'full' },
+  { label: '不缩放', value: 'keep' }
 ]
 const init = () => {
   nextTick(() => {

@@ -348,7 +348,11 @@ export function initCanvasDataPrepare(dvId, busiFlag, callBack) {
       dvInfo.type === 'dashboard' && canvasStyleResult['dashboard'].gap === 'yes'
         ? canvasStyleResult['dashboard'].gapSize
         : 0
-    appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
+    appearanceStore.setCurrentFont(canvasStyleResult.fontFamily)
+    document.documentElement.style.setProperty(
+      '--de-canvas_custom_font',
+      `${canvasStyleResult.fontFamily}`
+    )
     callBack({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview, curPreviewGap })
   })
 }

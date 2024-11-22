@@ -3,21 +3,15 @@ package io.dataease.datasource.provider;
 
 import io.dataease.dataset.utils.TableUtils;
 import io.dataease.datasource.dao.auto.entity.CoreDeEngine;
-import io.dataease.datasource.request.EngineRequest;
-import io.dataease.datasource.type.Mysql;
-import io.dataease.extensions.datasource.dto.ConnectionObj;
-import io.dataease.extensions.datasource.dto.DatasourceDTO;
+import io.dataease.datasource.server.DatasourceServer;
 import io.dataease.extensions.datasource.dto.TableField;
-import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
-import io.dataease.utils.BeanUtils;
-import io.dataease.utils.JsonUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author gin
@@ -37,8 +31,18 @@ public class MysqlEngineProvider extends EngineProvider {
     }
 
     @Override
-    public String insertSql(String name, List<String[]> dataList, int page, int pageNumber) {
-        String insertSql = "INSERT INTO `TABLE_NAME` VALUES ".replace("TABLE_NAME", name);
+    public String insertSql(String tableName, DatasourceServer.UpdateType extractType, List<String[]> dataList, int page, int pageNumber, List<TableField> tableFields) {
+        String engineTableName;
+        switch (extractType) {
+            case all_scope:
+                engineTableName = TableUtils.tmpName(TableUtils.tableName(tableName));
+                break;
+            default:
+                engineTableName = TableUtils.tableName(tableName);
+                break;
+        }
+
+        String insertSql = "INSERT INTO `TABLE_NAME` VALUES ".replace("TABLE_NAME", engineTableName);
         StringBuffer values = new StringBuffer();
 
         Integer realSize = page * pageNumber < dataList.size() ? page * pageNumber : dataList.size();
@@ -54,7 +58,18 @@ public class MysqlEngineProvider extends EngineProvider {
             values.append("('").append(String.join("','", Arrays.asList(strings1)))
                     .append("'),");
         }
-        return (insertSql + values.substring(0, values.length() - 1)).replaceAll("'null'", "null");
+        List<TableField> keys = tableFields.stream().filter(TableField::isPrimaryKey).toList();
+        List<TableField> notKeys = tableFields.stream().filter(tableField -> !tableField.isPrimaryKey()).toList();
+        String insetSql = (insertSql + values.substring(0, values.length() - 1)).replaceAll("'null'", "null");
+        if (CollectionUtils.isNotEmpty(keys) && extractType.equals(DatasourceServer.UpdateType.add_scope)) {
+            insetSql = insetSql + " ON DUPLICATE KEY UPDATE ";
+            List<String> updateColumes = new ArrayList<>();
+            for (TableField notKey : notKeys) {
+                updateColumes.add("column = VALUES(column)".replace("column", notKey.getName()));
+            }
+            insetSql = insetSql + updateColumes.stream().collect(Collectors.joining(","));
+        }
+        return insetSql;
     }
 
 
@@ -93,7 +108,11 @@ public class MysqlEngineProvider extends EngineProvider {
             int size = tableField.getPrecision() * 4;
             switch (tableField.getDeExtractType()) {
                 case 0:
-                    columnFields.append("varchar(1024)").append(",`");
+                    if (StringUtils.isNotEmpty(tableField.getLength())) {
+                        columnFields.append("varchar(length)".replace("length", tableField.getLength())).append(",`");
+                    } else {
+                        columnFields.append("longtext").append(",`");
+                    }
                     break;
                 case 1:
                     columnFields.append("datetime").append(",`");
@@ -108,7 +127,7 @@ public class MysqlEngineProvider extends EngineProvider {
                     columnFields.append("TINYINT(length)".replace("length", String.valueOf(tableField.getPrecision()))).append(",`");
                     break;
                 default:
-                    columnFields.append("varchar(1024)").append(",`");
+                    columnFields.append("longtext").append(",`");
                     break;
             }
         }
