@@ -236,6 +236,7 @@ const dvMainStore = dvMainStoreWithOut()
 const { canvasStyleData, dvInfo } = storeToRefs(dvMainStore)
 import {
   adaptCurThemeCommonStyleAll,
+  adaptTitleFontFamilyAll,
   DARK_THEME_DASHBOARD_BACKGROUND,
   LIGHT_THEME_DASHBOARD_BACKGROUND
 } from '@/utils/canvasStyle'
@@ -303,6 +304,8 @@ const fontFamilyChange = () => {
     '--de-canvas_custom_font',
     `${canvasStyleData.value.fontFamily}`
   )
+  adaptTitleFontFamilyAll(canvasStyleData.value.fontFamily)
+  snapshotStore.recordSnapshotCache('renderChart')
 }
 
 const themeChange = (modifyName?) => {

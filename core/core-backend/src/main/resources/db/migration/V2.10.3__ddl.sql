@@ -19,3 +19,6 @@ ALTER TABLE `visualization_link_jump_target_view_info`
     MODIFY COLUMN `target_field_id` varchar(50) NULL DEFAULT NULL COMMENT '目标字段ID' AFTER `target_view_id`;
 
 update visualization_link_jump_target_view_info set target_type = 'view';
+ALTER TABLE `data_visualization_info`
+    ADD COLUMN `check_version` varchar(50) NULL DEFAULT '1' COMMENT '内容检查标识';
+update data_visualization_info set check_version = '1';

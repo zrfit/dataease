@@ -36,6 +36,7 @@ import io.dataease.exception.DEException;
 import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
 import io.dataease.extensions.view.dto.ChartViewDTO;
 import io.dataease.license.config.XpackInteract;
+import io.dataease.license.manage.CoreLicManage;
 import io.dataease.log.DeLog;
 import io.dataease.model.BusiNodeRequest;
 import io.dataease.model.BusiNodeVO;
@@ -132,6 +133,9 @@ public class DataVisualizationServer implements DataVisualizationApi {
 
     @Resource
     private CoreBusiManage coreBusiManage;
+
+    @Resource
+    private CoreLicManage coreLicManage;
 
     @Override
     public DataVisualizationVO findCopyResource(Long dvId, String busiFlag) {
@@ -570,6 +574,15 @@ public class DataVisualizationServer implements DataVisualizationApi {
     @Override
     public String findDvType(Long dvId) {
         return extDataVisualizationMapper.findDvType(dvId);
+    }
+
+    @Override
+    public String updateCheckVersion(Long dvId) {
+        DataVisualizationInfo updateInfo = new DataVisualizationInfo();
+        updateInfo.setId(dvId);
+        updateInfo.setCheckVersion(coreLicManage.getVersion());
+        visualizationInfoMapper.updateById(updateInfo);
+        return "";
     }
 
     @Override
