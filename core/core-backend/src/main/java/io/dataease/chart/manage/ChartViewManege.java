@@ -138,7 +138,9 @@ public class ChartViewManege {
                 Map<Long, List<CoreDatasetTableField>> groupedByTableId = coreDatasetTableFields.stream()
                         .collect(Collectors.groupingBy(CoreDatasetTableField::getDatasetGroupId));
                 chartViewDTOS.forEach(dto ->{
-                    dto.setCalParams(Utils.getParams(datasetTableFieldManage.transDTO(groupedByTableId.get(dto.getTableId()))));
+                    if(dto.getTableId() !=null){
+                        dto.setCalParams(Utils.getParams(datasetTableFieldManage.transDTO(groupedByTableId.get(dto.getTableId()))));
+                    }
                 });
             }
 
