@@ -226,7 +226,7 @@ export function getCanvasStyle(canvasStyleData, canvasId = 'canvas-main') {
         style['background'] = `url(${imgUrlTrans(background)}) no-repeat`
       }
     }
-    style['font-family'] = fontFamily
+    style['font-family'] = fontFamily + '!important'
   }
 
   return style
