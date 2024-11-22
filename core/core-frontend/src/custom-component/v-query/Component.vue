@@ -841,7 +841,6 @@ const autoStyle = computed(() => {
   .title {
     color: #1f2329;
     font-feature-settings: 'clig' off, 'liga' off;
-    font-family: var(--de-custom_font, 'PingFang');
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
