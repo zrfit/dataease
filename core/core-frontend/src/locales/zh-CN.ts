@@ -1244,6 +1244,7 @@ export default {
     quick_calc: '快速计算',
     show_name_set: '编辑显示名称',
     show_name: '显示名称',
+    backdrop_blur: '背景模糊',
     color: '颜色',
     color_case: '配色方案',
     pls_slc_color_case: '请选择配色方案',

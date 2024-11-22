@@ -196,6 +196,8 @@ const onMouseEnter = () => {
 const componentBackgroundStyle = computed(() => {
   if (config.value.commonBackground) {
     const {
+      backdropFilterEnable,
+      backdropFilter,
       backgroundColorSelect,
       backgroundColor,
       backgroundImageEnable,
@@ -242,6 +244,9 @@ const componentBackgroundStyle = computed(() => {
     }
     if (config.value.component !== 'UserView') {
       style['overflow'] = 'hidden'
+    }
+    if (backdropFilterEnable) {
+      style['backdrop-filter'] = 'blur(' + backdropFilter + 'px)'
     }
     return style
   }

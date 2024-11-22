@@ -8,7 +8,9 @@ export const useMoveLine = (type: Sidebar) => {
   const width = ref(wsCache.get(type) || 280)
 
   const getCoordinates = () => {
-    document.querySelector('.sidebar-move-line').className = 'sidebar-move-line dragging'
+    if (document.querySelector('.sidebar-move-line')) {
+      document.querySelector('.sidebar-move-line').className = 'sidebar-move-line dragging'
+    }
     document.addEventListener('mousemove', setCoordinates)
     document.addEventListener('mouseup', cancelEvent)
     document.querySelector('body').style['user-select'] = 'none'
@@ -26,7 +28,9 @@ export const useMoveLine = (type: Sidebar) => {
   }
 
   const cancelEvent = () => {
-    document.querySelector('.sidebar-move-line').className = 'sidebar-move-line'
+    if (document.querySelector('.sidebar-move-line')) {
+      document.querySelector('.sidebar-move-line').className = 'sidebar-move-line'
+    }
     document.querySelector('body').style['user-select'] = 'auto'
     wsCache.set(type, width.value)
     document.removeEventListener('mousemove', setCoordinates)

@@ -96,6 +96,7 @@ watch(
               class="color-picker-style"
               :triggerWidth="65"
               is-custom
+              show-alpha
               :predefine="state.predefineColors"
               @change="changeStylePre('borderColor')"
             >
@@ -135,6 +136,7 @@ watch(
               class="color-picker-style"
               :triggerWidth="65"
               is-custom
+              show-alpha
               :effect="themes"
               :predefine="state.predefineColors"
               @change="changeStylePre('borderColor')"

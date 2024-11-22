@@ -57,6 +57,7 @@
                 :prefix-icon="styleColorKey.icon"
                 :triggerWidth="styleColorKey.width"
                 is-custom
+                show-alpha
                 :predefine="state.predefineColors"
                 @change="
                   changeStyle({ key: styleColorKey.value, value: styleForm[styleColorKey.value] })
@@ -291,6 +292,7 @@ import dvStyleHeadFontColor from '@/assets/svg/dv-style-headFontColor.svg'
 import dvStyleScrollSpeed from '@/assets/svg/dv-style-scroll-speed.svg'
 import dvStyleOpacity from '@/assets/svg/dv-style-opacity.svg'
 import dvStyleTabHead from '@/assets/svg/dv-style-tab-head.svg'
+import dvStyleBlur from '@/assets/svg/dv-style-blur.svg'
 import dvStyleFontSize from '@/assets/svg/dv-style-fontSize.svg'
 import dvStyleLetterSpacing from '@/assets/svg/dv-style-letterSpacing.svg'
 import dvStyleActiveFont from '@/assets/svg/dv-style-activeFont.svg'
@@ -370,6 +372,39 @@ const opacitySizeList = [
   { name: '0.8', value: 0.8 },
   { name: '0.9', value: 0.9 },
   { name: '1', value: 1 }
+]
+const backdropBlurList = [
+  { name: '0', value: 'blur(0px)' },
+  { name: '1', value: 'blur(1px)' },
+  { name: '2', value: 'blur(2px)' },
+  { name: '3', value: 'blur(3px)' },
+  { name: '4', value: 'blur(4px)' },
+  { name: '5', value: 'blur(5px)' },
+  { name: '6', value: 'blur(6px)' },
+  { name: '7', value: 'blur(7px)' },
+  { name: '8', value: 'blur(8px)' },
+  { name: '9', value: 'blur(9px)' },
+  { name: '10', value: 'blur(10px)' },
+  { name: '11', value: 'blur(11px)' },
+  { name: '12', value: 'blur(12px)' },
+  { name: '13', value: 'blur(13px)' },
+  { name: '14', value: 'blur(14px)' },
+  { name: '15', value: 'blur(15px)' },
+  { name: '16', value: 'blur(16px)' },
+  { name: '17', value: 'blur(17px)' },
+  { name: '18', value: 'blur(18px)' },
+  { name: '19', value: 'blur(19px)' },
+  { name: '20', value: 'blur(20px)' },
+  { name: '21', value: 'blur(21px)' },
+  { name: '22', value: 'blur(22px)' },
+  { name: '23', value: 'blur(23px)' },
+  { name: '24', value: 'blur(24px)' },
+  { name: '25', value: 'blur(25px)' },
+  { name: '26', value: 'blur(26px)' },
+  { name: '27', value: 'blur(27px)' },
+  { name: '28', value: 'blur(28px)' },
+  { name: '29', value: 'blur(29px)' },
+  { name: '30', value: 'blur(30px)' }
 ]
 
 const titleHideList = [
@@ -479,6 +514,13 @@ const styleOptionKeyArray = [
     customOption: titleHideList,
     width: '90px',
     icon: dvStyleTabHead
+  },
+  {
+    value: 'backdropFilter',
+    label: '背景模糊',
+    customOption: backdropBlurList,
+    width: '90px',
+    icon: dvStyleBlur
   }
 ]
 

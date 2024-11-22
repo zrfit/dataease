@@ -35,7 +35,9 @@ const { inMobile, dvInfo, canvasStyleData, componentData, canvasViewInfo, appDat
   storeToRefs(dvMainStore)
 const snapshotStore = snapshotStoreWithOut()
 import { useI18n } from '@/hooks/web/useI18n'
+import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 const { t } = useI18n()
+const appearanceStore = useAppearanceStoreWithOut()
 
 export function chartTransStr2Object(targetIn, copy) {
   const target = copy === 'Y' ? cloneDeep(targetIn) : targetIn
@@ -223,6 +225,7 @@ export function historyAdaptor(
   canvasVersion
 ) {
   //历史字段适配
+  canvasStyleResult['fontFamily'] = canvasStyleResult['fontFamily'] || 'PingFang'
   canvasStyleResult.dashboard['showGrid'] = canvasStyleResult.dashboard['showGrid'] || false
   canvasStyleResult.dashboard['matrixBase'] = canvasStyleResult.dashboard['matrixBase'] || 4
   canvasStyleResult.component['seniorStyleSetting'] =
@@ -345,6 +348,7 @@ export function initCanvasDataPrepare(dvId, busiFlag, callBack) {
       dvInfo.type === 'dashboard' && canvasStyleResult['dashboard'].gap === 'yes'
         ? canvasStyleResult['dashboard'].gapSize
         : 0
+    appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
     callBack({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview, curPreviewGap })
   })
 }

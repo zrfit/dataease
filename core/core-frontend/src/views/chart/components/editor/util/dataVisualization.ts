@@ -102,7 +102,8 @@ export const DEFAULT_CANVAS_STYLE_DATA_BASE = {
   background: '',
   openCommonStyle: true,
   opacity: 1, // 废弃
-  fontSize: 14
+  fontSize: 14,
+  fontFamily: 'PingFang' //字体设置 默认PingFang
 }
 
 // 基础亮色主题

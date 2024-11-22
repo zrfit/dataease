@@ -224,7 +224,15 @@ const saveResource = () => {
         ElMessage.success(t('common.save_success'))
         let url = window.location.href
         url = url.replace(/\?opt=create/, `?resourceId=${dvInfo.value.id}`)
-        window.history.replaceState(null, '', url)
+        if (!embeddedStore.baseUrl) {
+          window.history.replaceState(
+            {
+              path: url
+            },
+            '',
+            url
+          )
+        }
 
         if (appData.value) {
           initCanvasData(dvInfo.value.id, 'dashboard', () => {

@@ -1948,7 +1948,7 @@ const relativeToCurrentListRange = computed(() => {
           value: 'thisMonth'
         },
         {
-          label: t('dynamic_month.dynamic_month'),
+          label: t('dynamic_month.last'),
           value: 'lastMonth'
         },
         {

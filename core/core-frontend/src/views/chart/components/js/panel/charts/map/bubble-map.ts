@@ -220,7 +220,7 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     const senior = parseJson(chart.senior)
     const curAreaNameMapping = senior.areaMapping?.[areaId]
     handleGeoJson(geoJson, curAreaNameMapping)
-    options.color = hexColorToRGBA(basicStyle.areaBaseColor, basicStyle.alpha)
+    options.color = basicStyle.areaBaseColor
     if (!chart.data?.data?.length || !geoJson?.features?.length) {
       options.label && (options.label.field = 'name')
       return options

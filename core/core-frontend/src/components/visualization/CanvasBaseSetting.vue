@@ -1,6 +1,25 @@
 <template>
   <div style="width: 100%" ref="bgForm">
     <el-form label-position="top" style="width: 100%; margin-bottom: 16px">
+      <el-form-item
+        class="form-item no-margin-bottom"
+        :class="'form-item-' + themes"
+        label="数据大屏字体选择"
+      >
+        <el-select
+          :effect="themes"
+          v-model="canvasStyleData.fontFamily"
+          @change="onFontFamilyChange"
+        >
+          <el-option
+            v-for="option in fontFamily"
+            :key="option.value"
+            :label="option.name"
+            :value="option.value"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-form-item class="form-item no-margin-bottom" :class="'form-item-' + themes">
         <el-checkbox
           size="small"
@@ -63,11 +82,22 @@ import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
 import { ElFormItem, ElIcon } from 'element-plus-secondary'
 import Icon from '../icon-custom/src/Icon.vue'
+import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
+import { CHART_FONT_FAMILY } from '@/views/chart/components/editor/util/chart'
 const snapshotStore = snapshotStoreWithOut()
 
 const dvMainStore = dvMainStoreWithOut()
 const { canvasStyleData } = storeToRefs(dvMainStore)
-
+const appearanceStore = useAppearanceStoreWithOut()
+const fontFamily = CHART_FONT_FAMILY.concat(
+  appearanceStore.fontList.map(ele => ({
+    name: ele.name,
+    value: ele.name
+  }))
+)
+const onFontFamilyChange = () => {
+  appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
+}
 const onThemeChange = () => {
   snapshotStore.recordSnapshotCache()
 }
