@@ -166,6 +166,10 @@ public class XpackShareManage {
         if (StringUtils.isNotBlank(request.getKeyword())) {
             queryWrapper.like("v.name", request.getKeyword());
         }
+        String info = CommunityUtils.getInfo();
+        if (StringUtils.isNotBlank(info)) {
+            queryWrapper.notExists(String.format(info, "s.resource_id"));
+        }
         queryWrapper.orderBy(true, request.isAsc(), "s.time");
         Page<XpackSharePO> page = new Page<>(goPage, pageSize);
         return xpackShareExtMapper.query(page, queryWrapper);
@@ -179,7 +183,7 @@ public class XpackShareManage {
         };
     }
 
-    @XpackInteract(value = "perFilterShareManage", recursion = true)
+    @XpackInteract(value = "perFilterShareManage", recursion = true, invalid = true)
     public IPage<XpackShareGridVO> query(int pageNum, int pageSize, VisualizationWorkbranchQueryRequest request) {
         IPage<XpackSharePO> poiPage = proxy().querySharePage(pageNum, pageSize, request);
         List<XpackShareGridVO> vos = proxy().formatResult(poiPage.getRecords());
