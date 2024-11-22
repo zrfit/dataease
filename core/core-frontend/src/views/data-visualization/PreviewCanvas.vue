@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
-import { nextTick, onMounted, reactive, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import DePreview from '@/components/data-visualization/canvas/DePreview.vue'
 import router from '@/router'
 import { useEmitt } from '@/hooks/web/useEmitt'
@@ -188,13 +188,17 @@ onMounted(async () => {
   dvMainStore.setPublicLinkStatus(props.publicLinkStatus)
 })
 
+const dataVKeepSize = computed(() => {
+  return state.canvasStylePreview?.screenAdaptor === 'keep'
+})
+
 defineExpose({
   loadCanvasDataAsync
 })
 </script>
 
 <template>
-  <div class="content" ref="previewCanvasContainer">
+  <div class="content" :class="{ 'canvas_keep-size': dataVKeepSize }" ref="previewCanvasContainer">
     <de-preview
       ref="dvPreview"
       v-if="state.canvasStylePreview && state.initState"
