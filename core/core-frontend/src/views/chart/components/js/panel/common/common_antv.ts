@@ -172,6 +172,7 @@ export function getLabel(chart: Chart) {
               'bar'
             ].includes(chart.type)
           ) {
+            layout.push({ type: 'limit-in-canvas' })
             layout.push({ type: 'hide-overlap' })
           } else {
             layout.push({ type: 'limit-in-plot' })
