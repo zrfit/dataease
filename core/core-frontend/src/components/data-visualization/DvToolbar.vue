@@ -166,7 +166,15 @@ const saveResource = () => {
         ElMessage.success('保存成功')
         let url = window.location.href
         url = url.replace(/\?opt=create/, `?dvId=${dvInfo.value.id}`)
-        window.history.replaceState(null, '', url)
+        if (!embeddedStore.baseUrl) {
+          window.history.replaceState(
+            {
+              path: url
+            },
+            '',
+            url
+          )
+        }
         if (appData.value) {
           initCanvasData(dvInfo.value.id, 'dataV', () => {
             useEmitt().emitter.emit('refresh-dataset-selector')
