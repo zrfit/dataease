@@ -107,6 +107,8 @@ public class DatasourceServer implements DatasourceApi {
     private PluginManageApi pluginManage;
     @Autowired(required = false)
     private RelationApi relationManage;
+    @Autowired
+    private CoreDatasourceMapper coreDatasourceMapper;
 
     public enum UpdateType {
         all_scope, add_scope
@@ -1209,4 +1211,25 @@ public class DatasourceServer implements DatasourceApi {
         return datasourceDTO;
     }
 
+    @Override
+    public DsSimpleVO simple(Long id) {
+        if (ObjectUtils.isEmpty(id)) DEException.throwException("id is null");
+        CoreDatasource coreDatasource = coreDatasourceMapper.selectById(id);
+        if (ObjectUtils.isEmpty(coreDatasource)) return null;
+        DsSimpleVO vo = new DsSimpleVO();
+        vo.setName(coreDatasource.getName());
+        vo.setType(coreDatasource.getType());
+        vo.setDescription(coreDatasource.getDescription());
+        String configuration = coreDatasource.getConfiguration();
+        DatasourceConfiguration config = null;
+        String host = null;
+        if (StringUtils.isBlank(configuration)
+                || StringUtils.equalsIgnoreCase("[]", configuration)
+                || ObjectUtils.isEmpty(config = JsonUtil.parseObject(configuration, DatasourceConfiguration.class))
+                || StringUtils.isBlank(host = config.getHost())) {
+            return vo;
+        }
+        vo.setHost(host);
+        return vo;
+    }
 }
