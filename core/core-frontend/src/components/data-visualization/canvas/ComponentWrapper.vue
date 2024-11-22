@@ -107,6 +107,12 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'common'
+  },
+  // 字体
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 const {
@@ -424,6 +430,7 @@ const showActive = computed(() => props.popActive || (dvMainStore.mobileInPc && 
           :disabled="true"
           :is-edit="false"
           :suffix-id="suffixId"
+          :font-family="fontFamily"
           @onPointClick="onPointClick"
         />
       </div>

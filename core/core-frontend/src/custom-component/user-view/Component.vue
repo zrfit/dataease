@@ -58,6 +58,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'common'
+  },
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 
@@ -87,6 +92,7 @@ const onPointClick = param => {
       :search-count="searchCount"
       :disabled="disabled"
       :suffixId="suffixId"
+      :font-family="fontFamily"
       @onPointClick="onPointClick"
     ></chart>
   </div>
