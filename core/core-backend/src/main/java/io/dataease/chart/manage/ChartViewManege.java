@@ -127,11 +127,21 @@ public class ChartViewManege {
         QueryWrapper<CoreChartView> wrapper = new QueryWrapper<>();
         wrapper.eq("scene_id", sceneId);
         List<ChartViewDTO> chartViewDTOS = transChart(coreChartViewMapper.selectList(wrapper));
-        for (ChartViewDTO dto : chartViewDTOS) {
-            QueryWrapper<CoreDatasetTableField> wp = new QueryWrapper<>();
-            wp.eq("dataset_group_id", dto.getTableId());
-            List<CoreDatasetTableField> coreDatasetTableFields = coreDatasetTableFieldMapper.selectList(wp);
-            dto.setCalParams(Utils.getParams(datasetTableFieldManage.transDTO(coreDatasetTableFields)));
+        if(!CollectionUtils.isEmpty(chartViewDTOS)){
+            List<Long> tableIds =  chartViewDTOS.stream()
+                    .map(ChartViewDTO::getTableId) // 提取 id
+                    .toList();
+            if(!CollectionUtils.isEmpty(tableIds)){
+                QueryWrapper<CoreDatasetTableField> wp = new QueryWrapper<>();
+                wp.in("dataset_group_id", tableIds);
+                List<CoreDatasetTableField> coreDatasetTableFields = coreDatasetTableFieldMapper.selectList(wp);
+                Map<Long, List<CoreDatasetTableField>> groupedByTableId = coreDatasetTableFields.stream()
+                        .collect(Collectors.groupingBy(CoreDatasetTableField::getDatasetGroupId));
+                chartViewDTOS.forEach(dto ->{
+                    dto.setCalParams(Utils.getParams(datasetTableFieldManage.transDTO(groupedByTableId.get(dto.getTableId()))));
+                });
+            }
+
         }
         return chartViewDTOS;
     }

@@ -105,6 +105,12 @@ public interface DataVisualizationApi {
     @Operation(summary = "查询可视化资源类型")
     String findDvType(@PathVariable("dvId") Long dvId);
 
+
+    @GetMapping("/updateCheckVersion/{dvId}")
+    @Operation(summary = "更新校验版本")
+    String updateCheckVersion(@PathVariable("dvId") Long dvId);
+
+
     /**
      * 从模板解压可视化资源 模板来源包括 模板市场、内部模板管理
      *
