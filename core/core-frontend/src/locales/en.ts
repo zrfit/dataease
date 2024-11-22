@@ -109,7 +109,8 @@ export default {
     no_template: 'No template',
     not_found: 'No relevant template found',
     delete_failed_hint: 'Unable to delete category',
-    delete_failed_tip: 'Please remove all templates under this category before deleting the category',
+    delete_failed_tip:
+      'Please remove all templates under this category before deleting the category',
     delete_failed_confirm: 'Got it',
     delete_hint: 'Are you sure you want to delete this template?',
     delete_batch_hint: 'Are you sure you want to delete {0} templates?',
@@ -117,7 +118,8 @@ export default {
     edit_success: 'Modified successfully',
     import_success: 'Imported successfully',
     cover_success: 'Overwrite successfully',
-    cover_exists_hint: 'The same template name exists in the current category. Do you want to overwrite it?',
+    cover_exists_hint:
+      'The same template name exists in the current category. Do you want to overwrite it?',
     template_size_hint: 'The template size must be less than 35MB',
     hint: 'Hint',
     relevant_content_found: 'No relevant content found',
@@ -125,8 +127,10 @@ export default {
     delete_catalog_hint: 'Are you sure you want to delete this category?',
     delete_catalog_tip: 'Deleted content cannot be restored. Do you want to continue?',
     illegal_name_hint: 'Illegal name, please change it! ',
-    exists_name_hint: 'The current name already exists in the template management, please modify it',
-    get_download_link_hint: 'The template download link was not obtained, please contact the template market official',
+    exists_name_hint:
+      'The current name already exists in the template management, please modify it',
+    get_download_link_hint:
+      'The template download link was not obtained, please contact the template market official',
     search_result_count: 'The search results are {0}',
     template_center: 'Template Center',
     preview: 'Preview'
@@ -134,7 +138,8 @@ export default {
   work_branch: {
     back_to_work_branch: 'Back to the workbench',
     recommended_dashboard: 'Recommended dashboard',
-    template_market_official: 'The template download link was not obtained, please contact the template market official',
+    template_market_official:
+      'The template download link was not obtained, please contact the template market official',
     create_quickly: 'Quickly create',
     permission_to_create: 'Missing create permission',
     new_using_template: 'Use template to create',
@@ -158,17 +163,20 @@ export default {
     new_page_preview: 'New page preview',
     cancel_favorites: 'Cancel favorites',
     open_dataset: 'Open dataset',
-    administrator_for_authorization: 'No business menu permissions, please contact the administrator for authorization',
+    administrator_for_authorization:
+      'No business menu permissions, please contact the administrator for authorization',
     public_link_share: 'Public link sharing',
     share_time_limit: 'Must be greater than the current time',
     ticket_setting: 'Ticket settings',
-    cannot_share_link: 'Global sharing disabled has been enabled, sharing function is temporarily unavailable, please contact the administrator! ',
+    cannot_share_link:
+      'Global sharing disabled has been enabled, sharing function is temporarily unavailable, please contact the administrator! ',
     open_link_hint: 'After enabling, users can access through this link',
     uuid_checker: 'Only 8-16 digits (alphanumeric) are supported, please re-enter! ',
     error_password_hint: 'Password format is incorrect, please re-enter! ',
     error_link_hint: 'Link format is incorrect, please re-enter! ',
     password_null_hint: 'Password cannot be empty, please re-enter! ',
-    password_hint: "The password must be a 4-10 character string containing numbers, letters, and special characters [!{'@'}#$%^&*()_+]",
+    password_hint:
+      "The password must be a 4-10 character string containing numbers, letters, and special characters [!{'@'}#$%^&*()_+]",
     max_ticket_count: 'Up to 5 tickets can be created',
     last: 'Previous',
     next: 'Next',
@@ -189,7 +197,8 @@ export default {
     can_go_to: 'Backend export in progress, can go to',
     progress_and_download: 'Check progress and download',
     this_data_set: 'Are you sure you want to delete this dataset? ',
-    to_delete_them: 'This dataset has the following blood relationship. Deleting it will invalidate the charts on the related dashboard. Are you sure you want to delete it? ',
+    to_delete_them:
+      'This dataset has the following blood relationship. Deleting it will invalidate the charts on the related dashboard. Are you sure you want to delete it? ',
     check_blood_relationship: 'Check blood relationship',
     dataset_export: 'Dataset export',
     pieces_of_data: 'Tip: Supports exporting up to {limit} pieces of data',
@@ -202,15 +211,19 @@ export default {
     enter_a_number: 'Please enter a number',
     parameter_name: 'Parameter name',
     parameter_default_value_de: 'Parameter default value',
-    confirm_the_deletion: 'Not checked, the associated calculated fields will be deleted, confirm the deletion? ',
+    confirm_the_deletion:
+      'Not checked, the associated calculated fields will be deleted, confirm the deletion? ',
     confirm_to_delete: 'Are you sure you want to delete {a}?',
-    also_be_deleted: 'After deletion, the associated table or sql fragment will be deleted, and the associated calculated fields will also be deleted. ',
-    deleted_confirm_deletion: 'If the field is deleted, the associated calculated fields will be deleted, confirm the deletion? ',
+    also_be_deleted:
+      'After deletion, the associated table or sql fragment will be deleted, and the associated calculated fields will also be deleted. ',
+    deleted_confirm_deletion:
+      'If the field is deleted, the associated calculated fields will be deleted, confirm the deletion? ',
     delete_field_a: 'Are you sure you want to delete field {a}?',
     field_name: 'Field name',
     field_type: 'Field type',
     field_notes: 'Field notes',
-    operate_with_caution: 'After deletion, all resources under this folder will be deleted, please operate with caution. ',
+    operate_with_caution:
+      'After deletion, all resources under this folder will be deleted, please operate with caution. ',
     delete_this_folder: 'Are you sure you want to delete this folder?',
     a_new_dataset: 'Create a new dataset',
     structure_preview: 'Structure preview',
@@ -258,7 +271,8 @@ export default {
     moved_successfully: 'Moved successfully',
     rename_successful: 'Renamed successfully',
     field: 'Field',
-    want_to_continue: 'Not selected, its related newly created fields will be deleted, do you want to continue? ',
+    want_to_continue:
+      'Not selected, its related newly created fields will be deleted, do you want to continue? ',
     field_selection: 'Field selection',
     edit_sql: 'Edit SQL',
     custom_sql_here: 'Drag table or custom SQL here',
@@ -290,9 +304,8 @@ export default {
     save_and_return: 'Save and return',
     select_data_source: 'Select data source',
     invalid_data_source: 'Invalid data source',
-    be_reported_incorrectly: 'You are doing cross-data source table association, please make sure to use calcite'
-    s standard syntax and functions,
-    otherwise it will cause dataset errors ',
+    be_reported_incorrectly:
+      "You are doing cross-data source table association, please make sure to use calcite's standard syntax and functions,otherwise it will cause dataset errors",
     refresh_data: 'Refresh data',
     convert_to_indicator: 'Convert to indicator',
     convert_to_dimension: 'Convert to dimension',
@@ -307,8 +320,7 @@ export default {
     successfully_created: 'Created successfully',
     continue_to_create: 'Continue to create',
     data_source_list: 'Return to data source list',
-    prompts_next_time: 'Don'
-    t prompt next time ',
+    prompts_next_time: "Don't prompt next time",
     also_want_to: 'You may also want',
     or_large_screen: 'Prepare for the next dashboard or large screen',
     go_to_create: 'Go to create',
@@ -319,8 +331,10 @@ export default {
     by_creation_time_de: 'In descending order by creation time',
     order_by_name: 'In ascending order by name',
     order_by_name_de: 'In descending order by name',
-    operate_with_caution: 'After deletion, all resources under this folder will be deleted. Please operate with caution.',
-    confirm_to_delete: 'A dataset is using this data source. After deletion, the dataset will be unavailable. Confirm the deletion? ',
+    operate_with_caution:
+      'After deletion, all resources under this folder will be deleted. Please operate with caution.',
+    confirm_to_delete:
+      'A dataset is using this data source. After deletion, the dataset will be unavailable. Confirm the deletion? ',
     view_blood_relationship: 'View blood relationship',
     no_data_source: 'No data source',
     replace_data: 'Replace data',
@@ -386,13 +400,15 @@ export default {
     rename: 'Rename',
     interface_name: 'Interface name',
     the_interface_name: 'Please enter the interface name',
-    to_replace_it: 'Replacement may affect custom datasets, associated datasets, dashboards, etc. Do you want to replace it? ',
+    to_replace_it:
+      'Replacement may affect custom datasets, associated datasets, dashboards, etc. Do you want to replace it? ',
     document: 'File',
     reupload: 'Reupload',
     and_csv_formats: 'Only xlsx, xls, csv formats are supported',
     please_upload_files: 'Please upload files',
     cannot_be_empty_table: 'The data table cannot be empty',
-    the_previous_step: 'The information you filled in will be cleared. Are you sure you want to return to the previous step? ',
+    the_previous_step:
+      'The information you filled in will be cleared. Are you sure you want to return to the previous step? ',
     add_data_table: 'Need to add a data table',
     source_saved_successfully: 'Save data source successfully',
     copy_data_source: 'Copy data source',
@@ -498,7 +514,8 @@ export default {
     time_0_seconds: 'Minutes (execution time: 0 seconds)',
     and_0_seconds_de: 'Hours (execution time: 0 minutes and 0 seconds)',
     fonts_before_deleting: 'Please set other fonts as default fonts before deleting. ',
-    sure_to_delete: 'After the current font is deleted, the components using this font will use the default font. Are you sure to delete it?',
+    sure_to_delete:
+      'After the current font is deleted, the components using this font will use the default font. Are you sure to delete it?',
     setting_successful: 'Setting successful',
     font_management: 'Font management',
     search_font_name: 'Search font name',
@@ -529,7 +546,8 @@ export default {
     map_settings: 'Map settings',
     engine_settings: 'Engine settings',
     normal_login: 'Normal login',
-    to_take_effect: 'Request timeout (unit: seconds, note: refresh the browser after saving to take effect)',
+    to_take_effect:
+      'Request timeout (unit: seconds, note: refresh the browser after saving to take effect)',
     and_platform_docking: 'Scope includes authentication settings and platform docking',
     not_enabled: 'Not enabled',
     default_organization: 'Default organization',
@@ -540,7 +558,8 @@ export default {
     superior_region: 'Superior region',
     coordinate_file: 'Coordinate file',
     delete_this_node: 'Are you sure you want to delete this node',
-    at_the_end: 'Country codes consist of three digits, province, city, district, county, and township codes consist of two digits; non-national regions need to be followed by 0',
+    at_the_end:
+      'Country codes consist of three digits, province, city, district, county, and township codes consist of two digits; non-national regions need to be followed by 0',
     non_zero_three_digit_number: 'Please enter a non-zero three-digit number',
     or_11_digits: 'Please enter 9 or 11 digits',
     contact_the_administrator: 'If execution fails, please contact the administrator',
@@ -570,7 +589,8 @@ export default {
     footer_content: 'Footer content',
     platform_settings: 'Platform settings',
     top_navigation_logo: 'Top navigation logo',
-    not_exceeding_200kb: 'Logo displayed in the top navigation menu; recommended size 134 x 34, supports JPG, PNG, size not exceeding 200KB',
+    not_exceeding_200kb:
+      'Logo displayed in the top navigation menu; recommended size 134 x 34, supports JPG, PNG, size not exceeding 200KB',
     help_document: 'Help document',
     ai_assistant_button: 'AI assistant button',
     copilot_button: 'Copilot button',
@@ -580,11 +600,14 @@ export default {
     user_login: 'User login',
     in_user_name: 'Please fill in the user name',
     fill_in_password: 'Please fill in the password',
-    supports_custom_settings_de: 'Default is {msg} Mobile login interface, supports custom settings',
+    supports_custom_settings_de:
+      'Default is {msg} Mobile login interface, supports custom settings',
     login_logo: 'Login Logo',
-    not_exceeding_200kb_de: 'Login page right side logo, recommended size 120*30, support JPG, PNG, SVG, size not exceeding 200KB',
+    not_exceeding_200kb_de:
+      'Login page right side logo, recommended size 120*30, support JPG, PNG, SVG, size not exceeding 200KB',
     login_background_image: 'Login background image',
-    not_exceeding_5m: 'Left side background image, recommended size 375*480 for vector image, recommended size 1125*1440 for bitmap; support JPG, PNG, SVG, size not exceeding 5M',
+    not_exceeding_5m:
+      'Left side background image, recommended size 375*480 for vector image, recommended size 1125*1440 for bitmap; support JPG, PNG, SVG, size not exceeding 5M',
     hidden_in_iframe: 'Hidden in Iframe',
     available_to_everyone: 'Open source BI tool available to everyone',
     the_website_name: 'Please enter the website name',
@@ -595,9 +618,12 @@ export default {
     display_the_document: 'Please select whether to display the document',
     display_the_about: 'Please select whether to display the about',
     website_logo: 'Website Logo',
-    not_exceeding_200kb_de_: 'The Logo displayed on the top website, recommended size 48 x 48, support JPG, PNG, SVG, size not exceeding 200KB',
-    not_exceeding_200kb_de_right: 'Logo on the right side of the login page, recommended size 204 x 52, support JPG, PNG, SVG, size not exceeding 200KB',
-    not_exceeding_5m_de: 'Background image on the left, recommended size 640 x 900 for vector graphics, 1280 x 1800 for bitmap graphics; support JPG, PNG, SVG, size not exceeding 5M',
+    not_exceeding_200kb_de_:
+      'The Logo displayed on the top website, recommended size 48 x 48, support JPG, PNG, SVG, size not exceeding 200KB',
+    not_exceeding_200kb_de_right:
+      'Logo on the right side of the login page, recommended size 204 x 52, support JPG, PNG, SVG, size not exceeding 200KB',
+    not_exceeding_5m_de:
+      'Background image on the left, recommended size 640 x 900 for vector graphics, 1280 x 1800 for bitmap graphics; support JPG, PNG, SVG, size not exceeding 5M',
     tab: 'Tab',
     incorrect_please_re_enter: 'The callback domain name format is incorrect, please re-enter',
     cas_settings: 'CAS settings',
@@ -614,7 +640,8 @@ export default {
     user_ou: 'User OU',
     separate_each_ou: 'OU (use | to separate each OU)',
     user_filter: 'User filter',
-    such_as_uid: "Filter [Possible options are cn or uid or sAMAccountName={'{'}0{'}'}, such as: (uid={'{'}0{'}'})]",
+    such_as_uid:
+      "Filter [Possible options are cn or uid or sAMAccountName={'{'}0{'}'}, such as: (uid={'{'}0{'}'})]",
     ldap_attribute_mapping: 'LDAP attribute mapping',
     incorrect_please_re_enter_de: 'URL format error, please re-enter',
     oauth2_settings: 'OAUTH2 settings',
@@ -626,7 +653,8 @@ export default {
     client_key: 'Client key',
     callback_address: 'Callback address',
     field_mapping: 'Field Mapping',
-    oauth2name: "For example: {'{'}'account': 'oauth2Account', 'name': 'oauth2Name', 'email': 'email'{'}'}",
+    oauth2name:
+      "For example: {'{'}'account': 'oauth2Account', 'name': 'oauth2Name', 'email': 'email'{'}'}",
     oidc_settings: 'OIDC Settings',
     test_mail_recipient: 'Only used as a test email recipient',
     to_enable_ssl: 'If the SMTP port is 465, you usually need to enable SSL',
@@ -636,11 +664,13 @@ export default {
     edit_embedded_application: 'Edit an embedded application',
     application_name: 'Application name',
     cross_domain_settings: 'Cross-domain settings',
-    embedded_secret_len_change: 'The key length has changed. The key will be reset soon. Are you sure?',
+    embedded_secret_len_change:
+      'The key length has changed. The key will be reset soon. Are you sure?',
     embedded_management: 'Embedded management',
     to_5_applications: 'You can create up to 5 applications',
     update_app_secret: 'Are you sure you want to update the APP Secret?',
-    operate_with_caution: 'After the reset, the existing APP Secret will become invalid. Please operate with caution. ',
+    operate_with_caution:
+      'After the reset, the existing APP Secret will become invalid. Please operate with caution. ',
     no_application: 'No application yet',
     delete_this_application: 'Are you sure you want to delete this application',
     platform_connection: 'Platform connection',
@@ -669,7 +699,8 @@ export default {
     update_successful: 'Update successful',
     installation_successful: 'Installation successful',
     can_be_uploaded: 'Only jar files can be uploaded',
-    to_change_it: 'After the variable type is changed, the variable value will be cleared. Are you sure you want to change it? ',
+    to_change_it:
+      'After the variable type is changed, the variable value will be cleared. Are you sure you want to change it? ',
     add_variable: 'Add variable',
     edit_variable: 'Edit variable',
     variable_name: 'Variable name',
@@ -700,7 +731,8 @@ export default {
     advanced_style_settings: 'Advanced style settings',
     length_1_64_characters: 'Name field length 1-64 characters',
     current_page_first: 'Please save the current page first',
-    from_other_organizations: 'Switch to new organization, no permission to save resources from other organizations',
+    from_other_organizations:
+      'Switch to new organization, no permission to save resources from other organizations',
     close_the_page: 'Close the page',
     sure_to_exit: 'Current changes have not been saved, are you sure to exit? ',
     add_components_first: 'The current dashboard is empty, please add components first',
@@ -748,8 +780,10 @@ export default {
     reset_success: 'Reset successful',
     modify_cur_pwd: 'You need to log in again after modifying the current user password',
     switch_success: 'Switch successful',
-    user_name_pattern_error: "Only numbers and letters and {'@'}._- are allowed, and must start with a number or letter",
-    pwd_pattern_error: '6-20 characters and at least one uppercase letter, lowercase letter, number, special character',
+    user_name_pattern_error:
+      "Only numbers and letters and {'@'}._- are allowed, and must start with a number or letter",
+    pwd_pattern_error:
+      '6-20 characters and at least one uppercase letter, lowercase letter, number, special character',
     special_characters_are_not_supported: 'Special characters are not allowed',
     phone_format: 'Please fill in the correct format of the mobile phone number',
     email_format_is_incorrect: 'Please fill in the correct format of the email address',
@@ -792,7 +826,8 @@ export default {
     success: 'Import successful',
     placeholder: 'Click to select a file',
     defaultTip: 'Only supports xlsx and xls format files',
-    errorTip: 'Upload failed: There is non-compliant data in the file, if you need to view details,',
+    errorTip:
+      'Upload failed: There is non-compliant data in the file, if you need to view details,',
     downTip: 'Download template',
     uploadAgain: 'Upload again',
     backUserGrid: 'Return to user list',
@@ -817,10 +852,13 @@ export default {
     average_role: 'Ordinary user',
     org_admin: 'Organization administrator',
     confirm_delete: 'Confirm to delete this role? ',
-    delete_tips: '<div id="u7755_text" class="text" style="font-size: 12px;"><p><span style="color:#F59A23;">Friendly reminder, after the role is deleted, the users belonging to the role will be processed as follows:</span></p><p><span style="color:#7F7F7F;">1. If the user has other roles in the current organization, then after the role is deleted, the user will be removed from the role.</span></p><p><span style="color:#7F7F7F;">2. This role is the only role the user has in the current organization, but the user has roles in other organizations, then after the role is deleted, the user will also be removed from the current organization.</span></p><p><span style="color:#7F7F7F;">3. This role is the only role the user has in the current organization, and the user does not have any roles in other organizations in the system, then after the role is deleted, the user will also be deleted from the current system. </span></p><p><span style="color:#7F7F7F;"><br></span></p></div>',
+    delete_tips:
+      '<div id="u7755_text" class="text" style="font-size: 12px;"><p><span style="color:#F59A23;">Friendly reminder, after the role is deleted, the users belonging to the role will be processed as follows:</span></p><p><span style="color:#7F7F7F;">1. If the user has other roles in the current organization, then after the role is deleted, the user will be removed from the role.</span></p><p><span style="color:#7F7F7F;">2. This role is the only role the user has in the current organization, but the user has roles in other organizations, then after the role is deleted, the user will also be removed from the current organization.</span></p><p><span style="color:#7F7F7F;">3. This role is the only role the user has in the current organization, and the user does not have any roles in other organizations in the system, then after the role is deleted, the user will also be deleted from the current system. </span></p><p><span style="color:#7F7F7F;"><br></span></p></div>',
     confirm_unbind_user: 'Are you sure you want to remove the user from the role? ',
-    clear_in_system: 'Friendly reminder, after being removed from the current role, the user no longer has any role in any organization and will be deleted from the system. ',
-    clear_in_org: 'Friendly reminder, after being removed from the current role, the user no longer has any role in the current organization and will be removed from the current organization. ',
+    clear_in_system:
+      'Friendly reminder, after being removed from the current role, the user no longer has any role in any organization and will be deleted from the system. ',
+    clear_in_org:
+      'Friendly reminder, after being removed from the current role, the user no longer has any role in the current organization and will be removed from the current organization. ',
     add_user: 'Add user to role ({0})',
     unbind_success: 'Removed successfully',
     bind_success: 'Binding successfully',
@@ -863,8 +901,10 @@ export default {
     default_cannot_move: 'Default organization cannot be deleted',
     cannot_delete: 'Cannot delete',
     confirm_delete: 'Are you sure you want to delete this organization? ',
-    delete_children_first: 'Please delete the child organization first, then delete the current organization',
-    confirm_content: 'Friendly reminder, after the organization is deleted, the resources under the organization will also be deleted',
+    delete_children_first:
+      'Please delete the child organization first, then delete the current organization',
+    confirm_content:
+      'Friendly reminder, after the organization is deleted, the resources under the organization will also be deleted',
     give_up_resource: 'Give up resources and delete directly',
     move_resource_first: 'Migrate resources first',
     default_parent_tips: '(Default current organization)',
@@ -917,7 +957,8 @@ export default {
     select_all: 'Select all',
     added: 'Added',
     manual_input: 'Manual input',
-    please_fill: 'Please fill in one per line, up to 500 items can be added. Duplicate options and already added options will be automatically filtered out when identifying input',
+    please_fill:
+      'Please fill in one per line, up to 500 items can be added. Duplicate options and already added options will be automatically filtered out when identifying input',
     close: 'Close',
     add: 'Add',
     sure: 'Confirm定',
@@ -930,9 +971,11 @@ export default {
     resource_name: 'Resource name',
     menu_name: 'Menu name',
     from_role: 'Inherited from the following roles:',
-    auth_alone: ​​ 'Individual authorization',
-    org_role_empty: 'Organization administrator has all resource permissions, no need to authorize again',
-    user_role_empty: 'This user is an organization administrator and has all resource permissions, no need to authorize again',
+    auth_alone: 'Individual authorization',
+    org_role_empty:
+      'Organization administrator has all resource permissions, no need to authorize again',
+    user_role_empty:
+      'This user is an organization administrator and has all resource permissions, no need to authorize again',
     sysParams: 'System variables',
     set_rules: 'Set rules',
     inner_role_tips: 'System built-in role, permissions cannot be edited'
@@ -963,7 +1006,8 @@ export default {
     data_source_table: 'Data Source Table',
     auth_method: 'Authentication Method',
     passwd: 'Username and Password',
-    kerbers_info: 'Please make sure krb5.Conf, Keytab Key, have been added to the path: /opt/dataease2.0/conf',
+    kerbers_info:
+      'Please make sure krb5.Conf, Keytab Key, have been added to the path: /opt/dataease2.0/conf',
     client_principal: 'Client Principal',
     keytab_Key_path: 'Keytab Key Path',
     please_select_left: 'Please select from the left',
@@ -980,7 +1024,8 @@ export default {
     http_port: 'Http Port',
     port: 'Port',
     datasource_url: 'Address',
-    please_input_datasource_url: 'Please enter the Elasticsearch address, such as: http://es_host:es_port',
+    please_input_datasource_url:
+      'Please enter the Elasticsearch address, such as: http://es_host:es_port',
     please_input_data_base: 'Please enter the database name',
     please_input_jdbc_url: 'Please enter the JDBC connection',
     please_select_oracle_type: 'Select the connection type',
@@ -1008,7 +1053,8 @@ export default {
     please_choose_schema: 'Please select database Schema',
     please_choose_charset: 'Please select database character set',
     please_choose_targetCharset: 'Please select target character set',
-    edit_datasource_msg: 'Modifying the data source information may make the data set under the data source unavailable. Confirm the modification? ',
+    edit_datasource_msg:
+      'Modifying the data source information may make the data set under the data source unavailable. Confirm the modification? ',
     repeat_datasource_msg: 'Data source information with the same configuration already exists, ',
     confirm_save: 'Confirm to save?',
     in_valid: 'Invalid data source',
@@ -1161,7 +1207,8 @@ export default {
     solid_color: 'Pure color',
     split_gradient: 'Separate gradient',
     continuous_gradient: 'Continuous gradient',
-    map_center_lost: 'The graph is missing the centroid or center attribute, please complete it and try again',
+    map_center_lost:
+      'The graph is missing the centroid or center attribute, please complete it and try again',
     margin_model: 'Mode',
     margin_model_auto: 'Automatic',
     margin_model_absolute: 'Absolute',
@@ -1253,7 +1300,7 @@ export default {
     size: 'Size',
     bar_width: 'Bar width',
     bar_gap: 'Bar gap',
-    adapt: ​​ 'Adaptive',
+    adapt: 'Adaptive',
     line_width: 'Line width',
     line_type: 'Line type',
     line_symbol: 'Bend point',
@@ -1428,7 +1475,8 @@ export default {
     date_split: 'yyyy/MM/dd',
     chartName: 'New Chart',
     chart_show_error: 'Cannot display normally',
-    chart_error_tips: 'Abnormal data acquisition, if you have any questions, please contact the administrator',
+    chart_error_tips:
+      'Abnormal data acquisition, if you have any questions, please contact the administrator',
     title_cannot_empty: 'Title cannot be empty',
     table_title_height: 'Header row height',
     table_item_height: 'Table row height',
@@ -1450,7 +1498,8 @@ export default {
     text_style: 'Font style',
     bolder: 'Bold',
     change_ds: 'Change data set',
-    change_ds_tip: 'Tip: Changing data sets will cause fields to change, and charts need to be recreated',
+    change_ds_tip:
+      'Tip: Changing data sets will cause fields to change, and charts need to be recreated',
     axis_name_color: 'Name color',
     axis_name_fontsize: 'Name font',
     pie_label_line_show: 'Guide line',
@@ -1614,13 +1663,14 @@ export default {
     enum_value_can_not_null: 'Field enumeration value cannot be empty',
     table_config: 'Table configuration',
     table_column_width_config: 'Column width adjustment',
-    table_column_adapt: ​​ 'Adaptive',
+    table_column_adapt: 'Adaptive',
     table_column_fixed: 'Fixed column width',
     table_column_custom: 'Custom',
     chart_table_pivot: 'Pivot table',
     chart_table_heatmap: 'Heat map',
     table_pivot_row: 'Data row',
-    field_error_tips: 'The original field of the data set corresponding to this field has changed (including dimensions, indicators, field types, fields deleted, etc.), it is recommended to re-edit',
+    field_error_tips:
+      'The original field of the data set corresponding to this field has changed (including dimensions, indicators, field types, fields deleted, etc.), it is recommended to re-edit',
     mark_field_error: 'The data set has changed, the current field does not exist, please reselect',
     table_border_color: 'Border color',
     table_header_align: 'Header alignment',
@@ -1642,7 +1692,8 @@ export default {
     slider_bg: 'Background',
     slider_fill_bg: 'Selected background',
     slider_text_color: 'Font color',
-    chart_no_senior: 'There is no advanced configuration for the current chart type, please stay tuned',
+    chart_no_senior:
+      'There is no advanced configuration for the current chart type, please stay tuned',
     chart_no_properties: 'There is no style configuration for the current chart type',
     assist_line: 'Assist line',
     field_fixed: 'Fixed value',
@@ -1693,7 +1744,8 @@ export default {
     gauge_threshold_compare_error: 'The threshold range needs to increase step by step',
     tick_count: 'Number of tick intervals',
     custom_sort: 'Custom',
-    custom_sort_tip: 'Custom sorting has the highest priority and only supports single field customization',
+    custom_sort_tip:
+      'Custom sorting has the highest priority and only supports single field customization',
     clean_custom_sort: 'Clear custom sorting',
     ds_field_edit: 'Dataset field management',
     chart_field_edit: 'Chart field management',
@@ -1710,7 +1762,8 @@ export default {
     textColor: 'Text',
     backgroundColor: 'Background',
     field_can_not_empty: 'Field cannot be empty',
-    conditions_can_not_empty: 'Field conditions cannot be empty. If there are no conditions, please delete the field directly',
+    conditions_can_not_empty:
+      'Field conditions cannot be empty. If there are no conditions, please delete the field directly',
     remark: 'Remark',
     remark_placeholder: 'Remark limit 512 characters',
     remark_show: 'Show remark',
@@ -1755,15 +1808,21 @@ export default {
     break_line: 'Keep empty',
     set_zero: 'Set to 0',
     ignore_data: 'Hide empty values',
-    sub_dimension_tip: 'This field is required and the field in the category axis should not be used. If this field is not needed, please select the basic chart for display, otherwise the display effect will not be ideal. ',
+    sub_dimension_tip:
+      'This field is required and the field in the category axis should not be used. If this field is not needed, please select the basic chart for display, otherwise the display effect will not be ideal. ',
     drill_dimension_tip: 'Drill fields only support fields in the data set',
     table_scroll_tip: 'Details table is only effective when the paging mode is "Drop-down". ',
-    table_threshold_tip: 'Tip: Do not select fields repeatedly. If the same field is configured repeatedly, only the last field configuration will take effect',
-    table_column_width_tip: 'Fixed column width is not always effective. <br/>Container width takes precedence over column width, that is, (table container width / number of columns > specified column width), then column width takes precedence over (container width / number of columns). ',
-    reference_field_tip: 'The reference field starts with "[" and ends with "]". <br/>Do not modify the reference content, otherwise the reference will fail. <br/>If you enter content in the same format as the reference field, it will be treated as a reference field. ',
-    scatter_tip: 'When this indicator takes effect, the bubble size attribute in the style size will be invalid',
+    table_threshold_tip:
+      'Tip: Do not select fields repeatedly. If the same field is configured repeatedly, only the last field configuration will take effect',
+    table_column_width_tip:
+      'Fixed column width is not always effective. <br/>Container width takes precedence over column width, that is, (table container width / number of columns > specified column width), then column width takes precedence over (container width / number of columns). ',
+    reference_field_tip:
+      'The reference field starts with "[" and ends with "]". <br/>Do not modify the reference content, otherwise the reference will fail. <br/>If you enter content in the same format as the reference field, it will be treated as a reference field. ',
+    scatter_tip:
+      'When this indicator takes effect, the bubble size attribute in the style size will be invalid',
     place_name_mapping: 'Place name mapping',
-    axis_tip: 'Minimum value, maximum value, and interval are all numeric types; if not filled in, this item will be considered automatic. <br/>Please make sure that the filled value can be calculated correctly, otherwise the axis value will not be displayed normally. ',
+    axis_tip:
+      'Minimum value, maximum value, and interval are all numeric types; if not filled in, this item will be considered automatic. <br/>Please make sure that the filled value can be calculated correctly, otherwise the axis value will not be displayed normally. ',
     format_tip: `The template variables are {a}, {b}, {c}, {d}, which represent the series name, data name, data value, etc. <br>
 When the trigger position is 'coordinate axis', there will be multiple series of data. At this time, the index of the series can be represented by {a0}, {a1}, {a2} followed by an index. <br>
 The meanings of {a}, {b}, {c}, {d} in different chart types are different. The variables {a}, {b}, {c}, {d} represent the data meanings in different chart types: <br><br>
@@ -1779,10 +1838,12 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     p_bottom: 'Bottom alignment',
     p_center: 'Center',
     table_auto_break_line: 'Automatic line break',
-    table_break_line_tip: 'Turn on automatic line break, the table header row height setting will be invalid',
+    table_break_line_tip:
+      'Turn on automatic line break, the table header row height setting will be invalid',
     table_break_line_max_lines: 'Maximum number of lines',
     step: 'Step length (px)',
-    no_function: 'Functions do not yet support direct references, please enter manually in the field expression. ',
+    no_function:
+      'Functions do not yet support direct references, please enter manually in the field expression. ',
     chart_flow_map: 'Flow map',
     chart_heat_map: 'Heat map',
     start_point: 'Starting point',
@@ -1842,11 +1903,13 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     error_q_2_d: 'Drag of indicators to dimensions is not supported',
     error_d_2_q: 'Drag of dimensions to indicators is not supported',
     error_d_not_time_2_q: 'Drag of non-time dimensions is not supported',
-    error_bar_range_axis_type_not_equal: 'The start value and end value must be set to the same type',
+    error_bar_range_axis_type_not_equal:
+      'The start value and end value must be set to the same type',
     only_input_number: 'Please enter a correct value',
     value_min_max_invalid: 'The minimum value must be less than the maximum value',
     add_assist_line: 'Add auxiliary line',
-    assist_line_tip: 'The auxiliary line value format follows the label formatting configuration of the vertical axis/horizontal axis, please configure it in the style. ',
+    assist_line_tip:
+      'The auxiliary line value format follows the label formatting configuration of the vertical axis/horizontal axis, please configure it in the style. ',
     add_threshold: 'Add threshold',
     add_condition: 'Add condition',
     chart_quadrant: 'Quadrant chart',
@@ -1893,10 +1956,12 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     sql_result: 'Running result',
     parse_filed: 'Parsing field',
     field_rename: 'Field rename',
-    params_work: 'Only effective when editing: parameter value is only effective when editing the dataset; Globally effective: effective in dataset viewing, previewing, and charts that use the dataset. ',
+    params_work:
+      'Only effective when editing: parameter value is only effective when editing the dataset; Globally effective: effective in dataset viewing, previewing, and charts that use the dataset. ',
     select_year: 'Select year',
     sql_variable_limit_1: '1. SQL variables can only be used in WHERE conditions',
-    sql_variable_limit_2: "2. Example: select * from table_name where col_name1='${'{'}param_name1{'}'}' and col_name2 in (${'{'}param_name2{'}'})",
+    sql_variable_limit_2:
+      "2. Example: select * from table_name where col_name1='${'{'}param_name1{'}'}' and col_name2 in (${'{'}param_name2{'}'})",
     select_month: 'Select month',
     select_date: 'Select date',
     select_time: 'Select time',
@@ -1916,7 +1981,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     rename: 'rename',
     tips: 'tips',
     confirm_delete: 'confirm deletion',
-    confirm_delete_msg: 'Dataset deletion will affect the custom datasets, associated datasets, and dashboards related to it. Confirm deletion? ',
+    confirm_delete_msg:
+      'Dataset deletion will affect the custom datasets, associated datasets, and dashboards related to it. Confirm deletion? ',
     delete_success: 'Delete successfully',
     confirm: 'Confirm',
     cancel: 'Cancel',
@@ -2020,8 +2086,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     edit_custom_table: 'Edit custom dataset',
     edit_field: 'Edit fields',
     preview_100_data: 'Show the first 100 rows of data',
-    invalid_table_check: 'For non-directly connected datasets, please complete data synchronization first',
-    parse_error: 'Excel parsing failed, please check the format, fields and other information. Specific reference: https://dataease.io/docs/user_manual/dataset_configuration/dataset_Excel',
+    invalid_table_check:
+      'For non-directly connected datasets, please complete data synchronization first',
+    parse_error:
+      'Excel parsing failed, please check the format, fields and other information. Specific reference: https://dataease.io/docs/user_manual/dataset_configuration/dataset_Excel',
     origin_field_type: 'Field origin type',
     edit_excel_table: 'Edit Excel dataset',
     edit_excel: 'Edit Excel',
@@ -2051,7 +2119,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       pending: 'Pause',
       confirm_exec: 'Manually trigger execution? ',
       change_success: 'State switch successful',
-      excel_replace_msg: 'This may affect custom datasets, associated datasets, dashboards, etc. Are you sure you want to replace it? ',
+      excel_replace_msg:
+        'This may affect custom datasets, associated datasets, dashboards, etc. Are you sure you want to replace it? ',
       effect_ext_field: 'Will affect the calculated field'
     },
     field_group_type: 'Category',
@@ -2060,7 +2129,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     right_join: 'Right join',
     inner_join: 'Inner join',
     full_join: 'Full join',
-    can_not_union_diff_datasource: 'The associated dataset must be consistent with the data source of the current dataset',
+    can_not_union_diff_datasource:
+      'The associated dataset must be consistent with the data source of the current dataset',
     operator: 'Operation',
     d_q_trans: 'Dimension/metric conversion',
     add_calc_field: 'Create a new calculated field',
@@ -2076,18 +2146,21 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     ple_select_excel: 'Please select the Excel to import',
     merge: 'Merge',
     no_merge: 'Do not merge',
-    merge_msg: 'There are fields that are consistent in the data table. Do you want to merge them into one data set?',
+    merge_msg:
+      'There are fields that are consistent in the data table. Do you want to merge them into one data set?',
     merge_title: 'Merge data',
     field_name_less_50: 'Field name cannot exceed 50 characters',
     field_name_less_2_64: '2-64 characters',
     excel_info_1: '1. There cannot be merged cells in the Excel file;',
-    excel_info_2: '2. The first line of the Excel file is the title row, which cannot be empty and cannot be a date type;',
+    excel_info_2:
+      '2. The first line of the Excel file is the title row, which cannot be empty and cannot be a date type;',
     excel_info_3: '3. Please make sure that the file size is within 500M. ',
     sync_field: 'Synchronize field',
     confirm_sync_field: 'Confirm synchronization',
     confirm_sync_field_tips: 'Synchronize field may cause edited field to change, please confirm',
     sync_success: 'Synchronize successfully',
-    sync_success_1: 'Synchronize successfully, please re-execute data synchronization operation on current data set',
+    sync_success_1:
+      'Synchronize successfully, please re-execute data synchronization operation on current data set',
     row_permission: {
       type: 'Type',
       name: 'Name',
@@ -2150,7 +2223,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     pls_input_filename: 'Please enter the file name',
     calc_tips: {
       tip1: 'The expression syntax should follow the calcite syntax. ',
-      tip1_1: 'The expression syntax should follow the database syntax corresponding to the data source. ',
+      tip1_1:
+        'The expression syntax should follow the database syntax corresponding to the data source. ',
       tip2: 'Aggregation operations are only valid in charts. Displayed as "-" during preview',
       tip3: 'The reference field starts with "[" and ends with "]"',
       tip4: 'Do not modify the reference content, otherwise the reference will fail',
@@ -2179,12 +2253,14 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     run_failed: 'Run failed',
     select_data_table: 'Select data table',
     in_the_file: 'Merged cells cannot exist in the file',
-    or_date_type: 'The first line of the file is the title line, cannot be empty, and cannot be a date type',
+    or_date_type:
+      'The first line of the file is the title line, cannot be empty, and cannot be a date type',
     is_within_500m: 'Make sure the Excel file size is within 500M',
     upload_data: 'Upload data',
     excel_data_first: 'Please upload Excel data first',
     is_currently_available: 'No data table is currently available',
-    sure_to_synchronize: 'Synchronizing fields may cause changes to edited fields. Are you sure you want to synchronize? ',
+    sure_to_synchronize:
+      'Synchronizing fields may cause changes to edited fields. Are you sure you want to synchronize? ',
     folder_name: 'Folder name',
     folder: 'Folder to which it belongs',
     edit_folder: 'Edit folder',
@@ -2202,7 +2278,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     create_dashboard: 'Create dashboard',
     cannot_be_empty: 'SQL cannot be empty',
     data_reference: 'Data reference',
-    want_to_replace: 'Replacement may affect custom datasets, associated datasets, dashboards, etc. Do you want to replace? ',
+    want_to_replace:
+      'Replacement may affect custom datasets, associated datasets, dashboards, etc. Do you want to replace? ',
     replace_the_data: 'Are you sure you want to replace the data? ',
     append_successfully: 'Append successfully',
     already_exists: 'Dataset name already exists',
@@ -2212,7 +2289,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     left_to_edit: 'Select the data table on the left to edit',
     cannot_be_duplicate: 'Dataset names cannot be duplicated',
     set_saved_successfully: 'Dataset saved successfully',
-    to_start_using: 'Browse the contents of your databases, tables and columns. Select a database to get started. ',
+    to_start_using:
+      'Browse the contents of your databases, tables and columns. Select a database to get started. ',
     to_run_query: 'Click to run the query',
     the_running_results: 'You can view the running results',
     item: 'Item',
@@ -2306,8 +2384,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     stop: 'Stop',
     first_login_tips: 'You are using the initial password, remember to change it',
     roger_that: 'Got it',
-    donot_noti: 'Don'
-    t prompt again ',
+    donot_noti: "Don't prompt again",
     apply: 'Apply',
     search: 'Search',
     folder: 'Directory',
@@ -2558,8 +2635,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     custom_sort: 'Custom sorting',
     msg_center: 'Message center',
     to_be_filled: 'To be filled',
-    the_minimum_value: 'The maximum value of the numerical interval must be greater than the minimum value',
-    before_querying: 'The query condition is required, please set the option value before querying! ',
+    the_minimum_value:
+      'The maximum value of the numerical interval must be greater than the minimum value',
+    before_querying:
+      'The query condition is required, please set the option value before querying! ',
     here_or_click: 'Drag the field on the right here or click',
     add_query_condition: 'Add query condition',
     set_filter_condition: 'Set filter condition',
@@ -2580,21 +2659,27 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     unnamed: 'Unnamed',
     cannot_be_empty: 'The query condition or field cannot be empty',
     the_first_level: 'No need to configure the cascaded fields at the first level',
-    configure_cascaded_fields: 'Use the same data set as the previous level, no need to configure the cascaded fields',
+    configure_cascaded_fields:
+      'Use the same data set as the previous level, no need to configure the cascaded fields',
     condition_cascade_configuration: 'Query condition cascade configuration',
     not_reverse_cascade: '(Only the upper level can cascade the lower level, not reverse cascade)',
-    must_be_met: 'Based on the query condition of the current query component, if cascade configuration is required, the following conditions must be met:',
-    select_data_set: '1. Display type: text drop-down component and number drop-down component; 2. Option value source: select data set',
+    must_be_met:
+      'Based on the query condition of the current query component, if cascade configuration is required, the following conditions must be met:',
+    select_data_set:
+      '1. Display type: text drop-down component and number drop-down component; 2. Option value source: select data set',
     add_cascade_configuration: 'Add cascade configuration',
     add_cascade_condition: 'Add cascade condition',
     query_condition_level: 'Query condition level',
     select_query_condition: 'Please select the query condition',
     select_cascaded_field: 'Please select the cascaded field',
     level_1: 'Level {msg}',
-    to_modify_it: 'Modification of the dataset will cause the cascade configuration to become invalid, so the corresponding cascade relationship will be cleared. Are you sure to modify it? ',
+    to_modify_it:
+      'Modification of the dataset will cause the cascade configuration to become invalid, so the corresponding cascade relationship will be cleared. Are you sure to modify it? ',
     be_linked_first: 'Please check the charts and fields that need to be linked first',
-    cannot_be_performed: 'The selected field types are inconsistent and query configuration cannot be performed',
-    numerical_parameter_configuration: 'The numerical parameter configuration must configure the maximum and minimum values',
+    cannot_be_performed:
+      'The selected field types are inconsistent and query configuration cannot be performed',
+    numerical_parameter_configuration:
+      'The numerical parameter configuration must configure the maximum and minimum values',
     format_is_inconsistent: 'The time format is inconsistent',
     cannot_be_empty_de: 'The query condition is required and the default value cannot be empty',
     the_start_time: 'The end time must be greater than the start time!',
@@ -2608,8 +2693,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     query_condition_setting: 'Query condition setting',
     query_condition: 'Query condition',
     chart_and_field: 'Select the associated chart and field',
-    be_switched_to: 'Note: Automatic mode supports automatic association of fields with the same data set, which can be switched to',
-    to_automatic_again: 'Custom mode. After switching to custom mode, it cannot be switched to automatic again! ',
+    be_switched_to:
+      'Note: Automatic mode supports automatic association of fields with the same data set, which can be switched to',
+    to_automatic_again:
+      'Custom mode. After switching to custom mode, it cannot be switched to automatic again! ',
     as_query_conditions: 'Anonymous field, cannot be set as a query condition',
     query_condition_configuration: 'Query condition configuration',
     required_items: 'Required items',
@@ -2634,7 +2721,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     with_condition: 'With condition',
     or_condition: 'Or condition',
     hide_condition_switch: 'Hide condition switch',
-    cannot_be_displayed: 'The chart uses a different data set, Unable to display configuration items',
+    cannot_be_displayed:
+      'The chart uses a different data set, Unable to display configuration items',
     component_cascade_configuration: 'Query component cascade configuration',
     time_type: 'Time type',
     start_at: 'Start at',
@@ -2662,7 +2750,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     view_style: 'Chart style',
     view_color_setting: 'Chart color',
     border_color_setting: 'Border color',
-    unpublished_tips: 'After unpublishing, the dashboard cannot be viewed. Are you sure you want to unpublish? ',
+    unpublished_tips:
+      'After unpublishing, the dashboard cannot be viewed. Are you sure you want to unpublish? ',
     position_adjust_component: 'Position adjustment',
     active_font_size: 'Selected font size',
     carousel: 'Carousel',
@@ -2692,9 +2781,11 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     image_size_tips: 'Images should not be larger than 15M',
     image_add_tips: 'Only images can be inserted',
     watermark: 'Watermark',
-    panel_get_data_error: 'Failed to get dashboard information. The dashboard may have been deleted. Please check the dashboard status',
+    panel_get_data_error:
+      'Failed to get dashboard information. The dashboard may have been deleted. Please check the dashboard status',
     panel_no_save_tips: 'There are unsaved dashboards',
-    panel_cache_use_tips: 'It was found that a dashboard was not saved properly last time. Do you want to use the dashboard that was not saved last time? ',
+    panel_cache_use_tips:
+      'It was found that a dashboard was not saved properly last time. Do you want to use the dashboard that was not saved last time? ',
     template_name_tips: 'Dashboard name is required',
     panel_background_item: 'Custom dashboard background',
     panel_background_image_tips: 'Support JPG, PNG, GIF, SVG',
@@ -2710,7 +2801,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     template_preview: 'Preview template',
     apply: 'Apply',
     apply_this_template: 'Apply this template',
-    market_network_tips: 'Viewing the template market requires the server to be connected to the template market (https://templates.dataease.cn), please check the network...',
+    market_network_tips:
+      'Viewing the template market requires the server to be connected to the template market (https://templates.dataease.cn), please check the network...',
     enter_name_tips: 'Please enter the dashboard name',
     name: 'Name',
     apply_template: 'Apply template',
@@ -2729,7 +2821,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     data_format: 'Date format',
     border_color: 'Border color',
     theme_change_warn: 'Theme change',
-    theme_change_tips: 'Changing the theme will overwrite the chart-related theme properties. It is recommended to back up in advance. Do you want to continue changing? ',
+    theme_change_tips:
+      'Changing the theme will overwrite the chart-related theme properties. It is recommended to back up in advance. Do you want to continue changing? ',
     theme_color_change_warn: 'Theme color change',
     theme_color_change_tips: 'Theme color change will overwrite the original chart properties',
     theme_color: 'Theme color',
@@ -2755,7 +2848,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     live_tips: 'HTTPS link first',
     stream_media_add_tips: 'Please add streaming information...',
     stream_mobile_tips: 'iOS terminal may not display',
-    json_params_error: 'Third-party parameter parsing failed, please check whether the parameter format is correct',
+    json_params_error:
+      'Third-party parameter parsing failed, please check whether the parameter format is correct',
     inner_padding: 'Inner margin',
     board_radio: 'Rounded corners',
     background: 'Background',
@@ -2769,7 +2863,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     enable_param: 'Enable parameter',
     param_name: 'Parameter name',
     outer_param_set: 'External parameter setting',
-    outer_param_decode_error: 'External parameter parsing error is not effective, please pass parameters according to the specified encoding method',
+    outer_param_decode_error:
+      'External parameter parsing error is not effective, please pass parameters according to the specified encoding method',
     input_param_name: 'Please enter the parameter name',
     params_setting: 'External parameter setting',
     template_view_tips: 'Currently a template chart, please click to change the data set',
@@ -2931,9 +3026,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     content_style: 'Content style',
     canvas_self_adaption: 'Adaptive canvas area',
     panel_save_tips: 'The dashboard has been changed, do you want to save it? ',
-    panel_save_warn_tips: 'If you don'
-    t save,
-    the changes you made to the dashboard will be lost!',
+    panel_save_warn_tips: "If you don't save,the changes you made to the dashboard will be lost!",
     do_not_save: 'Do not save',
     save: 'Save',
     drill: 'Drill down',
@@ -2998,17 +3091,18 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     link_add_tips_pre: 'Please configure web page information..',
     web_add_tips_suf: 'Add web page information...',
     panel_view_result_show: 'Chart results',
-    panel_view_result_tips: 'Selecting {0} will overwrite the number of results displayed in the chart, the value range is 1~10000',
+    panel_view_result_tips:
+      'Selecting {0} will overwrite the number of results displayed in the chart, the value range is 1~10000',
     timeout_refresh: 'Request timeout, refresh later...',
     mobile_layout: 'Mobile layout',
     component_hidden: 'Hidden component',
-    public_link_tips: 'Currently in public link mode, the target dashboard has not set a public link, and cannot jump',
+    public_link_tips:
+      'Currently in public link mode, the target dashboard has not set a public link, and cannot jump',
     input_title: 'Please enter a title',
     show_title: 'Title',
     default_settings: 'Default value settings',
     choose_background: 'Choose component background',
-    choose_background_tips: 'Component'
-    s own background will overwrite the current settings ',
+    choose_background_tips: "Component's own background will overwrite the current settings",
     setting_background: 'Set background',
     setting_jump: 'Jump settings',
     select_view: 'Please select a chart...',
@@ -3030,7 +3124,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     require: 'Required',
     back: 'Return to the public link settings page',
     refresh: 'Refresh',
-    time_tips: 'Unit: minutes, range: [0-1440], 0 means no time limit, starting from the first access using the ticket'
+    time_tips:
+      'Unit: minutes, range: [0-1440], 0 means no time limit, starting from the first access using the ticket'
   },
   pblink: {
     key_pwd: 'Please enter the password to open the link',
@@ -3115,7 +3210,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     confirm_batch_delete_target_ds: 'Are you sure you want to delete {0} target data sources? ',
     confirm_batch_delete_source_ds: 'Are you sure you want to delete {0} source data sources? ',
     recently_created: 'Recently created',
-    has_running_task_msg: 'After the task in progress is completed, the configuration before the modification will continue to be used for synchronization, and the task needs to be manually saved again. ',
+    has_running_task_msg:
+      'After the task in progress is completed, the configuration before the modification will continue to be used for synchronization, and the task needs to be manually saved again. ',
     edit_datasource: 'Edit data source',
     add_datasource: 'Create a new data source',
     config_info: 'Configuration information',
@@ -3149,7 +3245,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     data_source_table: 'Data source table',
     auth_method: 'Authentication method',
     passwd: 'Username and password',
-    kerbers_info: 'Please make sure krb5.Conf and Keytab Key have been added to the path: /opt/dataease2.0/conf',
+    kerbers_info:
+      'Please make sure krb5.Conf and Keytab Key have been added to the path: /opt/dataease2.0/conf',
     client_principal: 'Client Principal',
     keytab_Key_path: 'Keytab Key Path',
     data_base: 'Database name',
@@ -3161,7 +3258,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     http_port: 'HTTP port',
     port: 'Port',
     datasource_url: 'Address',
-    please_input_datasource_url: 'Please enter the Elasticsearch address, such as: http://es_host:es_port',
+    please_input_datasource_url:
+      'Please enter the Elasticsearch address, such as: http://es_host:es_port',
     please_input_data_base: 'Please enter the database name',
     please_input_jdbc_url: 'Please enterJDBC connection',
     please_select_oracle_type: 'Select connection type',
@@ -3185,7 +3283,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     please_choose_schema: 'Please select database Schema',
     please_choose_charset: 'Please select database character set',
     please_choose_targetCharset: 'Please select target character set',
-    edit_datasource_msg: 'Modifying the data source information may make the data set under the data source unavailable. Confirm the modification? ',
+    edit_datasource_msg:
+      'Modifying the data source information may make the data set under the data source unavailable. Confirm the modification? ',
     repeat_datasource_msg: 'Data source information with the same configuration already exists, ',
     in_valid: 'Invalid data source',
     initial_pool_size: 'Initial number of connections',
@@ -3286,7 +3385,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     please_choose_incremental_field: 'Please select the incremental field',
     please_enter_table_name: 'Please enter the table name',
     input_limit_64: 'The length cannot exceed 64 characters',
-    must_be_met_the_table_name: 'Must start with a letter and can only contain letters, numbers, and underscores',
+    must_be_met_the_table_name:
+      'Must start with a letter and can only contain letters, numbers, and underscores',
     please_choose_partition_type: 'Please select the partition type',
     please_enter_end_offset: 'Please enter the end offset',
     please_choose_partition_interval_unit: 'Please select the unit of the partition interval',
@@ -3321,8 +3421,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     query_method: 'Query method',
     please_choose_data_extraction_method: 'Please choose the data extraction method',
     table: 'Table',
-    sql_tip_1: 'This method does not always return the precision and length set by the user when obtaining the length or precision of the column type, but it can still be used as a reference value to determine the maximum display length of each column in the result set. ',
-    sql_tip_2: 'If you need to obtain more accurate column type length precision, please use the library table method, or set the length precision in the field mapping in the next step. ',
+    sql_tip_1:
+      'This method does not always return the precision and length set by the user when obtaining the length or precision of the column type, but it can still be used as a reference value to determine the maximum display length of each column in the result set. ',
+    sql_tip_2:
+      'If you need to obtain more accurate column type length precision, please use the library table method, or set the length precision in the field mapping in the next step. ',
     please_enter_sql: 'Please enter the query SQL',
     msg_confirm_delete_field: 'Are you sure you want to delete this field? ',
     source_field: 'Source field',
@@ -3333,13 +3435,15 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     field_index: 'Index',
     field_comment: 'Comment',
     confirm_delete_field: 'Are you sure you want to delete the {0} field? ',
-    msg_field_list_empty_tip: 'Field list cannot be empty, and data with empty name or field type of UNKNOWN cannot exist, please check',
+    msg_field_list_empty_tip:
+      'Field list cannot be empty, and data with empty name or field type of UNKNOWN cannot exist, please check',
     next_week: 'Next week',
     next_month: 'Next month',
     next_three_month: 'Next three months',
     must_be_start_less_end: 'The end value of the range must be greater than the start value',
     must_be_partition_interval_greater_than_0: 'Partition interval must be greater than 0',
-    must_be_partition_interval_less_end_start_difference: 'Partition interval must be less than the difference between the end value and the start value',
+    must_be_partition_interval_less_end_start_difference:
+      'Partition interval must be less than the difference between the end value and the start value',
     date: 'Date',
     list: 'Column',
     number: 'Value',
@@ -3350,10 +3454,12 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     edit_field: 'Edit field',
     add_all_field: 'Add all fields',
     fault_tolerance_rate: 'Fault tolerance rate',
-    fault_tolerance_rate_tip: '0～1, the default is 0, which means that when there is an error data in the synchronization batch data, the import task of the entire batch will fail. ',
+    fault_tolerance_rate_tip:
+      '0～1, the default is 0, which means that when there is an error data in the synchronization batch data, the import task of the entire batch will fail. ',
     incremental_sync: 'Incremental synchronization',
     incremental_sync_tip_1: 'Full: Full coverage synchronization',
-    incremental_sync_tip_2: 'Incremental: Incremental synchronization based on incremental fields, incremental fields must be integer or time types',
+    incremental_sync_tip_2:
+      'Incremental: Incremental synchronization based on incremental fields, incremental fields must be integer or time types',
     incremental_field: 'Incremental field',
     enable_partition: 'Enable partitioning',
     enable_partition_tip: 'Enable partitioning, the field list must not have empty values',
@@ -3372,7 +3478,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     partition_interval_unit: 'Partition interval unit',
     input_limit: 'Length cannot exceed {0} characters',
     cannot_begin_with_number: 'Field name cannot start with a number',
-    duplicate_field_tip: 'Duplicate field [{0}], the same source field cannot be mapped multiple times',
+    duplicate_field_tip:
+      'Duplicate field [{0}], the same source field cannot be mapped multiple times',
     duplicate_name_error: 'Duplicate name [{0}]',
     confirm_batch_delete: 'Confirm batch deletion task',
     op_success: 'Operation successful',
@@ -3478,12 +3585,15 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     save_df_success: 'Save data filling successfully',
     permission: 'Filling permission',
     enable: 'Enable',
-    enable_hint: 'After data filling is enabled, the form data can be stored in the data source. Once enabled, it is not allowed to be closed later. ',
+    enable_hint:
+      'After data filling is enabled, the form data can be stored in the data source. Once enabled, it is not allowed to be closed later. ',
     new_folder: 'New folder',
     form_manage: 'Form management',
     my_job: 'My report',
-    disable_data_fill_hint: 'After closing data filling, the form data will fail to submit. Are you sure you want to close it? ',
-    enable_data_fill_hint: 'After enabling, it is allowed to create a new table in the data source database and store the form data in the table',
+    disable_data_fill_hint:
+      'After closing data filling, the form data will fail to submit. Are you sure you want to close it? ',
+    enable_data_fill_hint:
+      'After enabling, it is allowed to create a new table in the data source database and store the form data in the table',
     todo: 'To be filled',
     finished: 'Filled',
     expired: 'Expired',
@@ -3506,7 +3616,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     order_by_create_time_desc: 'In descending order by creation time',
     order_by_name_asc: 'In ascending order by name',
     order_by_name_desc: 'In descending order by name',
-    delete_folder_hint: 'After deletion, all resources under this folder will be deleted. Please operate with caution.',
+    delete_folder_hint:
+      'After deletion, all resources under this folder will be deleted. Please operate with caution.',
     confirm_delete_folder: 'Are you sure you want to delete this folder?',
     confirm_delete_form: 'Are you sure you want to delete this form?',
     confirm_delete_multiple_data: 'Are you sure you want to delete {0} pieces of data?',
@@ -3587,7 +3698,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       form_update_rule_none: 'Please configure update rules',
       form_components_cannot_null: 'Please add form components',
       option_list_cannot_empty: 'Option value cannot be empty',
-      option_list_datasource_cannot_empty: 'Option value binding data source configuration cannot be empty',
+      option_list_datasource_cannot_empty:
+        'Option value binding data source configuration cannot be empty',
       component_setting_error: 'Component setting error',
       table_name: 'Database table name',
       form_column: 'Form field',
@@ -3596,7 +3708,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       create_index: 'Create index',
       add_index: 'Add new index',
       index_name: 'Index name',
-      create_index_hint: 'MySQL 8.0 or MariaDB 10.8.0 and below do not support index descending sort',
+      create_index_hint:
+        'MySQL 8.0 or MariaDB 10.8.0 and below do not support index descending sort',
       index_column: 'Index field',
       order: 'Sort',
       order_asc: 'Ascending',
@@ -3643,20 +3756,25 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       data_not_found: '] does not exist'
     },
     task: {
-      time_check_5_minute_later_than_current: 'Cannot be less than 5 minutes after the current time',
+      time_check_5_minute_later_than_current:
+        'Cannot be less than 5 minutes after the current time',
       time_check_later_than_current: 'Cannot be less than the current time',
       time_check_earlier_than_end: 'Cannot be greater than the end time',
       time_check_later_than_start: 'Cannot be less than the start time',
-      confirm_exit_without_save: 'The current changes have not been saved, are you sure you want to exit?',
+      confirm_exit_without_save:
+        'The current changes have not been saved, are you sure you want to exit?',
       deliver_now: 'Deliver immediately',
       deliver_scheduled: 'Scheduled delivery',
       logic_filter: 'Conditional filtering',
       enum_filter: 'Enumeration filtering',
       cannot_be_all_disabled: 'All components cannot be disabled',
       template_hint_title: 'Setting instructions are as follows',
-      template_hint_1: 'When the component is set to prohibit editing, users are not allowed to modify when filling out the form',
-      template_hint_2: 'When the component is set to allow editing, users are allowed to modify when filling out the form',
-      finish_rate_hint: 'Filling completion rate = number of reported data items/number of sent reports*100%',
+      template_hint_1:
+        'When the component is set to prohibit editing, users are not allowed to modify when filling out the form',
+      template_hint_2:
+        'When the component is set to allow editing, users are allowed to modify when filling out the form',
+      finish_rate_hint:
+        'Filling completion rate = number of reported data items/number of sent reports*100%',
       distribute_frequency: 'Sending frequency',
       one_time: 'Only send once',
       interval: 'Regularly send',
@@ -3696,7 +3814,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       task_end_time: 'Task deadline',
       edit_data: 'Edit data',
       show_data: 'View data',
-      confirm_enable: 'Confirm to start the task? (A single task will create a new task to be distributed)',
+      confirm_enable:
+        'Confirm to start the task? (A single task will create a new task to be distributed)',
       confirm_disable: 'Confirm to stop the task? ',
       edit_task: 'Edit task',
       create_task: 'Create new task',
@@ -3770,11 +3889,9 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     line: 'Line chart',
     bar: 'Bar chart',
     pie: 'Pie chart',
-    sorry: 'Sorry, I can'
-    t answer this question based on the known information.Please rephrase your question or provide more information~',
-    hello1: 'Hello, I'
-    m Copilot,
-    I 'm happy to serve you~',
+    sorry:
+      "Sorry, I can't answer this question based on the known information.Please rephrase your question or provide more information~",
+    hello1: "Hello, I'm Copilot,I 'm happy to serve you~",
     answer: 'Answering',
     example: 'You can ask me: Pie chart of sales share of each sales department in 2020',
     switch_chart: 'Switch chart type',
@@ -3786,13 +3903,15 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     invalid: 'Invalid',
     binding_settings: 'Binding settings',
     wechat: 'Enterprise WeChat',
-    wechat_desc: 'After binding, you can log in by scanning the QR code through WeChat for Enterprise',
+    wechat_desc:
+      'After binding, you can log in by scanning the QR code through WeChat for Enterprise',
     dingtalk: 'DingTalk',
     dingtalk_desc: 'After binding, you can log in by scanning the QR code through DingTalk',
     lark: 'Feishu',
     lark_desc: 'After binding, you can log in by scanning the QR code through Feishu',
     international_lark: 'International Feishu',
-    international_lark_desc: 'After binding, you can log in by scanning the QR code through International Feishu',
+    international_lark_desc:
+      'After binding, you can log in by scanning the QR code through International Feishu',
     bind: 'Bind',
     unbind_success: 'Unbind successfully',
     confirm_unbind_dingtalk: 'Are you sure you want to unbind DingTalk? ',
@@ -3808,7 +3927,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     enable_success: 'Enabled successfully',
     disabled_success: 'Disabled successfully',
     delete_api_key: 'Are you sure you want to delete this API key? ',
-    api_key_desc: 'API Key is your key to access DataEase API, which has full permissions for your account. Please keep it safe! Do not disclose API Key to external channels in any way to avoid security threats caused by others. '
+    api_key_desc:
+      'API Key is your key to access DataEase API, which has full permissions for your account. Please keep it safe! Do not disclose API Key to external channels in any way to avoid security threats caused by others. '
   },
   free: {
     title: 'Free Resource Management',
@@ -3818,23 +3938,34 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     batch: 'Batch',
     resource: 'Resource',
     view_association: 'View blood relationship',
-    quick_sync_tips: 'All dashboards, data screens, data sets, and data sources will be migrated to the [Migrate Resources] folder. ',
-    batch_sync_tips: '1. Dashboards, data screens, data sets, and data sources related to the selected resources will also be migrated to the [Migrate Resources] folder of the corresponding resources;',
-    batch_sync_tips1: '2. Migrating a folder will also migrate the subfolders and resources under the folder. ',
+    quick_sync_tips:
+      'All dashboards, data screens, data sets, and data sources will be migrated to the [Migrate Resources] folder. ',
+    batch_sync_tips:
+      '1. Dashboards, data screens, data sets, and data sources related to the selected resources will also be migrated to the [Migrate Resources] folder of the corresponding resources;',
+    batch_sync_tips1:
+      '2. Migrating a folder will also migrate the subfolders and resources under the folder. ',
     quick_del_confirm: 'Are you sure you want to delete all free resources? ',
     quick_del_tips: 'Once a resource is deleted, it cannot be undone. ',
     quick_sync_confirm: 'Are you sure you want to migrate all free resources? ',
-    quick_sync_confirm_tips: 'After the resource is migrated, it cannot be undone. Please operate with caution. ',
-    batch_sync_confirm: 'Are you sure you want to migrate {0} items and their related free resources? ',
+    quick_sync_confirm_tips:
+      'After the resource is migrated, it cannot be undone. Please operate with caution. ',
+    batch_sync_confirm:
+      'Are you sure you want to migrate {0} items and their related free resources? ',
     single_sync_confirm: 'Are you sure you want to migrate this resource? ',
     batch_del_confirm: 'Are you sure you want to delete {0} resources? ',
-    batch_del_confirm_tips: 'After the resource is deleted, it cannot be undone. Please operate with caution. ',
-    del_tips_dataset: 'Deleting a dataset will cause the related datasets to become invalid. Are you sure you want to delete it? ',
-    del_tips_datasource: 'Some datasets are using these data sources. After deletion, the datasets will be unavailable. Are you sure you want to delete it? ',
+    batch_del_confirm_tips:
+      'After the resource is deleted, it cannot be undone. Please operate with caution. ',
+    del_tips_dataset:
+      'Deleting a dataset will cause the related datasets to become invalid. Are you sure you want to delete it? ',
+    del_tips_datasource:
+      'Some datasets are using these data sources. After deletion, the datasets will be unavailable. Are you sure you want to delete it? ',
     single_del_confirm: 'Are you sure you want to delete this {0}? ',
-    single_del_tips_dataset: 'This dataset has the following blood relationship. Deleting it will cause the related views to become invalid. Are you sure you want to delete it? ',
-    single_del_tips_datasource: 'There are {0} datasets using this data source. After deletion, the dataset will be unavailable. Are you sure you want to delete it? ',
+    single_del_tips_dataset:
+      'This dataset has the following blood relationship. Deleting it will cause the related views to become invalid. Are you sure you want to delete it? ',
+    single_del_tips_datasource:
+      'There are {0} datasets using this data source. After deletion, the dataset will be unavailable. Are you sure you want to delete it? ',
     folder: 'Folder',
-    del_folder_tips: 'After deletion, all resources under this folder will be deleted. Please operate with caution. '
+    del_folder_tips:
+      'After deletion, all resources under this folder will be deleted. Please operate with caution. '
   }
 }
