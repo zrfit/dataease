@@ -1615,7 +1615,7 @@ const drawTextShape = (cell, isHeader) => {
 
   // 不是表头，处理文本高度和换行
   if (!isHeader) {
-    const textHeight = cell.spreadsheet.measureTextHeight(wrapText.replaceAll(lineBreak, ''), textStyle)
+    const textHeight = getWrapTextHeight(wrapText.replaceAll(lineBreak, ''), textStyle, cell.spreadsheet, maxLines)
     const lineCountInCell = Math.floor(cell.meta.height / textHeight)
     const wrapTextArr = lines.slice(0, lineCountInCell)
 
@@ -1623,17 +1623,28 @@ const drawTextShape = (cell, isHeader) => {
     wrapText = lineCountInCell === 1
       ? lines[0].slice(0, -1) + ellipsis
       : wrapTextArr.join(lineBreak) || ellipsis
-  }
-  const resultWrapArr = wrapText.split(lineBreak)
-  // 控制最大行数
-  if (lines.length > maxLines) {
-    const temp = resultWrapArr.slice(0, maxLines)
-    if (!temp[temp.length - 1].endsWith(ellipsis)) {
-      temp[temp.length - 1] = temp[temp.length - 1][0] + ellipsis
+    const resultWrapArr = wrapText.split(lineBreak)
+    // 控制最大行数
+    if ( !wrapText.endsWith(ellipsis) && (lines.length > maxLines || lines.length > lineCountInCell)) {
+      // 第一行的字符个数
+      const firstLineStrNumber = resultWrapArr[0].length
+      const temp = resultWrapArr.slice(0, Math.min(maxLines, lineCountInCell))
+      // 修改最后一行的字符,按照第一行字符个数-1，修改最后一行的字符为...
+      temp[temp.length - 1] = temp[temp.length-1].slice(0,firstLineStrNumber - 1) + ellipsis
+      wrapText = temp.join(lineBreak)
     }
-    wrapText = temp.join(lineBreak)
+  } else {
+    const resultWrapArr = wrapText.split(lineBreak)
+    // 控制最大行数
+    if (lines.length > maxLines) {
+      const temp = resultWrapArr.slice(0, maxLines)
+      // 第一行的字符个数
+      const firstLineStrNumber = resultWrapArr[0].length
+      // 修改最后一行的字符
+      temp[temp.length - 1] = temp[temp.length-1].slice(0,firstLineStrNumber - 1) + ellipsis
+      wrapText = temp.join(lineBreak)
+    }
   }
-
   // 设置最终文本和其宽度
   cell.actualText = wrapText
   cell.actualTextWidth = cell.spreadsheet.measureTextWidth(wrapText, textStyle)
@@ -1691,27 +1702,27 @@ export const calculateHeaderHeight = (info, newChart, tableHeader, basicStyle, l
  * @param cellWidth
  * @param spreadsheet
  */
-const getWrapText = (sourceText, textStyle, cellWidth, spreadsheet) => {
+const   getWrapText = (sourceText, textStyle, cellWidth, spreadsheet) => {
   if (!sourceText && sourceText !== 0) return ''
   sourceText = sourceText.toString().trim()
   const getTextWidth = text => spreadsheet.measureTextWidthRoughly(text, textStyle)
 
   let resultWrapText = ''
   let restText = ''
-  let restTextWidth = 0
+  let restTextWidth = 10
   for (let i = 0; i < sourceText.length; i++) {
     const char = sourceText[i]
     const charWidth = getTextWidth(char)
     restTextWidth += charWidth
     restText += char
     // 中文时，需要单元格宽度减去16个文字宽度，否则会超出单元格宽度
-    const cWidth = char.charCodeAt(0) >= 128 ? 16 : 0
+    const cWidth = char.charCodeAt(0) >= 128 ? 16 : 10
     // 添加换行
     if (restTextWidth >= cellWidth - textStyle.fontSize - cWidth) {
       // 最后一个字符不添加换行符
       resultWrapText += restText + (i !== sourceText.length - 1 ? '\n' : '')
       restText = ''
-      restTextWidth = 0
+      restTextWidth = 10
     }
   }
 
@@ -1730,7 +1741,8 @@ const getWrapTextHeight = (wrapText, textStyle, spreadsheet, maxLines) => {
   let maxHeight = 0
   // 获取最高字符的高度
   for (const char of wrapText) {
-    maxHeight = Math.max(maxHeight, spreadsheet.measureTextHeight(char, textStyle))
+    const h = textStyle.fontSize / (char.charCodeAt(0) >= 128 ? 5 : 2.5)
+    maxHeight = Math.max(maxHeight, spreadsheet.measureTextHeight(char, textStyle) + h)
   }
   // 行数
   const lines = wrapText.split('\n').length
