@@ -3843,8 +3843,17 @@ export default {
     quick_del_confirm: '确定删除所有游离资源吗？',
     quick_del_tips: '资源删除后，不可撤销。',
     quick_sync_confirm: '确定迁移所有游离资源吗？',
-    quick_sync_confirm_tips: '迁移删除后，不可撤销，请谨慎操作。',
+    quick_sync_confirm_tips: '迁移资源后，不可撤销，请谨慎操作。',
     batch_sync_confirm: '确定迁移 {0} 项及其相关游离资源吗？',
-    single_sync_confirm: '确定迁移该资源吗'
+    single_sync_confirm: '确定迁移该资源吗',
+    batch_del_confirm: '确定删除 {0} 项资源吗？',
+    batch_del_confirm_tips: '资源删除后，不可撤销，请谨慎操作。',
+    del_tips_dataset: '删除数据集会造成相关数据集失效，确定删除？',
+    del_tips_datasource: '有数据集正在使用这些数据源，删除后数据集不可用，确定删除？',
+    single_del_confirm: '确定删除该{0}吗？',
+    single_del_tips_dataset: '该数据集存在如下血缘关系，删除会造成相关视图失效，确定删除？',
+    single_del_tips_datasource: '有 {0} 个数据集正在使用此数据源，删除后数据集不可用，确定删除？',
+    folder: '文件夹',
+    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。'
   }
 }
