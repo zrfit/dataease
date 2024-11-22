@@ -1080,8 +1080,8 @@ export function getLineConditions(chart) {
   const { threshold } = parseJson(chart.senior)
   const conditions = []
   if (threshold.enable) {
-    threshold.lineThreshold.forEach(item =>
-      item.conditions.forEach(c =>
+    threshold.lineThreshold?.forEach(item =>
+      item.conditions?.forEach(c =>
         conditions.push({
           fieldId: item.fieldId,
           term: c.term,
