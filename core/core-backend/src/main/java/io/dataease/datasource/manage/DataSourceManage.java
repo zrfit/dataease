@@ -19,6 +19,7 @@ import io.dataease.model.BusiNodeVO;
 import io.dataease.operation.manage.CoreOptRecentManage;
 import io.dataease.utils.AuthUtils;
 import io.dataease.utils.BeanUtils;
+import io.dataease.utils.CommunityUtils;
 import io.dataease.utils.TreeUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
@@ -56,12 +57,16 @@ public class DataSourceManage {
         return new DatasourceNodeBO(po.getId(), po.getName(), !StringUtils.equals(po.getType(), "folder"), 7, po.getPid(), extraFlag, dataSourceType.name());
     }
 
-    @XpackInteract(value = "datasourceResourceTree", replace = true)
+    @XpackInteract(value = "datasourceResourceTree", replace = true, invalid = true)
     public List<BusiNodeVO> tree(BusiNodeRequest request) {
 
         QueryWrapper<DataSourceNodePO> queryWrapper = new QueryWrapper<>();
         if (ObjectUtils.isNotEmpty(request.getLeaf()) && !request.getLeaf()) {
             queryWrapper.eq("type", "folder");
+        }
+        String info = CommunityUtils.getInfo();
+        if (StringUtils.isNotBlank(info)) {
+            queryWrapper.notExists(String.format(info, "core_datasource.id"));
         }
         queryWrapper.orderByDesc("create_time");
         List<DatasourceNodeBO> nodes = new ArrayList<>();
