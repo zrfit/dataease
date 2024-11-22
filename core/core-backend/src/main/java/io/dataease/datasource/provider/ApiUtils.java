@@ -580,6 +580,7 @@ public class ApiUtils {
                     o.put("checked", true);
                     o.put("name", field.getName());
                     o.put("primaryKey", field.isPrimaryKey());
+                    o.put("length", field.getLength());
                     o.put("deExtractType", field.getDeExtractType());
                 }
             }
