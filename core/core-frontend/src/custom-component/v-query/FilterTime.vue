@@ -283,7 +283,7 @@ const relativeToCurrentListRange = computed(() => {
           <div class="setting" v-if="timeRange.intervalType !== 'timeInterval'">
             <div class="setting-label">{{ t('dynamic_time.relative') }}</div>
             <div class="setting-value select">
-              <el-select v-model="timeRange.relativeToCurrent">
+              <el-select :teleported="false" v-model="timeRange.relativeToCurrent">
                 <el-option
                   v-for="item in relativeToCurrentList"
                   :key="item.value"
@@ -296,7 +296,7 @@ const relativeToCurrentListRange = computed(() => {
           <div class="setting" v-if="timeRange.relativeToCurrent === 'custom'">
             <div class="setting-input">
               <el-input-number v-model="timeRange.timeNum" :min="0" controls-position="right" />
-              <el-select v-model="timeRange.relativeToCurrentType">
+              <el-select :teleported="false" v-model="timeRange.relativeToCurrentType">
                 <el-option
                   v-for="item in relativeToCurrentTypeList"
                   :key="item.value"
@@ -304,7 +304,7 @@ const relativeToCurrentListRange = computed(() => {
                   :value="item.value"
                 />
               </el-select>
-              <el-select v-model="timeRange.around">
+              <el-select :teleported="false" v-model="timeRange.around">
                 <el-option
                   v-for="item in aroundList"
                   :key="item.value"
@@ -319,7 +319,7 @@ const relativeToCurrentListRange = computed(() => {
           <div class="setting">
             <div class="setting-label">{{ t('dynamic_time.relative') }}</div>
             <div class="setting-value select">
-              <el-select v-model="timeRange.relativeToCurrentRange">
+              <el-select :teleported="false" v-model="timeRange.relativeToCurrentRange">
                 <el-option
                   v-for="item in relativeToCurrentListRange"
                   :key="item.value"
@@ -342,7 +342,7 @@ const relativeToCurrentListRange = computed(() => {
                   :min="0"
                   controls-position="right"
                 />
-                <el-select v-model="timeRange.relativeToCurrentType">
+                <el-select :teleported="false" v-model="timeRange.relativeToCurrentType">
                   <el-option
                     v-for="item in relativeToCurrentTypeList"
                     :key="item.value"
@@ -350,7 +350,7 @@ const relativeToCurrentListRange = computed(() => {
                     :value="item.value"
                   />
                 </el-select>
-                <el-select v-model="timeRange.around">
+                <el-select :teleported="false" v-model="timeRange.around">
                   <el-option
                     v-for="item in aroundList"
                     :key="item.value"
@@ -372,7 +372,7 @@ const relativeToCurrentListRange = computed(() => {
                   step-strictly
                   controls-position="right"
                 />
-                <el-select v-model="timeRange.relativeToCurrentTypeRange">
+                <el-select :teleported="false" v-model="timeRange.relativeToCurrentTypeRange">
                   <el-option
                     v-for="item in relativeToCurrentTypeList"
                     :key="item.value"
@@ -380,7 +380,7 @@ const relativeToCurrentListRange = computed(() => {
                     :value="item.value"
                   />
                 </el-select>
-                <el-select v-model="timeRange.aroundRange">
+                <el-select :teleported="false" v-model="timeRange.aroundRange">
                   <el-option
                     v-for="item in aroundList"
                     :key="item.value"
