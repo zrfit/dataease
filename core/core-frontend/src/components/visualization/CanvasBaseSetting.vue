@@ -84,6 +84,7 @@ import { ElFormItem, ElIcon } from 'element-plus-secondary'
 import Icon from '../icon-custom/src/Icon.vue'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { CHART_FONT_FAMILY } from '@/views/chart/components/editor/util/chart'
+import { adaptTitleFontFamilyAll } from '@/utils/canvasStyle'
 const snapshotStore = snapshotStoreWithOut()
 
 const dvMainStore = dvMainStoreWithOut()
@@ -101,6 +102,8 @@ const onFontFamilyChange = () => {
     '--de-canvas_custom_font',
     `${canvasStyleData.value.fontFamily}`
   )
+  adaptTitleFontFamilyAll(canvasStyleData.value.fontFamily)
+  snapshotStore.recordSnapshotCache('renderChart')
 }
 const onThemeChange = () => {
   snapshotStore.recordSnapshotCache()

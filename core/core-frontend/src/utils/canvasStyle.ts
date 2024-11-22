@@ -421,6 +421,41 @@ export function adaptCurTheme(customStyle, customAttr) {
   }
 }
 
+export function adaptTitleFontFamily(fontFamily, viewInfo) {
+  if (viewInfo) {
+    viewInfo.customStyle['text']['fontFamily'] = fontFamily
+  }
+}
+
+export function adaptTitleFontFamilyAll(fontFamily) {
+  const componentData = dvMainStore.componentData
+  componentData.forEach(item => {
+    if (item.component === 'UserView') {
+      const viewDetails = dvMainStore.canvasViewInfo[item.id]
+      adaptTitleFontFamily(fontFamily, viewDetails)
+      useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+    } else if (item.component === 'Group') {
+      item.propValue.forEach(groupItem => {
+        if (groupItem.component === 'UserView') {
+          const viewDetails = dvMainStore.canvasViewInfo[item.id]
+          adaptTitleFontFamily(fontFamily, viewDetails)
+          useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+        }
+      })
+    } else if (item.component === 'DeTabs') {
+      item.propValue.forEach(tabItem => {
+        tabItem.componentData.forEach(tabComponent => {
+          if (tabComponent.component === 'UserView') {
+            const viewDetails = dvMainStore.canvasViewInfo[item.id]
+            adaptTitleFontFamily(fontFamily, viewDetails)
+            useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+          }
+        })
+      })
+    }
+  })
+}
+
 export function adaptCurThemeCommonStyle(component) {
   if (['DeTabs'].includes(component.component)) {
     component.commonBackground['innerPadding'] = 0
