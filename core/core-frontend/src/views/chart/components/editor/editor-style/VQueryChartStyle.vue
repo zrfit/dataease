@@ -531,6 +531,7 @@ initParams()
                 <el-select
                   v-model="currentPlaceholder"
                   @change="handleCurrentPlaceholder"
+                  :effect="themes"
                   style="width: 100%"
                 >
                   <el-option
