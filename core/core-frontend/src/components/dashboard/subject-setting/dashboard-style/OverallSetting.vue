@@ -298,7 +298,11 @@ const onRefreshChange = val => {
   themeChange()
 }
 const fontFamilyChange = () => {
-  appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
+  appearanceStore.setCurrentFont(canvasStyleData.value.fontFamily)
+  document.documentElement.style.setProperty(
+    '--de-canvas_custom_font',
+    `${canvasStyleData.value.fontFamily}`
+  )
 }
 
 const themeChange = (modifyName?) => {

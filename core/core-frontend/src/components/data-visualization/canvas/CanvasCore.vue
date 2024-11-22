@@ -172,6 +172,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true
+  },
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 
@@ -1628,6 +1633,7 @@ defineExpose({
         :dv-info="dvInfo"
         :canvas-active="canvasActive"
         :show-position="'canvas'"
+        :font-family="fontFamily"
       />
       <component
         v-else-if="item.component.includes('Svg')"
@@ -1646,6 +1652,7 @@ defineExpose({
         :active="item.id === curComponentId"
         :canvas-active="canvasActive"
         :show-position="'edit'"
+        :font-family="fontFamily"
       />
       <component
         v-else
@@ -1664,6 +1671,7 @@ defineExpose({
         :active="item.id === curComponentId"
         :canvas-active="canvasActive"
         :show-position="'edit'"
+        :font-family="fontFamily"
       />
     </Shape>
     <!-- 右击菜单 -->

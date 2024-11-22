@@ -96,7 +96,11 @@ const fontFamily = CHART_FONT_FAMILY.concat(
   }))
 )
 const onFontFamilyChange = () => {
-  appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
+  appearanceStore.setCurrentFont(canvasStyleData.value.fontFamily)
+  document.documentElement.style.setProperty(
+    '--de-canvas_custom_font',
+    `${canvasStyleData.value.fontFamily}`
+  )
 }
 const onThemeChange = () => {
   snapshotStore.recordSnapshotCache()

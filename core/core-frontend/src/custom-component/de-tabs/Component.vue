@@ -42,7 +42,7 @@
                   <el-icon v-if="isEdit"><ArrowDown /></el-icon>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu>
+                  <el-dropdown-menu :style="{ 'font-family': fontFamily }">
                     <el-dropdown-item :command="beforeHandleCommand('editTitle', tabItem)">
                       编辑标题
                     </el-dropdown-item>
@@ -77,6 +77,7 @@
           :canvas-id="element.id + '--' + tabItem.name"
           :class="moveActive ? 'canvas-move-in' : ''"
           :canvas-active="editableTabsValue === tabItem.name"
+          :font-family="fontFamily"
         ></de-canvas>
         <de-preview
           v-else
@@ -90,6 +91,7 @@
           :preview-active="editableTabsValue === tabItem.name"
           :show-position="showPosition"
           :outer-scale="scale"
+          :font-family="fontFamily"
           :outer-search-count="searchCount"
         ></de-preview>
       </div>
@@ -190,6 +192,12 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 0
+  },
+  // 仪表板字体
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 const {
@@ -565,6 +573,9 @@ onBeforeMount(() => {
 .title-show-tab {
   :deep(.ed-tabs__content) {
     height: calc(100% - 46px) !important;
+  }
+  :deep(.ed-tabs__item) {
+    font-family: inherit;
   }
 }
 

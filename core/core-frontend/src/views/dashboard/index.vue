@@ -273,6 +273,7 @@ onUnmounted(() => {
           :component-data="componentData"
           :canvas-style-data="canvasStyleData"
           :canvas-view-info="canvasViewInfo"
+          :font-family="canvasStyleData.fontFamily"
         ></de-canvas>
       </main>
       <!-- 右侧侧组件列表 -->

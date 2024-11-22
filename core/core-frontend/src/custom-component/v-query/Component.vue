@@ -698,6 +698,7 @@ const autoStyle = computed(() => {
           <el-button
             :disabled="showPosition === 'preview' || mobileInPc"
             @click="addCriteriaConfigOut"
+            style="font-family: inherit"
             text
           >
             {{ t('v_query.add_query_condition') }}
@@ -825,7 +826,6 @@ const autoStyle = computed(() => {
       justify-content: center;
       color: #646a73;
       text-align: center;
-      font-family: var(--de-custom_font, 'PingFang');
       font-size: 16px;
       font-style: normal;
       font-weight: 400;
@@ -900,7 +900,6 @@ const autoStyle = computed(() => {
           text-overflow: ellipsis;
           white-space: nowrap;
           color: #1f2329;
-          font-family: var(--de-custom_font, 'PingFang');
           font-size: 14px;
           font-style: normal;
           font-weight: 400;
