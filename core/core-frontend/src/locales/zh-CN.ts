@@ -3539,6 +3539,7 @@ export default {
     exporting: '后台导出中,可前往',
     progress_to_download: '查看进度，进行下载',
     form: {
+      confirm_to_mark_as_complete: '确认标记为完成?',
       mobile_number_format_is_incorrect: '手机号码格式不正确',
       email_format_is_incorrect: '邮箱格式不正确',
       name: '名称',
