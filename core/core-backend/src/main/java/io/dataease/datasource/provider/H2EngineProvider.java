@@ -3,20 +3,11 @@ package io.dataease.datasource.provider;
 
 import io.dataease.dataset.utils.TableUtils;
 import io.dataease.datasource.dao.auto.entity.CoreDeEngine;
-import io.dataease.datasource.request.EngineRequest;
-import io.dataease.datasource.type.H2;
-import io.dataease.datasource.type.Mysql;
-import io.dataease.extensions.datasource.dto.ConnectionObj;
-import io.dataease.extensions.datasource.dto.DatasourceDTO;
+import io.dataease.datasource.server.DatasourceServer;
 import io.dataease.extensions.datasource.dto.TableField;
-import io.dataease.extensions.datasource.vo.DatasourceConfiguration;
-import io.dataease.utils.BeanUtils;
-import io.dataease.utils.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,8 +25,17 @@ public class H2EngineProvider extends EngineProvider {
     }
 
     @Override
-    public String insertSql(String name, List<String[]> dataList, int page, int pageNumber) {
-        String insertSql = "INSERT INTO `TABLE_NAME` VALUES ".replace("TABLE_NAME", name);
+    public String insertSql(String tableName, DatasourceServer.UpdateType extractType, List<String[]> dataList, int page, int pageNumber,List<TableField> tableFields) {
+        String engineTableName;
+        switch (extractType) {
+            case all_scope:
+                engineTableName = TableUtils.tmpName(TableUtils.tableName(tableName));
+                break;
+            default:
+                engineTableName = TableUtils.tableName(tableName);
+                break;
+        }
+        String insertSql = "INSERT INTO `TABLE_NAME` VALUES ".replace("TABLE_NAME", engineTableName);
         StringBuffer values = new StringBuffer();
 
         Integer realSize = page * pageNumber < dataList.size() ? page * pageNumber : dataList.size();
@@ -88,7 +88,11 @@ public class H2EngineProvider extends EngineProvider {
             int size = tableField.getPrecision() * 4;
             switch (tableField.getDeType()) {
                 case 0:
-                    columnFields.append("varchar(2048)").append(",`");
+                    if (StringUtils.isNotEmpty(tableField.getLength())) {
+                        columnFields.append("varchar(length)".replace("length", tableField.getLength())).append(",`");
+                    } else {
+                        columnFields.append("longtext").append(",`");
+                    }
                     break;
                 case 1:
                     columnFields.append("varchar(2048)").append(",`");
@@ -103,7 +107,7 @@ public class H2EngineProvider extends EngineProvider {
                     columnFields.append("TINYINT(length)".replace("length", String.valueOf(tableField.getPrecision()))).append(",`");
                     break;
                 default:
-                    columnFields.append("varchar(2048)").append(",`");
+                    columnFields.append("longtext").append(",`");
                     break;
             }
         }

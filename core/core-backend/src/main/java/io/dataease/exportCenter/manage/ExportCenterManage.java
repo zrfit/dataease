@@ -21,6 +21,7 @@ import io.dataease.dataset.dao.auto.entity.CoreDatasetGroup;
 import io.dataease.dataset.dao.auto.mapper.CoreDatasetGroupMapper;
 import io.dataease.dataset.manage.*;
 import io.dataease.datasource.utils.DatasourceUtils;
+import io.dataease.engine.constant.DeTypeConstants;
 import io.dataease.engine.sql.SQLProvider;
 import io.dataease.engine.trans.Field2SQLObj;
 import io.dataease.engine.trans.Order2SQLObj;
@@ -349,7 +350,7 @@ public class ExportCenterManage implements BaseExportApi {
         startViewTask(exportTask, request);
     }
 
-    public void addTask(Long exportFrom, String exportFromType, DataSetExportRequest request)throws Exception{
+    public void addTask(Long exportFrom, String exportFromType, DataSetExportRequest request) throws Exception {
         datasetGroupManage.getDatasetGroupInfoDTO(exportFrom, null);
         CoreExportTask exportTask = new CoreExportTask();
         exportTask.setId(UUID.randomUUID().toString());
@@ -571,7 +572,15 @@ public class ExportCenterManage implements BaseExportApi {
                                                 cell.setCellStyle(cellStyle);
                                                 detailsSheet.setColumnWidth(j, 255 * 20);
                                             } else {
-                                                cell.setCellValue(rowData.get(j));
+                                                if ((allFields.get(j).getDeType().equals(DeTypeConstants.DE_INT) || allFields.get(j).getDeType() == DeTypeConstants.DE_FLOAT) && StringUtils.isNotEmpty(rowData.get(j))) {
+                                                    try {
+                                                        cell.setCellValue(Double.valueOf(rowData.get(j)));
+                                                    } catch (Exception e) {
+                                                        cell.setCellValue(rowData.get(j));
+                                                    }
+                                                } else {
+                                                    cell.setCellValue(rowData.get(j));
+                                                }
                                             }
                                         }
                                     }
@@ -668,7 +677,6 @@ public class ExportCenterManage implements BaseExportApi {
                         Sheet detailsSheet = wb.createSheet("数据");
                         ChartDataServer.setExcelData(detailsSheet, cellStyle, header, details, detailFields, excelTypes);
                     }
-
                 } else {
                     //多个sheet
                     for (int i = 0; i < request.getMultiInfo().size(); i++) {

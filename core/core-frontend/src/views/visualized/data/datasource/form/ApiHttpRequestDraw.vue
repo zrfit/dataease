@@ -18,6 +18,7 @@ import { iconFieldMap } from '@/components/icon-group/field-list'
 
 export interface Field {
   name: string
+  length: number
   value: Array<{}>
   checked: boolean
   primaryKey: boolean
@@ -48,6 +49,7 @@ export interface JsonField {
   name: string
   checked: false
   primaryKey: false
+  length: string
   extField: number
   jsonPath: string
   type: string
@@ -258,7 +260,7 @@ const saveItem = () => {
     for (let i = 0; i < apiItem.fields.length; i++) {
       if (apiItem.fields[i].primaryKey) {
         let find = false
-        for (let j = 0; j < fields.length - 1; j++) {
+        for (let j = 0; j < fields.length; j++) {
           if (fields[j].name === apiItem.fields[i].name && fields[j].primaryKey) {
             find = true
           }
@@ -268,10 +270,10 @@ const saveItem = () => {
         }
       }
     }
-    for (let i = 0; i < fields.length - 1; i++) {
+    for (let i = 0; i < fields.length; i++) {
       if (fields[i].primaryKey) {
         let find = false
-        for (let j = i + 1; j < apiItem.fields.length; j++) {
+        for (let j = 0; j < apiItem.fields.length; j++) {
           if (fields[i].name === apiItem.fields[j].name && apiItem.fields[j].primaryKey) {
             find = true
           }
@@ -284,6 +286,12 @@ const saveItem = () => {
     if (msg !== '') {
       ElMessage.error(t('datasource.primary_key_change') + msg)
       return
+    }
+  } else {
+    for (let i = 0; i < apiItem.fields.length; i++) {
+      if (apiItem.fields[i].primaryKey && !apiItem.fields[i].length) {
+        ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
+      }
     }
   }
   returnAPIItem('returnItem', cloneDeep(apiItem))
@@ -381,6 +389,14 @@ const disabledByChildren = item => {
   }
 }
 
+const disabledFieldLength = item => {
+  if (item.hasOwnProperty('children') && item.children.length > 0) {
+    return true
+  } else {
+    return item.deExtractType !== 0
+  }
+}
+
 const disabledChangeFieldByChildren = item => {
   if (apiItem.type == 'params') {
     return true
@@ -389,6 +405,12 @@ const disabledChangeFieldByChildren = item => {
     return true
   } else {
     return false
+  }
+}
+
+const deExtractTypeChange = item => {
+  if (item.deExtractType !== 0) {
+    item.length = ''
   }
 }
 const previewData = () => {
@@ -491,7 +513,7 @@ defineExpose({
     "
     v-model="edit_api_item"
     custom-class="api-datasource-drawer"
-    size="840px"
+    size="1000px"
     :before-close="closeEditItem"
     direction="rtl"
   >
@@ -661,7 +683,7 @@ defineExpose({
               prop="originName"
               :label="t('datasource.parse_filed')"
               :show-overflow-tooltip="true"
-              width="255"
+              width="200"
             >
               <template #default="scope">
                 <el-checkbox
@@ -696,6 +718,7 @@ defineExpose({
                   :disabled="disabledChangeFieldByChildren(scope.row)"
                   class="select-type"
                   style="display: inline-block; width: 120px"
+                  @change="deExtractTypeChange(scope.row)"
                 >
                   <template #prefix>
                     <el-icon>
@@ -734,11 +757,32 @@ defineExpose({
             </el-table-column>
 
             <el-table-column
+              prop="length"
+              :label="t('datasource.length')"
+              v-if="apiItem.type !== 'params'"
+            >
+              <template #default="scope">
+                <el-input-number
+                  :disabled="disabledFieldLength(scope.row)"
+                  v-model="scope.row.length"
+                  autocomplete="off"
+                  step-strictly
+                  class="text-left edit-all-line"
+                  :min="1"
+                  :max="4096"
+                  :placeholder="t('common.inputText')"
+                  controls-position="right"
+                  type="number"
+                />
+              </template>
+            </el-table-column>
+
+            <el-table-column
               prop="primaryKey"
               class-name="checkbox-table"
               :label="t('datasource.set_key')"
               v-if="apiItem.type !== 'params'"
-              width="155"
+              width="100"
             >
               <template #default="scope">
                 <el-checkbox

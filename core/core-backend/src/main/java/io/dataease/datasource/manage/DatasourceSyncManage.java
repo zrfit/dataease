@@ -70,7 +70,7 @@ public class DatasourceSyncManage {
                 if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                     createEngineTable(TableUtils.tmpName(datasourceRequest.getTable()), tableFields);
                 }
-                extractExcelData(datasourceRequest, updateType);
+                extractExcelData(datasourceRequest, updateType, tableFields);
                 if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                     replaceTable(datasourceRequest.getTable());
                 }
@@ -145,7 +145,7 @@ public class DatasourceSyncManage {
                 if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                     createEngineTable(TableUtils.tmpName(datasourceRequest.getTable()), tableFields);
                 }
-                extractApiData(datasourceRequest, updateType);
+                extractApiData(datasourceRequest, updateType, tableFields);
                 if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                     replaceTable(datasourceRequest.getTable());
                 }
@@ -198,7 +198,7 @@ public class DatasourceSyncManage {
                     if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                         createEngineTable(TableUtils.tmpName(datasourceRequest.getTable()), tableFields);
                     }
-                    extractApiData(datasourceRequest, updateType);
+                    extractApiData(datasourceRequest, updateType, tableFields);
                     if (updateType.equals(DatasourceServer.UpdateType.all_scope)) {
                         replaceTable(datasourceRequest.getTable());
                     }
@@ -222,20 +222,10 @@ public class DatasourceSyncManage {
         }
     }
 
-    private void extractApiData(DatasourceRequest datasourceRequest, DatasourceServer.UpdateType extractType) throws Exception {
+    private void extractApiData(DatasourceRequest datasourceRequest, DatasourceServer.UpdateType extractType, List<TableField> tableFields) throws Exception {
         Map<String, Object> result = ApiUtils.fetchResultField(datasourceRequest);
         List<String[]> dataList = (List<String[]>) result.get("dataList");
-        String engineTableName;
-        switch (extractType) {
-            case all_scope:
-                engineTableName = TableUtils.tmpName(TableUtils.tableName(datasourceRequest.getTable()));
-                break;
-            default:
-                engineTableName = TableUtils.tableName(datasourceRequest.getTable());
-                break;
-        }
         CoreDeEngine engine = engineManage.info();
-
         EngineRequest engineRequest = new EngineRequest();
         engineRequest.setEngine(engine);
         EngineProvider engineProvider = ProviderUtil.getEngineProvider(engine.getType());
@@ -246,14 +236,13 @@ public class DatasourceSyncManage {
         } else {
             totalPage = dataList.size() / pageNumber;
         }
-
         for (int page = 1; page <= totalPage; page++) {
-            engineRequest.setQuery(engineProvider.insertSql(engineTableName, dataList, page, pageNumber));
+            engineRequest.setQuery(engineProvider.insertSql(datasourceRequest.getTable(), extractType, dataList, page, pageNumber, tableFields));
             calciteProvider.exec(engineRequest);
         }
     }
 
-    private void extractExcelData(DatasourceRequest datasourceRequest, DatasourceServer.UpdateType extractType) throws Exception {
+    private void extractExcelData(DatasourceRequest datasourceRequest, DatasourceServer.UpdateType extractType, List<TableField> tableFields) throws Exception {
         ExcelUtils excelUtils = new ExcelUtils();
         List<String[]> dataList = excelUtils.fetchDataList(datasourceRequest);
         String engineTableName;
@@ -278,7 +267,7 @@ public class DatasourceSyncManage {
             totalPage = dataList.size() / pageNumber;
         }
         for (int page = 1; page <= totalPage; page++) {
-            engineRequest.setQuery(engineProvider.insertSql(engineTableName, dataList, page, pageNumber));
+            engineRequest.setQuery(engineProvider.insertSql(engineTableName, extractType, dataList, page, pageNumber, tableFields));
             calciteProvider.exec(engineRequest);
         }
     }
