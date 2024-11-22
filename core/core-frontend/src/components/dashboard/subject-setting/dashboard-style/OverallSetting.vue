@@ -29,7 +29,7 @@
       :class="'form-item-' + themes"
       label="仪表板字体选择"
     >
-      <el-select :effect="themes" v-model="canvasStyleData.fontFamily" @change="styleChange">
+      <el-select :effect="themes" v-model="canvasStyleData.fontFamily" @change="fontFamilyChange()">
         <el-option
           v-for="option in fontFamily"
           :key="option.value"
@@ -279,6 +279,7 @@ const fontFamily = CHART_FONT_FAMILY.concat(
     value: ele.name
   }))
 )
+
 const toolTip = computed(() => {
   return props.themes === 'dark' ? 'ndark' : 'dark'
 })
@@ -296,8 +297,8 @@ const onRefreshChange = val => {
   }
   themeChange()
 }
-const styleChange = () => {
-  snapshotStore.recordSnapshotCache('renderChart')
+const fontFamilyChange = () => {
+  appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
 }
 
 const themeChange = (modifyName?) => {

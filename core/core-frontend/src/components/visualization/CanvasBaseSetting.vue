@@ -6,7 +6,11 @@
         :class="'form-item-' + themes"
         label="数据大屏字体选择"
       >
-        <el-select :effect="themes" v-model="canvasStyleData.fontFamily" @change="onThemeChange">
+        <el-select
+          :effect="themes"
+          v-model="canvasStyleData.fontFamily"
+          @change="onFontFamilyChange"
+        >
           <el-option
             v-for="option in fontFamily"
             :key="option.value"
@@ -91,6 +95,9 @@ const fontFamily = CHART_FONT_FAMILY.concat(
     value: ele.name
   }))
 )
+const onFontFamilyChange = () => {
+  appearanceStore.setCurrentFont(canvasStyleData.fontFamily)
+}
 const onThemeChange = () => {
   snapshotStore.recordSnapshotCache()
 }
