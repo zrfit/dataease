@@ -46,6 +46,7 @@ import { useCache } from '@/hooks/web/useCache'
 import { findParentIdByChildIdRecursive } from '@/utils/canvasUtils'
 import { XpackComponent } from '@/components/plugin'
 import treeSort from '@/utils/treeSortUtils'
+import router from '@/router'
 const { wsCache } = useCache()
 
 const dvMainStore = dvMainStoreWithOut()
@@ -186,11 +187,14 @@ const menuList = computed(() => {
 })
 
 const infoId = wsCache.get(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
-const dvId = embeddedStore.dvId || infoId
+const routerDvId = router.currentRoute.value.query.dvId
+const dvId = embeddedStore.dvId || infoId || routerDvId
 wsCache.delete(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+console.log('==test===0' + selectedNodeKey.value)
 if (dvId && showPosition.value === 'preview') {
   selectedNodeKey.value = dvId
   returnMounted.value = true
+  console.log('==test==1=' + selectedNodeKey.value)
 }
 const nodeExpand = data => {
   if (data.id) {
@@ -270,6 +274,7 @@ const afterTreeInit = () => {
     returnMounted.value = false
   }
   nextTick(() => {
+    console.log('==test==2=' + selectedNodeKey.value)
     resourceListTree.value.setCurrentKey(selectedNodeKey.value)
     nextTick(() => {
       if (selectedNodeKey.value) {

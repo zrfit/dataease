@@ -227,7 +227,7 @@ export function historyAdaptor(
   canvasVersion
 ) {
   const curVersion = wsCache.get('x-de-execute-version')
-  if (canvasInfo['checkVersion'] === curVersion) {
+  if (canvasInfo?.checkVersion === curVersion) {
     return
   }
   //历史字段适配
@@ -262,7 +262,9 @@ export function historyAdaptor(
   canvasDataResult.forEach(componentItem => {
     historyItemAdaptor(componentItem, reportFilterInfo, attachInfo, canvasVersion, canvasInfo)
   })
-  updateCheckVersion(canvasInfo.id)
+  if (canvasInfo && canvasInfo.id) {
+    updateCheckVersion(canvasInfo.id)
+  }
 }
 
 // 重置仪表板、大屏中的其他组件
