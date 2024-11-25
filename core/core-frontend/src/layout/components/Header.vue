@@ -23,6 +23,7 @@ import AiComponent from '@/layout/components/AiComponent.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import AiTips from '@/layout/components/AiTips.vue'
 import CopilotCom from '@/layout/components/Copilot.vue'
+import DesktopSetting from './DesktopSetting.vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
@@ -210,6 +211,9 @@ onMounted(() => {
       ></ai-component>
       <div v-if="showOverlay && appearanceStore.getShowAi" class="overlay"></div>
       <div v-if="showOverlayCopilot && appearanceStore.getShowCopilot" class="overlay"></div>
+    </div>
+    <div v-else class="operate-setting">
+      <desktop-setting />
     </div>
   </el-header>
 </template>
