@@ -7,7 +7,7 @@
     class="custom-sort_filter"
     width="300px"
   >
-    <div style="max-height: 400px; overflow-y: auto">
+    <div>
       <draggable :list="sortList" animation="300" class="drag-list">
         <template #item="{ element }">
           <span :key="element.name" class="item-dimension" :title="element">
@@ -64,7 +64,7 @@ defineExpose({
 .custom-sort_filter {
   .drag-list {
     overflow: auto;
-    max-height: 800px;
+    max-height: 400px;
     .item-dimension {
       padding: 2px;
       margin: 2px;
