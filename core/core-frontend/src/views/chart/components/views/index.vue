@@ -879,6 +879,9 @@ const toolTip = computed(() => {
 })
 
 const marginBottom = computed<string | 0>(() => {
+  if (!titleShow.value) {
+    return 0
+  }
   if (titleShow.value || trackMenu.value.length > 0 || state.title_remark.show) {
     return 12 * scale.value + 'px'
   }
@@ -890,8 +893,22 @@ const iconSize = computed<string>(() => {
 })
 
 const titleIconStyle = computed(() => {
+  // 不显示标题时，图标的样式
+  const style = {
+    position: 'absolute',
+    color: 'rgb(255, 252, 252)',
+    position: 'absolute',
+    border: '1px solid rgb(173, 170, 170)',
+    'background-color': 'rgba(173, 170, 170)',
+    'border-radius': '2px',
+    padding: '0 2px 0 2px',
+    top: '2px',
+    'z-index': 1,
+    left: '6px'
+  }
   return {
-    color: canvasStyleData.value.component.seniorStyleSetting.linkageIconColor
+    color: canvasStyleData.value.component.seniorStyleSetting.linkageIconColor,
+    ...(titleShow.value ? {} : style)
   }
 })
 const chartHover = ref(false)
