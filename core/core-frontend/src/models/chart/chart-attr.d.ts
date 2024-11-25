@@ -946,6 +946,10 @@ declare interface ChartLabelAttr {
    * 全部显示
    */
   fullDisplay: boolean
+  /**
+   * 仪表盘占比显示格式
+   */
+  proportionSeriesFormatter: SeriesFormatter
 }
 /**
  * 提示设置

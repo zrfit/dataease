@@ -127,7 +127,8 @@ export const customAttrTrans = {
   ],
   label: {
     fontSize: '',
-    seriesLabelFormatter: ['fontSize']
+    seriesLabelFormatter: ['fontSize'],
+    proportionSeriesFormatter: ['fontSize']
   },
   tooltip: {
     fontSize: '',
