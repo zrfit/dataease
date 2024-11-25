@@ -335,9 +335,6 @@ public class ExcelUtils {
             Double d = Double.valueOf(value);
             double eps = 1e-10;
             if (d - Math.floor(d) < eps) {
-                if (value.length() > 1 && value.startsWith("0")) {
-                    return "TEXT";
-                }
                 return "LONG";
             } else {
                 return "DOUBLE";
