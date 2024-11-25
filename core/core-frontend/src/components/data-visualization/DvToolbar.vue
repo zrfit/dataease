@@ -164,7 +164,7 @@ const saveResource = () => {
       canvasSave(() => {
         snapshotStore.resetStyleChangeTimes()
         wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
-        ElMessage.success('保存成功')
+        ElMessage.success(t('commons.save_success'))
         let url = window.location.href
         url = url.replace(/\?opt=create/, `?dvId=${dvInfo.value.id}`)
         if (!embeddedStore.baseUrl) {
