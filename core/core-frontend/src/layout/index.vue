@@ -48,7 +48,9 @@ const { t } = useI18n()
           >
             {{ msgFillMenu ? t('v_query.msg_center') : t('toolbox.org_center') }}
           </div>
-          <Menu :style="{ height: systemMenu ? 'calc(100% - 48px)' : '100%' }"></Menu>
+          <Menu
+            :style="{ height: systemMenu || msgFillMenu ? 'calc(100% - 48px)' : '100%' }"
+          ></Menu>
         </Sidebar>
         <el-aside class="layout-sidebar layout-sidebar-collapse" v-else>
           <Menu
