@@ -3491,7 +3491,7 @@ defineExpose({
             }
           }
           .label {
-            width: 100px;
+            width: 80px;
             color: #1f2329;
           }
 
