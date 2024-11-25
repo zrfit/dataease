@@ -27,32 +27,27 @@ const openBlank = () => {
 
 <template>
   <div class="doc-card" @click="openBlank">
-    <el-row class="base-show">
-      <Icon class-name="item-top-icon"
-        ><component class="svg-icon item-top-icon" :is="cardInfo.icon"></component
-      ></Icon>
-    </el-row>
-    <el-row class="base-show show-content"> {{ cardInfo.name }}</el-row>
+    <div class="base-show">
+      <Icon><component class="svg-icon item-top-icon" :is="cardInfo.icon"></component></Icon>
+    </div>
+    <div class="base-show show-content">{{ cardInfo.name }}</div>
   </div>
 </template>
 
 <style lang="less" scoped>
 .doc-card {
-  padding-top: 2px;
-  margin-top: 16px;
-  margin-left: 16px;
-  width: 80px;
-  height: 50px;
+  padding: 8px 0;
+  width: 96px;
+  height: 66px;
   cursor: pointer;
-  &:hover {
-    background-color: rgba(30, 39, 56, 0.05);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &:hover,
   &:active {
-    background-color: rgba(30, 39, 56, 0.1);
+    background-color: #1f23291a;
+    border-radius: 4px;
   }
-}
-.base-show {
-  justify-content: center;
 }
 
 .show-content {

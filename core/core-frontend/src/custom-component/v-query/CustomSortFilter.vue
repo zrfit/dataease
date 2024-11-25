@@ -7,7 +7,7 @@
     class="custom-sort_filter"
     width="300px"
   >
-    <div>
+    <div style="max-height: 400px; overflow-y: auto">
       <draggable :list="sortList" animation="300" class="drag-list">
         <template #item="{ element }">
           <span :key="element.name" class="item-dimension" :title="element">

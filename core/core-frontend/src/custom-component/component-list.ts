@@ -554,7 +554,8 @@ const list = [
       headHorizontalPosition: 'left',
       headFontColor: '#000000',
       headFontActiveColor: '#000000',
-      titleHide: false
+      titleHide: false,
+      showTabTitle: true
     }
   },
   {
