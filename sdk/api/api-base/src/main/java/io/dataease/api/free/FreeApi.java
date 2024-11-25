@@ -1,5 +1,6 @@
 package io.dataease.api.free;
 
+import io.dataease.api.free.dto.FreeBatchDelRequest;
 import io.dataease.api.free.dto.FreeBatchSyncRequest;
 import io.dataease.api.free.dto.FreeQueryRequest;
 import io.dataease.api.free.dto.FreeSyncRequest;
@@ -24,5 +25,5 @@ public interface FreeApi {
     void syncBatch(@RequestBody FreeBatchSyncRequest request);
 
     @PostMapping("/deleteBatch")
-    void deleteBatch(@RequestBody FreeBatchSyncRequest request);
+    void deleteBatch(@RequestBody FreeBatchDelRequest request);
 }
