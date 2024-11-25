@@ -3858,6 +3858,8 @@ export default {
     single_del_tips_dataset: '该数据集存在如下血缘关系，删除会造成相关视图失效，确定删除？',
     single_del_tips_datasource: '有 {0} 个数据集正在使用此数据源，删除后数据集不可用，确定删除？',
     folder: '文件夹',
-    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。'
+    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。',
+    sync_to_org: '迁移至目标组织',
+    sync_org_placeholder: '请选择目标组织'
   }
 }
