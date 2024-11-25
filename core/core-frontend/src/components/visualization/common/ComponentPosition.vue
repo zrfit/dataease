@@ -28,7 +28,7 @@
         v-model="curComponent['resizeInnerKeep']"
         @change="snapshotChange"
       >
-        调整大小保持内部组件尺寸
+        {{ t('visualization.keep_size') }}
       </el-checkbox>
     </el-form-item>
     <el-form-item class="form-item" :class="'form-item-' + themes">
@@ -39,7 +39,7 @@
         v-model="curComponent['maintainRadio']"
         @change="maintainRadioChange"
       >
-        保持宽高比
+        {{ t('visualization.keep_ratio') }}
       </el-checkbox>
     </el-form-item>
     <el-row v-if="curComponent && curComponent.multiDimensional">
@@ -51,7 +51,7 @@
             v-model="curComponent.multiDimensional.enable"
             @change="multiDimensionalChange"
           >
-            3D旋转
+            {{ t('visualization.rotation_3d') }}
           </el-checkbox>
         </el-form-item>
         <template v-if="curComponent.multiDimensional.enable">
@@ -109,10 +109,11 @@ import _ from 'lodash'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import { groupSizeStyleAdaptor, groupStyleRevert } from '@/utils/style'
 import { isGroupCanvas, isTabCanvas } from '@/utils/canvasUtils'
+import { useI18n } from '@/hooks/web/useI18n'
 const parentNode = ref(null)
 const canvasId = ref('canvas-main')
 const snapshotStore = snapshotStoreWithOut()
-
+const { t } = useI18n()
 const dvMainStore = dvMainStoreWithOut()
 const { curComponent, canvasStyleData } = storeToRefs(dvMainStore)
 const positionMounted = ref({

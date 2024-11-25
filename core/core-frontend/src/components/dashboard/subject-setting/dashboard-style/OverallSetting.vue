@@ -27,7 +27,7 @@
       v-if="dvInfo.type === 'dashboard'"
       class="form-item"
       :class="'form-item-' + themes"
-      label="仪表板字体选择"
+      :label="t('visualization.font_family_select')"
     >
       <el-select :effect="themes" v-model="canvasStyleData.fontFamily" @change="fontFamilyChange()">
         <el-option
@@ -203,10 +203,10 @@
         @change="themeChange"
       >
         <span class="data-area-label">
-          <span style="margin-right: 4px"> 显示放大、导出等悬浮按钮 </span>
+          <span style="margin-right: 4px"> {{ t('visualization.button_tips') }}</span>
           <el-tooltip class="item" :effect="toolTip" placement="bottom">
             <template #content>
-              <div>预览时启用</div>
+              <div>{{ t('visualization.effective_during_preview') }}</div>
             </template>
             <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
               <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -221,7 +221,7 @@
         size="small"
         v-model="canvasStyleData.dashboard.showGrid"
         @change="themeChange"
-        >显示辅助网格</el-checkbox
+        >{{ t('visualization.display_auxiliary_grid') }}</el-checkbox
       >
     </el-form-item>
   </el-form>

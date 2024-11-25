@@ -211,7 +211,7 @@ defineExpose({
       :download-status="downloadStatus"
       :show-pop-bar="true"
     ></de-preview>
-    <empty-background v-if="!state.initState" description="参数不能为空" img-type="noneWhite" />
+    <empty-background v-if="!state.initState" :description="t('visualization.no_params_tips')" img-type="noneWhite" />
   </div>
   <XpackComponent
     jsname="L2NvbXBvbmVudC9lbWJlZGRlZC1pZnJhbWUvTmV3V2luZG93SGFuZGxlcg=="

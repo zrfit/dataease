@@ -174,7 +174,11 @@ defineExpose({
       :is-selector="props.isSelector"
     ></de-preview>
   </div>
-  <empty-background v-if="!state.initState" description="参数不能为空" img-type="noneWhite" />
+  <empty-background
+    v-if="!state.initState"
+    :description="t('visualization.no_params_tips')"
+    img-type="noneWhite"
+  />
   <XpackComponent
     jsname="L2NvbXBvbmVudC9lbWJlZGRlZC1pZnJhbWUvTmV3V2luZG93SGFuZGxlcg=="
     @loaded="XpackLoaded"

@@ -114,7 +114,7 @@ const initOpenHandler = newWindow => {
 
     <el-tooltip
       effect="dark"
-      :content="favorited ? '取消收藏' : t('visualization.store')"
+      :content="favorited ? t('visualization.cancel_store') : t('visualization.store')"
       placement="top"
     >
       <el-icon
@@ -132,7 +132,9 @@ const initOpenHandler = newWindow => {
     </el-tooltip>
     <el-divider style="margin: 0 16px 0 7px" direction="vertical" />
     <div class="create-area flex-align-center">
-      <span style="line-height: 22px">创建人:{{ dvInfo.creatorName }}</span>
+      <span style="line-height: 22px"
+        >{{ t('visualization.creator') }}:{{ dvInfo.creatorName }}</span
+      >
       <el-popover show-arrow :offset="8" placement="bottom" width="400" trigger="hover">
         <template #reference>
           <el-icon class="info-tips"
@@ -151,7 +153,7 @@ const initOpenHandler = newWindow => {
         <template #icon>
           <icon name="icon_pc_fullscreen"><icon_pc_fullscreen class="svg-icon" /></icon>
         </template>
-        全屏</el-button
+        {{ t('visualization.fullscreen') }}</el-button
       >
       <el-button secondary @click="preview()">
         <template #icon>
@@ -169,7 +171,7 @@ const initOpenHandler = newWindow => {
         <template #icon>
           <icon name="icon_edit_outlined"><icon_edit_outlined class="svg-icon" /></icon>
         </template>
-        编辑</el-button
+        {{ t('visualization.edit') }}</el-button
       >
       <el-dropdown trigger="click">
         <el-icon class="head-more-icon">
@@ -177,7 +179,9 @@ const initOpenHandler = newWindow => {
         </el-icon>
         <template #dropdown>
           <el-dropdown-menu style="width: 130px">
-            <el-dropdown-item icon="Refresh" @click="reload()">刷新数据 </el-dropdown-item>
+            <el-dropdown-item icon="Refresh" @click="reload()"
+              >{{ t('visualization.refresh_data') }}
+            </el-dropdown-item>
             <el-dropdown
               style="width: 100%; overflow: hidden"
               trigger="hover"
@@ -186,7 +190,7 @@ const initOpenHandler = newWindow => {
             >
               <div class="ed-dropdown-menu__item flex-align-center icon">
                 <el-icon><Download /></el-icon>
-                导出为&nbsp;&nbsp;&nbsp;&nbsp;
+                {{ t('visualization.export_as') }}&nbsp;&nbsp;&nbsp;&nbsp;
                 <el-icon><ArrowRight /></el-icon>
               </div>
               <template #dropdown>

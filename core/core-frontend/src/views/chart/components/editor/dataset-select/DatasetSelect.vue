@@ -45,7 +45,9 @@ const orgCheck = ref(true)
 
 const datasetTree = ref<Tree[]>([])
 
-const sourceName = computed(() => (props.sourceType === 'datasource' ? '数据源' : '数据集'))
+const sourceName = computed(() =>
+  props.sourceType === 'datasource' ? t('visualization.datasource') : t('visualization.dataset')
+)
 
 const sortTypeChange = arr => {
   const sortType = wsCache.get('TreeSort-dataset') || 'time_desc'

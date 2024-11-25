@@ -21,9 +21,11 @@ import { ElMessage } from 'element-plus-secondary'
 import { useEmitt } from '@/hooks/web/useEmitt'
 
 import { useUserStoreWithOut } from '@/store/modules/user'
+import { useI18n } from '@/hooks/web/useI18n'
 const userStore = useUserStoreWithOut()
 
 const userName = computed(() => userStore.getName)
+const { t } = useI18n()
 
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewDataInfo } = storeToRefs(dvMainStore)
@@ -300,15 +302,15 @@ onBeforeMount(() => {
         </div>
       </template>
       <template v-else-if="hasTreeData && mounted">
-        <empty-background description="请在左侧选择数据大屏" img-type="select" />
+        <empty-background :description="t('visualization.select_screen_tips')" img-type="select" />
       </template>
       <template v-else-if="mounted">
-        <empty-background description="暂无数据大屏" img-type="none">
+        <empty-background :description="t('visualization.no_screen')" img-type="none">
           <el-button v-if="rootManage && !isDataEaseBi" @click="createNew" type="primary">
             <template #icon>
               <Icon name="icon_add_outlined"><icon_add_outlined class="svg-icon" /></Icon>
             </template>
-            {{ $t('commons.create') }}{{ $t('work_branch.big_data_screen') }}
+            {{ t('commons.create') }}{{ t('work_branch.big_data_screen') }}
           </el-button>
         </empty-background>
       </template>

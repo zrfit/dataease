@@ -415,20 +415,25 @@ const state = reactive({
 })
 
 const styleColorKeyArray = [
-  { value: 'color', label: '颜色', width: 90, icon: dvStyleColor },
+  { value: 'color', label: t('visualization.color'), width: 90, icon: dvStyleColor },
   {
     value: 'headFontColor',
-    label: '头部字体颜色',
+    label: t('visualization.head_font_color'),
     width: 90,
     icon: dvStyleHeadFontColor
   },
   {
     value: 'headFontActiveColor',
-    label: '激活字体颜色',
+    label: t('visualization.head_font_active_color'),
     width: 90,
     icon: dvStyleHeadFontActiveColor
   },
-  { value: 'backgroundColor', label: '背景色', width: 90, icon: dvStyleBackgroundColor }
+  {
+    value: 'backgroundColor',
+    label: t('visualization.background_color'),
+    width: 90,
+    icon: dvStyleBackgroundColor
+  }
 ]
 
 const letterSpacingList = computed(() => {
@@ -455,7 +460,7 @@ const fontSizeList = computed(() => {
 const styleOptionKeyArrayPre = [
   {
     value: 'fontFamily',
-    label: '字体',
+    label: t('visualization.font_family'),
     customOption: fontFamilyList,
     width: '188px',
     icon: dvStyleFontFamily
@@ -466,21 +471,21 @@ const styleOptionKeyArrayPre = [
 const styleOptionMountedKeyArray = [
   {
     value: 'letterSpacing',
-    label: '字间距',
+    label: t('visualization.letter_spacing'),
     customOption: letterSpacingList.value,
     width: '90px',
     icon: dvStyleLetterSpacing
   },
   {
     value: 'fontSize',
-    label: '字体大小',
+    label: t('visualization.font_size'),
     customOption: fontSizeList.value,
     width: '90px',
     icon: dvStyleFontSize
   },
   {
     value: 'activeFontSize',
-    label: '激活字体大小',
+    label: t('visualization.active_font_size'),
     customOption: fontSizeList.value,
     width: '90px',
     icon: dvStyleActiveFont
@@ -491,21 +496,21 @@ const styleOptionMountedKeyArray = [
 const styleOptionKeyArray = [
   {
     value: 'scrollSpeed',
-    label: '滚动速度',
+    label: t('visualization.scroll_speed'),
     customOption: scrollSpeedList,
     width: '90px',
     icon: dvStyleScrollSpeed
   },
   {
     value: 'opacity',
-    label: '不透明度',
+    label: t('visualization.opacity'),
     customOption: opacitySizeList,
     width: '90px',
     icon: dvStyleOpacity
   },
   {
     value: 'backdropFilter',
-    label: '背景模糊',
+    label: t('visualization.background_opacity'),
     customOption: backdropBlurList,
     width: '90px',
     icon: dvStyleBlur

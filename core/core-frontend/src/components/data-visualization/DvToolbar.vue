@@ -41,7 +41,7 @@ import DeAppApply from '@/views/common/DeAppApply.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import TabsGroup from '@/custom-component/component-group/TabsGroup.vue'
-import { checkCanvasChange } from '@/api/visualization/dataVisualization'
+import { useI18n } from '@/hooks/web/useI18n'
 let nameEdit = ref(false)
 let inputName = ref('')
 let nameInput = ref(null)
@@ -59,6 +59,7 @@ const dvModel = 'dataV'
 const outerParamsSetRef = ref(null)
 const fullScreeRef = ref(null)
 const userStore = useUserStoreWithOut()
+const { t } = useI18n()
 
 const props = defineProps({
   createType: {
@@ -209,7 +210,7 @@ const backToMain = () => {
     url = url + '?dvId=' + dvInfo.value.id
   }
   if (styleChangeTimes.value > 0) {
-    ElMessageBox.confirm('当前的更改尚未保存，确定退出吗？', {
+    ElMessageBox.confirm(t('visualization.change_save_tips'), {
       confirmButtonType: 'primary',
       type: 'warning',
       autofocus: false,
@@ -343,7 +344,7 @@ const fullScreenPreview = () => {
             is-label
             :base-width="410"
             :icon-name="dvView"
-            title="图表"
+            :title="t('visualization.view')"
           >
             <user-view-group></user-view-group>
           </component-group>
@@ -352,11 +353,16 @@ const fullScreenPreview = () => {
             :show-split-line="true"
             is-label
             :icon-name="dvFilter"
-            title="查询组件"
+            :title="t('visualization.query_component')"
           >
             <query-group :dv-model="dvModel"></query-group>
           </component-group>
-          <component-group is-label :base-width="215" :icon-name="dvText" title="文本">
+          <component-group
+            is-label
+            :base-width="215"
+            :icon-name="dvText"
+            :title="t('visualization.text_html')"
+          >
             <text-group></text-group>
           </component-group>
           <component-group
@@ -364,14 +370,19 @@ const fullScreenPreview = () => {
             placement="bottom"
             :base-width="328"
             :icon-name="dvMedia"
-            title="媒体"
+            :title="t('visualization.media')"
           >
             <media-group></media-group>
           </component-group>
           <component-group is-label :base-width="115" :icon-name="dvTab" title="Tab">
             <tabs-group :dv-model="dvModel"></tabs-group>
           </component-group>
-          <component-group is-label :base-width="215" :icon-name="dvMoreCom" title="更多">
+          <component-group
+            is-label
+            :base-width="215"
+            :icon-name="dvMoreCom"
+            :title="t('visualization.more')"
+          >
             <more-com-group></more-com-group>
           </component-group>
           <component-group
@@ -379,23 +390,27 @@ const fullScreenPreview = () => {
             :base-width="410"
             :icon-name="dvMaterial"
             :show-split-line="true"
-            title="素材"
+            :title="t('visualization.source_material')"
           >
             <common-group></common-group>
           </component-group>
           <component-button-label
             :icon-name="icon_copy_filled"
-            title="复用"
+            :title="t('visualization.multiplexing')"
             is-label
             @customClick="multiplexingCanvasOpen"
           ></component-button-label>
         </div>
       </template>
       <div class="right-area">
-        <el-tooltip effect="dark" content="外部参数设置" placement="bottom">
+        <el-tooltip
+          effect="dark"
+          :content="t('visualization.external_parameter_settings')"
+          placement="bottom"
+        >
           <component-button
             v-show="editMode === 'edit'"
-            tips="外部参数设置"
+            :tips="t('visualization.external_parameter_settings')"
             @custom-click="openOuterParamsSet"
             :icon-name="icon_params_setting"
           />
@@ -408,10 +423,10 @@ const fullScreenPreview = () => {
           class="preview-button"
           type="primary"
         >
-          编辑
+          {{ t('visualization.edit') }}
         </el-button>
         <el-button v-else class="preview-button" @click="fullScreenPreview" style="float: right">
-          预览
+          {{ t('visualization.preview') }}
         </el-button>
         <el-button
           @click="saveCanvasWithCheck()"
@@ -419,7 +434,7 @@ const fullScreenPreview = () => {
           style="float: right; margin-right: 12px"
           type="primary"
         >
-          保存
+          {{ t('visualization.save') }}
         </el-button>
       </div>
     </div>

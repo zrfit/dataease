@@ -8,8 +8,12 @@
     />
     <div v-else class="pic-upload">
       <span
-        ><el-button @click="uploadImg" text style="font-family: inherit; color: #646a73" icon="Plus"
-          >请上传图片...</el-button
+        ><el-button
+          @click="uploadImg"
+          text
+          style="font-family: inherit; color: #646a73"
+          icon="Plus"
+          >{{ t('visualization.pic_upload_tips') }}</el-button
         ></span
       >
     </div>
@@ -20,8 +24,8 @@
 import { CSSProperties, computed, nextTick, toRefs } from 'vue'
 import { imgUrlTrans } from '@/utils/imgUtils'
 import eventBus from '@/utils/eventBus'
-import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
-const dvMainStore = dvMainStoreWithOut()
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 const props = defineProps({
   propValue: {

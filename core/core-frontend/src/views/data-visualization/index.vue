@@ -46,10 +46,12 @@ import { useRequestStoreWithOut } from '@/store/modules/request'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 import ChartStyleBatchSet from '@/views/chart/components/editor/editor-style/ChartStyleBatchSet.vue'
 import CustomTabsSort from '@/custom-component/de-tabs/CustomTabsSort.vue'
+import { useI18n } from '@/hooks/web/useI18n'
 const interactiveStore = interactiveStoreWithOut()
 const embeddedStore = useEmbedded()
 const { wsCache } = useCache()
 const dvPreviewRef = ref(null)
+const { t } = useI18n()
 const eventCheck = e => {
   if (e.key === 'screen-weight' && !compareStorage(e.oldValue, e.newValue)) {
     const opt = embeddedStore.opt || router.currentRoute.value.query.opt
@@ -486,7 +488,7 @@ eventBus.on('tabSort', tabSort)
     >
       <!-- 左侧组件列表 -->
       <dv-sidebar
-        :title="'图层管理'"
+        :title="t('visualization.layer_management')"
         :width="180"
         :scroll-width="3"
         :aside-position="'left'"
@@ -545,7 +547,9 @@ eventBus.on('tabSort', tabSort)
                 :base-width="state.baseWidth"
               >
                 <template v-slot:canvasDragTips>
-                  <div class="canvas-drag-tip">按住空格可拖动画布</div>
+                  <div class="canvas-drag-tip">
+                    {{ t('visualization.hold_canvas_tips') }}按住空格可拖动画布
+                  </div>
                 </template>
               </canvas-core>
             </div>
@@ -571,7 +575,7 @@ eventBus.on('tabSort', tabSort)
           </dv-sidebar>
           <dv-sidebar
             v-show="canvasPropertiesShow"
-            :title="'大屏配置'"
+            :title="t('visualization.screen_config')"
             :width="240"
             :side-name="'canvas'"
             :aside-position="'right'"
@@ -595,7 +599,7 @@ eventBus.on('tabSort', tabSort)
         <dv-sidebar
           v-if="batchOptStatus"
           :theme-info="'dark'"
-          title="批量设置样式"
+          :title="t('visualization.batch_style_set')"
           :width="280"
           aside-position="right"
           class="left-sidebar"

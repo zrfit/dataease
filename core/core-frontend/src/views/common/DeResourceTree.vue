@@ -76,7 +76,7 @@ const anyManage = ref(false)
 const { curCanvasType, showPosition } = toRefs(props)
 const resourceLabel =
   curCanvasType.value === 'dataV' ? t('work_branch.big_data_screen') : t('work_branch.dashboard')
-const newResourceLabel = '新建' + resourceLabel
+const newResourceLabel = t('visualization.new') + resourceLabel
 const selectedNodeKey = ref(null)
 const filterText = ref(null)
 const expandedArray = ref([])
@@ -90,17 +90,17 @@ const state = reactive({
   originResourceTree: [] as BusiTreeNode[],
   folderMenuList: [
     {
-      label: '移动到',
+      label: t('visualization.move_to'), //'移动到'
       command: 'move',
       svgName: dvMove
     },
     {
-      label: '重命名',
+      label: t('visualization.rename'), //'重命名'
       command: 'rename',
       svgName: dvRename
     },
     {
-      label: '删除',
+      label: t('visualization.delete'), // 删除
       command: 'delete',
       svgName: dvDelete,
       divided: true
@@ -108,20 +108,20 @@ const state = reactive({
   ],
   sortType: [
     {
-      label: '按时间升序',
+      label: t('visualization.time_asc'), //'按时间升序'
       value: 'time_asc'
     },
     {
-      label: '按时间降序',
+      label: t('visualization.time_desc'), //'按时间降序'
       value: 'time_desc'
     },
     {
-      label: '按名称升序',
+      label: t('visualization.name_asc'), //'按名称升序'
       value: 'name_asc'
     },
     {
-      label: '按名称降序',
-      value: 'time_asc'
+      label: t('visualization.name_desc'), //'按名称降序'
+      value: 'name_desc'
     }
   ],
   templateCreatePid: 0
@@ -136,7 +136,7 @@ const isEmbedded = computed(() => appStore.getIsDataEaseBi || appStore.getIsIfra
 const resourceTypeList = computed(() => {
   const list = [
     {
-      label: '空白新建',
+      label: t('work_branch.new_empty'), //'空白新建',
       svgName: dvSvgType.value,
       command: 'newLeaf'
     },
@@ -146,7 +146,7 @@ const resourceTypeList = computed(() => {
       command: 'newFromTemplate'
     },
     {
-      label: '新建文件夹',
+      label: t('work_branch.new_folder'), //'新建文件夹'
       divided: true,
       svgName: dvFolder,
       command: 'newFolder'
@@ -162,22 +162,22 @@ const { handleDrop, allowDrop, handleDragStart } = treeDraggbleChart(
 const menuList = computed(() => {
   const list = [
     {
-      label: '复制',
+      label: t('visualization.copy'), //'复制',
       command: 'copy',
       svgName: dvCopyDark
     },
     {
-      label: '移动到',
+      label: t('visualization.move_to'), //'移动到',
       command: 'move',
       svgName: dvMove
     },
     {
-      label: '重命名',
+      label: t('visualization.rename'), //'重命名',
       command: 'rename',
       svgName: dvRename
     },
     {
-      label: '删除',
+      label: t('visualization.delete'), //'删除',
       command: 'delete',
       svgName: dvDelete,
       divided: true
@@ -289,19 +289,17 @@ const emit = defineEmits(['nodeClick'])
 
 const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
   if (cmd === 'delete') {
-    const msg = data.leaf ? '' : '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。'
-    ElMessageBox.confirm(
-      data.leaf ? '确定删除该' + resourceLabel + '吗？' : '确定删除该文件夹吗？',
-      {
-        confirmButtonType: 'danger',
-        type: 'warning',
-        tip: msg,
-        autofocus: false,
-        showClose: false
-      }
-    ).then(() => {
+    const msg = data.leaf ? '' : t('visualization.delete_tips')
+    const tips_label = data.leaf ? resourceLabel : t('visualization.folder')
+    ElMessageBox.confirm(t('visualization.delete_tips', tips_label), {
+      confirmButtonType: 'danger',
+      type: 'warning',
+      tip: msg,
+      autofocus: false,
+      showClose: false
+    }).then(() => {
       deleteLogic(data.id, curCanvasType.value).then(() => {
-        ElMessage.success('删除成功')
+        ElMessage.success(t('visualization.delete_success'))
         getTree()
       })
     })
@@ -477,20 +475,20 @@ const getDefaultExpandedKeys = () => {
 
 const sortList = [
   {
-    name: '按创建时间升序',
+    name: t('visualization.time_asc'),
     value: 'time_asc'
   },
   {
-    name: '按创建时间降序',
+    name: t('visualization.time_desc'),
     value: 'time_desc',
     divided: true
   },
   {
-    name: '按照名称升序',
+    name: t('visualization.name_asc'),
     value: 'name_asc'
   },
   {
-    name: '按照名称降序',
+    name: t('visualization.name_desc'),
     value: 'name_desc'
   }
 ]
@@ -556,7 +554,7 @@ defineExpose({
       <div class="icon-methods" v-show="showPosition === 'preview'">
         <span class="title"> {{ resourceLabel }} </span>
         <div v-if="rootManage" class="flex-align-center">
-          <el-tooltip content="新建文件夹" placement="top" effect="dark">
+          <el-tooltip :content="t('work_branch.new_folder')" placement="top" effect="dark">
             <el-icon
               class="custom-icon btn"
               style="margin-right: 20px"
@@ -579,7 +577,7 @@ defineExpose({
                     <el-icon :class="`handle-icon color-${curCanvasType}`">
                       <Icon><component class="svg-icon" :is="dvSvgType"></component></Icon>
                     </el-icon>
-                    空白新建
+                    {{ t('work_branch.new_empty') }}
                   </el-dropdown-item>
                   <el-dropdown-item @click="addOperation('newFromTemplate', null, 'leaf', true)">
                     <el-icon class="handle-icon">

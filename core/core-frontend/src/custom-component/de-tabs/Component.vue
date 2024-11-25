@@ -44,16 +44,16 @@
                 <template #dropdown>
                   <el-dropdown-menu :style="{ 'font-family': fontFamily }">
                     <el-dropdown-item :command="beforeHandleCommand('editTitle', tabItem)">
-                      编辑标题
+                      {{ t('visualization.edit_title') }}
                     </el-dropdown-item>
                     <el-dropdown-item :command="beforeHandleCommand('copyCur', tabItem)">
-                      复制
+                      {{ t('visualization.copy') }}
                     </el-dropdown-item>
                     <el-dropdown-item
                       v-if="element.propValue.length > 1"
                       :command="beforeHandleCommand('deleteCur', tabItem)"
                     >
-                      删除
+                      {{ t('visualization.delete') }}
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
@@ -146,11 +146,13 @@ import { getPanelAllLinkageInfo } from '@/api/visualization/linkage'
 import { dataVTabComponentAdd, groupSizeStyleAdaptor } from '@/utils/style'
 import { deepCopyTabItemHelper } from '@/store/modules/data-visualization/copy'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
+import { useI18n } from '@/hooks/web/useI18n'
 const dvMainStore = dvMainStoreWithOut()
 const snapshotStore = snapshotStoreWithOut()
 const { tabMoveInActiveId, bashMatrixInfo, editMode, mobileInPc } = storeToRefs(dvMainStore)
 const tabComponentRef = ref(null)
 let carouselTimer = null
+const { t } = useI18n()
 
 const props = defineProps({
   canvasStyleData: {
@@ -271,7 +273,7 @@ function addTab() {
   const newName = guid()
   const newTab = {
     name: newName,
-    title: '新建Tab',
+    title: t('visualization.new_tab'),
     componentData: [],
     closable: true
   }
