@@ -5,8 +5,8 @@
     :class="[
       headClass,
       `ed-tabs-${curThemes}`,
-      { 'title-hidde-tab': hideTitle },
-      { 'title-show-tab': !hideTitle }
+      { 'title-hidde-tab': !showTabTitleFlag },
+      { 'title-show-tab': showTabTitleFlag }
     ]"
     class="custom-tabs-head"
     ref="tabComponentRef"
@@ -19,7 +19,7 @@
       :active-color="activeColor"
       :border-color="noBorderColor"
       :border-active-color="borderActiveColor"
-      :hide-title="hideTitle"
+      :hide-title="!showTabTitleFlag"
     >
       <template :key="tabItem.name" v-for="tabItem in element.propValue">
         <el-tab-pane
@@ -225,16 +225,11 @@ const editableTabsValue = ref(null)
 const noBorderColor = ref('none')
 let currentInstance
 
-const hideTitle = computed(() => {
-  if (
-    element.value &&
-    element.value.style &&
-    element.value.style.titleHide &&
-    typeof element.value.style.titleHide === 'boolean'
-  ) {
-    return element.value.style.titleHide
-  } else {
+const showTabTitleFlag = computed(() => {
+  if (element.value && element.value.style && element.value.style?.showTabTitle === false) {
     return false
+  } else {
+    return element.value.style?.showTabTitle
   }
 })
 

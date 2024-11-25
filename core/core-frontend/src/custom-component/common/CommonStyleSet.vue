@@ -407,11 +407,6 @@ const backdropBlurList = [
   { name: '30', value: 'blur(30px)' }
 ]
 
-const titleHideList = [
-  { name: '隐藏', value: true },
-  { name: '显示', value: false }
-]
-
 const styleForm = computed<any>(() => element.value.style)
 const state = reactive({
   fontSize: [],
@@ -507,13 +502,6 @@ const styleOptionKeyArray = [
     customOption: opacitySizeList,
     width: '90px',
     icon: dvStyleOpacity
-  },
-  {
-    value: 'titleHide',
-    label: '标题样式',
-    customOption: titleHideList,
-    width: '90px',
-    icon: dvStyleTabHead
   },
   {
     value: 'backdropFilter',
