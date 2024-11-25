@@ -3,7 +3,7 @@
     ref="enlargeDialog"
     destroy-on-close
     :append-to-body="true"
-    :title="'自定义排序'"
+    :title="t('visualization.custom_sort')"
     v-model="dialogShow"
     width="30vw"
     top="10vh"
@@ -63,6 +63,8 @@ const save = () => {
   eventBus.emit('onTabSortChange-' + config.value.id)
   closeDialog()
 }
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 defineExpose({
   sortInit

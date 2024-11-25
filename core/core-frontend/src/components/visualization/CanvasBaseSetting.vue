@@ -4,7 +4,7 @@
       <el-form-item
         class="form-item no-margin-bottom"
         :class="'form-item-' + themes"
-        label="数据大屏字体选择"
+        :label="t('visualization.screen_font_family_select')"
       >
         <el-select
           :effect="themes"
@@ -28,10 +28,10 @@
           @change="onThemeChange"
         >
           <div style="display: flex; line-height: 14px">
-            <span style="margin-right: 4px">显示弹窗区查询按钮</span>
+            <span style="margin-right: 4px">{{ t('visualization.show_pop_button') }}</span>
             <el-tooltip class="item" :effect="themes" placement="bottom">
               <template #content>
-                <div>预览时启用</div>
+                <div>{{ t('visualization.effective_during_preview') }}</div>
               </template>
               <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                 <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -49,10 +49,10 @@
           @change="onThemeChange"
         >
           <div style="display: flex; line-height: 14px">
-            <span style="margin-right: 4px">显示放大、导出等悬浮按钮</span>
+            <span style="margin-right: 4px">{{ t('visualization.show_zoom_button') }}</span>
             <el-tooltip class="item" :effect="themes" placement="bottom">
               <template #content>
-                <div>预览时启用</div>
+                <div>{{ t('visualization.effective_during_preview') }}</div>
               </template>
               <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                 <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -68,7 +68,7 @@
           size="small"
           v-model="canvasStyleData.dashboard.showGrid"
           @change="onThemeChange"
-          >显示辅助网格</el-checkbox
+          >{{ t('visualization.display_auxiliary_grid') }}</el-checkbox
         >
       </el-form-item>
     </el-form>
@@ -85,8 +85,9 @@ import Icon from '../icon-custom/src/Icon.vue'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { CHART_FONT_FAMILY } from '@/views/chart/components/editor/util/chart'
 import { adaptTitleFontFamilyAll } from '@/utils/canvasStyle'
+import { useI18n } from '@/hooks/web/useI18n'
 const snapshotStore = snapshotStoreWithOut()
-
+const { t } = useI18n()
 const dvMainStore = dvMainStoreWithOut()
 const { canvasStyleData } = storeToRefs(dvMainStore)
 const appearanceStore = useAppearanceStoreWithOut()

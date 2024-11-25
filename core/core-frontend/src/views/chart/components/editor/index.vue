@@ -3237,7 +3237,7 @@ const deleteChartFieldItem = id => {
             <Expand v-else class="collapse-icon" />
           </el-icon>
           <div v-if="canvasCollapse.datasetAreaCollapse" class="collapse-title">
-            <span style="font-size: 14px">数据集</span>
+            <span style="font-size: 14px">{{ t('visualization.dataset') }}</span>
           </div>
           <el-container
             v-if="!canvasCollapse.datasetAreaCollapse"
@@ -3245,7 +3245,7 @@ const deleteChartFieldItem = id => {
             class="dataset-area view-panel-row"
           >
             <el-header class="editor-title">
-              <span style="font-size: 14px">数据集</span>
+              <span style="font-size: 14px">{{ t('visualization.dataset') }}</span>
             </el-header>
             <el-main class="dataset-main-top">
               <el-row class="dataset-select">

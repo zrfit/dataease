@@ -12,7 +12,7 @@
     <div @keydown.stop @keyup.stop v-if="state.initState" style="height: 550px">
       <el-row style="flex-direction: row">
         <div class="top-area">
-          <span class="top-area-text">已选图表：</span>
+          <span class="top-area-text">{{ t('visualization.selected_view') }}：</span>
           <span class="top-area-value">
             <Icon class-name="view-type-icon"
               ><component
@@ -22,7 +22,7 @@
             ></Icon>
             {{ state.curJumpViewInfo.title }}</span
           >
-          <span class="top-area-text margin-left">所用数据集：</span>
+          <span class="top-area-text margin-left">{{ t('visualization.used_dataset') }}：</span>
           <span class="top-area-value">
             <Icon name="dataset-outline"
               ><datasetOutline style="vertical-align: -0.2em" class="svg-icon view-type-icon"
@@ -35,9 +35,9 @@
         <el-row class="preview">
           <el-col :span="8" style="height: 100%; overflow-y: auto">
             <el-row class="tree-head">
-              <span class="head-text">选择字段</span>
+              <span class="head-text">{{ t('visualization.to_select_view') }}</span>
               <span class="head-filter">
-                仅看已选
+                {{ t('visualization.show_selected_only') }}
                 <el-switch size="small" v-model="state.showSelected" />
               </span>
             </el-row>
@@ -126,12 +126,12 @@
                   v-if="state.linkJumpInfo?.jumpType === 'newPop'"
                 >
                   <template #label>
-                    <span class="title">窗口大小</span>
+                    <span class="title">{{ t('visualization.window_size') }}</span>
                   </template>
                   <el-radio-group class="larger-radio" v-model="state.linkJumpInfo.windowSize">
-                    <el-radio label="large">大</el-radio>
-                    <el-radio label="middle">中</el-radio>
-                    <el-radio label="small">小</el-radio>
+                    <el-radio label="large">{{ t('visualization.window_size_large') }}</el-radio>
+                    <el-radio label="middle">{{ t('visualization.window_size_middle') }}</el-radio>
+                    <el-radio label="small">{{ t('visualization.window_size_small') }}</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-header>
@@ -161,7 +161,9 @@
                         </div>
                         <div style="flex: 1">
                           <el-form-item>
-                            <template #label> 目标{{ resourceType }} </template>
+                            <template #label>
+                              {{ t('visualization.target') }}{{ resourceType }}
+                            </template>
                             <el-tree-select
                               v-model="state.linkJumpInfo.targetDvId"
                               :data="state.panelList"
@@ -198,13 +200,15 @@
                       </div>
                       <div class="jump-com-list">
                         <el-tabs size="small" v-model="state.activeCollapse">
-                          <el-tab-pane label="联动图表" name="view"> </el-tab-pane>
-                          <el-tab-pane label="携带查询条件" name="filter"> </el-tab-pane>
+                          <el-tab-pane :label="t('visualization.linkage_view')" name="view">
+                          </el-tab-pane>
+                          <el-tab-pane :label="t('visualization.with_filter_params')" name="filter">
+                          </el-tab-pane>
                         </el-tabs>
                       </div>
                       <template v-if="state.activeCollapse === 'view'">
                         <el-row style="margin-bottom: 8px" :gutter="8">
-                          <el-col :span="7"> 源字段 </el-col>
+                          <el-col :span="7"> {{ t('visualization.source_field') }} </el-col>
                           <el-col :span="2"></el-col>
                           <el-col :span="7" style="margin-left: -2.9%">
                             {{ t('visualization.link_view_field') }}
@@ -225,7 +229,7 @@
                               <div style="flex: 1">
                                 <el-select
                                   v-model="targetViewInfo.sourceFieldActiveId"
-                                  :placeholder="'请选择字段'"
+                                  :placeholder="t('chart.pls_select_field')"
                                   style="width: 100%"
                                 >
                                   <el-option
@@ -260,7 +264,7 @@
                                 <el-select
                                   v-model="targetViewInfo.targetViewId"
                                   :disabled="!targetViewInfo.sourceFieldActiveId"
-                                  :placeholder="'请选择图表'"
+                                  :placeholder="t('visualization.select_view')"
                                   style="width: 100%"
                                   @change="viewInfoOnChange(targetViewInfo)"
                                 >
@@ -291,7 +295,7 @@
                               <div style="flex: 1; margin: 0 8px">
                                 <el-select
                                   v-model="targetViewInfo.targetFieldId"
-                                  :placeholder="'请选择字段'"
+                                  :placeholder="t('visualization.pls_select_field')"
                                   :disabled="fieldIdDisabledCheck(targetViewInfo)"
                                   style="width: 100%"
                                 >
@@ -349,18 +353,21 @@
                       <template v-if="state.activeCollapse === 'filter'">
                         <template v-if="state.currentOutParams.length === 0">
                           <span
-                            >目标仪表板无外部参数，因此无法携带条件查询，如有需要，<a
+                            >{{ t('visualization.link_target_tips1')
+                            }}<a
                               class="target_jump"
                               @click="resourceEdit(state.linkJumpInfo.targetDvId)"
-                              >请前往设置外部参数</a
+                              >{{ t('visualization.link_target_tips2') }}</a
                             ></span
                           >
                         </template>
                         <template v-if="state.currentOutParams.length > 0">
                           <el-row style="margin-bottom: 8px" :gutter="8">
-                            <el-col :span="12"> 源条件 </el-col>
+                            <el-col :span="12"> {{ t('visualization.source_filter') }} </el-col>
                             <el-col :span="1"></el-col>
-                            <el-col :span="10" style="margin-left: -2.9%"> 联动外部参数 </el-col>
+                            <el-col :span="10" style="margin-left: -2.9%">
+                              {{ t('visualization.link_outer_params') }}
+                            </el-col>
                           </el-row>
                           <div class="main-scrollbar-container">
                             <el-scrollbar height="fit-content" max-height="178px">
@@ -376,7 +383,7 @@
                                 <div style="flex: 1">
                                   <el-select
                                     v-model="targetViewInfo.sourceFieldActiveId"
-                                    :placeholder="'请选择字段'"
+                                    :placeholder="t('chart.pls_select_field')"
                                     style="width: 100%"
                                   >
                                     <el-option
@@ -412,7 +419,7 @@
                                   <el-select
                                     v-model="targetViewInfo.targetViewId"
                                     :disabled="!targetViewInfo.sourceFieldActiveId"
-                                    :placeholder="'请选择参数'"
+                                    :placeholder="t('visualization.select_param')"
                                     style="width: 100%"
                                     @change="viewInfoOnChange(targetViewInfo)"
                                   >
@@ -929,10 +936,6 @@ const deleteLinkJumpFieldById = targetId => {
       state.linkJumpInfo.targetViewInfoList.splice(indexResult, 1)
     }
   }
-}
-
-const deleteLinkJumpField = index => {
-  state.linkJumpInfo.targetViewInfoList.splice(index, 1)
 }
 
 const fieldIdDisabledCheck = targetViewInfo => {
