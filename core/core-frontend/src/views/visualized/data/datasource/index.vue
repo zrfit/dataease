@@ -132,6 +132,7 @@ const createDataset = (tableName?: string) => {
     useEmitt().emitter.emit('changeCurrentComponent', 'DatasetEditor')
     return
   }
+  wsCache.set('ds-info-id', nodeInfo.id)
   router.push({
     path: '/dataset-form',
     query: {
@@ -989,7 +990,9 @@ const loadInit = () => {
 }
 
 onMounted(() => {
-  nodeInfo.id = (route.params.id as string) || (route.query.id as string) || ''
+  const dsId = wsCache.get('ds-info-id') || route.params.id
+  nodeInfo.id = (dsId as string) || (route.query.id as string) || ''
+  wsCache.delete('ds-info-id')
   loadInit()
   listDs()
   const { opt } = router.currentRoute.value.query
