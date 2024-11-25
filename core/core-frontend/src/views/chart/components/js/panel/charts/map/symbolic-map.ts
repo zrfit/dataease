@@ -106,6 +106,18 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
     if (basicStyle.autoFit === false) {
       center = [basicStyle.mapCenter.longitude, basicStyle.mapCenter.latitude]
     }
+    // 联动时，聚焦到数据点，多个取第一个
+    if (
+      chart.chartExtRequest?.linkageFilters?.length &&
+      xAxis?.length === 2 &&
+      chart.data?.tableRow.length
+    ) {
+      // 经度
+      const lng = chart.data?.tableRow?.[0][chart.xAxis[0].dataeaseName]
+      // 纬度
+      const lat = chart.data?.tableRow?.[0][chart.xAxis[1].dataeaseName]
+      center = [lng, lat]
+    }
     const chartObj = drawOption.chartObj as unknown as L7Wrapper<L7Config, Scene>
     let scene = chartObj?.getScene()
     if (!scene) {
