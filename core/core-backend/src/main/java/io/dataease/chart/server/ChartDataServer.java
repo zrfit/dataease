@@ -31,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -89,7 +90,7 @@ public class ChartDataServer implements ChartDataApi {
                 return chartDataManage.calcData(chartViewDTO);
             }
         } catch (Exception e) {
-            DEException.throwException(ResultCode.DATA_IS_WRONG.code(), e.getMessage());
+            DEException.throwException(ResultCode.DATA_IS_WRONG.code(), e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e));
         }
         return null;
     }
