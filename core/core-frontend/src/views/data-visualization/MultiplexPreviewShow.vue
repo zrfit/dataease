@@ -160,7 +160,7 @@ onBeforeMount(() => {
   <el-row class="preview">
     <el-col :span="6" style="height: 100%; overflow-y: auto">
       <el-row class="tree-head">
-        <span class="head-text">选择组件</span>
+        <span class="head-text">{{ t('visualization.to_select_view') }}</span>
         <span class="head-filter"
           >{{ t('visualization.show_selected_only') }}
           <el-switch size="small" v-model="state.showSelected" />

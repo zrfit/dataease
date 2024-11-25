@@ -53,7 +53,7 @@ const dialogInit = initInfo => {
     initInfo.canvasType === 'dataV' ? t('work_branch.big_data_screen') : t('work_branch.dashboard')
   dialogInfo.resourceId = initInfo.resourceId
   dialogInfo.title = t('visualization.no_save_tips', [canvasTypeName])
-  dialogInfo.tips = canvasTypeName + t('visualization.no_save_tips2')
+  dialogInfo.tips = t('visualization.no_save_tips2')
   dialogShow.value = true
 }
 

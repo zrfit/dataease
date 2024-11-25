@@ -548,7 +548,7 @@ eventBus.on('tabSort', tabSort)
               >
                 <template v-slot:canvasDragTips>
                   <div class="canvas-drag-tip">
-                    {{ t('visualization.hold_canvas_tips') }}按住空格可拖动画布
+                    {{ t('visualization.hold_canvas_tips') }}
                   </div>
                 </template>
               </canvas-core>
