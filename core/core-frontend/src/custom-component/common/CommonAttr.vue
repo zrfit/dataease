@@ -89,6 +89,14 @@ const backgroundCustomShow = computed(() => {
       !['CanvasBoard', 'CanvasIcon', 'CircleShape', 'RectShape'].includes(element.value.component))
   )
 })
+const tabTitleShow = computed(() => {
+  return element.value && element.value.style && element.value.component === 'DeTabs'
+})
+
+const styleShow = computed(() => {
+  return element.value && element.value.style && element.value.component !== 'DeTabs'
+})
+
 onMounted(() => {
   const erd = elementResizeDetectorMaker()
   containerWidth.value = containerRef.value?.offsetWidth
@@ -122,8 +130,23 @@ onMounted(() => {
         />
       </el-collapse-item>
       <slot></slot>
+      <collapse-switch-item
+        v-if="tabTitleShow"
+        v-model="element.style.showTabTitle"
+        @modelChange="val => onStyleAttrChange({ key: 'showTabTitle', value: val })"
+        :themes="themes"
+        title="Tab标签"
+        name="tabTitle"
+        class="common-style-area"
+      >
+        <common-style-set
+          @onStyleAttrChange="onStyleAttrChange"
+          :themes="themes"
+          :element="element"
+        ></common-style-set>
+      </collapse-switch-item>
       <el-collapse-item
-        v-if="element && element.style"
+        v-if="styleShow"
         :effect="themes"
         title="样式"
         name="style"

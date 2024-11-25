@@ -150,7 +150,7 @@ export function historyItemAdaptor(
   }
 
   if (componentItem.component === 'DeTabs') {
-    componentItem.style['titleHide'] = componentItem.style['titleHide'] || false
+    componentItem.style['showTabTitle'] = componentItem.style['showTabTitle'] || true
   }
 
   componentItem['expand'] = componentItem['expand'] || false
