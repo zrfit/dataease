@@ -294,18 +294,10 @@ export function groupStyleRevertBatch(groupComponent, parentStyle) {
 export function tabInnerStyleRevert(tabOuterComponent) {
   const parentStyle = {
     width: tabOuterComponent.style.width,
-    height: tabOuterComponent.style.height - tabOuterComponent.style.showTabTitle ? 46 : 0
+    height: tabOuterComponent.style.height - (tabOuterComponent.style.showTabTitle ? 46 : 0)
   }
   tabOuterComponent.propValue.forEach(tabItem => {
     tabItem.componentData.forEach(tabComponent => {
-      console.log(
-        '====test===inner-width---' +
-          tabComponent.style.width +
-          '---height---' +
-          tabComponent.style.height +
-          '---' +
-          JSON.stringify(parentStyle)
-      )
       groupStyleRevert(tabComponent, parentStyle)
     })
   })
@@ -336,6 +328,6 @@ export function dataVTabComponentAdd(innerComponent, parentComponent) {
   innerComponent.style.left = 0
   const parentStyleAdaptor = { ...parentComponent.style }
   // 去掉tab头部高度
-  parentStyleAdaptor.height = parentStyleAdaptor.height - parentComponent.showTabTitle ? 46 : 0
+  parentStyleAdaptor.height = parentStyleAdaptor.height - (parentComponent.showTabTitle ? 46 : 0)
   groupStyleRevert(innerComponent, parentStyleAdaptor)
 }
