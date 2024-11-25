@@ -11,8 +11,9 @@ ALTER TABLE `visualization_link_jump_target_view_info`
     ADD COLUMN `target_type` varchar(50) NULL COMMENT '联动目标类型 view 图表 filter 过滤组件 outParams 外部参数';
 
 ALTER TABLE `visualization_link_jump_target_view_info`
-    MODIFY COLUMN `target_view_id` varchar(50) NULL DEFAULT NULL COMMENT '目标图表ID' AFTER `source_field_active_id`,
-    MODIFY COLUMN `target_field_id` varchar(50) NULL DEFAULT NULL COMMENT '目标字段ID' AFTER `target_view_id`;
+    MODIFY COLUMN `target_view_id` varchar(50) NULL DEFAULT NULL COMMENT '目标图表ID';
+ALTER TABLE `visualization_link_jump_target_view_info`
+    MODIFY COLUMN `target_field_id` varchar(50) NULL DEFAULT NULL COMMENT '目标字段ID';
 
 update visualization_link_jump_target_view_info set target_type = 'view';
 ALTER TABLE `data_visualization_info`
