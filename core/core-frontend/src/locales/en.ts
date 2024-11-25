@@ -148,7 +148,7 @@ export default {
     relevant_templates_found: 'No relevant templates found',
     last_edited_by: 'Last editor',
     last_edit_time: 'Last edit time',
-    big_data_screen: 'Big data screen',
+    big_data_screen: 'Data screen',
     big_screen: 'Big screen',
     dashboard: 'Dashboard',
     data_set: 'Data set',
