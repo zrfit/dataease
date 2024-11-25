@@ -64,7 +64,7 @@ defineExpose({
 .custom-sort_filter {
   .drag-list {
     overflow: auto;
-    max-height: 800px;
+    max-height: 400px;
     .item-dimension {
       padding: 2px;
       margin: 2px;

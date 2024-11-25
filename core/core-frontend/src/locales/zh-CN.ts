@@ -1350,7 +1350,8 @@ export default {
     date_split: 'yyyy/MM/dd',
     chartName: '新建图表',
     chart_show_error: '无法正常显示',
-    chart_error_tips: '获取数据异常，如有疑问请联系管理员',
+    chart_error_tips: '获取数据异常，如有疑问请联系管理员，',
+    chart_show_error_info: '查看异常原因',
     title_cannot_empty: '标题不能为空',
     table_title_height: '表头行高',
     table_item_height: '表格行高',
@@ -4079,6 +4080,8 @@ export default {
     single_del_tips_dataset: '该数据集存在如下血缘关系，删除会造成相关视图失效，确定删除？',
     single_del_tips_datasource: '有 {0} 个数据集正在使用此数据源，删除后数据集不可用，确定删除？',
     folder: '文件夹',
-    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。'
+    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。',
+    sync_to_org: '迁移至目标组织',
+    sync_org_placeholder: '请选择目标组织'
   }
 }

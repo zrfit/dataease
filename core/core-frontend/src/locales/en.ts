@@ -1378,7 +1378,8 @@ export default {
     chartName: 'New Chart',
     chart_show_error: 'Cannot display normally',
     chart_error_tips:
-      'Abnormal data acquisition, if you have any questions, please contact the administrator',
+      'Abnormal data acquisition, if you have any questions, please contact the administrator, ',
+    chart_show_error_info: 'click to show error info',
     title_cannot_empty: 'Title cannot be empty',
     table_title_height: 'Header row height',
     table_item_height: 'Table row height',

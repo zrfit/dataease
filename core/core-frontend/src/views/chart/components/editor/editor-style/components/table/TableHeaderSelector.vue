@@ -275,7 +275,7 @@ onMounted(() => {
             controls-position="right"
             v-model="state.tableHeaderForm.tableTitleHeight"
             :min="20"
-            :max="100"
+            :max="1000"
             @change="changeTableHeader('tableTitleHeight')"
           />
         </el-form-item>

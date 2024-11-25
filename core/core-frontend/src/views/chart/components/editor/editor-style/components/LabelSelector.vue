@@ -238,7 +238,8 @@ const state = reactive<{ labelForm: DeepPartial<ChartLabelAttr> }>({
     seriesLabelFormatter: [],
     labelFormatter: DEFAULT_LABEL.labelFormatter,
     conversionTag: DEFAULT_LABEL.conversionTag,
-    totalFormatter: DEFAULT_LABEL.totalFormatter
+    totalFormatter: DEFAULT_LABEL.totalFormatter,
+    proportionSeriesFormatter: DEFAULT_LABEL.proportionSeriesFormatter
   }
 })
 
@@ -303,7 +304,10 @@ const showSeriesLabelFormatter = computed(() => {
 const showDivider = computed(() => {
   const DIVIDER_PROPS = ['labelFormatter', 'showDimension', 'showQuota', 'showProportion']
   return (
-    includesAny(props.propertyInner, ...DIVIDER_PROPS) && !isBarRangeTime.value && !isGroupBar.value
+    includesAny(props.propertyInner, ...DIVIDER_PROPS) &&
+    !isBarRangeTime.value &&
+    !isGroupBar.value &&
+    !isGauge.value
   )
 })
 
@@ -460,6 +464,9 @@ const conversionPrecision = [
 const noFullDisplay = computed(() => {
   return !['liquid', 'gauge', 'indicator'].includes(props.chart.type)
 })
+const isGauge = computed(() => {
+  return props.chart.type === 'gauge'
+})
 </script>
 
 <template>
@@ -509,7 +516,7 @@ const noFullDisplay = computed(() => {
         />
       </el-form-item>
     </div>
-    <div v-if="!isGroupBar">
+    <div v-if="!isGroupBar && !isGauge">
       <el-space>
         <el-form-item
           class="form-item"
@@ -681,7 +688,7 @@ const noFullDisplay = computed(() => {
       :class="{ 'divider-dark': themes === 'dark' }"
       v-if="showDivider"
     />
-    <template v-if="showProperty('labelFormatter') && !isBarRangeTime && !isGroupBar">
+    <template v-if="showProperty('labelFormatter') && !isBarRangeTime && !isGroupBar && !isGauge">
       <el-form-item
         :label="$t('chart.value_formatter_type')"
         class="form-item"
@@ -1588,6 +1595,230 @@ const noFullDisplay = computed(() => {
         </el-col>
       </el-row>
     </div>
+    <template v-if="isGauge">
+      <el-form-item class="form-item form-item-checkbox" :class="'form-item-' + themes">
+        <el-checkbox
+          :effect="themes"
+          size="small"
+          @change="changeLabelAttr('childrenShow')"
+          v-model="state.labelForm.childrenShow"
+          label="quota"
+        >
+          {{ t('chart.quota') }}
+        </el-checkbox>
+      </el-form-item>
+      <div style="padding-left: 22px">
+        <el-space>
+          <el-form-item
+            class="form-item"
+            :class="'form-item-' + themes"
+            v-if="showProperty('color')"
+            :label="t('chart.text')"
+          >
+            <el-color-picker
+              :disabled="!state.labelForm.childrenShow"
+              :effect="themes"
+              v-model="state.labelForm.color"
+              class="color-picker-style"
+              :predefine="COLOR_PANEL"
+              @change="changeLabelAttr('color')"
+              is-custom
+            />
+          </el-form-item>
+          <el-form-item
+            class="form-item"
+            :class="'form-item-' + themes"
+            v-if="showProperty('fontSize')"
+          >
+            <template #label>&nbsp;</template>
+            <el-tooltip content="字号" :effect="toolTip" placement="top">
+              <el-select
+                :disabled="!state.labelForm.childrenShow"
+                size="small"
+                style="width: 108px"
+                :effect="themes"
+                v-model.number="state.labelForm.fontSize"
+                :placeholder="t('chart.text_fontsize')"
+                @change="changeLabelAttr('fontSize')"
+              >
+                <el-option
+                  v-for="option in fontSizeList"
+                  :key="option.value"
+                  :label="option.name"
+                  :value="option.value"
+                />
+              </el-select>
+            </el-tooltip>
+          </el-form-item>
+        </el-space>
+        <el-form-item
+          :label="$t('chart.value_formatter_type')"
+          class="form-item"
+          :class="'form-item-' + themes"
+        >
+          <el-select
+            :disabled="!state.labelForm.childrenShow"
+            size="small"
+            :effect="themes"
+            v-model="state.labelForm.labelFormatter.type"
+            @change="changeLabelAttr('labelFormatter.type')"
+          >
+            <el-option
+              v-for="type in formatterType"
+              :key="type.value"
+              :label="$t('chart.' + type.name)"
+              :value="type.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          v-if="state.labelForm.labelFormatter && state.labelForm.labelFormatter.type !== 'auto'"
+          :label="$t('chart.value_formatter_decimal_count')"
+          class="form-item"
+          :class="'form-item-' + themes"
+        >
+          <el-input-number
+            :disabled="!state.labelForm.childrenShow"
+            controls-position="right"
+            :effect="themes"
+            v-model="state.labelForm.labelFormatter.decimalCount"
+            :precision="0"
+            :min="0"
+            :max="10"
+            @change="changeLabelAttr('labelFormatter.decimalCount')"
+          />
+        </el-form-item>
+
+        <el-row
+          :gutter="8"
+          v-if="state.labelForm.labelFormatter && state.labelForm.labelFormatter.type !== 'percent'"
+        >
+          <el-col :span="12">
+            <el-form-item
+              :label="$t('chart.value_formatter_unit')"
+              class="form-item"
+              :class="'form-item-' + themes"
+            >
+              <el-select
+                :disabled="!state.labelForm.childrenShow"
+                size="small"
+                :effect="themes"
+                v-model="state.labelForm.labelFormatter.unit"
+                :placeholder="$t('chart.pls_select_field')"
+                @change="changeLabelAttr('labelFormatter.unit')"
+              >
+                <el-option
+                  v-for="item in unitType"
+                  :key="item.value"
+                  :label="$t('chart.' + item.name)"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item
+              :label="$t('chart.value_formatter_suffix')"
+              class="form-item"
+              :class="'form-item-' + themes"
+            >
+              <el-input
+                :disabled="!state.labelForm.childrenShow"
+                :effect="themes"
+                v-model="state.labelForm.labelFormatter.suffix"
+                clearable
+                :placeholder="$t('commons.input_content')"
+                @change="changeLabelAttr('labelFormatter.suffix')"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-form-item class="form-item" :class="'form-item-' + themes">
+          <el-checkbox
+            size="small"
+            :effect="themes"
+            v-model="state.labelForm.labelFormatter.thousandSeparator"
+            @change="changeLabelAttr('labelFormatter.thousandSeparator')"
+            :label="t('chart.value_formatter_thousand_separator')"
+            :disabled="!state.labelForm.childrenShow"
+          />
+        </el-form-item>
+      </div>
+      <el-form-item class="form-item form-item-checkbox" :class="'form-item-' + themes">
+        <el-checkbox
+          :effect="themes"
+          size="small"
+          @change="changeLabelAttr('proportionSeriesFormatter')"
+          v-model="state.labelForm.proportionSeriesFormatter.show"
+          label="quota"
+        >
+          {{ t('chart.proportion') }}
+        </el-checkbox>
+      </el-form-item>
+      <div style="padding-left: 22px">
+        <el-space>
+          <el-form-item
+            class="form-item"
+            :class="'form-item-' + themes"
+            v-if="showProperty('color')"
+            :label="t('chart.text')"
+          >
+            <el-color-picker
+              :disabled="!state.labelForm.proportionSeriesFormatter.show"
+              :effect="themes"
+              v-model="state.labelForm.proportionSeriesFormatter.color"
+              class="color-picker-style"
+              :predefine="COLOR_PANEL"
+              @change="changeLabelAttr('proportionSeriesFormatter.color')"
+              is-custom
+            />
+          </el-form-item>
+          <el-form-item
+            class="form-item"
+            :class="'form-item-' + themes"
+            v-if="showProperty('fontSize')"
+          >
+            <template #label>&nbsp;</template>
+            <el-tooltip content="字号" :effect="toolTip" placement="top">
+              <el-select
+                :disabled="!state.labelForm.proportionSeriesFormatter.show"
+                size="small"
+                style="width: 108px"
+                :effect="themes"
+                v-model.number="state.labelForm.proportionSeriesFormatter.fontSize"
+                :placeholder="t('chart.text_fontsize')"
+                @change="changeLabelAttr('proportionSeriesFormatter.fontSize')"
+              >
+                <el-option
+                  v-for="option in fontSizeList"
+                  :key="option.value"
+                  :label="option.name"
+                  :value="option.value"
+                />
+              </el-select>
+            </el-tooltip>
+          </el-form-item>
+        </el-space>
+        <el-form-item
+          :label="t('chart.label_reserve_decimal_count')"
+          class="form-item"
+          :class="'form-item-' + themes"
+        >
+          <el-select
+            size="small"
+            :effect="themes"
+            :disabled="!state.labelForm.proportionSeriesFormatter.show"
+            v-model="state.labelForm.proportionSeriesFormatter.formatterCfg.decimalCount"
+            @change="changeLabelAttr('proportionSeriesFormatter')"
+          >
+            <el-option :label="t('chart.reserve_zero')" :value="0" />
+            <el-option :label="t('chart.reserve_one')" :value="1" />
+            <el-option :label="t('chart.reserve_two')" :value="2" />
+          </el-select>
+        </el-form-item>
+      </div>
+    </template>
   </el-form>
 </template>
 

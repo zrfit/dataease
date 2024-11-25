@@ -308,7 +308,7 @@ onMounted(() => {
             controls-position="right"
             v-model="state.tableCellForm.tableItemHeight"
             :min="20"
-            :max="100"
+            :max="1000"
             @change="changeTableCell('tableItemHeight')"
           />
         </el-form-item>

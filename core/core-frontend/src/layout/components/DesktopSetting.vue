@@ -1,27 +1,25 @@
 <script lang="ts" setup>
-import iconSetting from '@/assets/svg/icon_organization_outlined.svg'
+import iconSetting from '@/assets/svg/icon-setting.svg'
 import { useRouter } from 'vue-router'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { computed } from 'vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const navigateBg = computed(() => appearanceStore.getNavigateBg)
-const showDoc = computed(() => appearanceStore.getShowDoc)
 const { push, resolve } = useRouter()
 const redirectUser = () => {
-  const sysMenu = resolve('/system')
+  const sysMenu = resolve('/sys-setting')
   const kidPath = sysMenu.matched[0].children[0].path
   push(`${sysMenu.path}/${kidPath}`)
 }
 </script>
 
 <template>
-  <el-tooltip class="box-item" effect="dark" content="组织管理中心" placement="top">
+  <el-tooltip class="box-item" effect="dark" content="系统设置" placement="top">
     <div
-      class="sys-setting"
+      class="sys-setting in-iframe-setting"
       :class="{
-        'is-light-setting': navigateBg && navigateBg === 'light',
-        'in-iframe-setting': !showDoc
+        'is-light-setting': navigateBg && navigateBg === 'light'
       }"
     >
       <el-icon @click="redirectUser">

@@ -193,7 +193,7 @@ const syncFree = () => {
 <template>
   <el-dialog
     :append-to-body="true"
-    title="关于"
+    :title="t('common.about')"
     width="840px"
     v-model="dialogVisible"
     class="about-dialog"

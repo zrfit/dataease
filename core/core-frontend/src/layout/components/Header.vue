@@ -23,6 +23,7 @@ import AiComponent from '@/layout/components/AiComponent.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import AiTips from '@/layout/components/AiTips.vue'
 import CopilotCom from '@/layout/components/Copilot.vue'
+import DesktopSetting from './DesktopSetting.vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
@@ -119,7 +120,7 @@ const copilotConfirm = () => {
   wsCache.set('DE-COPILOT-TIPS-CHECK', 'CHECKED')
   showOverlayCopilot.value = false
 }
-const badgeCount = ref(0)
+const badgeCount = ref('0')
 
 onMounted(() => {
   initShowSystem()
@@ -128,7 +129,7 @@ onMounted(() => {
   initCopilotBase()
 
   msgCountApi().then(res => {
-    badgeCount.value = res?.data || 0
+    badgeCount.value = (res?.data > 99 ? '99+' : res?.data) || '0'
   })
 })
 </script>
@@ -189,10 +190,14 @@ onMounted(() => {
       <ToolboxCfg v-if="showToolbox" />
       <TopDoc v-if="appearanceStore.getShowDoc" />
       <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
-        <el-badge :hidden="badgeCount === 0" :value="badgeCount" class="item">
+        <el-badge
+          style="margin-right: 10px"
+          :hidden="[0, '0'].includes(badgeCount)"
+          :value="badgeCount"
+          class="ed-badge_custom"
+        >
           <el-icon
             class="preview-download_icon"
-            style="margin-right: 10px"
             :class="navigateBg === 'light' && 'is-light-setting'"
           >
             <Icon name="dv-preview-download"
@@ -211,10 +216,23 @@ onMounted(() => {
       <div v-if="showOverlay && appearanceStore.getShowAi" class="overlay"></div>
       <div v-if="showOverlayCopilot && appearanceStore.getShowCopilot" class="overlay"></div>
     </div>
+    <div v-else class="operate-setting">
+      <desktop-setting />
+    </div>
   </el-header>
 </template>
 
 <style lang="less" scoped>
+:deep(.ed-badge_custom) {
+  --ed-badge-size: 14px;
+  .ed-badge__content {
+    right: 0;
+    padding: 3px;
+    border: none;
+    font-size: 8px;
+    transform: translateX(20%) translateY(-30%);
+  }
+}
 .preview-download_icon {
   padding: 5px;
   height: 28px;
