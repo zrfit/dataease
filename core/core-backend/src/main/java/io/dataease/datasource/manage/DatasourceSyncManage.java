@@ -22,6 +22,7 @@ import io.dataease.extensions.datasource.provider.Provider;
 import io.dataease.job.schedule.ExtractDataJob;
 import io.dataease.job.schedule.ScheduleManager;
 import io.dataease.utils.BeanUtils;
+import io.dataease.utils.JsonUtil;
 import io.dataease.utils.LogUtil;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.quartz.JobKey;
 import org.quartz.TriggerKey;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -245,17 +247,7 @@ public class DatasourceSyncManage {
     private void extractExcelData(DatasourceRequest datasourceRequest, DatasourceServer.UpdateType extractType, List<TableField> tableFields) throws Exception {
         ExcelUtils excelUtils = new ExcelUtils();
         List<String[]> dataList = excelUtils.fetchDataList(datasourceRequest);
-        String engineTableName;
-        switch (extractType) {
-            case all_scope:
-                engineTableName = TableUtils.tmpName(TableUtils.tableName(datasourceRequest.getTable()));
-                break;
-            default:
-                engineTableName = TableUtils.tableName(datasourceRequest.getTable());
-                break;
-        }
         CoreDeEngine engine = engineManage.info();
-
         EngineRequest engineRequest = new EngineRequest();
         engineRequest.setEngine(engine);
         EngineProvider engineProvider = ProviderUtil.getEngineProvider(engine.getType());
@@ -267,7 +259,7 @@ public class DatasourceSyncManage {
             totalPage = dataList.size() / pageNumber;
         }
         for (int page = 1; page <= totalPage; page++) {
-            engineRequest.setQuery(engineProvider.insertSql(engineTableName, extractType, dataList, page, pageNumber, tableFields));
+            engineRequest.setQuery(engineProvider.insertSql(datasourceRequest.getTable(), extractType, dataList, page, pageNumber, tableFields));
             calciteProvider.exec(engineRequest);
         }
     }

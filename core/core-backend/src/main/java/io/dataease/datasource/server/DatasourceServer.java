@@ -408,14 +408,13 @@ public class DatasourceServer implements DatasourceApi {
             requestDatasource.setEnableDataFill(null);
             List<String> sourceTables = ExcelUtils.getTables(sourceTableRequest).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList());
             List<String> tables = ExcelUtils.getTables(datasourceRequest).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList());
-            if (dataSourceDTO.getEditType() == 0) {
+            if (Objects.equals(dataSourceDTO.getEditType(), replace)) {
                 toCreateTables = tables;
                 toDeleteTables = sourceTables.stream().filter(s -> tables.contains(s)).collect(Collectors.toList());
                 for (String deleteTable : toDeleteTables) {
                     try {
                         datasourceSyncManage.dropEngineTable(deleteTable);
-                    } catch (Exception e) {
-                        DEException.throwException("Failed to drop table " + deleteTable + ", " + e.getMessage());
+                    } catch (Exception ignore) {
                     }
                 }
                 for (String toCreateTable : toCreateTables) {
@@ -426,12 +425,16 @@ public class DatasourceServer implements DatasourceApi {
                         DEException.throwException("Failed to create table " + toCreateTable + ", " + e.getMessage());
                     }
                 }
-                datasourceSyncManage.extractExcelData(requestDatasource, "all_scope");
+                commonThreadPool.addTask(() -> {
+                    datasourceSyncManage.extractExcelData(requestDatasource, "all_scope");
+                });
                 dataSourceManage.checkName(dataSourceDTO);
                 ExcelUtils.mergeSheets(requestDatasource, sourceData);
                 dataSourceManage.innerEdit(requestDatasource);
             } else {
-                datasourceSyncManage.extractExcelData(requestDatasource, "add_scope");
+                commonThreadPool.addTask(() -> {
+                    datasourceSyncManage.extractExcelData(requestDatasource, "add_scope");
+                });
                 dataSourceManage.checkName(dataSourceDTO);
                 dataSourceManage.innerEdit(requestDatasource);
             }
@@ -767,6 +770,7 @@ public class DatasourceServer implements DatasourceApi {
 
         ExcelUtils excelUtils = new ExcelUtils();
         ExcelFileData excelFileData = excelUtils.excelSaveAndParse(file);
+
         if (Objects.equals(editType, append)) { //按照excel sheet 名称匹配，替换：0；追加：1
             if (coreDatasource != null) {
                 DatasourceRequest datasourceRequest = new DatasourceRequest();
@@ -776,15 +780,9 @@ public class DatasourceServer implements DatasourceApi {
                 for (ExcelSheetData sheet : excelFileData.getSheets()) {
                     for (DatasetTableDTO datasetTableDTO : datasetTableDTOS) {
                         if (excelDataTableName(datasetTableDTO.getTableName()).equals(sheet.getTableName()) || isCsv(file.getOriginalFilename())) {
-                            List<TableField> newTableFields = deepCopy(sheet.getFields());
-                            newTableFields.sort((o1, o2) -> {
-                                return o1.getName().compareTo(o2.getName());
-                            });
+                            List<TableField> newTableFields = sheet.getFields();
                             datasourceRequest.setTable(datasetTableDTO.getTableName());
                             List<TableField> oldTableFields = ExcelUtils.getTableFields(datasourceRequest);
-                            oldTableFields.sort((o1, o2) -> {
-                                return o1.getName().compareTo(o2.getName());
-                            });
                             if (isEqual(newTableFields, oldTableFields)) {
                                 sheet.setDeTableName(datasetTableDTO.getTableName());
                                 excelSheetDataList.add(sheet);
@@ -798,20 +796,29 @@ public class DatasourceServer implements DatasourceApi {
                 excelFileData.setSheets(excelSheetDataList);
             }
         } else {
+            // 替换
             if (coreDatasource != null) {
                 DatasourceRequest datasourceRequest = new DatasourceRequest();
                 datasourceRequest.setDatasource(transDTO(coreDatasource));
                 List<DatasetTableDTO> datasetTableDTOS = ExcelUtils.getTables(datasourceRequest);
                 for (ExcelSheetData sheet : excelFileData.getSheets()) {
+                    boolean find = false;
                     for (DatasetTableDTO datasetTableDTO : datasetTableDTOS) {
                         if (excelDataTableName(datasetTableDTO.getTableName()).equals(sheet.getTableName()) || isCsv(file.getOriginalFilename())) {
+                            find = true;
                             sheet.setDeTableName(datasetTableDTO.getTableName());
+                            datasourceRequest.setTable(datasetTableDTO.getTableName());
+                            List<TableField> oldTableFields = ExcelUtils.getTableFields(datasourceRequest);
+                            mergeFields(sheet.getFields(), oldTableFields);
                         }
                     }
+                    if (!find) {
+                        sheet.setNewSheet(true);
+                    }
                 }
-
             }
         }
+
         for (ExcelSheetData sheet : excelFileData.getSheets()) {
             for (int i = 0; i < sheet.getFields().size() - 1; i++) {
                 for (int j = i + 1; j < sheet.getFields().size(); j++) {
@@ -825,31 +832,42 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     private boolean isEqual(List<TableField> newTableFields, List<TableField> oldTableFields) {
-        boolean isEqual = true;
         if (CollectionUtils.isEmpty(newTableFields) || CollectionUtils.isEmpty(oldTableFields)) {
-            isEqual = false;
+            return false;
         }
-        for (int i = 0; i < newTableFields.size(); i++) {
-            if (!newTableFields.get(i).getName().equals(oldTableFields.get(i).getName())) {
-                isEqual = false;
-                break;
+        newTableFields.forEach(tableField -> tableField.setChecked(false));
+        for (TableField oldField : oldTableFields) {
+            if (!oldField.isChecked()) {
+                continue;
             }
-            if (!newTableFields.get(i).getFieldType().equals(oldTableFields.get(i).getFieldType())) {
-                if (oldTableFields.get(i).getFieldType().equals("TEXT")) {
-                    continue;
+            boolean find = false;
+            for (TableField newField : newTableFields) {
+                if (oldField.getName().equals(newField.getName())) {
+                    find = true;
+                    newField.setChecked(oldField.isChecked());
+                    newField.setPrimaryKey(oldField.isPrimaryKey());
+                    newField.setLength(oldField.getLength());
+                    break;
                 }
-                if (oldTableFields.get(i).getFieldType().equals("DOUBLE")) {
-                    if (newTableFields.get(i).getFieldType().equals("LONG")) {
-                        continue;
-                    }
-                }
-                isEqual = false;
-                break;
+            }
+            if (!find) {
+                return find;
             }
         }
+        return true;
+    }
 
-        return isEqual;
-
+    private void mergeFields(List<TableField> oldFields, List<TableField> newFields) {
+        oldFields.forEach(tableField -> tableField.setChecked(false));
+        for (TableField newField : newFields) {
+            for (TableField oldField : oldFields) {
+                if (oldField.getName().equals(newField.getName())) {
+                    newField.setChecked(oldField.isChecked());
+                    newField.setPrimaryKey(oldField.isPrimaryKey());
+                    newField.setLength(oldField.getLength());
+                }
+            }
+        }
     }
 
     private boolean isCsv(String fileName) {

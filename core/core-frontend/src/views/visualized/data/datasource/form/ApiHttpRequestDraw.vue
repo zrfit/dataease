@@ -291,6 +291,7 @@ const saveItem = () => {
     for (let i = 0; i < apiItem.fields.length; i++) {
       if (apiItem.fields[i].primaryKey && !apiItem.fields[i].length) {
         ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
+        return
       }
     }
   }
@@ -769,7 +770,7 @@ defineExpose({
                   step-strictly
                   class="text-left edit-all-line"
                   :min="1"
-                  :max="4096"
+                  :max="512"
                   :placeholder="t('common.inputText')"
                   controls-position="right"
                   type="number"
