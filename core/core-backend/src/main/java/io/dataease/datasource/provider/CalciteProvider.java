@@ -432,7 +432,7 @@ public class CalciteProvider extends Provider {
         } catch (SQLException e) {
             DEException.throwException("SQL ERROR: " + e.getMessage());
         } catch (Exception e) {
-            DEException.throwException("Data source connection exception: " + e.getMessage());
+            DEException.throwException("Datasource connection exception: " + e.getMessage());
         } finally {
             if (resultSet != null) {
                 try {
@@ -473,7 +473,7 @@ public class CalciteProvider extends Provider {
         } catch (SQLException e) {
             DEException.throwException("SQL ERROR: " + e.getMessage());
         } catch (Exception e) {
-            DEException.throwException("Data source connection exception: " + e.getMessage());
+            DEException.throwException("Datasource connection exception: " + e.getMessage());
         } finally {
             if (resultSet != null) {
                 try {
@@ -511,7 +511,7 @@ public class CalciteProvider extends Provider {
         } catch (SQLException e) {
             DEException.throwException("SQL ERROR: " + e.getMessage());
         } catch (Exception e) {
-            DEException.throwException("Data source connection exception: " + e.getMessage());
+            DEException.throwException("Datasource connection exception: " + e.getMessage());
         } finally {
             if (resultSet != null) {
                 try {
