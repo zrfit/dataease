@@ -1,9 +1,7 @@
 package io.dataease.api.free;
 
-import io.dataease.api.free.dto.FreeBatchDelRequest;
-import io.dataease.api.free.dto.FreeBatchSyncRequest;
-import io.dataease.api.free.dto.FreeQueryRequest;
-import io.dataease.api.free.dto.FreeSyncRequest;
+import io.dataease.api.free.dto.*;
+import io.dataease.api.free.vo.FreeRelationVO;
 import io.dataease.api.free.vo.FreeVO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,4 +24,7 @@ public interface FreeApi {
 
     @PostMapping("/deleteBatch")
     void deleteBatch(@RequestBody FreeBatchDelRequest request);
+
+    @PostMapping("/relation")
+    FreeRelationVO relation(@RequestBody FreeRelationRequest request);
 }
