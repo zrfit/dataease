@@ -4,6 +4,7 @@ import {
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import { cloneDeep, defaultTo, isEmpty, map } from 'lodash-es'
 import {
+  configAxisLabelLengthLimit,
   configPlotTooltipEvent,
   getPadding,
   getTooltipContainer,
@@ -175,6 +176,7 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
       }
     })
     configPlotTooltipEvent(chart, newChart)
+    configAxisLabelLengthLimit(chart, newChart)
     return newChart
   }
 

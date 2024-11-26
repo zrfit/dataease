@@ -1809,7 +1809,8 @@ export default {
     central_point: '中心點',
     full_display: '全量顯示',
     show_hover_style: '顯示滑鼠懸浮樣式',
-    merge_cells: '合併儲存格'
+    merge_cells: '合併儲存格',
+    length_limit: '長度限制'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

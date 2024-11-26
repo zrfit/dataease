@@ -4,6 +4,7 @@ import {
 } from '@/views/chart/components/js/panel/types/impl/g2plot'
 import type { Bar, BarOptions } from '@antv/g2plot/esm/plots/bar'
 import {
+  configAxisLabelLengthLimit,
   configPlotTooltipEvent,
   getPadding,
   getTooltipContainer,
@@ -168,6 +169,7 @@ export class RangeBar extends G2PlotChartView<BarOptions, Bar> {
 
     newChart.on('interval:click', action)
     configPlotTooltipEvent(chart, newChart)
+    configAxisLabelLengthLimit(chart, newChart)
     return newChart
   }
 

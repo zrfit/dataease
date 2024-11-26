@@ -193,6 +193,10 @@ declare interface AxisLabel {
    * 格式化设置
    */
   formatter: string
+  /**
+   * 长度限制
+   */
+  lengthLimit: number
 }
 /**
  * 轴线条设置
