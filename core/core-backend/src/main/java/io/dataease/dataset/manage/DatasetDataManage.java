@@ -885,6 +885,10 @@ public class DatasetDataManage {
                 for (int i = 0; i < fields.size(); i++) {
                     String val = ele[i];
                     DatasetTableFieldDTO field = fields.get(i);
+                    if (field.getDeType() == 3 && StringUtils.containsIgnoreCase(val, "E")) {
+                        BigDecimal bigDecimal = new BigDecimal(val);
+                        val = String.format("%.8f", bigDecimal);
+                    }
                     if (desensitizationList.containsKey(field.getDataeaseName())) {
                         String str = ChartDataBuild.desensitizationValue(desensitizationList.get(field.getDataeaseName()), val);
                         map.put(field.getId() + "", str);
