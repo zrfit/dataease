@@ -157,10 +157,22 @@ public class SqlparserUtils {
             for (Join join : joins) {
                 FromItem rightItem = join.getRightItem();
                 if (rightItem instanceof ParenthesedSelect) {
-                    PlainSelect selectBody = ((ParenthesedSelect) rightItem).getPlainSelect();
-                    Select subSelectTmp = (Select) CCJSqlParserUtil.parse(removeVariables(selectBody.toString(), dsType));
-                    PlainSelect subPlainSelect = ((PlainSelect) subSelectTmp.getSelectBody());
-                    ((ParenthesedSelect) rightItem).setSelect(subPlainSelect);
+                   try {
+                       PlainSelect selectBody = ((ParenthesedSelect) rightItem).getPlainSelect();
+                       Select subSelectTmp = (Select) CCJSqlParserUtil.parse(removeVariables(selectBody.toString(), dsType));
+                       PlainSelect subPlainSelect = ((PlainSelect) subSelectTmp.getSelectBody());
+                       ((ParenthesedSelect) rightItem).setSelect(subPlainSelect);
+                   }catch ( Exception e ){
+                       SetOperationList  select = ((ParenthesedSelect) rightItem).getSetOperationList();
+                       SetOperationList setOperationList = new SetOperationList();
+                       setOperationList.setSelects(new ArrayList<>());
+                       setOperationList.setOperations(select.getOperations());
+                       for (Select selectSelect : select.getSelects()) {
+                           Select subSelectTmp = (Select) CCJSqlParserUtil.parse(removeVariables(selectSelect.toString(), dsType));
+                           setOperationList.getSelects().add(subSelectTmp);
+                       }
+                       ((ParenthesedSelect) rightItem).setSelect(setOperationList);
+                   }
                     if (dsType.equals(DatasourceConfiguration.DatasourceType.oracle.getType())) {
                         rightItem.setAlias(new Alias(rightItem.getAlias().toString(), false));
                     } else {
