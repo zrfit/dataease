@@ -25,6 +25,8 @@ import { get, set } from 'lodash-es'
 import { viewFieldTimeTrans } from '@/utils/viewUtils'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { ElMessage } from 'element-plus-secondary'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export const dvMainStore = defineStore('dataVisualization', {
   state: () => {
@@ -1422,7 +1424,8 @@ export const dvMainStore = defineStore('dataVisualization', {
       }
     },
     createInit(dvType, resourceId?, pid?, watermarkInfo?, preName) {
-      const optName = dvType === 'dashboard' ? '新建仪表板' : '新建数据大屏'
+      const optName =
+        dvType === 'dashboard' ? t('visualization.new_dashboard') : t('visualization.new_screen')
       const name = preName ? preName : optName
       this.dvInfo = {
         dataState: 'prepare',

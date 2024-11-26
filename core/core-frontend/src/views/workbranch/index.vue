@@ -569,8 +569,8 @@ loadShareBase()
         justify-content: space-between;
         flex-wrap: wrap;
         .item {
-          padding: 16px;
-          width: 148px;
+          padding: 12px;
+          width: 150px;
           margin-top: 16px;
           border-radius: 4px;
           border: 1px solid #dee0e3;

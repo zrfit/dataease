@@ -1527,14 +1527,14 @@ export const CHART_TYPE_CONFIGS = [
         render: 'custom',
         category: 'quota',
         value: 'rich-text',
-        title: t('visualization.rich-text'),
+        title: t('visualization.rich_text'),
         icon: 'rich-text'
       },
       {
         render: 'custom',
         category: 'quota',
         value: 'picture-group',
-        title: t('visualization.picture-group'),
+        title: t('visualization.picture_group'),
         icon: 'picture-group'
       }
     ]

@@ -19,6 +19,7 @@ import treeSort from '@/utils/treeSortUtils'
 const dvMainStore = dvMainStoreWithOut()
 const { wsCache } = useCache('localStorage')
 const userStore = useUserStoreWithOut()
+const { t } = useI18n()
 
 const props = withDefaults(
   defineProps<{
@@ -44,6 +45,16 @@ const loadingDatasetTree = ref(false)
 const orgCheck = ref(true)
 
 const datasetTree = ref<Tree[]>([])
+
+const selectSource =
+  props.sourceType === 'datasource'
+    ? t('visualization.select_datasource')
+    : t('visualization.select_dataset')
+
+const newSource =
+  props.sourceType === 'datasource'
+    ? t('visualization.new_datasource')
+    : t('visualization.new_dataset')
 
 const sourceName = computed(() =>
   props.sourceType === 'datasource' ? t('visualization.datasource') : t('visualization.dataset')
@@ -90,10 +101,7 @@ const dsSelectProps = {
   isLeaf: node => !node.children?.length
 }
 
-const { t } = useI18n()
-
 const formRef = ref<FormInstance>()
-
 const searchStr = ref<string>()
 
 watch(searchStr, val => {
@@ -276,7 +284,7 @@ onMounted(() => {
               class="data-set-dark"
               @focus="handleFocus"
               :disabled="disabled"
-              :placeholder="t('common.selectText') + sourceName"
+              :placeholder="selectSource"
             >
               <template #suffix>
                 <el-icon class="input-arrow-icon" :class="{ reverse: _popoverShow }">
@@ -354,7 +362,7 @@ onMounted(() => {
           <el-footer v-if="!isDataEaseBi">
             <div class="footer-container">
               <el-button type="primary" :icon="Plus" link class="add-btn" @click="addDataset">
-                新建{{ sourceName }}
+                {{ newSource }}
               </el-button>
             </div>
           </el-footer>
