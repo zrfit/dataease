@@ -420,6 +420,9 @@ defineExpose({
     line-height: 22px !important;
     height: 22px !important;
   }
+  .ed-radio__label {
+    font-weight: 400;
+  }
 }
 </style>
 <style scoped lang="less">
