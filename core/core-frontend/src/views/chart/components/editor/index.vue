@@ -1914,7 +1914,9 @@ const deleteChartFieldItem = id => {
                       ><Icon><dvInfoSvg class="svg-icon" /></Icon
                     ></el-icon>
                   </template>
-                  <div style="margin-bottom: 4px; font-size: 14px; color: #646a73">图表ID</div>
+                  <div style="margin-bottom: 4px; font-size: 14px; color: #646a73">
+                    {{ t('visualization.view_id') }}
+                  </div>
                   <div style="font-size: 14px; color: #1f2329">
                     {{ view.id }}
                   </div>

@@ -2587,6 +2587,8 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    component_id: '组件ID',
+    view_id: '图表ID',
     resource_create_tips: '从顶部工具栏中选择组件，添加到这里创建',
     component_select_tips: '请选择组件...',
     border_style_dotted: '点线',

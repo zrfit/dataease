@@ -2647,6 +2647,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     column_name: 'Field name'
   },
   visualization: {
+    component_id: 'Component ID',
+    view_id: 'Chart ID',
     resource_create_tips: 'Select components from the top toolbar and add them here to create.',
     component_select_tips: 'Please elect a component...',
     border_style_dotted: 'Dotted',

@@ -568,6 +568,8 @@ eventBus.on('tabSort', tabSort)
             :aside-position="'right'"
             class="left-sidebar"
             :slide-index="2"
+            :themes="'dark'"
+            :element="curComponent"
             :view="canvasViewInfo[curComponent.id]"
             :class="{ 'preview-aside': editMode === 'preview' }"
           >
