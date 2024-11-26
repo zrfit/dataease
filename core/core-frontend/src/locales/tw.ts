@@ -2932,7 +2932,6 @@ export default {
     outer_param_decode_error: '外部參數解析錯誤未生效，請按規定編碼方式傳參',
     input_param_name: '請輸入參數名稱',
     params_setting: '外部參數設置',
-    template_view_tips: '當前是模板圖表,請點擊更換數據集',
     edit_web_tips: '編輯狀態不可操作網頁內部',
     no_auth_role: '未分享角色',
     auth_role: '已分享角色',

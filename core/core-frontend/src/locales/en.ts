@@ -3007,7 +3007,6 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       'External parameter parsing error. Please encode parameters as specified.',
     input_param_name: 'Please enter the parameter name.',
     params_setting: 'External Parameter Settings',
-    template_view_tips: 'This is currently a template chart. Please click to replace the dataset.',
     edit_web_tips: 'Webpage content cannot be edited in edit mode.',
     no_auth_role: 'No Shared Roles',
     auth_role: 'Shared Roles',
