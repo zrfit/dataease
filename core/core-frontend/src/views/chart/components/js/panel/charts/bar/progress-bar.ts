@@ -1,6 +1,7 @@
 import { G2PlotChartView, G2PlotDrawOptions } from '../../types/impl/g2plot'
 import { flow, hexColorToRGBA, parseJson } from '../../../util'
 import {
+  configAxisLabelLengthLimit,
   configPlotTooltipEvent,
   getTooltipContainer,
   setGradientColor,
@@ -140,6 +141,7 @@ export class ProgressBar extends G2PlotChartView<BarOptions, G2Progress> {
 
     newChart.on('interval:click', action)
     configPlotTooltipEvent(chart, newChart)
+    configAxisLabelLengthLimit(chart, newChart)
     return newChart
   }
   protected configBasicStyle(chart: Chart, options: BarOptions): BarOptions {
