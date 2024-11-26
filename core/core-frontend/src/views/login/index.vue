@@ -51,42 +51,10 @@ const state = reactive({
   },
   footContent: ''
 })
-const checkUsername = (rule: any, value: any, callback: any) => {
-  if (!value || activeName.value === 'ldap') {
-    return callback()
-  }
-  const pattern = /^[a-zA-Z0-9][a-zA-Z0-9\@._-]*$/
-  const reg = new RegExp(pattern)
-  if (!reg.test(value)) {
-    const msg = t('user.user_name_pattern_error')
-    callback(new Error(msg))
-  }
-  return callback()
-}
-
-const validatePwd = (rule: any, value: any, callback: any) => {
-  if (!value || activeName.value === 'ldap') {
-    return callback()
-  }
-  const pattern =
-    /^.*(?=.{6,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+\-\={}|":<>?`[\];',.\/])[a-zA-Z0-9~!@#$%^&*()_+\-\={}|":<>?`[\];',.\/]*$/
-  const regep = new RegExp(pattern)
-  if (!regep.test(value)) {
-    const msg = t('user.pwd_pattern_error')
-    callback(new Error(msg))
-  }
-  return callback()
-}
 
 const rules = reactive<FormRules>({
-  username: [
-    { required: true, message: t('common.required'), trigger: 'blur' },
-    { required: true, validator: checkUsername, trigger: 'blur' }
-  ],
-  password: [
-    { required: true, message: t('common.required'), trigger: 'blur' },
-    { required: true, validator: validatePwd, trigger: 'blur' }
-  ]
+  username: [{ required: true, message: t('common.required'), trigger: 'blur' }],
+  password: [{ required: true, message: t('common.required'), trigger: 'blur' }]
 })
 
 const activeName = ref('simple')
