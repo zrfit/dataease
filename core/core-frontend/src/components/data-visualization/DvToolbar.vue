@@ -166,7 +166,15 @@ const saveResource = () => {
         ElMessage.success('保存成功')
         let url = window.location.href
         url = url.replace(/\?opt=create/, `?dvId=${dvInfo.value.id}`)
-        window.history.replaceState(null, '', url)
+        if (!embeddedStore.baseUrl) {
+          window.history.replaceState(
+            {
+              path: url
+            },
+            '',
+            url
+          )
+        }
         if (appData.value) {
           initCanvasData(dvInfo.value.id, 'dataV', () => {
             useEmitt().emitter.emit('refresh-dataset-selector')
@@ -235,7 +243,12 @@ const backHandler = (url: string) => {
   }
   dvMainStore.canvasStateChange({ key: 'curPointArea', value: 'base' })
   wsCache.delete('DE-DV-CATCH-' + dvInfo.value.id)
-  window.open(url, '_self')
+  wsCache.set('dv-info-id', dvInfo.value.id)
+  if (!!history.state.back) {
+    history.back()
+  } else {
+    window.open(url, '_self')
+  }
 }
 const openHandler = ref(null)
 

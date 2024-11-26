@@ -250,7 +250,8 @@ defineExpose({
             item.pkey === 'pwdStrategy' ||
             item.pkey === 'dip' ||
             item.pkey === 'shareDisable' ||
-            item.pkey === 'sharePeRequire'
+            item.pkey === 'sharePeRequire' ||
+            item.pkey === 'loginLimit'
           "
           active-value="true"
           inactive-value="false"
@@ -290,7 +291,14 @@ defineExpose({
             type="number"
           />
         </div>
-        <div v-else-if="item.pkey === 'logLiveTime' || item.pkey === 'thresholdLogLiveTime'">
+        <div
+          v-else-if="
+            item.pkey === 'logLiveTime' ||
+            item.pkey === 'thresholdLogLiveTime' ||
+            item.pkey === 'loginLimitRate' ||
+            item.pkey === 'loginLimitTime'
+          "
+        >
           <el-input-number
             v-model="state.form[item.pkey]"
             autocomplete="off"

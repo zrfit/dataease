@@ -131,7 +131,12 @@ import Icon from '@/components/icon-custom/src/Icon.vue'
 import ComponentEditBar from '@/components/visualization/ComponentEditBar.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import ComposeShow from '@/components/data-visualization/canvas/ComposeShow.vue'
-import { groupSizeStyleAdaptor, groupStyleRevert, groupStyleRevertBatch } from '@/utils/style'
+import {
+  groupSizeStyleAdaptor,
+  groupStyleRevert,
+  groupStyleRevertBatch,
+  tabInnerStyleRevert
+} from '@/utils/style'
 import { isDashboard, isGroupCanvas, isMainCanvas, isTabCanvas } from '@/utils/canvasUtils'
 import Board from '@/components/de-board/Board.vue'
 import { activeWatermarkCheckUser, removeActiveWatermark } from '@/components/watermark/watermark'
@@ -789,6 +794,12 @@ const handleMouseDownOnPoint = (point, e) => {
   }
 
   const up = () => {
+    // 如果内部组件保持尺寸时，这里在鼠标抬起时，重新计算一下内部组件占比
+    if (['DeTabs'].includes(element.value.component) && element.value.resizeInnerKeep) {
+      console.log('===test3==')
+      tabInnerStyleRevert(element.value)
+    }
+
     dashboardActive.value && emit('onMouseUp')
     element.value['resizing'] = false
     document.removeEventListener('mousemove', move)
@@ -881,6 +892,8 @@ const padding3D = computed(() => {
 const componentBackgroundStyle = computed(() => {
   if (element.value.commonBackground && element.value.component !== 'GroupArea') {
     const {
+      backdropFilterEnable,
+      backdropFilter,
       backgroundColorSelect,
       backgroundColor,
       backgroundImageEnable,
@@ -931,6 +944,9 @@ const componentBackgroundStyle = computed(() => {
     if (element.value.component !== 'UserView') {
       style['overflow'] = 'hidden'
     }
+    if (backdropFilterEnable) {
+      style['backdrop-filter'] = 'blur(' + backdropFilter + 'px)'
+    }
     return style
   }
   return {}
@@ -977,6 +993,7 @@ const tabMoveInCheck = async () => {
     for (const item of nodes) {
       if (
         item.className !== undefined &&
+        typeof item.className === 'string' &&
         item.className.split(' ').includes('shape') &&
         item.getAttribute('component-id') !== domId.value && // 去掉当前
         item.getAttribute('tab-is-check') !== null &&

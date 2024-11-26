@@ -290,9 +290,20 @@ const setOldMapValue = arr => {
 
 const customSort = () => {
   if (config.value.sortList?.length && config.value.sort === 'customSort') {
-    options.value.sort(
-      (a, b) => config.value.sortList.indexOf(a.value) - config.value.sortList.indexOf(b.value)
-    )
+    options.value = [
+      ...options.value
+        .sort(a => {
+          if (config.value.sortList.indexOf(a.value) !== -1) {
+            return -1
+          }
+        })
+        .sort((a, b) => {
+          if (config.value.sortList.indexOf(a.value) === -1) {
+            return 0
+          }
+          return config.value.sortList.indexOf(a.value) - config.value.sortList.indexOf(b.value)
+        })
+    ]
   }
 }
 
@@ -515,7 +526,7 @@ const setOptions = (num: number) => {
         handleFieldIdChange({
           queryId: field.id,
           displayId: displayId || field.id,
-          sort: sort === 'customSort' ? '' : sort,
+          sort: sort === 'customSort' ? 'asc' : sort,
           sortId,
           resultMode: config.value.resultMode || 0,
           searchText: searchText.value,
@@ -646,6 +657,7 @@ defineExpose({
 <style lang="less">
 .filter-select-popper_class {
   --ed-fill-color-light: #f5f7fa47;
+  font-family: var(--de-canvas_custom_font);
   .ed-vl__window.ed-select-dropdown__list {
     min-width: 200px;
   }

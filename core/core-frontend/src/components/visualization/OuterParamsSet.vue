@@ -596,8 +596,14 @@ const jsonArrayCheck = params => {
 const save = () => {
   const outerParamsCopy = deepCopy(state.outerParams)
   let checkErrorNum = 0
+  let checkNullErrorNum = 0
   let checkMessage = ''
+  const paramNameArray = []
   outerParamsCopy.outerParamsInfoArray?.forEach(outerParamsInfo => {
+    if (!outerParamsInfo.paramName || paramNameArray.includes(outerParamsInfo.paramName)) {
+      checkNullErrorNum++
+    }
+    paramNameArray.push(outerParamsInfo.paramName)
     if (outerParamsInfo.defaultValue && !jsonArrayCheck(outerParamsInfo.defaultValue)) {
       checkErrorNum++
       checkMessage = checkMessage + `【${outerParamsInfo.paramName}】`
@@ -631,6 +637,14 @@ const save = () => {
   if (checkErrorNum > 0) {
     ElMessage({
       message: `参数${checkMessage}默认值格式不正确！`,
+      type: 'warning',
+      showClose: true
+    })
+    return
+  }
+  if (checkNullErrorNum > 0) {
+    ElMessage({
+      message: `存在未配置的参数名或者参数名称重复！`,
       type: 'warning',
       showClose: true
     })

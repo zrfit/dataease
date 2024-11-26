@@ -130,6 +130,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'common'
+  },
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 const dynamicAreaId = ref('')
@@ -466,14 +471,42 @@ const jumpClick = param => {
     // 内部仪表板跳转
     if (jumpInfo.linkType === 'inner') {
       if (jumpInfo.targetDvId) {
+        const filterOuterParams = {}
+        const curFilter = dvMainStore.getLastViewRequestInfo(param.viewId)
+        const targetViewInfoList = jumpInfo.targetViewInfoList
+        if (
+          curFilter &&
+          curFilter.filter &&
+          curFilter.filter.length > 0 &&
+          targetViewInfoList &&
+          targetViewInfoList.length > 0
+        ) {
+          // do filter
+          curFilter.filter.forEach(filterItem => {
+            targetViewInfoList.forEach(targetViewInfo => {
+              if (targetViewInfo.sourceFieldActiveId === filterItem.filterId) {
+                filterOuterParams[targetViewInfo.outerParamsName] = filterItem.value
+              }
+            })
+          })
+        }
+        let attachParamsInfo
+        if (Object.keys(filterOuterParams).length > 0) {
+          attachParamsInfo =
+            '&attachParams=' + encodeURIComponent(Base64.encode(JSON.stringify(filterOuterParams)))
+        }
+        // 携带外部参数
         if (publicLinkStatus.value) {
           // 判断是否有公共链接ID
           if (jumpInfo.publicJumpId) {
-            const url = `${embeddedBaseUrl}#/de-link/${
+            let url = `${embeddedBaseUrl}#/de-link/${
               jumpInfo.publicJumpId
             }?fromLink=true&jumpInfoParam=${encodeURIComponent(
               Base64.encode(JSON.stringify(param))
             )}`
+            if (attachParamsInfo) {
+              url = url + attachParamsInfo
+            }
             const currentUrl = window.location.href
             localStorage.setItem('beforeJumpUrl', currentUrl)
             windowsJump(url, jumpInfo.jumpType, jumpInfo.windowSize)
@@ -481,9 +514,12 @@ const jumpClick = param => {
             ElMessage.warning(t('visualization.public_link_tips'))
           }
         } else {
-          const url = `${embeddedBaseUrl}#/preview?dvId=${
+          let url = `${embeddedBaseUrl}#/preview?dvId=${
             jumpInfo.targetDvId
           }&fromLink=true&jumpInfoParam=${encodeURIComponent(Base64.encode(JSON.stringify(param)))}`
+          if (attachParamsInfo) {
+            url = url + attachParamsInfo
+          }
           const currentUrl = window.location.href
           localStorage.setItem('beforeJumpUrl', currentUrl)
           if (isIframe.value || isDataEaseBi.value) {
@@ -843,6 +879,9 @@ const toolTip = computed(() => {
 })
 
 const marginBottom = computed<string | 0>(() => {
+  if (!titleShow.value) {
+    return 0
+  }
   if (titleShow.value || trackMenu.value.length > 0 || state.title_remark.show) {
     return 12 * scale.value + 'px'
   }
@@ -854,8 +893,22 @@ const iconSize = computed<string>(() => {
 })
 
 const titleIconStyle = computed(() => {
+  // 不显示标题时，图标的样式
+  const style = {
+    position: 'absolute',
+    color: 'rgb(255, 252, 252)',
+    position: 'absolute',
+    border: '1px solid rgb(173, 170, 170)',
+    'background-color': 'rgba(173, 170, 170)',
+    'border-radius': '2px',
+    padding: '0 2px 0 2px',
+    top: '2px',
+    'z-index': 1,
+    left: '6px'
+  }
   return {
-    color: canvasStyleData.value.component.seniorStyleSetting.linkageIconColor
+    color: canvasStyleData.value.component.seniorStyleSetting.linkageIconColor,
+    ...(titleShow.value ? {} : style)
   }
 })
 const chartHover = ref(false)

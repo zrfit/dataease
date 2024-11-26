@@ -1,5 +1,5 @@
 <template>
-  <div class="pic-main" @click="onPictureClick">
+  <div class="pic-main">
     <img
       draggable="false"
       v-if="propValue['url']"
@@ -8,7 +8,7 @@
     />
     <div v-else class="pic-upload">
       <span
-        ><el-button @click="uploadImg" text style="color: #646a73" icon="Plus"
+        ><el-button @click="uploadImg" text style="font-family: inherit; color: #646a73" icon="Plus"
           >请上传图片...</el-button
         ></span
       >
@@ -55,16 +55,6 @@ const imageAdapter = computed(() => {
   }
   return style as CSSProperties
 })
-const onPictureClick = e => {
-  if (element.value.events && element.value.events.checked) {
-    if (element.value.events.type === 'displayChange') {
-      // 打开弹框区域
-      nextTick(() => {
-        dvMainStore.popAreaActiveSwitch()
-      })
-    }
-  }
-}
 const uploadImg = () => {
   nextTick(() => {
     eventBus.emit('uploadImg')
@@ -77,7 +67,6 @@ const uploadImg = () => {
   overflow: hidden;
   width: 100%;
   height: 100%;
-  cursor: pointer;
 }
 .pic-upload {
   display: flex;

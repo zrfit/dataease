@@ -107,6 +107,12 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'common'
+  },
+  // 字体
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 const {
@@ -196,6 +202,8 @@ const onMouseEnter = () => {
 const componentBackgroundStyle = computed(() => {
   if (config.value.commonBackground) {
     const {
+      backdropFilterEnable,
+      backdropFilter,
       backgroundColorSelect,
       backgroundColor,
       backgroundImageEnable,
@@ -242,6 +250,9 @@ const componentBackgroundStyle = computed(() => {
     }
     if (config.value.component !== 'UserView') {
       style['overflow'] = 'hidden'
+    }
+    if (backdropFilterEnable) {
+      style['backdrop-filter'] = 'blur(' + backdropFilter + 'px)'
     }
     return style
   }
@@ -419,6 +430,7 @@ const showActive = computed(() => props.popActive || (dvMainStore.mobileInPc && 
           :disabled="true"
           :is-edit="false"
           :suffix-id="suffixId"
+          :font-family="fontFamily"
           @onPointClick="onPointClick"
         />
       </div>

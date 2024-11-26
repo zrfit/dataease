@@ -706,6 +706,7 @@ onMounted(() => {
             v-model="state.basicStyleForm.areaBorderColor"
             :effect="themes"
             is-custom
+            show-alpha
             :trigger-width="108"
             class="color-picker-style"
             :predefine="predefineColors"
@@ -725,6 +726,7 @@ onMounted(() => {
             :persistent="false"
             v-model="state.basicStyleForm.areaBaseColor"
             is-custom
+            show-alpha
             :effect="themes"
             :trigger-width="108"
             class="color-picker-style"
@@ -1049,6 +1051,42 @@ onMounted(() => {
         :effect="themes"
         :max-length="10"
         @blur="changeBasicStyle('summaryLabel')"
+      />
+    </el-form-item>
+    <el-form-item v-if="showProperty('autoWrap')" class="form-item" :class="'form-item-' + themes">
+      <el-checkbox
+        size="small"
+        :effect="themes"
+        v-model="state.basicStyleForm.autoWrap"
+        @change="changeBasicStyle('autoWrap')"
+      >
+        <span class="data-area-label">
+          <span style="margin-right: 4px">{{ t('chart.table_auto_break_line') }}</span>
+          <el-tooltip class="item" effect="dark" placement="bottom">
+            <template #content>
+              <div>{{ t('chart.table_break_line_tip') }}</div>
+            </template>
+            <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
+              <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
+            </el-icon>
+          </el-tooltip>
+        </span>
+      </el-checkbox>
+    </el-form-item>
+    <el-form-item
+      v-if="state.basicStyleForm.autoWrap"
+      :label="t('chart.table_break_line_max_lines')"
+      class="form-item form-item-slider"
+      :class="'form-item-' + themes"
+    >
+      <el-input-number
+        :effect="themes"
+        v-model="state.basicStyleForm.maxLines"
+        controls-position="right"
+        :show-input-controls="false"
+        :min="1"
+        :step="1"
+        @change="changeBasicStyle('maxLines')"
       />
     </el-form-item>
     <el-form-item

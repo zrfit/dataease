@@ -143,7 +143,7 @@ const curFontFamily = () => {
       value: ele.name
     }))
   ).forEach(font => {
-    result = result + font.name + '=' + font.name + ';'
+    result = result + font.name + '=' + font.value + ';'
   })
   return result
 }

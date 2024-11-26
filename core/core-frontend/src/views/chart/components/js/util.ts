@@ -1071,3 +1071,51 @@ export function filterEmptyMinValue(sourceData, field) {
   )
   return notEmptyMinValue
 }
+
+/**
+ * 获取折线条件样式
+ * @param chart
+ */
+export function getLineConditions(chart) {
+  const { threshold } = parseJson(chart.senior)
+  const conditions = []
+  if (threshold.enable) {
+    threshold.lineThreshold?.forEach(item =>
+      item.conditions?.forEach(c =>
+        conditions.push({
+          fieldId: item.fieldId,
+          term: c.term,
+          value: c.value,
+          color: c.color,
+          min: c.min,
+          max: c.max
+        })
+      )
+    )
+  }
+  return conditions
+}
+
+/**
+ * 根据折线阈值条件获取新的标签颜色
+ * @param conditions
+ * @param value
+ * @param fieldId
+ */
+export function getLineLabelColorByCondition(conditions, value, fieldId) {
+  const fieldConditions = conditions.filter(item => item.fieldId === fieldId)
+  let color = undefined
+  if (fieldConditions.length) {
+    fieldConditions.some(item => {
+      if (
+        (item.term === 'lt' && value <= item.value) ||
+        (item.term === 'gt' && value >= item.value) ||
+        (item.term === 'between' && value >= item.min && value <= item.max)
+      ) {
+        color = item.color
+        return true
+      }
+    })
+  }
+  return color
+}

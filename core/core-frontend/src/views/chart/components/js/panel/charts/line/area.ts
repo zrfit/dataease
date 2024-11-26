@@ -13,6 +13,8 @@ import {
 import { cloneDeep } from 'lodash-es'
 import {
   flow,
+  getLineConditions,
+  getLineLabelColorByCondition,
   hexColorToRGBA,
   parseJson,
   setUpStackSeriesColor
@@ -135,6 +137,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
       }
     }
     const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
+    const conditions = getLineConditions(chart)
     const formatterMap = labelAttr.seriesLabelFormatter?.reduce((pre, next) => {
       pre[next.id] = next
       return pre
@@ -163,6 +166,9 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
             ? -2 - basicStyle.lineSymbolSize
             : 10 + basicStyle.lineSymbolSize
         const value = valueFormatter(data.value, labelCfg.formatterCfg)
+        const color =
+          getLineLabelColorByCondition(conditions, data.value, data.quotaList[0].id) ||
+          labelCfg.color
         const group = new Group({})
         group.addShape({
           type: 'text',
@@ -173,7 +179,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
-            fill: labelCfg.color
+            fill: color
           }
         })
         return group
@@ -281,7 +287,8 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
       this.configXAxis,
       this.configYAxis,
       this.configSlider,
-      this.configAnalyse
+      this.configAnalyse,
+      this.configConditions
     )(chart, options, {}, this)
   }
 
@@ -310,6 +317,7 @@ export class StackArea extends Area {
   }
   protected configLabel(chart: Chart, options: AreaOptions): AreaOptions {
     const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
+    const conditions = getLineConditions(chart)
     if (!labelAttr?.show) {
       return {
         ...options,
@@ -333,7 +341,10 @@ export class StackArea extends Area {
         fill: labelAttr.color,
         fontSize: labelAttr.fontSize
       },
-      formatter: function (param: Datum) {
+      formatter: function (param: Datum, point) {
+        point.color =
+          getLineLabelColorByCondition(conditions, param.value, point._origin.quotaList[0]) ||
+          labelAttr.color
         return valueFormatter(param.value, labelAttr.labelFormatter)
       }
     }

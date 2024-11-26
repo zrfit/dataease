@@ -5,7 +5,6 @@ import {
   S2Options,
   S2Theme,
   TableColCell,
-  TableDataCell,
   TableSheet,
   ViewMeta
 } from '@antv/s2'
@@ -18,7 +17,9 @@ import { isNumber, merge } from 'lodash-es'
 import {
   copyContent,
   CustomDataCell,
+  CustomTableColCell,
   getRowIndex,
+  calculateHeaderHeight,
   SortTooltip
 } from '@/views/chart/components/js/panel/common/common_table'
 
@@ -66,7 +67,8 @@ export class TableInfo extends S2ChartView<TableSheet> {
       'tableScrollBarColor',
       'alpha',
       'tablePageMode',
-      'showHoverStyle'
+      'showHoverStyle',
+      'autoWrap'
     ],
     'table-cell-selector': [
       ...TABLE_EDITOR_PROPERTY_INNER['table-cell-selector'],
@@ -205,6 +207,9 @@ export class TableInfo extends S2ChartView<TableSheet> {
             pageInfo.pageSize * (pageInfo.currentPage - 1) + viewMeta.rowIndex + 1
         }
       }
+      // 配置文本自动换行参数
+      viewMeta.autoWrap = basicStyle.autoWrap
+      viewMeta.maxLines = basicStyle.maxLines
       return new CustomDataCell(viewMeta, viewMeta?.spreadsheet)
     }
     // tooltip
@@ -228,10 +233,40 @@ export class TableInfo extends S2ChartView<TableSheet> {
       // header interaction
       chart.container = container
       this.configHeaderInteraction(chart, s2Options)
+      s2Options.colCell = (node, sheet, config) => {
+        // 配置文本自动换行参数
+        node.autoWrap = basicStyle.autoWrap
+        node.maxLines = basicStyle.maxLines
+        return new CustomTableColCell(node, sheet, config)
+      }
     }
     // 开始渲染
     const newChart = new TableSheet(containerDom, s2DataConfig, s2Options)
-
+    // 开启自动换行
+    if (basicStyle.autoWrap) {
+      // 调整表头宽度时，计算表头高度
+      newChart.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, info => {
+        calculateHeaderHeight(info, newChart, tableHeader, basicStyle, null)
+      })
+      newChart.on(S2Event.LAYOUT_AFTER_HEADER_LAYOUT, (ev: LayoutResult) => {
+        const maxHeight = newChart.store.get('autoCalcHeight') as number
+        if (maxHeight) {
+          // 更新列的高度
+          ev.colLeafNodes.forEach(n => (n.height = maxHeight))
+          ev.colsHierarchy.height = maxHeight
+          newChart.store.set('autoCalcHeight', undefined)
+        } else {
+          const { value, width } = ev.colLeafNodes[0]
+          calculateHeaderHeight(
+            { info: { meta: { value }, resizedWidth: width } },
+            newChart,
+            tableHeader,
+            basicStyle,
+            ev
+          )
+        }
+      })
+    }
     // 自适应铺满
     if (basicStyle.tableColumnMode === 'adapt') {
       newChart.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, () => {

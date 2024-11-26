@@ -2,7 +2,20 @@ INSERT INTO `core_sys_setting`(`id`, `pkey`, `pval`, `type`, `sort`)
 VALUES (1048232869488627719, 'basic.defaultSort', '1', 'text', 13);
 
 INSERT INTO `core_sys_setting`(`id`, `pkey`, `pval`, `type`, `sort`)
-VALUES (1048232869488627719, 'basic.defaultOpen', '1', 'text', 14);
+VALUES (1048232869488627720, 'basic.defaultOpen', '1', 'text', 14);
 
 ALTER TABLE `data_visualization_info`
     ADD COLUMN `content_id` varchar(50) NULL DEFAULT '0' COMMENT '内容标识';
+
+ALTER TABLE `visualization_link_jump_target_view_info`
+    ADD COLUMN `target_type` varchar(50) NULL COMMENT '联动目标类型 view 图表 filter 过滤组件 outParams 外部参数';
+
+ALTER TABLE `visualization_link_jump_target_view_info`
+    MODIFY COLUMN `target_view_id` varchar(50) NULL DEFAULT NULL COMMENT '目标图表ID';
+ALTER TABLE `visualization_link_jump_target_view_info`
+    MODIFY COLUMN `target_field_id` varchar(50) NULL DEFAULT NULL COMMENT '目标字段ID';
+
+update visualization_link_jump_target_view_info set target_type = 'view';
+ALTER TABLE `data_visualization_info`
+    ADD COLUMN `check_version` varchar(50) NULL DEFAULT '1' COMMENT '内容检查标识';
+update data_visualization_info set check_version = '1';

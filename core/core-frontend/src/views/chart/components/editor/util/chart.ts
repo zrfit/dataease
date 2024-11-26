@@ -761,7 +761,8 @@ export const DEFAULT_THRESHOLD: ChartThreshold = {
   liquidThreshold: '',
   labelThreshold: [],
   tableThreshold: [],
-  textLabelThreshold: []
+  textLabelThreshold: [],
+  lineLabelThreshold: []
 }
 export const DEFAULT_SCROLL: ScrollCfg = {
   open: false,
@@ -1604,7 +1605,9 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   },
   zoomLevel: 7,
   customIcon: '',
-  showHoverStyle: true
+  showHoverStyle: true,
+  autoWrap: false,
+  maxLines: 3
 }
 
 export const BASE_VIEW_CONFIG = {

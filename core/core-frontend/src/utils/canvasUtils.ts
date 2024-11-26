@@ -17,7 +17,8 @@ import {
   findById,
   findCopyResource,
   saveCanvas,
-  updateCanvas
+  updateCanvas,
+  updateCheckVersion
 } from '@/api/visualization/dataVisualization'
 import { storeToRefs } from 'pinia'
 import { getPanelAllLinkageInfo } from '@/api/visualization/linkage'
@@ -35,8 +36,11 @@ const { inMobile, dvInfo, canvasStyleData, componentData, canvasViewInfo, appDat
   storeToRefs(dvMainStore)
 const snapshotStore = snapshotStoreWithOut()
 import { useI18n } from '@/hooks/web/useI18n'
+import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
+import { useCache } from '@/hooks/web/useCache'
 const { t } = useI18n()
-
+const appearanceStore = useAppearanceStoreWithOut()
+const { wsCache } = useCache()
 export function chartTransStr2Object(targetIn, copy) {
   const target = copy === 'Y' ? cloneDeep(targetIn) : targetIn
   return target
@@ -146,7 +150,7 @@ export function historyItemAdaptor(
   }
 
   if (componentItem.component === 'DeTabs') {
-    componentItem.style['titleHide'] = componentItem.style['titleHide'] || false
+    componentItem.style['showTabTitle'] = componentItem.style['showTabTitle'] || true
   }
 
   componentItem['expand'] = componentItem['expand'] || false
@@ -222,7 +226,14 @@ export function historyAdaptor(
   attachInfo,
   canvasVersion
 ) {
+  const curVersion = wsCache.get('x-de-execute-version')
+  if (canvasInfo?.checkVersion === curVersion) {
+    return
+  }
   //历史字段适配
+  canvasStyleResult.component['seniorStyleSetting'] =
+    canvasStyleResult.component['seniorStyleSetting'] || deepCopy(SENIOR_STYLE_SETTING_LIGHT)
+  canvasStyleResult['fontFamily'] = canvasStyleResult['fontFamily'] || 'PingFang'
   canvasStyleResult.dashboard['showGrid'] = canvasStyleResult.dashboard['showGrid'] || false
   canvasStyleResult.dashboard['matrixBase'] = canvasStyleResult.dashboard['matrixBase'] || 4
   canvasStyleResult.component['seniorStyleSetting'] =
@@ -251,6 +262,9 @@ export function historyAdaptor(
   canvasDataResult.forEach(componentItem => {
     historyItemAdaptor(componentItem, reportFilterInfo, attachInfo, canvasVersion, canvasInfo)
   })
+  if (canvasInfo && canvasInfo.id) {
+    updateCheckVersion(canvasInfo.id)
+  }
 }
 
 // 重置仪表板、大屏中的其他组件
@@ -338,13 +352,15 @@ export function initCanvasDataPrepare(dvId, busiFlag, callBack) {
     const canvasStyleResult = JSON.parse(canvasInfo.canvasStyleData)
     const canvasViewInfoPreview = canvasInfo.canvasViewInfo
     historyAdaptor(canvasStyleResult, canvasDataResult, canvasInfo, attachInfo, canvasVersion)
-    //历史字段适配
-    canvasStyleResult.component['seniorStyleSetting'] =
-      canvasStyleResult.component['seniorStyleSetting'] || deepCopy(SENIOR_STYLE_SETTING_LIGHT)
     const curPreviewGap =
       dvInfo.type === 'dashboard' && canvasStyleResult['dashboard'].gap === 'yes'
         ? canvasStyleResult['dashboard'].gapSize
         : 0
+    appearanceStore.setCurrentFont(canvasStyleResult.fontFamily)
+    document.documentElement.style.setProperty(
+      '--de-canvas_custom_font',
+      `${canvasStyleResult.fontFamily}`
+    )
     callBack({ canvasDataResult, canvasStyleResult, dvInfo, canvasViewInfoPreview, curPreviewGap })
   })
 }

@@ -252,7 +252,7 @@ defineExpose({
     <el-container
       class="preview-area"
       :class="{ 'no-data': !hasTreeData }"
-      v-loading="requestStore.loadingMap[permissionStore.currentPath]"
+      v-loading="requestStore.loadingMap && requestStore.loadingMap[permissionStore.currentPath]"
     >
       <div
         @click="slideOpenChange"

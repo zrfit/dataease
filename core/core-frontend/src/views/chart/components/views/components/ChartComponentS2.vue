@@ -83,6 +83,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: 'common'
+  },
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 
@@ -659,6 +664,7 @@ const tablePageClass = computed(() => {
     <view-track-bar
       ref="viewTrack"
       :track-menu="trackMenu"
+      :font-family="fontFamily"
       class="track-bar"
       :style="state.trackBarStyle"
       @trackClick="trackClick"

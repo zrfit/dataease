@@ -168,7 +168,11 @@ public class ExtWhere2Str {
                                     || StringUtils.containsIgnoreCase(request.getDatasetTableField().getType(), "NCHAR")) {
                                 whereValue = "(" + value.stream().map(str -> "'" + SQLConstants.MSSQL_N_PREFIX + str + "'").collect(Collectors.joining(",")) + ")";
                             } else {
-                                whereValue = "('" + StringUtils.join(value, "','") + "')";
+                                if (request.getDatasetTableField().getDeType() == 2 || request.getDatasetTableField().getDeType() == 3) {
+                                    whereValue = "(" + StringUtils.join(value, ",") + ")";
+                                } else {
+                                    whereValue = "('" + StringUtils.join(value, "','") + "')";
+                                }
                             }
                         }
                     }

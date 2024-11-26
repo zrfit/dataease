@@ -216,6 +216,9 @@ const handleDragOver = e => {
 
 const handleMouseDown = e => {
   // e.stopPropagation()
+  if (isSpaceDown.value) {
+    return
+  }
   dvMainStore.setClickComponentStatus(false)
   // 点击画布的空区域 提前清空curComponent 防止右击菜单内容抖动
   dvMainStore.setCurComponent({ component: null, index: null })
@@ -224,6 +227,9 @@ const handleMouseDown = e => {
 }
 
 const deselectCurComponent = e => {
+  if (isSpaceDown.value) {
+    return
+  }
   if (!isClickComponent.value) {
     curComponent.value && dvMainStore.setCurComponent({ component: null, index: null })
   }
@@ -245,13 +251,15 @@ listenGlobalKeyDown()
 
 const initScroll = () => {
   nextTick(() => {
-    const { width, height } = canvasStyleData.value
-    const mainWidth = canvasCenterRef.value.clientWidth
-    mainHeight.value = canvasCenterRef.value.clientHeight
-    const scrollX = (1.5 * width - mainWidth) / 2
-    const scrollY = (1.5 * height - mainHeight.value) / 2 + 20
-    // 设置画布初始滚动条位置
-    canvasOut.value.scrollTo(scrollX, scrollY)
+    if (canvasCenterRef.value) {
+      const { width, height } = canvasStyleData.value
+      const mainWidth = canvasCenterRef.value.clientWidth
+      mainHeight.value = canvasCenterRef.value.clientHeight
+      const scrollX = (1.5 * width - mainWidth) / 2
+      const scrollY = (1.5 * height - mainHeight.value) / 2 + 20
+      // 设置画布初始滚动条位置
+      canvasOut.value.scrollTo(scrollX, scrollY)
+    }
   })
 }
 const doUseCache = flag => {
@@ -471,7 +479,7 @@ eventBus.on('tabSort', tabSort)
     <div class="custom-dv-divider" />
     <el-container
       v-if="loadFinish"
-      v-loading="requestStore.loadingMap[permissionStore.currentPath]"
+      v-loading="requestStore.loadingMap && requestStore.loadingMap[permissionStore.currentPath]"
       element-loading-background="rgba(0, 0, 0, 0)"
       class="dv-layout-container"
       :class="{ 'preview-layout-container': previewStatus }"
@@ -513,7 +521,6 @@ eventBus.on('tabSort', tabSort)
           @mousemove="onMouseMove"
           @mouseleave="disableDragging"
         >
-          <div v-if="isSpaceDown" class="canvas-drag" :style="contentStyle"></div>
           <div
             id="canvas-dv-outer"
             ref="canvasInner"
@@ -523,6 +530,7 @@ eventBus.on('tabSort', tabSort)
             @mousedown="handleMouseDown"
             @mouseup="deselectCurComponent"
           >
+            <div v-if="isSpaceDown" class="canvas-drag"></div>
             <div class="canvas-dv-inner">
               <canvas-core
                 class="canvas-area-shadow editor-main"
@@ -715,6 +723,8 @@ eventBus.on('tabSort', tabSort)
   z-index: 1;
   opacity: 0.3;
   cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
 
 .canvas-drag-tip {

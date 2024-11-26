@@ -27,6 +27,7 @@ import {
   onMounted,
   onBeforeUnmount
 } from 'vue'
+import { useCache } from '@/hooks/web/useCache'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { ElIcon, ElMessageBox, ElMessage } from 'element-plus-secondary'
@@ -72,6 +73,7 @@ interface Field {
   originName: string
   deType: number
 }
+const { wsCache } = useCache()
 const appStore = useAppStoreWithOut()
 const embeddedStore = useEmbedded()
 const { t } = useI18n()
@@ -249,12 +251,17 @@ const pushDataset = () => {
     return
   }
   const routeName = embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded' : 'dataset'
-  push({
-    name: routeName,
-    params: {
-      id: nodeInfo.id
-    }
-  })
+  wsCache.set(`${routeName}-info-id`, nodeInfo.id)
+  if (!!history.state.back) {
+    history.back()
+  } else {
+    push({
+      name: routeName,
+      params: {
+        id: nodeInfo.id
+      }
+    })
+  }
 }
 
 const backToMain = () => {

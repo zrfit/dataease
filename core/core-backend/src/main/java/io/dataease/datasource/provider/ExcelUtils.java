@@ -437,6 +437,7 @@ public class ExcelUtils {
                     tableFiled.setFieldType(null);
                     tableFiled.setName(s);
                     tableFiled.setOriginName(s);
+                    tableFiled.setChecked(true);
                     fields.add(tableFiled);
                 }
                 List<String[]> data = new ArrayList<>(noModelDataListener.getData());

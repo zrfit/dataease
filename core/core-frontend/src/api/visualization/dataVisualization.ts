@@ -35,6 +35,9 @@ export const findById = async (
   return request.post({ url: '/dataVisualization/findById', data })
 }
 
+export const updateCheckVersion = dvId =>
+  request.get({ url: `/dataVisualization/updateCheckVersion/${dvId}` })
+
 export const queryTreeApi = async (data: BusiTreeRequest): Promise<IResponse> => {
   return request.post({ url: '/dataVisualization/tree', data }).then(res => {
     return res?.data

@@ -170,6 +170,10 @@ const resourceNodeClick = data => {
   loadCanvasData(data.id, data.weight, data.ext)
 }
 
+const dataVKeepSize = computed(() => {
+  return state.canvasStylePreview?.screenAdaptor === 'keep'
+})
+
 const state = reactive({
   canvasDataPreview: null,
   canvasStylePreview: null,
@@ -276,7 +280,12 @@ onBeforeMount(() => {
             :dv-info="state.dvInfo"
           ></multiplex-preview-show>
         </div>
-        <div v-if="showPosition === 'preview'" ref="previewCanvasContainer" class="content">
+        <div
+          v-if="showPosition === 'preview'"
+          :class="{ 'canvas_keep-size': dataVKeepSize }"
+          ref="previewCanvasContainer"
+          class="content"
+        >
           <dv-preview
             ref="dvPreviewRef"
             v-if="state.canvasStylePreview && dataInitState"

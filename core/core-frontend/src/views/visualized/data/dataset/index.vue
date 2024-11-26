@@ -146,6 +146,7 @@ const isIframe = computed(() => appStore.getIsIframe)
 const exportPermissions = computed(() => exportPermission(nodeInfo.weight, nodeInfo.ext))
 const createPanel = path => {
   const baseUrl = `#/${path}?opt=create&id=${nodeInfo.id}`
+  wsCache.set('dataset-info-id', nodeInfo.id)
   window.open(baseUrl, openType)
 }
 
@@ -340,7 +341,11 @@ const dfsDatasetTree = (ds, id) => {
 }
 
 onBeforeMount(() => {
-  nodeInfo.id = (route.params.id as string) || (route.query.id as string) || ''
+  const paramId = wsCache.get('dataset-info-id')
+  nodeInfo.id = (paramId as string) || (route.query.id as string) || ''
+  wsCache.delete('dataset-info-id')
+  wsCache.delete('db-info-id')
+  wsCache.delete('dv-info-id')
   loadInit()
   getData()
   getLimit()

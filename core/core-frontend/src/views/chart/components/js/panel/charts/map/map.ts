@@ -334,7 +334,8 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         }
       }
     }
-    if (!misc.mapAutoLegend && misc.mapLegendRangeType === 'custom') {
+    // 不是自动图例、自定义图例区间、不是下钻时
+    if (!misc.mapAutoLegend && misc.mapLegendRangeType === 'custom' && !chart.drill) {
       // 获取图例区间数据
       const items = []
       // 区间数组
@@ -342,10 +343,10 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         .slice(0, -1)
         .map((item, index) => [item, misc.mapLegendCustomRange[index + 1]])
       ranges.forEach((range, index) => {
-        const tmpRange = [range[0]?.toFixed(0), range[1]?.toFixed(0)]
+        const tmpRange = [range[0], range[1]]
         const colorIndex = index % colors.length
         // 当区间第一个值小于最小值时，颜色取地图底色
-        const isLessThanMin = range[0] < ranges[0][0]
+        const isLessThanMin = range[0] < ranges[0][0] && range[1] < ranges[0][0]
         let rangeColor = colors[colorIndex]
         if (isLessThanMin) {
           rangeColor = hexColorToRGBA(basicStyle.areaBaseColor, basicStyle.alpha)
@@ -361,6 +362,11 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         }
         return ''
       }
+      options.color['value'] = ({ value }) => {
+        const item = items.find(item => value >= item.value[0] && value <= item.value[1])
+        return item ? item.color : hexColorToRGBA(basicStyle.areaBaseColor, basicStyle.alpha)
+      }
+      options.color.scale.domain = [ranges[0][0], ranges[ranges.length - 1][1]]
     } else {
       customLegend['customContent'] = (_: string, items: CategoryLegendListItem[]) => {
         const showItems = items?.length > 30 ? items.slice(0, 30) : items
@@ -369,6 +375,12 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         }
         return ''
       }
+    }
+    // 下钻时按照数据值计算图例
+    if (chart.drill) {
+      getMaxAndMinValueByData(options.source.data, 'value', 0, 0, (max, min) => {
+        options.color.scale.domain = [min, max]
+      })
     }
     defaultsDeep(options, { legend: customLegend })
     return options

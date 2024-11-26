@@ -11,7 +11,6 @@ import { formatRoute } from '@/router/establish'
 import HeaderMenuItem from './HeaderMenuItem.vue'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { Icon } from '@/components/icon-custom'
-import { ElHeader, ElMenu } from 'element-plus-secondary'
 import SystemCfg from './SystemCfg.vue'
 import ToolboxCfg from './ToolboxCfg.vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -24,12 +23,14 @@ import AiComponent from '@/layout/components/AiComponent.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import AiTips from '@/layout/components/AiTips.vue'
 import CopilotCom from '@/layout/components/Copilot.vue'
+import DesktopSetting from './DesktopSetting.vue'
 
 const appearanceStore = useAppearanceStoreWithOut()
 const { push } = useRouter()
 const route = useRoute()
 import { useCache } from '@/hooks/web/useCache'
 import { useI18n } from '@/hooks/web/useI18n'
+import { msgCountApi } from '@/api/msg'
 const { wsCache } = useCache('localStorage')
 const aiBaseUrl = ref('https://maxkb.fit2cloud.com/ui/chat/2ddd8b594ce09dbb?mode=embed')
 const handleIconClick = () => {
@@ -119,12 +120,17 @@ const copilotConfirm = () => {
   wsCache.set('DE-COPILOT-TIPS-CHECK', 'CHECKED')
   showOverlayCopilot.value = false
 }
+const badgeCount = ref(0)
 
 onMounted(() => {
   initShowSystem()
   initShowToolbox()
   initAiBase()
   initCopilotBase()
+
+  msgCountApi().then(res => {
+    badgeCount.value = res?.data || 0
+  })
 })
 </script>
 
@@ -184,15 +190,17 @@ onMounted(() => {
       <ToolboxCfg v-if="showToolbox" />
       <TopDoc v-if="appearanceStore.getShowDoc" />
       <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
-        <el-icon
-          class="preview-download_icon"
-          style="margin-right: 10px"
-          :class="navigateBg === 'light' && 'is-light-setting'"
-        >
-          <Icon name="dv-preview-download"
-            ><msgNotice @click="msgNoticePush" class="svg-icon"
-          /></Icon>
-        </el-icon>
+        <el-badge :hidden="badgeCount === 0" :value="badgeCount" class="item">
+          <el-icon
+            class="preview-download_icon"
+            style="margin-right: 10px"
+            :class="navigateBg === 'light' && 'is-light-setting'"
+          >
+            <Icon name="dv-preview-download"
+              ><msgNotice @click="msgNoticePush" class="svg-icon"
+            /></Icon>
+          </el-icon>
+        </el-badge>
       </el-tooltip>
 
       <SystemCfg v-if="showSystem" />
@@ -203,6 +211,9 @@ onMounted(() => {
       ></ai-component>
       <div v-if="showOverlay && appearanceStore.getShowAi" class="overlay"></div>
       <div v-if="showOverlayCopilot && appearanceStore.getShowCopilot" class="overlay"></div>
+    </div>
+    <div v-else class="operate-setting">
+      <desktop-setting />
     </div>
   </el-header>
 </template>

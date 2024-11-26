@@ -492,6 +492,7 @@ export default {
     click_to_show: '点击显示',
     click_to_hide: '点击隐藏',
     basic_settings: '基础设置',
+    login_settings: '登录设置',
     and_0_seconds: '0分0秒',
     time_0_seconds: '分钟（执行时间：0秒）',
     and_0_seconds_de: '小时（执行时间：0分0秒）',
@@ -754,7 +755,7 @@ export default {
     reset_success: '重置成功',
     modify_cur_pwd: '修改当前用户密码后需要重新登录',
     switch_success: '切换成功',
-    user_name_pattern_error: '只允许数字字母以及._-且必须数字或字母开头',
+    user_name_pattern_error: "只允许数字字母以及{'@'}._-且必须数字或字母开头",
     pwd_pattern_error: '6-20位且至少一位大写字母、小写字母、数字、特殊字符',
     special_characters_are_not_supported: '不允许特殊字符',
     phone_format: '请填写正确格式手机号',
@@ -1245,6 +1246,7 @@ export default {
     quick_calc: '快速计算',
     show_name_set: '编辑显示名称',
     show_name: '显示名称',
+    backdrop_blur: '背景模糊',
     color: '颜色',
     color_case: '配色方案',
     pls_slc_color_case: '请选择配色方案',
@@ -1379,8 +1381,8 @@ export default {
     table_header_show_vertical_border: '表头纵边框线',
     table_cell_show_horizon_border: '单元格横边框线',
     table_cell_show_vertical_border: '单元格纵边框线',
-    table_col_freeze_tip: '第一列到',
-    tbale_row_freeze_tip: '第一行到',
+    table_col_freeze_tip: '冻结前 n 列',
+    table_row_freeze_tip: '冻结前 n 行',
     table_freeze: '冻结',
     stripe: '斑马纹',
     start_angle: '起始角度',
@@ -1794,7 +1796,8 @@ export default {
     p_bottom: '下对齐',
     p_center: '居中',
     table_auto_break_line: '自动换行',
-    table_break_line_tip: '开启自动换行，表格行高设置将失效',
+    table_break_line_tip: '开启自动换行，表头行高设置将失效',
+    table_break_line_max_lines: '最大行数',
     step: '步长(px)',
     no_function: '函数尚未支持直接引用，请在字段表达式中手动输入。',
     chart_flow_map: '流向地图',
@@ -2672,6 +2675,7 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    out_params_no_select: '外部参数无需选择',
     filter_no_select: '过滤组件无需选择',
     forbidden_copy: '当前组件不允许复制',
     url_check_error: '跳转错误，URL不合法',
@@ -3082,7 +3086,10 @@ export default {
     shareDisable: '禁用分享',
     sharePeRequire: '分享有效期密码必填',
     defaultSort: '资源默认排序方式',
-    defaultOpen: '页面打开方式'
+    defaultOpen: '页面打开方式',
+    loginLimit: '限制登录',
+    loginLimitRate: '限制登录失败次数(次)',
+    loginLimitTime: '限制登录失败时间(分)'
   },
   resource_sort: {
     time_asc: '按创建时间升序',
@@ -3532,6 +3539,7 @@ export default {
     exporting: '后台导出中,可前往',
     progress_to_download: '查看进度，进行下载',
     form: {
+      confirm_to_mark_as_complete: '确认标记为完成?',
       mobile_number_format_is_incorrect: '手机号码格式不正确',
       email_format_is_incorrect: '邮箱格式不正确',
       name: '名称',
@@ -3823,5 +3831,35 @@ export default {
     delete_api_key: '确定删除该 API key 吗? ',
     api_key_desc:
       'API Key 是您访问 DataEase API 的密钥，具有账户的完全权限，请您务必妥善保管！不要以任何方式公开 API Key 到外部渠道，避免被他人利用造成安全威胁。'
+  },
+  free: {
+    title: '游离资源管理',
+    no_data: '暂无游离资源',
+    sync: '迁移',
+    quick: '一键',
+    batch: '批量',
+    resource: '资源',
+    view_association: '查看血缘关系',
+    quick_sync_tips: '所有仪表板、数据大屏、数据集、数据源，将全部迁移到【迁移资源】文件夹。',
+    batch_sync_tips:
+      '1. 与选中资源相关的仪表板、数据大屏、数据集、数据源，也将一并迁移到对应资源的【迁移资源】文件夹；',
+    batch_sync_tips1: '2. 迁移文件夹将同时迁移该文件夹下的子文件夹和资源。',
+    quick_del_confirm: '确定删除所有游离资源吗？',
+    quick_del_tips: '资源删除后，不可撤销。',
+    quick_sync_confirm: '确定迁移所有游离资源吗？',
+    quick_sync_confirm_tips: '迁移资源后，不可撤销，请谨慎操作。',
+    batch_sync_confirm: '确定迁移 {0} 项及其相关游离资源吗？',
+    single_sync_confirm: '确定迁移该资源吗',
+    batch_del_confirm: '确定删除 {0} 项资源吗？',
+    batch_del_confirm_tips: '资源删除后，不可撤销，请谨慎操作。',
+    del_tips_dataset: '删除数据集会造成相关数据集失效，确定删除？',
+    del_tips_datasource: '有数据集正在使用这些数据源，删除后数据集不可用，确定删除？',
+    single_del_confirm: '确定删除该{0}吗？',
+    single_del_tips_dataset: '该数据集存在如下血缘关系，删除会造成相关视图失效，确定删除？',
+    single_del_tips_datasource: '有 {0} 个数据集正在使用此数据源，删除后数据集不可用，确定删除？',
+    folder: '文件夹',
+    del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。',
+    sync_to_org: '迁移至目标组织',
+    sync_org_placeholder: '请选择目标组织'
   }
 }

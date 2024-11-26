@@ -159,4 +159,7 @@ public interface DatasourceApi {
 
     List<DatasourceDTO> innerList(List<Long> ids, List<String> types) throws DEException;
 
+    @GetMapping("/simple/{id}")
+    DsSimpleVO simple(@PathVariable("id") Long id);
+
 }

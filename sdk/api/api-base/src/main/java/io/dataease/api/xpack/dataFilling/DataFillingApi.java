@@ -110,6 +110,9 @@ public interface DataFillingApi {
     @PostMapping("/user-task/page/{goPage}/{pageSize}")
     IPage<DfUserTaskVo> listUserTask(@PathVariable("goPage") int goPage, @PathVariable("pageSize") int pageSize, @RequestBody DfUserTaskRequest request) throws Exception;
 
+    @PostMapping("/user-task/todo/count")
+    long countUserTodoList() throws Exception;
+
     @GetMapping("/user-task/list/{id}")
     DfUserTaskData listUserTaskData(@PathVariable("id") Long id) throws Exception;
 

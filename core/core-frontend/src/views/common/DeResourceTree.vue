@@ -39,7 +39,6 @@ import { interactiveStoreWithOut } from '@/store/modules/interactive'
 import { useShareStoreWithOut } from '@/store/modules/share'
 const shareStore = useShareStoreWithOut()
 const interactiveStore = interactiveStoreWithOut()
-import router from '@/router'
 import { useI18n } from '@/hooks/web/useI18n'
 import _ from 'lodash'
 import DeResourceCreateOptV2 from '@/views/common/DeResourceCreateOptV2.vue'
@@ -47,6 +46,7 @@ import { useCache } from '@/hooks/web/useCache'
 import { findParentIdByChildIdRecursive } from '@/utils/canvasUtils'
 import { XpackComponent } from '@/components/plugin'
 import treeSort from '@/utils/treeSortUtils'
+import router from '@/router'
 const { wsCache } = useCache()
 
 const dvMainStore = dvMainStoreWithOut()
@@ -186,7 +186,10 @@ const menuList = computed(() => {
   return list
 })
 
-const dvId = embeddedStore.dvId || router.currentRoute.value.query.dvId
+const infoId = wsCache.get(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
+const routerDvId = router.currentRoute.value.query.dvId
+const dvId = embeddedStore.dvId || infoId || routerDvId
+wsCache.delete(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
 if (dvId && showPosition.value === 'preview') {
   selectedNodeKey.value = dvId
   returnMounted.value = true
