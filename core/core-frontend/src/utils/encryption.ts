@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js/crypto-js'
-import JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
 import { Base64 } from 'js-base64'
 import { useCache } from '@/hooks/web/useCache'
 import { useAppStoreWithOut } from '@/store/modules/app'
@@ -11,14 +11,6 @@ const { wsCache } = useCache()
 const rsaKey = '-pk_separator-'
 const crypt = new JSEncrypt()
 
-/* export const aesEncrypt = word => {
-  const srcs = CryptoJS.enc.Utf8.parse(word)
-  const encrypted = CryptoJS.AES.encrypt(srcs, aesKey, {
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  })
-  return CryptoJS.enc.Hex.stringify(encrypted.ciphertext)
-} */
 const aesDecrypt = (word, keyStr) => {
   const keyHex = CryptoJS.enc.Utf8.parse(keyStr) //
   const ivHex = CryptoJS.enc.Utf8.parse('0000000000000000')
