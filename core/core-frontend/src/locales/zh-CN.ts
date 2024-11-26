@@ -4090,6 +4090,7 @@ export default {
     folder: '文件夹',
     del_folder_tips: '删除后，此文件夹下的所有资源都会被删除，请谨慎操作。',
     sync_to_org: '迁移至目标组织',
-    sync_org_placeholder: '请选择目标组织'
+    sync_org_placeholder: '请选择目标组织',
+    relation_picture: '血缘关系图'
   }
 }
