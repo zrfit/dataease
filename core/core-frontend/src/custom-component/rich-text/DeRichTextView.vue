@@ -164,7 +164,8 @@ const init = ref({
     ' blockquote subscript superscript removeformat | table image ',
   toolbar_location: '/',
   font_formats: curFontFamily(),
-  fontsize_formats: '12px 14px 16px 18px 20px 22px 24px 28px 32px 36px 42px 48px 56px 72px', // 字体大小
+  fontsize_formats:
+    '12px 14px 16px 18px 20px 22px 24px 28px 32px 36px 42px 48px 56px 72px 80px 90px 100px 110px 120px 140px 150px 170px 190px 210px', // 字体大小
   menubar: false,
   placeholder: '',
   outer_placeholder: '双击输入文字',
