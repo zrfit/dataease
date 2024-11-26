@@ -527,7 +527,7 @@ const setOptions = (num: number) => {
           queryId: field.id,
           displayId: displayId || field.id,
           sort: sort === 'customSort' ? 'asc' : sort,
-          sortId,
+          sortId: sort === 'customSort' ? '' : sortId,
           resultMode: config.value.resultMode || 0,
           searchText: searchText.value,
           filter: getCascadeFieldId()
