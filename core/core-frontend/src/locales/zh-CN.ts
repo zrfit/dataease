@@ -2933,7 +2933,6 @@ export default {
     outer_param_decode_error: '外部参数解析错误未生效，请按规定编码方式传参',
     input_param_name: '请输入参数名称',
     params_setting: '外部参数设置',
-    template_view_tips: '当前是模板图表,请点击更换数据集',
     edit_web_tips: '编辑状态不可操作网页内部',
     no_auth_role: '未分享角色',
     auth_role: '已分享角色',
