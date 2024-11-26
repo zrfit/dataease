@@ -2647,6 +2647,13 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     column_name: 'Field name'
   },
   visualization: {
+    no_edit_auth: 'No edit permissions for the target resource, please contact the administrator!',
+    select_target_dashboard_tips: 'Please select the target dashboard',
+    select_target_screen_tips: 'Please select the target data screen',
+    cur_dashboard: 'Current dashboard',
+    cur_screen: 'Current data screen',
+    target_dashboard: 'Target dashboard',
+    target_screen: 'Target data screen',
     component_id: 'Component ID',
     view_id: 'Chart ID',
     resource_create_tips: 'Select components from the top toolbar and add them here to create.',
@@ -2726,7 +2733,6 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     hold_canvas_tips: 'Hold spacebar to drag the canvas',
     keep_subject: 'Keep Original Style',
     select_component: 'Select Component',
-    show_selected_only: 'Show Selected Only',
     no_available_component: 'No available components currently',
     no_selected_component: 'Currently selected component',
     no_params_tips: 'Parameters cannot be empty',
@@ -2879,8 +2885,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     source_filter: 'Source Filter',
     link_target_tips1:
       'The target dashboard has no external parameters, so conditional queries cannot be carried out. If needed,',
-    link_target_tips2:
-      'The target dashboard has no external parameters, so conditional queries cannot be carried out. If needed,',
+    link_target_tips2: 'Please go to the settings for external parameters.',
     link_outer_params: 'Linked External Parameters',
     indicator_name: 'Indicator Name',
     component_size: 'Size',
@@ -3249,7 +3254,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     choose_background_tips: "The component's own background will overwrite the current setting",
     setting_background: 'Set Background',
     setting_jump: 'Jump Setting',
-    select_view: 'Please select a chart...',
+    select_view: 'Please select a chart',
     visual: 'Virtualization',
     prohibit_multiple: 'Prohibit multiple fields in the same dataset',
     be_empty_dir: 'This is an empty directory!',
