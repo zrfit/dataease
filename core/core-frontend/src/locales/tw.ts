@@ -2585,6 +2585,9 @@ export default {
     column_name: '欄位名稱'
   },
   visualization: {
+    resource_create_tips: '從頂部工具欄中選擇組件，添加到這裡創建。',
+    component_select_tips: '請選擇組件...',
+    border_style_dotted: '點線',
     app_export: '應用導出',
     app_name: '應用名稱',
     app_version: '應用版本號',

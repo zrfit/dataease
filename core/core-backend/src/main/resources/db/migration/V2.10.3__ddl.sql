@@ -22,3 +22,13 @@ update visualization_link_jump_target_view_info set target_type = 'view';
 ALTER TABLE `data_visualization_info`
     ADD COLUMN `check_version` varchar(50) NULL DEFAULT '1' COMMENT '内容检查标识';
 update data_visualization_info set check_version = '1';
+
+UPDATE `visualization_background` SET `name` = 'Board1' WHERE `id` = 'board_1';
+UPDATE `visualization_background` SET `name` = 'Board2' WHERE `id` = 'board_2';
+UPDATE `visualization_background` SET `name` = 'Board3' WHERE `id` = 'board_3';
+UPDATE `visualization_background` SET `name` = 'Board4' WHERE `id` = 'board_4';
+UPDATE `visualization_background` SET `name` = 'Board5' WHERE `id` = 'board_5';
+UPDATE `visualization_background` SET `name` = 'Board6' WHERE `id` = 'board_6';
+UPDATE `visualization_background` SET `name` = 'Board7' WHERE `id` = 'board_7';
+UPDATE `visualization_background` SET `name` = 'Board8' WHERE `id` = 'board_8';
+UPDATE `visualization_background` SET `name` = 'Board9' WHERE `id` = 'board_9';

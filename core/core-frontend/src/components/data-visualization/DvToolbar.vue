@@ -271,11 +271,11 @@ eventBus.on('clearCanvas', clearCanvas)
 
 const openOuterParamsSet = () => {
   if (componentData.value.length === 0) {
-    ElMessage.warning('当前仪表板为空，请先添加组件')
+    ElMessage.warning(t('components.add_components_first'))
     return
   }
   if (!dvInfo.value.id) {
-    ElMessage.warning('请先保存当前页面')
+    ElMessage.warning(t('components.current_page_first'))
     return
   }
   //设置需要先触发保存
