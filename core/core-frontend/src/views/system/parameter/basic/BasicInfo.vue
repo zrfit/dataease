@@ -5,7 +5,12 @@
     setting-key="basic"
     :setting-title="t('system.basic_settings')"
     :setting-data="baseInfoSettings"
-    @edit="edit"
+    @edit="
+      edit(
+        t('system.basic_settings'),
+        baseInfoSettings.map(ele => ele.pkey.split('.')[1])
+      )
+    "
   />
   <InfoTemplate
     ref="loginTemplate"
@@ -14,7 +19,27 @@
     setting-key="basic"
     :setting-title="t('system.login_settings')"
     :setting-data="loginInoSettings"
-    @edit="edit"
+    @edit="
+      edit(
+        t('system.login_settings'),
+        loginInoSettings.map(ele => ele.pkey.split('.')[1])
+      )
+    "
+  />
+
+  <InfoTemplate
+    ref="thirdTemplate"
+    class="login-setting-template"
+    :label-tooltips="tooltips"
+    setting-key="basic"
+    :setting-title="t('setting_basic.third_platform_settings')"
+    :setting-data="thirdInfoSettings"
+    @edit="
+      edit(
+        t('setting_basic.third_platform_settings'),
+        thirdInfoSettings.map(ele => ele.pkey.split('.')[1])
+      )
+    "
   />
   <basic-edit ref="editor" @saved="refresh" />
 </template>
@@ -32,6 +57,7 @@ const { t } = useI18n()
 const editor = ref()
 const infoTemplate = ref()
 const loginTemplate = ref()
+const thirdTemplate = ref()
 const showDefaultLogin = ref(false)
 const pvpOptions = [
   { value: '0', label: t('commons.date.permanent') },
@@ -65,6 +91,12 @@ const loginSettings = [
   'setting_basic.loginLimit',
   'setting_basic.loginLimitRate',
   'setting_basic.loginLimitTime'
+]
+
+const thirdSettings = [
+  'setting_basic.autoCreateUser',
+  'setting_basic.platformOid',
+  'setting_basic.platformRid'
 ]
 const state = reactive({
   templateList: [] as SettingRecord[],
@@ -109,11 +141,14 @@ const selectedRName = ref<string[]>([])
 const selectedPvp = ref('0')
 
 const baseInfoSettings = computed(() =>
-  state.templateList.filter(item => !loginSettings.includes(item.pkey))
+  state.templateList.filter(item => !loginSettings.concat(thirdSettings).includes(item.pkey))
+)
+
+const thirdInfoSettings = computed(() =>
+  state.templateList.filter(item => thirdSettings.includes(item.pkey))
 )
 const loginInoSettings = computed(() => {
   const list = state.templateList.filter(item => loginSettings.includes(item.pkey))
-  console.log(list)
   return list
 })
 
@@ -212,19 +247,22 @@ const refresh = () => {
     nextTick(() => {
       infoTemplate?.value.init()
       loginTemplate?.value.init()
+      thirdTemplate?.value.init()
     })
   })
 }
 refresh()
 
-const edit = () => {
+const edit = (val, arr) => {
   editor?.value.edit(
     cloneDeep(originData),
     cloneDeep(state.orgOptions),
     cloneDeep(state.roleOptions),
     cloneDeep(state.loginOptions),
     cloneDeep(state.sortOptions),
-    cloneDeep(state.openOptions)
+    cloneDeep(state.openOptions),
+    val,
+    arr
   )
 }
 const loadOrgOptions = async () => {
@@ -311,9 +349,6 @@ const resetDefaultLogin = () => {
 </script>
 <style lang="less" scoped>
 .login-setting-template {
-  padding-top: 0;
-  :deep(button) {
-    display: none;
-  }
+  margin-top: 16px;
 }
 </style>
