@@ -73,6 +73,8 @@ const { emitter } = useEmitt()
 
 const loading = ref(false)
 const columns = shallowRef([])
+const multipleSelection = shallowRef([])
+const multipleTable = ref()
 
 const defaultSheetObj = {
   tableName: ' ',
@@ -115,6 +117,9 @@ const generateColumns = (arr: Field[]) =>
     fieldType: ele.fieldType,
     dataKey: ele.originName,
     title: ele.name,
+    checked: ele.checked,
+    primaryKey: ele.primaryKey,
+    length: ele.length,
     width: 150,
     headerCellRenderer: ({ column }) => (
       <div class="flex-align-center icon">
@@ -136,6 +141,8 @@ const handleNodeClick = data => {
   if (data.sheet) {
     Object.assign(sheetObj, data)
     columns.value = generateColumns(data.fields)
+    multipleSelection.value = columns.value.filter(item => item.checked)
+    currentMode.value = 'preview'
   }
 }
 
@@ -181,10 +188,11 @@ const uploadSuccess = response => {
     param.value.name = response.data.excelLabel
   }
   tabList.value = response.data.sheets.map(ele => {
-    const { sheetId, tableName } = ele
+    const { sheetId, tableName, newSheet } = ele
     return {
       value: sheetId,
-      label: tableName
+      label: tableName,
+      newSheet: newSheet
     }
   })
   state.excelData = [response.data]
@@ -206,6 +214,23 @@ const saveExcelDs = (params, successCb, finallyCb) => {
       }
       if (selectNode[i].changeFiled) {
         changeFiled = true
+      }
+      for (let j = 0; j < selectNode[i].fields.length; j++) {
+        if (
+          selectNode[i].fields[j].checked &&
+          selectNode[i].fields[j].primaryKey &&
+          !selectNode[i].fields[j].length
+        ) {
+          ElMessage({
+            message:
+              t('datasource.primary_key_length') +
+              selectNode[i].excelLabel +
+              ': ' +
+              selectNode[i].fields[j].name,
+            type: 'error'
+          })
+          return
+        }
       }
       selectedSheet.push(selectNode[i])
       sheetFileMd5.push(selectNode[i].fieldsMd5)
@@ -405,9 +430,88 @@ const appendReplaceExcel = response => {
 }
 
 const status = ref(false)
+const initMultipleTable = ref(false)
 const currentMode = ref('preview')
 const refreshData = () => {
   currentMode.value = 'preview'
+}
+
+const lengthChange = val => {
+  const sheet = state.excelData[0]?.sheets.find(ele => ele.sheetId === activeTab.value)
+  sheet.fields.forEach(row => {
+    if (row.originName === val.dataKey) {
+      row.length = val.length
+    }
+  })
+}
+const primaryKeyChange = val => {
+  const sheet = state.excelData[0]?.sheets.find(ele => ele.sheetId === activeTab.value)
+  sheet.fields.forEach(row => {
+    if (row.originName === val.dataKey) {
+      row.primaryKey = val.primaryKey
+    }
+  })
+}
+
+const handleSelectionChange = val => {
+  if (!initMultipleTable.value) {
+    multipleSelection.value = val
+    multipleSelection.value.forEach(row => {
+      row.checked = true
+    })
+    columns.value.forEach(row => {
+      let item
+      for (let i = 0; i < multipleSelection.value.length; i++) {
+        if (row.dataKey === multipleSelection.value[i].dataKey) {
+          item = multipleSelection.value[i]
+        }
+      }
+      if (item) {
+        row.checked = item.checked
+      } else {
+        row.checked = false
+      }
+    })
+
+    const sheet = state.excelData[0]?.sheets.find(ele => ele.sheetId === activeTab.value)
+    sheet.fields.forEach(row => {
+      let item
+      for (let i = 0; i < multipleSelection.value.length; i++) {
+        if (row.originName === multipleSelection.value[i].dataKey) {
+          item = multipleSelection.value[i]
+        }
+      }
+      if (item) {
+        row.checked = item.checked
+      } else {
+        row.checked = false
+      }
+    })
+  }
+}
+
+const disabledFieldLength = item => {
+  if (!item.checked) {
+    return true
+  }
+  if (item.fieldType !== 'TEXT') {
+    return true
+  }
+}
+
+const changeCurrentMode = val => {
+  currentMode.value = val
+  if (val === 'select') {
+    nextTick(() => {
+      initMultipleTable.value = true
+      for (let i = 0; i < columns.value.length; i++) {
+        if (columns.value[i].checked) {
+          multipleTable?.value?.toggleRowSelection(columns.value[i], true)
+        }
+      }
+      initMultipleTable.value = false
+    })
+  }
 }
 
 const uploadStatus = val => {
@@ -533,16 +637,16 @@ defineExpose({
         ></SheetTabs>
 
         <div class="table-select_mode">
-          <div class="btn-select">
+          <div class="btn-select" v-if="param.id === '0' || sheetObj.newSheet">
             <el-button
-              @click="currentMode = 'preview'"
+              @click="changeCurrentMode('preview')"
               :class="[currentMode === 'preview' && 'is-active']"
               text
             >
               {{ t('chart.data_preview') }}
             </el-button>
             <el-button
-              @click="currentMode = 'select'"
+              @click="changeCurrentMode('select')"
               :class="[currentMode === 'select' && 'is-active']"
               text
             >
@@ -562,7 +666,7 @@ defineExpose({
           <el-auto-resizer v-if="currentMode === 'preview'">
             <template #default="{ height, width }">
               <el-table-v2
-                :columns="columns"
+                :columns="multipleSelection"
                 header-class="excel-header-cell"
                 :data="sheetObj.jsonArray"
                 :width="width"
@@ -571,7 +675,14 @@ defineExpose({
               />
             </template>
           </el-auto-resizer>
-          <el-table header-class="header-cell" v-else :data="columns" style="width: 100%">
+          <el-table
+            header-class="header-cell"
+            v-else
+            ref="multipleTable"
+            :data="columns"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+          >
             <el-table-column type="selection" width="55" />
             <el-table-column :label="t('data_set.field_name')">
               <template #default="scope">{{ scope.row.title }}</template>
@@ -590,6 +701,44 @@ defineExpose({
 
                   {{ t(`dataset.${fieldType[scope.row.fieldType]}`) }}
                 </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="length"
+              :label="t('datasource.length')"
+              v-if="param.id === '0' || sheetObj.newSheet"
+            >
+              <template #default="scope">
+                <el-input-number
+                  :disabled="disabledFieldLength(scope.row)"
+                  v-model="scope.row.length"
+                  autocomplete="off"
+                  step-strictly
+                  class="text-left edit-all-line"
+                  :min="1"
+                  :max="512"
+                  :placeholder="t('common.inputText')"
+                  controls-position="right"
+                  type="number"
+                  @change="lengthChange(scope.row)"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="primaryKey"
+              class-name="checkbox-table"
+              :label="t('datasource.set_key')"
+              width="100"
+              v-if="param.id === '0' || sheetObj.newSheet"
+            >
+              <template #default="scope">
+                <el-checkbox
+                  :key="scope.row.dataKey"
+                  v-model="scope.row.primaryKey"
+                  :disabled="!scope.row.checked"
+                  @change="primaryKeyChange(scope.row)"
+                >
+                </el-checkbox>
               </template>
             </el-table-column>
           </el-table>

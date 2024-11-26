@@ -40,12 +40,16 @@ public class H2EngineProvider extends EngineProvider {
 
         Integer realSize = page * pageNumber < dataList.size() ? page * pageNumber : dataList.size();
         for (String[] strings : dataList.subList((page - 1) * pageNumber, realSize)) {
-            String[] strings1 = new String[strings.length];
+            int length = 0;
+            String[] strings1 = new String[tableFields.stream().filter(TableField::isChecked).toList().size()];
             for (int i = 0; i < strings.length; i++) {
-                if (StringUtils.isEmpty(strings[i])) {
-                    strings1[i] = null;
-                } else {
-                    strings1[i] = strings[i].replace("'", "\\'");
+                if (tableFields.get(i).isChecked()) {
+                    if (StringUtils.isEmpty(strings[i])) {
+                        strings1[length] = null;
+                    } else {
+                        strings1[length] = strings[i].replace("\\", "\\\\").replace("'", "\\'");
+                    }
+                    length++;
                 }
             }
             values.append("('").append(String.join("','", Arrays.asList(strings1)))
@@ -81,6 +85,9 @@ public class H2EngineProvider extends EngineProvider {
         StringBuilder columnFields = new StringBuilder("`");
         StringBuilder key = new StringBuilder();
         for (TableField tableField : tableFields) {
+            if (!tableField.isChecked()) {
+                continue;
+            }
             if (tableField.isPrimaryKey()) {
                 key.append("`").append(tableField.getName()).append("`, ");
             }
