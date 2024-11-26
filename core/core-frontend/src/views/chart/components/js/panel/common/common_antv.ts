@@ -1346,7 +1346,7 @@ export const TOOLTIP_TPL =
 export function getConditions(chart: Chart) {
   const { threshold } = parseJson(chart.senior)
   const annotations = []
-  if (!threshold.enable) return annotations
+  if (!threshold.enable || chart.type === 'area-stack') return annotations
   const conditions = threshold.lineThreshold ?? []
   const yAxisIds = chart.yAxis.map(i => i.id)
   for (const field of conditions) {

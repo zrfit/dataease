@@ -317,7 +317,6 @@ export class StackArea extends Area {
   }
   protected configLabel(chart: Chart, options: AreaOptions): AreaOptions {
     const { label: labelAttr, basicStyle } = parseJson(chart.customAttr)
-    const conditions = getLineConditions(chart)
     if (!labelAttr?.show) {
       return {
         ...options,
@@ -341,10 +340,7 @@ export class StackArea extends Area {
         fill: labelAttr.color,
         fontSize: labelAttr.fontSize
       },
-      formatter: function (param: Datum, point) {
-        point.color =
-          getLineLabelColorByCondition(conditions, param.value, point._origin.quotaList[0]) ||
-          labelAttr.color
+      formatter: function (param: Datum) {
         return valueFormatter(param.value, labelAttr.labelFormatter)
       }
     }
@@ -392,6 +388,8 @@ export class StackArea extends Area {
       ...this.baseOptions,
       isStack: true
     }
+    delete this.propertyInner.threshold
+    this.properties = this.properties.filter(item => item !== 'threshold')
     this.axis.push('extStack')
   }
 }
