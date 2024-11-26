@@ -414,6 +414,7 @@ onMounted(() => {
           class="form-item"
           :class="'form-item-' + themes"
           :label="t('chart.length_limit')"
+          v-if="showProperty('showLengthLimit')"
         >
           <el-input-number
             :disabled="!state.axisForm.axisLabel.show"

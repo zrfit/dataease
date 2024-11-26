@@ -66,7 +66,8 @@ export class HorizontalBar extends G2PlotChartView<BarOptions, Bar> {
       'splitLine',
       'axisForm',
       'axisLabel',
-      'position'
+      'position',
+      'showLengthLimit'
     ]
   }
   axis: AxisType[] = [...BAR_AXIS_TYPE]
