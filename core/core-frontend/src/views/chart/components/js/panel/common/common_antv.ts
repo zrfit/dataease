@@ -1,6 +1,7 @@
 import { hexColorToRGBA, isAlphaColor, isTransparent, parseJson } from '../../util'
 import {
   DEFAULT_BASIC_STYLE,
+  DEFAULT_LEGEND_STYLE,
   DEFAULT_XAXIS_STYLE,
   DEFAULT_YAXIS_EXT_STYLE,
   DEFAULT_YAXIS_STYLE
@@ -32,6 +33,7 @@ import { PositionType } from '@antv/l7-core'
 import { centroid } from '@turf/centroid'
 import type { Plot } from '@antv/g2plot'
 import type { PickOptions } from '@antv/g2plot/lib/core/plot'
+import { defaults } from 'lodash-es'
 
 export function getPadding(chart: Chart): number[] {
   if (chart.drill) {
@@ -281,7 +283,7 @@ export function getLegend(chart: Chart) {
     customStyle = parseJson(chart.customStyle)
     // legend
     if (customStyle.legend) {
-      const l = JSON.parse(JSON.stringify(customStyle.legend))
+      const l = defaults(JSON.parse(JSON.stringify(customStyle.legend)), DEFAULT_LEGEND_STYLE)
       if (l.show) {
         let offsetX, offsetY, position
         const orient = l.orient
@@ -345,16 +347,17 @@ export function getLegend(chart: Chart) {
           marker: {
             symbol: legendSymbol,
             style: {
-              r: 4
+              r: l.size
             }
           },
-          itemHeight: l.fontSize + 4,
+          itemHeight: (l.fontSize > l.size * 2 ? l.fontSize : l.size * 2) + 4,
           radio: false,
           pageNavigator: {
             marker: {
               style: {
                 fill: 'rgba(0,0,0,0.65)',
-                stroke: 'rgba(192,192,192,0.52)'
+                stroke: 'rgba(192,192,192,0.52)',
+                size: l.size * 2
               }
             },
             text: {

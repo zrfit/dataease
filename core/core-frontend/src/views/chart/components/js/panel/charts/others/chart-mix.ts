@@ -15,7 +15,16 @@ import {
   TOOLTIP_TPL
 } from '../../common/common_antv'
 import { flow, hexColorToRGBA, parseJson } from '@/views/chart/components/js/util'
-import { cloneDeep, isEmpty, defaultTo, map, filter, union, defaultsDeep } from 'lodash-es'
+import {
+  cloneDeep,
+  isEmpty,
+  defaultTo,
+  map,
+  filter,
+  union,
+  defaultsDeep,
+  defaults
+} from 'lodash-es'
 import { valueFormatter } from '@/views/chart/components/js/formatter'
 import {
   CHART_MIX_AXIS_TYPE,
@@ -26,7 +35,7 @@ import {
 } from './chart-mix-common'
 import type { Datum } from '@antv/g2plot/esm/types/common'
 import { useI18n } from '@/hooks/web/useI18n'
-import { DEFAULT_LABEL } from '@/views/chart/components/editor/util/chart'
+import { DEFAULT_LABEL, DEFAULT_LEGEND_STYLE } from '@/views/chart/components/editor/util/chart'
 import type { Options } from '@antv/g2plot/esm'
 import { Group } from '@antv/g-canvas'
 
@@ -580,11 +589,19 @@ export class ColumnLineMix extends G2PlotChartView<DualAxesOptions, DualAxes> {
           }
         }
       }
-      const size = Math.sqrt(o.legend.pageNavigator?.text?.style?.fontSize ?? 16)
+
+      const customStyle = parseJson(chart.customStyle)
+      let size
+      if (customStyle && customStyle.legend) {
+        size = defaults(JSON.parse(JSON.stringify(customStyle.legend)), DEFAULT_LEGEND_STYLE).size
+      } else {
+        size = DEFAULT_LEGEND_STYLE.size
+      }
+
       o.legend.marker.style = style => {
         const fill = style.fill ?? style.stroke
         return {
-          r: size < 4 ? 4 : size,
+          r: size,
           fill
         }
       }
