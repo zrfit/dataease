@@ -891,20 +891,42 @@ const marginBottom = computed<string | 0>(() => {
 const iconSize = computed<string>(() => {
   return 16 * scale.value + 'px'
 })
+/**
+ * 修改透明度
+ * 边框透明度为0时会是存色，顾配置低透明度
+ * @param {boolean} isBorder 是否为边框
+ */
+const modifyAlpha = isBorder => {
+  const { backgroundColor, backgroundType, backgroundImageEnable, backgroundColorSelect } =
+    element.value.commonBackground
+  // 透明
+  const transparent = 'rgba(0,0,0,0.01)'
+  // 背景图时，设置透明度为0.01
+  if (backgroundType === 'outerImage' && backgroundImageEnable) return transparent
+  // hex转rgba
+  if (backgroundColor.includes('#'))
+    return isBorder || !backgroundColorSelect ? transparent : backgroundColor
+  const match = backgroundColor.match(/rgba\((\d+), (\d+), (\d+), (\d+|0.\d+)\)/)
+  if (!match) return backgroundColor
+  const [r, g, b, a] = match.slice(1).map(Number)
+  // 边框或者不设置背景色时，设置透明度为0.01，否则原透明度
+  return `rgba(${r}, ${g}, ${b}, ${!backgroundColorSelect || isBorder ? 0.01 : a})`
+}
 
 const titleIconStyle = computed(() => {
+  const bgColor = modifyAlpha(false)
+  const borderColor = modifyAlpha(true)
   // 不显示标题时，图标的样式
   const style = {
     position: 'absolute',
-    color: 'rgb(255, 252, 252)',
-    position: 'absolute',
-    border: '1px solid rgb(173, 170, 170)',
-    'background-color': 'rgba(173, 170, 170)',
+    border: `1px solid ${borderColor}`,
+    'background-color': bgColor,
     'border-radius': '2px',
     padding: '0 2px 0 2px',
-    top: '2px',
     'z-index': 1,
-    left: '6px'
+    top: '2px',
+    left: '2px',
+    ...(trackMenu.value.length ? {} : { display: 'none' })
   }
   return {
     color: canvasStyleData.value.component.seniorStyleSetting.linkageIconColor,
