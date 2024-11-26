@@ -2585,6 +2585,8 @@ export default {
     column_name: '欄位名稱'
   },
   visualization: {
+    component_id: '組件ID',
+    view_id: '圖表ID',
     resource_create_tips: '從頂部工具欄中選擇組件，添加到這裡創建。',
     component_select_tips: '請選擇組件...',
     border_style_dotted: '點線',

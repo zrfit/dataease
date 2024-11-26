@@ -4,13 +4,21 @@ import { ElIcon, ElMessage } from 'element-plus-secondary'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { storeToRefs } from 'pinia'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
+import Icon from '../icon-custom/src/Icon.vue'
 const dvMainStore = dvMainStoreWithOut()
 const { canvasCollapse } = storeToRefs(dvMainStore)
 let componentNameEdit = ref(false)
 let inputComponentName = ref('')
 let componentNameInputAttr = ref(null)
+import dvInfoSvg from '@/assets/svg/dv-info.svg'
+import { useI18n } from '@/hooks/web/useI18n'
 const snapshotStore = snapshotStoreWithOut()
+const { t } = useI18n()
 const props = defineProps({
+  element: {
+    required: false,
+    default: {}
+  },
   scrollWidth: {
     required: false,
     type: Number,
@@ -36,6 +44,7 @@ const props = defineProps({
     type: String,
     default: 'defaultSide'
   },
+
   view: {
     type: Object as PropType<ChartObj>,
     required: false
@@ -115,6 +124,30 @@ const onComponentNameChange = () => {
         @dblclick="editComponentName"
       >
         {{ isViewTitle ? view.title : title }}
+        <el-popover
+          show-arrow
+          :offset="8"
+          :effect="themes"
+          placement="bottom"
+          width="200"
+          trigger="click"
+        >
+          <template #reference>
+            <span>
+              <el-icon
+                v-show="element && element['id']"
+                style="margin: 2px 0 0 4px; cursor: pointer"
+                ><Icon><dvInfoSvg class="svg-icon" /></Icon
+              ></el-icon>
+            </span>
+          </template>
+          <div style="margin-bottom: 4px; font-size: 14px">
+            {{ t('visualization.component_id') }}
+          </div>
+          <div style="font-size: 14px">
+            {{ element['id'] }}
+          </div>
+        </el-popover>
       </div>
       <el-icon
         :title="title"
@@ -262,6 +295,7 @@ const onComponentNameChange = () => {
   font-size: 14px !important;
   overflow: hidden;
   cursor: pointer;
+  display: flex;
   input {
     position: absolute;
     left: 0;
