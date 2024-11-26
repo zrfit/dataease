@@ -68,7 +68,8 @@ export class Waterfall extends G2PlotChartView<WaterfallOptions, G2Waterfall> {
       'splitLine',
       'axisForm',
       'axisLabel',
-      'axisLabelFormatter'
+      'axisLabelFormatter',
+      'showLengthLimit'
     ]
   }
   axis: AxisType[] = ['xAxis', 'yAxis', 'filter', 'drill', 'extLabel', 'extTooltip']
