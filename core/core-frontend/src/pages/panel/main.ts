@@ -199,7 +199,6 @@ class DataEaseBi {
     embeddedStore.setOuterParams(null)
     embeddedStore.setSuffixId(null)
     embeddedStore.setToken(null)
-    embeddedStore.setBaseUrl(null)
     embeddedStore.setChartId(null)
     embeddedStore.clearState()
     this.vm.unmount()
@@ -208,7 +207,6 @@ class DataEaseBi {
     this.busiFlag = null
     this.outerParams = null
     this.suffixId = null
-    this.baseUrl = null
     this.dvId = null
     this.pid = null
     this.chartId = null
