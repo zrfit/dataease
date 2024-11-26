@@ -615,6 +615,12 @@ public class DatasetDataManage {
             if (ObjectUtils.isNotEmpty(dataList)) {
                 List<String> tmpData = dataList.stream().map(ele -> (ObjectUtils.isNotEmpty(ele) && ele.length > 0) ? ele[0] : null).collect(Collectors.toList());
                 if (!CollectionUtils.isEmpty(tmpData)) {
+                    String val = tmpData.get(0);
+                    if (field.getDeType() == 3 && StringUtils.containsIgnoreCase(val, "E")) {
+                        BigDecimal bigDecimal = new BigDecimal(val);
+                        val = String.format("%.8f", bigDecimal);
+                        tmpData.set(0, val);
+                    }
                     if (desensitizationList.keySet().contains(field.getDataeaseName())) {
                         for (int i = 0; i < tmpData.size(); i++) {
                             previewData.add(ChartDataBuild.desensitizationValue(desensitizationList.get(field.getDataeaseName()), tmpData.get(i)));
