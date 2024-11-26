@@ -3292,13 +3292,14 @@ export default {
     empty_desc: '请在左侧输入信息然后保存'
   },
   setting_basic: {
+    third_platform_settings: '第三方平台设置',
     autoCreateUser: '第三方自动创建用户',
     dsIntervalTime: '数据源检测时间间隔',
     dsExecuteTime: '数据源检测频率',
-    frontTimeOut: '请求超时时间（秒）',
-    logLiveTime: '操作日志保留时间（天）',
-    thresholdLogLiveTime: '阈值告警记录保留时间（天）',
-    exportFileLiveTime: '后台导出文件保留时间（天）',
+    frontTimeOut: '请求超时时间 (秒)',
+    logLiveTime: '操作日志保留时间 (天)',
+    thresholdLogLiveTime: '阈值告警记录保留时间 (天)',
+    exportFileLiveTime: '后台导出文件保留时间 (天)',
     platformOid: '第三方平台用户组织',
     platformRid: '第三方平台用户角色',
     pwdStrategy: '开启密码策略',
@@ -3310,8 +3311,8 @@ export default {
     defaultSort: '资源默认排序方式',
     defaultOpen: '页面打开方式',
     loginLimit: '限制登录',
-    loginLimitRate: '限制登录失败次数(次)',
-    loginLimitTime: '限制登录失败时间(分)'
+    loginLimitRate: '限制登录失败次数 (次)',
+    loginLimitTime: '限制登录失败时间 (分)'
   },
   resource_sort: {
     time_asc: '按创建时间升序',

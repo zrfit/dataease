@@ -3290,13 +3290,14 @@ export default {
     empty_desc: '請在左側輸入訊息然後儲存'
   },
   setting_basic: {
+    third_platform_settings: '第三方平台設置',
     autoCreateUser: '第三方自動建立使用者',
     dsIntervalTime: '資料來源偵測時間間隔',
     dsExecuteTime: '資料來源偵測頻率',
-    frontTimeOut: '請求超時時間（秒）',
-    logLiveTime: '操作日誌保留時間（天）',
-    thresholdLogLiveTime: '閾值警告記錄保留時間（天）',
-    exportFileLiveTime: '後台匯出檔案保留時間（天）',
+    frontTimeOut: '請求超時時間 (秒)',
+    logLiveTime: '操作日誌保留時間 (天)',
+    thresholdLogLiveTime: '閾值警告記錄保留時間 (天)',
+    exportFileLiveTime: '後台匯出檔案保留時間 (天)',
     platformOid: '第三方平台使用者組織',
     platformRid: '第三方平台使用者角色',
     pwdStrategy: '開啟密碼策略',
@@ -3308,8 +3309,8 @@ export default {
     defaultSort: '資源預設排序方式',
     defaultOpen: '頁面開啟方式',
     loginLimit: '限制登入',
-    loginLimitRate: '限制登入失敗次數(次)',
-    loginLimitTime: '限制登入失敗時間(分)'
+    loginLimitRate: '限制登入失敗次數 (次)',
+    loginLimitTime: '限制登入失敗時間 (分)'
   },
   resource_sort: {
     time_asc: '按建立時間升序',

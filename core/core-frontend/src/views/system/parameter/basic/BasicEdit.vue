@@ -113,6 +113,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
 const resetForm = (formEl: FormInstance | undefined) => {
   state.settingList = []
+  settingList.value = []
   if (!formEl) return
   formEl.resetFields()
   dialogVisible.value = false
@@ -128,8 +129,19 @@ const showLoading = () => {
 const closeLoading = () => {
   loadingInstance.value?.close()
 }
-
-const edit = (list, orgOptions, roleOptions, loginOptions, sortOptions, openOptions) => {
+const title = ref()
+const settingList = ref([])
+const edit = (
+  list,
+  orgOptions,
+  roleOptions,
+  loginOptions,
+  sortOptions,
+  openOptions,
+  titleVal,
+  settingListVal
+) => {
+  title.value = titleVal
   state.orgOptions = orgOptions || []
   state.roleOptions = roleOptions || []
   state.loginOptions = loginOptions || []
@@ -185,6 +197,8 @@ const edit = (list, orgOptions, roleOptions, loginOptions, sortOptions, openOpti
     state.form[item['pkey']] = pval || state.form[item['pkey']]
     return item
   })
+
+  settingList.value = state.settingList.filter(ele => settingListVal.includes(ele.pkey))
   dialogVisible.value = true
 }
 const loadRoleOptions = async () => {
@@ -222,7 +236,7 @@ defineExpose({
 
 <template>
   <el-drawer
-    :title="t('system.basic_settings')"
+    :title="title"
     v-model="dialogVisible"
     custom-class="basic-param-drawer"
     size="600px"
@@ -237,7 +251,7 @@ defineExpose({
       label-position="top"
     >
       <el-form-item
-        v-for="item in state.settingList"
+        v-for="item in settingList"
         :key="item.pkey"
         :prop="item.pkey"
         :class="{ 'setting-hidden-item': item.pkey === 'dsExecuteTime' }"

@@ -3376,6 +3376,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     empty_desc: 'Please enter information on the left and save'
   },
   setting_basic: {
+    third_platform_settings: 'Third-party platform settings',
     autoCreateUser: 'Third party automatically creates users',
     dsIntervalTime: 'Data source detection time interval',
     dsExecuteTime: 'Data source detection frequency',
