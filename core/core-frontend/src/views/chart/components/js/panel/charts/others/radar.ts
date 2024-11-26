@@ -5,8 +5,9 @@ import { configPlotTooltipEvent, getPadding } from '../../common/common_antv'
 import { valueFormatter } from '../../../formatter'
 import type { Datum } from '@antv/g2plot/esm/types/common'
 import { useI18n } from '@/hooks/web/useI18n'
-import { DEFAULT_LABEL } from '@/views/chart/components/editor/util/chart'
+import { DEFAULT_LABEL, DEFAULT_LEGEND_STYLE } from '@/views/chart/components/editor/util/chart'
 import { Group } from '@antv/g-canvas'
+import { defaults } from 'lodash-es'
 
 const { t } = useI18n()
 
@@ -242,9 +243,16 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
     if (!optionTmp.legend) {
       return optionTmp
     }
+    const customStyle = parseJson(chart.customStyle)
+    let size
+    if (customStyle && customStyle.legend) {
+      size = defaults(JSON.parse(JSON.stringify(customStyle.legend)), DEFAULT_LEGEND_STYLE).size
+    } else {
+      size = DEFAULT_LEGEND_STYLE.size
+    }
     optionTmp.legend.marker.style = style => {
       return {
-        r: 4,
+        r: size,
         fill: style.stroke
       }
     }

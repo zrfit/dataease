@@ -122,6 +122,7 @@ declare interface ChartLegendStyle {
    * 字体大小
    */
   fontSize: number
+  size: number
 }
 
 /**

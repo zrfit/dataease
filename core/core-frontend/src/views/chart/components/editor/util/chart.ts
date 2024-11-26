@@ -521,7 +521,8 @@ export const DEFAULT_LEGEND_STYLE: ChartLegendStyle = {
   orient: 'horizontal',
   icon: 'circle',
   color: '#333333',
-  fontSize: 12
+  fontSize: 12,
+  size: 4
 }
 
 export const DEFAULT_LEGEND_STYLE_BASE: ChartLegendStyle = {
@@ -531,7 +532,8 @@ export const DEFAULT_LEGEND_STYLE_BASE: ChartLegendStyle = {
   orient: 'horizontal',
   icon: 'circle',
   color: '#333333',
-  fontSize: 12
+  fontSize: 12,
+  size: 4
 }
 
 export const DEFAULT_LEGEND_STYLE_LIGHT: ChartLegendStyle = {

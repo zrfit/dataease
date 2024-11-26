@@ -17,7 +17,7 @@ import {
   parseJson,
   setUpGroupSeriesColor
 } from '@/views/chart/components/js/util'
-import { cloneDeep, isEmpty } from 'lodash-es'
+import { cloneDeep, defaults, isEmpty } from 'lodash-es'
 import { valueFormatter } from '@/views/chart/components/js/formatter'
 import {
   LINE_AXIS_TYPE,
@@ -26,7 +26,7 @@ import {
 } from '@/views/chart/components/js/panel/charts/line/common'
 import type { Datum } from '@antv/g2plot/esm/types/common'
 import { useI18n } from '@/hooks/web/useI18n'
-import { DEFAULT_LABEL } from '@/views/chart/components/editor/util/chart'
+import { DEFAULT_LABEL, DEFAULT_LEGEND_STYLE } from '@/views/chart/components/editor/util/chart'
 import { clearExtremum, extremumEvt } from '@/views/chart/components/js/extremumUitl'
 import { Group } from '@antv/g-canvas'
 
@@ -343,12 +343,22 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
         legend
       }
     }
+
+    const customStyle = parseJson(chart.customStyle)
+    let size
+    if (customStyle && customStyle.legend) {
+      size = defaults(JSON.parse(JSON.stringify(customStyle.legend)), DEFAULT_LEGEND_STYLE).size
+    } else {
+      size = DEFAULT_LEGEND_STYLE.size
+    }
+
     optionTmp.legend.marker.style = style => {
       return {
-        r: 4,
+        r: size,
         fill: style.stroke
       }
     }
+    console.log(optionTmp)
     return optionTmp
   }
   protected setupOptions(chart: Chart, options: LineOptions): LineOptions {
