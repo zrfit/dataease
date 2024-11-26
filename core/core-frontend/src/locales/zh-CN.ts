@@ -3312,6 +3312,7 @@ export default {
     empty_desc: '请在左侧输入信息然后保存'
   },
   setting_basic: {
+    default_open_tips: '涉及仪表板、数据大屏等资源的新建与编辑界面',
     third_platform_settings: '第三方平台设置',
     autoCreateUser: '第三方自动创建用户',
     dsIntervalTime: '数据源检测时间间隔',

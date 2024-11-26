@@ -68,6 +68,10 @@ const pvpOptions = [
 ]
 const tooltips = [
   {
+    key: 'setting_basic.defaultOpen',
+    val: t('setting_basic.default_open_tips')
+  },
+  {
     key: 'setting_basic.frontTimeOut',
     val: t('system.to_take_effect')
   },
