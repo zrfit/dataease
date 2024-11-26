@@ -3,7 +3,7 @@
     ref="canvasCacheDialogRef"
     :append-to-body="true"
     v-model="dialogShow"
-    width="340px"
+    width="360px"
     :show-close="false"
     trigger="click"
   >

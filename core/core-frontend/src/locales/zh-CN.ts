@@ -2587,6 +2587,9 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    resource_create_tips: '从顶部工具栏中选择组件，添加到这里创建',
+    component_select_tips: '请选择组件...',
+    border_style_dotted: '点线',
     app_export: '应用导出',
     app_name: '应用名称',
     app_version: '应用版本号',

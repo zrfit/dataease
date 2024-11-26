@@ -34,9 +34,9 @@ const styleMounted = ref({
 })
 
 const borderStyleList = [
-  { name: '实线', value: 'solid' },
-  { name: '虚线', value: 'dashed' },
-  { name: '点线', value: 'dotted' }
+  { name: t('visualization.border_style_solid'), value: 'solid' },
+  { name: t('visualization.border_style_dashed'), value: 'dashed' },
+  { name: t('visualization.border_style_dotted'), value: 'dotted' }
 ]
 
 const styleInit = () => {
