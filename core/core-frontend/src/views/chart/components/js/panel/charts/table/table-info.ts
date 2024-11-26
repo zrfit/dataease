@@ -264,14 +264,16 @@ export class TableInfo extends S2ChartView<TableSheet> {
           ev.colsHierarchy.height = maxHeight
           newChart.store.set('autoCalcHeight', undefined)
         } else {
-          const { value, width } = ev.colLeafNodes[0]
-          calculateHeaderHeight(
-            { info: { meta: { value }, resizedWidth: width } },
-            newChart,
-            tableHeader,
-            basicStyle,
-            ev
-          )
+          if (ev.colLeafNodes?.length) {
+            const { value, width } = ev.colLeafNodes[0]
+            calculateHeaderHeight(
+              { info: { meta: { value }, resizedWidth: width } },
+              newChart,
+              tableHeader,
+              basicStyle,
+              ev
+            )
+          }
         }
       })
     }

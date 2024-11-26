@@ -1793,6 +1793,9 @@ export const configSummaryRow = (chart, s2Options, newData, tableHeader, basicSt
   )
   newData.push(summaryObj)
   s2Options.dataCell = viewMeta => {
+    // 配置文本自动换行参数
+    viewMeta.autoWrap = basicStyle.autoWrap
+    viewMeta.maxLines = basicStyle.maxLines
     if (viewMeta.rowIndex !== newData.length - 1) {
       return new CustomDataCell(viewMeta, viewMeta.spreadsheet)
     }
