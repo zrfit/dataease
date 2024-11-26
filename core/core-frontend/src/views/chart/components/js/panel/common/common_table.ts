@@ -28,7 +28,7 @@ import {
   type PivotSheet,
   renderPolygon,
   renderText,
-  S2DataConfig,
+  S2DataConfig, S2Event,
   S2Options,
   S2Theme,
   SERIES_NUMBER_FIELD,
@@ -40,13 +40,15 @@ import {
   TableDataCell,
   updateShapeAttr,
   ViewMeta
-} from '@antv/s2'
+} from "@antv/s2";
 import { cloneDeep, filter, find, intersection, keys, merge, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
 import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vue'
 import Exceljs from 'exceljs'
 import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus-secondary'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 export function getCustomTheme(chart: Chart): S2Theme {
   const headerColor = hexColorToRGBA(
@@ -1747,4 +1749,93 @@ const getWrapTextHeight = (wrapText, textStyle, spreadsheet, maxLines) => {
   // 行数
   const lines = wrapText.split('\n').length
   return Math.min(lines, maxLines) * maxHeight
+}
+
+/**
+ * 设置汇总行
+ * @param chart
+ * @param s2Options
+ * @param newData
+ * @param tableHeader
+ * @param basicStyle
+ * @param showSummary
+ */
+export const configSummaryRow = (chart, s2Options, newData, tableHeader, basicStyle, showSummary) =>{
+  if (!showSummary) return
+  // 设置汇总行高度和表头一致
+  const heightByField = {}
+  heightByField[newData.length] = tableHeader.tableTitleHeight
+  s2Options.style.rowCfg = { heightByField }
+  // 计算汇总加入到数据里，冻结最后一行
+  s2Options.frozenTrailingRowCount = 1
+  const yAxis = chart.yAxis
+  const xAxis = chart.xAxis
+  const summaryObj = newData.reduce(
+    (p, n) => {
+      if (chart.type === 'table-info') {
+        xAxis
+          .filter(axis => [2, 3, 4].includes(axis.deType))
+          .forEach(axis => {
+            p[axis.dataeaseName] =
+              (parseFloat(n[axis.dataeaseName]) || 0) + (parseFloat(p[axis.dataeaseName]) || 0)
+          })
+      } else {
+        yAxis.forEach(axis => {
+          p[axis.dataeaseName] =
+            (parseFloat(n[axis.dataeaseName]) || 0) + (parseFloat(p[axis.dataeaseName]) || 0)
+        })
+      }
+      return p
+    },
+    { SUMMARY: true }
+  )
+  newData.push(summaryObj)
+  s2Options.dataCell = viewMeta => {
+    if (viewMeta.rowIndex !== newData.length - 1) {
+      return new CustomDataCell(viewMeta, viewMeta.spreadsheet)
+    }
+    if (viewMeta.colIndex === 0) {
+      if (tableHeader.showIndex) {
+        viewMeta.fieldValue = basicStyle.summaryLabel ?? t('chart.total_show')
+      } else {
+        if (xAxis.length) {
+          viewMeta.fieldValue = basicStyle.summaryLabel ?? t('chart.total_show')
+        }
+      }
+    }
+    return new SummaryCell(viewMeta, viewMeta.spreadsheet)
+  }
+}
+
+/**
+ * 汇总行样式,紧贴在单元格后面
+ * @param newChart
+ * @param newData
+ * @param tableCell
+ * @param tableHeader
+ * @param showSummary
+ */
+export const summaryRowStyle = (newChart, newData, tableCell, tableHeader, showSummary) => {
+  if (!showSummary) return
+  newChart.on(S2Event.LAYOUT_BEFORE_RENDER, () => {
+    const totalHeight =
+      tableHeader.tableTitleHeight * 2 + tableCell.tableItemHeight * (newData.length - 1)
+    if (totalHeight < newChart.options.height) {
+      // 6 是阴影高度
+      newChart.options.height =
+        totalHeight < newChart.options.height - 6 ? totalHeight + 6 : totalHeight
+    }
+  })
+}
+
+export class SummaryCell extends CustomDataCell {
+  getTextStyle() {
+    const textStyle = cloneDeep(this.theme.colCell.bolderText)
+    textStyle.textAlign = this.theme.dataCell.text.textAlign
+    return textStyle
+  }
+  getBackgroundColor() {
+    const { backgroundColor, backgroundColorOpacity } = this.theme.colCell.cell
+    return { backgroundColor, backgroundColorOpacity }
+  }
 }

@@ -20,7 +20,9 @@ import {
   CustomTableColCell,
   getRowIndex,
   calculateHeaderHeight,
-  SortTooltip
+  SortTooltip,
+  configSummaryRow,
+  summaryRowStyle
 } from '@/views/chart/components/js/panel/common/common_table'
 
 const { t } = useI18n()
@@ -68,7 +70,9 @@ export class TableInfo extends S2ChartView<TableSheet> {
       'alpha',
       'tablePageMode',
       'showHoverStyle',
-      'autoWrap'
+      'autoWrap',
+      'showSummary',
+      'summaryLabel'
     ],
     'table-cell-selector': [
       ...TABLE_EDITOR_PROPERTY_INNER['table-cell-selector'],
@@ -240,8 +244,12 @@ export class TableInfo extends S2ChartView<TableSheet> {
         return new CustomTableColCell(node, sheet, config)
       }
     }
+    // 总计
+    configSummaryRow(chart, s2Options, newData, tableHeader, basicStyle, basicStyle.showSummary)
     // 开始渲染
     const newChart = new TableSheet(containerDom, s2DataConfig, s2Options)
+    // 总计紧贴在单元格后面
+    summaryRowStyle(newChart, newData, tableCell, tableHeader, basicStyle.showSummary)
     // 开启自动换行
     if (basicStyle.autoWrap) {
       // 调整表头宽度时，计算表头高度
