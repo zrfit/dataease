@@ -3309,6 +3309,7 @@ export default {
     empty_desc: '請在左側輸入訊息然後儲存'
   },
   setting_basic: {
+    default_open_tips: '涉及儀表板、數據大屏等資源的新建與編輯界面',
     third_platform_settings: '第三方平台設置',
     autoCreateUser: '第三方自動建立使用者',
     dsIntervalTime: '資料來源偵測時間間隔',
