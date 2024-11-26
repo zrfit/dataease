@@ -989,16 +989,16 @@ public class DatasourceServer implements DatasourceApi {
         datasources.forEach(datasource -> {
             if (!syncDsIds.contains(datasource.getId())) {
                 syncDsIds.add(datasource.getId());
+                commonThreadPool.addTask(() -> {
+                    try {
+                        LicenseUtil.validate();
+                        validate(datasource);
+                    } catch (Exception e) {
+                    } finally {
+                        syncDsIds.removeIf(id -> id.equals(datasource.getId()));
+                    }
+                });
             }
-            commonThreadPool.addTask(() -> {
-                try {
-                    LicenseUtil.validate();
-                    validate(datasource);
-                } catch (Exception e) {
-                } finally {
-                    syncDsIds.removeIf(id -> id.equals(datasource.getId()));
-                }
-            });
         });
     }
 
