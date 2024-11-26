@@ -174,7 +174,9 @@ export function getCustomTheme(chart: Chart): S2Theme {
     },
     scrollBar: {
       thumbColor: scrollBarColor,
-      thumbHoverColor: scrollBarHoverColor
+      thumbHoverColor: scrollBarHoverColor,
+      size: 8,
+      hoverSize: 12
     }
   }
 
