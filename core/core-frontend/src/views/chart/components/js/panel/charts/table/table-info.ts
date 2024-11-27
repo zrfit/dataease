@@ -181,7 +181,7 @@ export class TableInfo extends S2ChartView<TableSheet> {
         return p
       }, {})
     }
-    if (tableCell.tableFreeze) {
+    if (tableCell.tableFreeze && !tableCell.mergeCells) {
       s2Options.frozenColCount = tableCell.tableColumnFreezeHead ?? 0
       s2Options.frozenRowCount = tableCell.tableRowFreezeHead ?? 0
     }
@@ -212,7 +212,7 @@ export class TableInfo extends S2ChartView<TableSheet> {
         }
       }
       // 配置文本自动换行参数
-      viewMeta.autoWrap = basicStyle.autoWrap
+      viewMeta.autoWrap = tableCell.mergeCells ? false : basicStyle.autoWrap
       viewMeta.maxLines = basicStyle.maxLines
       return new CustomDataCell(viewMeta, viewMeta?.spreadsheet)
     }
@@ -239,7 +239,7 @@ export class TableInfo extends S2ChartView<TableSheet> {
       this.configHeaderInteraction(chart, s2Options)
       s2Options.colCell = (node, sheet, config) => {
         // 配置文本自动换行参数
-        node.autoWrap = basicStyle.autoWrap
+        node.autoWrap = tableCell.mergeCells ? false : basicStyle.autoWrap
         node.maxLines = basicStyle.maxLines
         return new CustomTableColCell(node, sheet, config)
       }
@@ -251,7 +251,7 @@ export class TableInfo extends S2ChartView<TableSheet> {
     // 总计紧贴在单元格后面
     summaryRowStyle(newChart, newData, tableCell, tableHeader, basicStyle.showSummary)
     // 开启自动换行
-    if (basicStyle.autoWrap) {
+    if (basicStyle.autoWrap && !tableCell.mergeCells) {
       // 调整表头宽度时，计算表头高度
       newChart.on(S2Event.LAYOUT_RESIZE_COL_WIDTH, info => {
         calculateHeaderHeight(info, newChart, tableHeader, basicStyle, null)
