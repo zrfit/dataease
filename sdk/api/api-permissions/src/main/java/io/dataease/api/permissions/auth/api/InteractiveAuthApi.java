@@ -3,10 +3,7 @@ package io.dataease.api.permissions.auth.api;
 
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
-import io.dataease.api.permissions.auth.dto.BusiPerCheckDTO;
-import io.dataease.api.permissions.auth.dto.BusiResourceCreator;
-import io.dataease.api.permissions.auth.dto.BusiResourceEditor;
-import io.dataease.api.permissions.auth.dto.BusiResourceMover;
+import io.dataease.api.permissions.auth.dto.*;
 import io.dataease.api.permissions.auth.vo.PermissionValVO;
 import io.dataease.api.permissions.auth.vo.ResourceNodeVO;
 import io.dataease.model.BusiNodeRequest;
@@ -89,4 +86,7 @@ public interface InteractiveAuthApi {
     String OrgNameForResource(ExportTaskDTO exportTaskDTO);
 
     void editResourceExtraFlag(BusiResourceEditor editor);
+
+    @PostMapping("/batchAuthorize")
+    void batchAuthorize(@RequestBody BusiBatchAuthorizeRequest request);
 }
