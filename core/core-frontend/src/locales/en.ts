@@ -2650,6 +2650,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     column_name: 'Field name'
   },
   visualization: {
+    back_parent: 'Back to Parent',
+    ext_fullscreen: 'Exit Fullscreen',
     no_edit_auth: 'No edit permissions for the target resource, please contact the administrator!',
     select_target_dashboard_tips: 'Please select the target dashboard',
     select_target_screen_tips: 'Please select the target data screen',

@@ -2588,6 +2588,8 @@ export default {
     column_name: '欄位名稱'
   },
   visualization: {
+    back_parent: '返回上一級',
+    ext_fullscreen: '退出全屏',
     no_edit_auth: '目標資源沒有編輯權限，請聯繫管理員！',
     select_target_dashboard_tips: '請選擇目標儀表板',
     select_target_screen_tips: '請選擇目標數據大屏',
