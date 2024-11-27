@@ -113,7 +113,7 @@ export function colorRgb(color, opacity) {
 }
 
 export const customAttrTrans = {
-  basicStyle: ['barWidth', 'lineWidth', 'lineSymbolSize'],
+  basicStyle: ['barWidth', 'lineWidth', 'lineSymbolSize', 'tableColumnWidth'],
   tableHeader: ['tableTitleFontSize', 'tableTitleHeight'],
   tableCell: ['tableItemFontSize', 'tableItemHeight'],
   misc: [
