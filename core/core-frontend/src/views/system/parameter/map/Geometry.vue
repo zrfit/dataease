@@ -593,13 +593,7 @@ const mapOption: ChoroplethOptions = {
     lineWidth: 0.6,
     lineOpacity: 1
   },
-  label: {
-    field: 'name',
-    style: {
-      fill: 'black',
-      textAnchor: 'center'
-    }
-  },
+  label: false,
   state: {
     active: { stroke: 'green', lineWidth: 1 }
   },
