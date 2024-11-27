@@ -11,7 +11,7 @@
     }"
   >
     <div class="bar-first">
-      <el-tooltip :content="state.barActive ? '收起' : '展开'">
+      <el-tooltip :content="state.barActive ? t('visualization.fold') : t('visualization.expand')">
         <el-icon style="width: 16px; height: 16px" @click="firstBarClick">
           <Icon name="icon_down_right_outlined" v-if="state.barActive">
             <icon_down_right_outlined />

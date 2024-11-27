@@ -772,7 +772,7 @@ const init = viewItem => {
   // 获取当前过滤条件明细 过滤原则：1.在当前仪表板或者大屏 2.作用于当前图表
   state.linkJumpCurFilterFieldArray = []
   componentData.value.forEach(componentItem => {
-    if (componentItem.component === 'VQuery') {
+    if (componentItem.component === 'VQuery' && componentItem.propValue instanceof Array) {
       componentItem.propValue.forEach(filterItem => {
         if (filterItem.checkedFields.includes(state.viewId)) {
           state.linkJumpCurFilterFieldArray.push({
@@ -818,7 +818,7 @@ const init = viewItem => {
       const firstNode = state.linkJumpInfoArray[0]
       state.initState = true
       nextTick(() => {
-        linkJumpInfoTree.value.setCurrentKey(firstNode.sourceFieldId)
+        linkJumpInfoTree.value.setCurrentKey(firstNode?.sourceFieldId)
         nodeClick(firstNode)
       })
     })
@@ -923,7 +923,7 @@ const getPanelViewList = dvId => {
     }
     // 增加过滤组件匹配
     JSON.parse(rsp.data.bashComponentData).forEach(componentItem => {
-      if (componentItem.component === 'VQuery') {
+      if (componentItem.component === 'VQuery' && componentItem.propValue instanceof Array) {
         componentItem.propValue.forEach(filterItem => {
           state.currentLinkPanelViewArray.push({
             id: filterItem.id,
