@@ -3,6 +3,7 @@ import { computed, nextTick, onMounted, PropType, reactive, ref, watch } from 'v
 import { getGeoJsonFile, parseJson } from '../../../js/util'
 import { forEach, debounce } from 'lodash-es'
 import { toRefs } from 'vue'
+import { getCustomGeoArea } from '@/api/map'
 
 const props = defineProps({
   chart: {
@@ -70,7 +71,11 @@ const getAreaMapping = async areaId => {
     return {}
   }
   if (areaId.startsWith('custom_')) {
-    areaId = '156'
+    const areaList = (await getCustomGeoArea(areaId)).data
+    return areaList.reduce((p, n) => {
+      p[n.name] = n.name
+      return p
+    }, {})
   }
   const geoJson = await getGeoJsonFile(areaId)
   return geoJson.features.reduce((p, n) => {
