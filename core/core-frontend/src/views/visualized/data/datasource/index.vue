@@ -919,25 +919,29 @@ const handleClick = (tabName: TabPaneName) => {
   switch (tabName) {
     case 'config':
       tableData.value = []
-      listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
-        tabList.value = res.data.map(ele => {
-          const { name, tableName } = ele
-          return {
-            value: name,
-            label: tableName
-          }
-        })
-        if (!!tabList.value.length && !activeTab.value) {
-          activeTab.value = tabList.value[0].value
-          if (nodeInfo.type === 'Excel') {
+      if (nodeInfo.type === 'Excel') {
+        listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
+          tabList.value = res.data.map(ele => {
+            const { name, tableName } = ele
+            return {
+              value: name,
+              label: tableName
+            }
+          })
+          if (!!tabList.value.length && !activeTab.value) {
+            activeTab.value = tabList.value[0].value
             handleTabClick(activeTab)
           }
-        }
-        tableData.value = res.data
-      })
+          tableData.value = res.data
+        })
+      }
       break
     case 'table':
-      initSearch()
+      tableData.value = []
+      listDatasourceTables({ datasourceId: nodeInfo.id }).then(res => {
+        tableData.value = res.data
+        initSearch()
+      })
       break
     default:
       break
