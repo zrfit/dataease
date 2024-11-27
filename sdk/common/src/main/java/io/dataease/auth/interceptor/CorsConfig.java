@@ -33,7 +33,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(originList.toArray(new String[0]))
                 .allowedHeaders("*")
                 .maxAge(3600)
-                .allowedMethods("GET", "POST");
+                .allowedMethods("GET", "POST", "DELETE");
     }
 
     public void addAllowedOrigins(List<String> origins) {

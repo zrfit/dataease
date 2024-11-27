@@ -69,6 +69,9 @@ const getAreaMapping = async areaId => {
   if (!areaId) {
     return {}
   }
+  if (areaId.startsWith('custom_')) {
+    areaId = '156'
+  }
   const geoJson = await getGeoJsonFile(areaId)
   return geoJson.features.reduce((p, n) => {
     p[n.properties.name] = n.properties.name
