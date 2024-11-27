@@ -141,8 +141,8 @@ const optInit = (type, data: BusiTreeNode, exec, parentSelect = false) => {
   const placeholderLabel =
     data.leaf || type === 'leaf'
       ? props.curCanvasType === 'dataV'
-        ? t('visualization.screen')
-        : t('visualization.dashboard')
+        ? t('work_branch.screen')
+        : t('work_branch.dashboard')
       : t('visualization.folder')
   placeholder.value = t('visualization.input_name_tips', [placeholderLabel])
   filterText.value = ''
