@@ -2216,6 +2216,9 @@ export default {
     day_limit: '天不能小于1，大于31'
   },
   commons: {
+    language: '语言',
+    help_center: '帮助中心',
+    assistant: '小助手',
     test_connect: '测试连接',
     consanguinity: '血缘关系',
     collapse_navigation: '收起导航',
