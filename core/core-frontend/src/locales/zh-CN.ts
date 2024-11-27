@@ -2591,6 +2591,8 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    back_parent: '返回上一级',
+    ext_fullscreen: '退出全屏',
     no_edit_auth: '目标资源没有编辑权限，请联系管理员！',
     select_target_dashboard_tips: '请选择目标仪表板',
     select_target_screen_tips: '请选择目标数据大屏',
