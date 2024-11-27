@@ -394,7 +394,7 @@ onMounted(() => {
           <span style="margin-right: 4px">{{ t('chart.merge_cells') }}</span>
           <el-tooltip class="item" effect="dark" placement="bottom">
             <template #content>
-              <div>合并单元格后，行列冻结、自动换行会失效。</div>
+              <div>{{ $t('visualization.cell_merge_tips') }}</div>
             </template>
             <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
               <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>

@@ -3274,7 +3274,11 @@ const deleteChartFieldItem = id => {
                   @add-ds-window="addDsWindow"
                   @on-dataset-change="recordSnapshotInfo('calcData')"
                 />
-                <el-tooltip :effect="toolTip" content="编辑数据集" placement="top">
+                <el-tooltip
+                  :effect="toolTip"
+                  :content="$t('deDataset.edit_dataset')"
+                  placement="top"
+                >
                   <el-icon
                     v-if="curDatasetWeight >= 7 && !isDataEaseBi"
                     class="field-search-icon-btn"

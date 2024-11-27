@@ -13,7 +13,7 @@
     <el-tooltip
       effect="dark"
       placement="top"
-      :content="'排序'"
+      :content="t('visualization.sort')"
       v-if="element.component === 'DeTabs' && showPosition === 'canvas'"
     >
       <el-icon class="bar-base-icon" @click="tabSort">
@@ -21,12 +21,12 @@
       </el-icon>
     </el-tooltip>
     <template v-if="element.component === 'VQuery' && showPosition === 'canvas'">
-      <span title="添加查询条件">
+      <span :title="t('visualization.add_query_filter')">
         <el-icon class="bar-base-icon" @click="addQueryCriteria">
           <Icon name="icon_add_outlined"><icon_add_outlined class="svg-icon" /></Icon
         ></el-icon>
       </span>
-      <span title="编辑查询条件">
+      <span :title="t('visualization.edit_query_filter')">
         <el-icon class="bar-base-icon" @click="editQueryCriteria">
           <Icon name="icon_edit_outlined"><icon_edit_outlined class="svg-icon" /></Icon
         ></el-icon>
@@ -47,7 +47,7 @@
     <el-tooltip
       effect="dark"
       :placement="showBarTooltipPosition"
-      content="查看数据"
+      :content="'visualization.show_data'"
       v-if="!['picture-group', 'rich-text'].includes(element.innerType) && barShowCheck('details')"
     >
       <span>
@@ -59,7 +59,7 @@
     <el-tooltip
       effect="dark"
       placement="top"
-      content="输入计算数据"
+      :content="t('visualization.input_calc_data')"
       v-if="barShowCheck('datasetParams') && datasetParamsSetShow"
     >
       <span>
@@ -102,14 +102,14 @@
       </el-icon>
       <template #dropdown>
         <el-dropdown-menu style="width: 158px">
-          <el-dropdown-item @click="copyComponent" v-if="barShowCheck('copy')"
-            >复制</el-dropdown-item
-          >
+          <el-dropdown-item @click="copyComponent" v-if="barShowCheck('copy')">{{
+            t('visualization.copy')
+          }}</el-dropdown-item>
           <template v-if="element.innerType !== 'rich-text' && barShowCheck('enlarge')">
             <el-dropdown-item
               :divided="showPosition === 'canvas'"
               @click="userViewEnlargeOpen($event, 'enlarge')"
-              >放大</el-dropdown-item
+              >{{ t('visualization.enlarge') }}</el-dropdown-item
             >
             <el-dropdown-item
               @click="userViewEnlargeOpen($event, 'details')"
@@ -117,7 +117,7 @@
                 !['picture-group', 'rich-text'].includes(element.innerType) &&
                 barShowCheck('details')
               "
-              >查看数据</el-dropdown-item
+              >{{ t('visualization.show_data') }}</el-dropdown-item
             >
             <el-dropdown-item
               style="padding: 0"
@@ -134,7 +134,7 @@
                   class="flex-align-center"
                   style="width: 100%; padding: 5px 6px 5px 16px; line-height: 24px"
                 >
-                  导出为
+                  {{ t('visualization.export_as') }}
                   <el-icon size="16px" style="margin-left: auto"><ArrowRight /></el-icon>
                 </div>
                 <template #dropdown>
@@ -146,11 +146,11 @@
                       v-if="exportPermissions[1] && element.innerType === 'table-pivot'"
                       @click="exportAsFormattedExcel"
                     >
-                      <span>Excel(带格式)</span>
+                      <span>{{ t('visualization.excel_with_format') }}</span>
                     </el-dropdown-item>
-                    <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage"
-                      >图片</el-dropdown-item
-                    >
+                    <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage">{{
+                      t('visualization.image')
+                    }}</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>
@@ -161,9 +161,9 @@
             jsname="L2NvbXBvbmVudC90aHJlc2hvbGQtd2FybmluZy9FZGl0QmFySGFuZGxlcg=="
             @close-item="closeItem"
           />
-          <el-dropdown-item divided @click="deleteComponent" v-if="barShowCheck('delete')"
-            >删除</el-dropdown-item
-          >
+          <el-dropdown-item divided @click="deleteComponent" v-if="barShowCheck('delete')">{{
+            t('visualization.delete')
+          }}</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -191,11 +191,11 @@
             v-if="exportPermissions[1] && element.innerType === 'table-pivot'"
             @click="exportAsFormattedExcel"
           >
-            <span>Excel(带格式)</span>
+            <span>{{ t('visualization.excel_with_format') }}</span>
           </el-dropdown-item>
-          <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage"
-            >图片</el-dropdown-item
-          >
+          <el-dropdown-item v-if="exportPermissions[0]" @click="exportAsImage">{{
+            t('visualization.image')
+          }}</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>

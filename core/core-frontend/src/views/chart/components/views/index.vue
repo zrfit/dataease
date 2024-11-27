@@ -1067,14 +1067,24 @@ const titleTooltipWidth = computed(() => {
               /></Icon>
             </el-icon>
           </el-tooltip>
-          <el-tooltip :effect="toolTip" placement="top" content="已设置跳转" v-if="hasJumpIcon">
+          <el-tooltip
+            :effect="toolTip"
+            placement="top"
+            :content="t('visualization.jump_set_tips')"
+            v-if="hasJumpIcon"
+          >
             <el-icon :size="iconSize" class="inner-icon">
               <Icon name="icon_viewinchat_outlined"
                 ><icon_viewinchat_outlined class="svg-icon"
               /></Icon>
             </el-icon>
           </el-tooltip>
-          <el-tooltip :effect="toolTip" placement="top" content="已设置下钻" v-if="hasDrillIcon">
+          <el-tooltip
+            :effect="toolTip"
+            placement="top"
+            :content="t('visualization.drill_set_tips')"
+            v-if="hasDrillIcon"
+          >
             <el-icon :size="iconSize" class="inner-icon">
               <Icon name="icon_drilling_outlined"><icon_drilling_outlined class="svg-icon" /></Icon>
             </el-icon>
