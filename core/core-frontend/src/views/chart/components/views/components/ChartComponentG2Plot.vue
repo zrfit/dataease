@@ -183,6 +183,7 @@ const calcData = async (view, callback) => {
           emit('onDrillFilters', res?.drillFilters)
           if (!res?.drillFilters?.length) {
             dynamicAreaId.value = ''
+            scope = null
           } else {
             const extra = view.chartExtRequest?.drill?.[res?.drillFilters?.length - 1].extra
             dynamicAreaId.value = extra?.adcode + ''
