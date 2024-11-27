@@ -1278,7 +1278,11 @@ onMounted(() => {
         <el-radio :effect="themes" label="circle">{{ t('chart.circle') }}</el-radio>
       </el-radio-group>
     </el-form-item>
-    <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
+    <el-form-item
+      class="form-item margin-bottom-8"
+      :class="'form-item-' + themes"
+      v-if="showProperty('radarShowPoint')"
+    >
       <el-checkbox
         size="small"
         :effect="themes"
@@ -1293,6 +1297,7 @@ onMounted(() => {
       class="form-item margin-bottom-8"
       :class="'form-item-' + themes"
       :label="t('chart.radar_point_size')"
+      v-if="showProperty('radarPointSize')"
     >
       <el-input-number
         style="width: 100%"
@@ -1306,7 +1311,11 @@ onMounted(() => {
         @change="changeBasicStyle('radarPointSize')"
       />
     </el-form-item>
-    <el-form-item class="form-item margin-bottom-8" :class="'form-item-' + themes">
+    <el-form-item
+      class="form-item margin-bottom-8"
+      :class="'form-item-' + themes"
+      v-if="showProperty('radarAreaColor')"
+    >
       <el-checkbox
         size="small"
         :effect="themes"

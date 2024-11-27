@@ -1,7 +1,7 @@
 import type { RadarOptions, Radar as G2Radar } from '@antv/g2plot/esm/plots/radar'
 import { G2PlotChartView, G2PlotDrawOptions } from '../../types/impl/g2plot'
 import { flow, parseJson } from '../../../util'
-import { configPlotTooltipEvent, getPadding } from '../../common/common_antv'
+import { configPlotTooltipEvent } from '../../common/common_antv'
 import { valueFormatter } from '../../../formatter'
 import type { Datum } from '@antv/g2plot/esm/types/common'
 import { useI18n } from '@/hooks/web/useI18n'
@@ -25,7 +25,15 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
     'linkage'
   ]
   propertyInner: EditorPropertyInner = {
-    'basic-style-selector': ['colors', 'alpha', 'radarShape', 'seriesColor'],
+    'basic-style-selector': [
+      'colors',
+      'alpha',
+      'radarShape',
+      'seriesColor',
+      'radarShowPoint',
+      'radarPointSize',
+      'radarAreaColor'
+    ],
     'label-selector': ['seriesLabelFormatter'],
     'tooltip-selector': ['color', 'fontSize', 'backgroundColor', 'seriesTooltipFormatter', 'show'],
     'misc-style-selector': ['showName', 'color', 'fontSize', 'axisColor', 'axisValue'],
