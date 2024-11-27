@@ -474,7 +474,7 @@ export const dvMainStore = defineStore('dataVisualization', {
         const newView = {
           ...JSON.parse(JSON.stringify(BASE_VIEW_CONFIG)),
           id: component.id,
-          title: '查询组件',
+          title: t('visualization.query_component'),
           type: component.innerType,
           customStyle: {
             component: {
