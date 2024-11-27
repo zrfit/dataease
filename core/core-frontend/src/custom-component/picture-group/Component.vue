@@ -33,7 +33,7 @@ import { parseJson } from '@/views/chart/components/js/util'
 import { mappingColor } from '@/views/chart/components/js/panel/common/common_table'
 import { storeToRefs } from 'pinia'
 import ChartEmptyInfo from '@/views/chart/components/views/components/ChartEmptyInfo.vue'
-import ChartError from "@/views/chart/components/views/components/ChartError.vue";
+import ChartError from '@/views/chart/components/views/components/ChartError.vue'
 const dvMainStore = dvMainStoreWithOut()
 const { canvasViewInfo, editMode, mobileInPc, canvasStyleData } = storeToRefs(dvMainStore)
 const state = reactive({
