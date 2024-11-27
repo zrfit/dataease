@@ -99,7 +99,12 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         p['156' + n.properties.adcode] = n.properties.name
         return p
       }, {})
+      const { areaMapping } = parseJson(chart.senior)
       const areaMap = customSubArea.reduce((p, n) => {
+        const mappedName = areaMapping?.[areaId]?.[n.name]
+        if (mappedName) {
+          n.name = mappedName
+        }
         p[n.name] = n
         n.scopeArr = n.scope?.split(',') || []
         return p
