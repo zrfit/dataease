@@ -1813,7 +1813,10 @@ export default {
     full_display: '全量显示',
     show_hover_style: '显示鼠标悬浮样式',
     merge_cells: '合并单元格',
-    length_limit: '长度限制'
+    length_limit: '长度限制',
+    radar_point: '开启辅助点',
+    radar_point_size: '辅助点大小',
+    radar_area_color: '开启面积'
   },
   dataset: {
     scope_edit: '仅编辑时生效',

@@ -74,13 +74,6 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
       yField: 'value',
       seriesField: 'category',
       appendPadding: [10, 10, 10, 10],
-      point: {
-        size: 4,
-        shape: 'circle',
-        style: {
-          fill: null
-        }
-      },
       interactions: [
         {
           type: 'legend-active',
@@ -120,6 +113,22 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
     newChart.on('point:click', action)
     configPlotTooltipEvent(chart, newChart)
     return newChart
+  }
+
+  protected configBasicStyle(chart: Chart, options: RadarOptions): RadarOptions {
+    const { radarShowPoint, radarPointSize, radarAreaColor } = parseJson(
+      chart.customAttr
+    ).basicStyle
+    const tempOptions: RadarOptions = {}
+
+    if (radarShowPoint) {
+      tempOptions['point'] = { shape: 'circle', size: radarPointSize, style: { fill: null } }
+    }
+    if (radarAreaColor) {
+      tempOptions['area'] = {}
+    }
+
+    return { ...options, ...tempOptions }
   }
 
   protected configLabel(chart: Chart, options: RadarOptions): RadarOptions {
@@ -266,7 +275,8 @@ export class Radar extends G2PlotChartView<RadarOptions, G2Radar> {
       this.configLabel,
       this.configLegend,
       this.configMultiSeriesTooltip,
-      this.configAxis
+      this.configAxis,
+      this.configBasicStyle
     )(chart, options)
   }
 

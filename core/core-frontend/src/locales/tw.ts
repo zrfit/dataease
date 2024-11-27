@@ -1810,7 +1810,10 @@ export default {
     full_display: '全量顯示',
     show_hover_style: '顯示滑鼠懸浮樣式',
     merge_cells: '合併儲存格',
-    length_limit: '長度限制'
+    length_limit: '長度限制',
+    radar_point: '開啟輔助點',
+    radar_point_size: '輔助點大小',
+    radar_area_color: '開啟面積'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

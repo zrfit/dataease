@@ -1850,7 +1850,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     full_display: 'full display',
     show_hover_style: 'show mouse hover style',
     merge_cells: 'merge cells',
-    length_limit: 'length limit'
+    length_limit: 'length limit',
+    radar_point: 'enable auxiliary points',
+    radar_point_size: 'size',
+    radar_area_color: 'enable area '
   },
   dataset: {
     scope_edit: 'only effective when editing',
