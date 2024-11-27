@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item :label="t('visualization.description')" prop="description">
           <el-input
-            :placeholder="t('visualization.input_content')"
+            :placeholder="t('commons.input_content')"
             show-word-limit
             v-model="state.form.description"
             type="textarea"
@@ -44,7 +44,7 @@
     <template #footer>
       <div class="apply" style="width: 100%">
         <el-button secondary @click="close">{{ t('commons.cancel') }} </el-button>
-        <el-button type="primary" @click="downloadApp">{{ t('visualization.export') }}</el-button>
+        <el-button type="primary" @click="downloadApp">{{ t('chart.export') }}</el-button>
       </div>
     </template>
   </el-drawer>

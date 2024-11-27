@@ -62,7 +62,7 @@ const routers: any[] = formatRoute(permissionStore.getRoutersNotHidden as AppCus
 const showSystem = ref(false)
 const showToolbox = ref(false)
 const showOverlay = ref(false)
-const showOverlayCopilot = ref(true)
+const showOverlayCopilot = ref(false)
 const handleSelect = (index: string) => {
   // 自定义事件
   if (isExternal(index)) {
@@ -100,11 +100,11 @@ const initAiBase = async () => {
 
 const initCopilotBase = async () => {
   const aiCopilotCheck = wsCache.get('DE-COPILOT-TIPS-CHECK')
-  if (aiCopilotCheck === 'CHECKED') {
-    showOverlayCopilot.value = false
-  } else {
-    showOverlayCopilot.value = true
-  }
+  // if (aiCopilotCheck === 'CHECKED') {
+  //   showOverlayCopilot.value = false
+  // } else {
+  //   showOverlayCopilot.value = true
+  // }
 }
 
 const aiTipsConfirm = () => {

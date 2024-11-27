@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRefs, PropType, CSSProperties } from 'vue'
+import { computed, toRefs, PropType } from 'vue'
 import Chart from '@/views/chart/components/views/index.vue'
 
 const props = defineProps({
