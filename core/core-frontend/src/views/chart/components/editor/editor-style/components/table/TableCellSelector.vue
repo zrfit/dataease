@@ -332,7 +332,22 @@ onMounted(() => {
         v-model="state.tableCellForm.tableFreeze"
         @change="changeTableCell('tableFreeze')"
       >
-        {{ t('chart.table_freeze') }}
+        <span class="data-area-label">
+          <span style="margin-right: 4px">{{ t('chart.table_freeze') }}</span>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            placement="bottom"
+            v-if="state.tableCellForm.mergeCells"
+          >
+            <template #content>
+              <div>{{ t('chart.table_freeze_tip') }}</div>
+            </template>
+            <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
+              <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
+            </el-icon>
+          </el-tooltip>
+        </span>
       </el-checkbox>
     </el-form-item>
     <el-row :gutter="8" v-if="showProperty('tableFreeze')">
@@ -394,7 +409,7 @@ onMounted(() => {
           <span style="margin-right: 4px">{{ t('chart.merge_cells') }}</span>
           <el-tooltip class="item" effect="dark" placement="bottom">
             <template #content>
-              <div>{{ $t('visualization.cell_merge_tips') }}</div>
+              <div>{{ t('chart.merge_cells_tips') }}</div>
             </template>
             <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
               <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>

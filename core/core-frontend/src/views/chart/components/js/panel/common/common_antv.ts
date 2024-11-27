@@ -176,6 +176,10 @@ export function getLabel(chart: Chart) {
           ) {
             layout.push({ type: 'limit-in-canvas' })
             layout.push({ type: 'hide-overlap' })
+          } else if (chart.type.includes('chart-mix')) {
+            layout.push({ type: 'limit-in-canvas' })
+            layout.push({ type: 'limit-in-plot' })
+            layout.push({ type: 'hide-overlap' })
           } else {
             layout.push({ type: 'limit-in-plot' })
             layout.push({ type: 'fixed-overlap' })
@@ -556,7 +560,8 @@ export function getYAxis(chart: Chart) {
     grid,
     label,
     line,
-    tickLine
+    tickLine,
+    nice: true
   }
   return axis
 }
@@ -649,7 +654,8 @@ export function getYAxisExt(chart: Chart) {
     grid,
     label,
     line,
-    tickLine
+    tickLine,
+    nice: true
   }
   return axis
 }
