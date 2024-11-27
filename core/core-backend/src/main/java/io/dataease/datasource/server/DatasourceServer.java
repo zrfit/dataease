@@ -672,6 +672,9 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public List<DatasetTableDTO> getTables(DatasetTableDTO datasetTableDTO) throws DEException {
         CoreDatasource coreDatasource = datasourceMapper.selectById(datasetTableDTO.getDatasourceId());
+        if (coreDatasource == null) {
+            DEException.throwException("无效数据源！");
+        }
         DatasourceDTO datasourceDTO = new DatasourceDTO();
         BeanUtils.copyBean(datasourceDTO, coreDatasource);
         DatasourceRequest datasourceRequest = new DatasourceRequest();
@@ -698,6 +701,11 @@ public class DatasourceServer implements DatasourceApi {
     public List<TableField> getTableField(Map<String, String> req) throws DEException {
         String tableName = req.get("tableName");
         String datasourceId = req.get("datasourceId");
+        DatasetTableDTO datasetTableDTO = new DatasetTableDTO();
+        datasetTableDTO.setDatasourceId(Long.valueOf(datasourceId));
+        if (!getTables(datasetTableDTO).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList()).contains("tableName")) {
+            DEException.throwException("无效的表名！");
+        }
         CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
         DatasourceRequest datasourceRequest = new DatasourceRequest();
         datasourceRequest.setDatasource(transDTO(coreDatasource));
