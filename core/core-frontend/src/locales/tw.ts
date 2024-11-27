@@ -2214,6 +2214,9 @@ export default {
     day_limit: '天不能小於1，大於31'
   },
   commons: {
+    language: '語言',
+    help_center: '幫助中心',
+    assistant: '小助手',
     test_connect: '測試連線',
     consanguinity: '血緣關係',
     collapse_navigation: '收起導航',

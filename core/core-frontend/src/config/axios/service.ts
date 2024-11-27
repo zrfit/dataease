@@ -15,6 +15,7 @@ import { useLinkStoreWithOut } from '@/store/modules/link'
 import { config } from './config'
 import { configHandler } from './refresh'
 import { isMobile } from '@/utils/utils'
+import { useRequestStoreWithOut } from '@/store/modules/request'
 
 type AxiosErrorWidthLoading<T> = T & {
   config: {
@@ -33,6 +34,7 @@ const { result_code } = config
 import { useCache } from '@/hooks/web/useCache'
 
 const { wsCache } = useCache()
+const requestStore = useRequestStoreWithOut()
 const embeddedStore = useEmbedded()
 const basePath = import.meta.env.VITE_API_BASEPATH
 
@@ -203,6 +205,10 @@ service.interceptors.response.use(
     }
   },
   (error: AxiosErrorWidthLoading<AxiosError>) => {
+    if (error.message?.includes('timeout of')) {
+      requestStore.resetLoadingMap()
+    }
+
     if (!error?.response) {
       return Promise.reject(error)
     }
