@@ -16,7 +16,6 @@ import { config } from './config'
 import { configHandler } from './refresh'
 import { isMobile } from '@/utils/utils'
 import { useRequestStoreWithOut } from '@/store/modules/request'
-
 type AxiosErrorWidthLoading<T> = T & {
   config: {
     loading?: boolean
@@ -32,6 +31,8 @@ import router from '@/router'
 
 const { result_code } = config
 import { useCache } from '@/hooks/web/useCache'
+import { useI18n } from '@/hooks/web/useI18n'
+const { t } = useI18n()
 
 const { wsCache } = useCache()
 const requestStore = useRequestStoreWithOut()
@@ -207,6 +208,11 @@ service.interceptors.response.use(
   (error: AxiosErrorWidthLoading<AxiosError>) => {
     if (error.message?.includes('timeout of')) {
       requestStore.resetLoadingMap()
+      ElMessage({
+        type: 'error',
+        message: '请求超时，请稍后再试',
+        showClose: true
+      })
     }
 
     if (!error?.response) {
