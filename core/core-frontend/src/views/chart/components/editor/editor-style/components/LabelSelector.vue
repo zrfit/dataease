@@ -473,6 +473,9 @@ const noFullDisplay = computed(() => {
 const isGauge = computed(() => {
   return props.chart.type === 'gauge'
 })
+const isProgressBar = computed(() => {
+  return props.chart.type === 'progress-bar'
+})
 </script>
 
 <template>
@@ -940,7 +943,7 @@ const isGauge = computed(() => {
         <el-checkbox
           v-model="state.labelForm.showQuota"
           :effect="themes"
-          :disabled="checkLabelContent('showQuota')"
+          :disabled="isProgressBar ? false : checkLabelContent('showQuota')"
           size="small"
           label="quota"
           @change="changeLabelAttr('showQuota')"
@@ -1060,12 +1063,12 @@ const isGauge = computed(() => {
         <el-checkbox
           v-model="state.labelForm.showProportion"
           :effect="themes"
-          :disabled="checkLabelContent('showProportion')"
+          :disabled="isProgressBar ? false : checkLabelContent('showProportion')"
           size="small"
           label="proportion"
           @change="changeLabelAttr('showProportion')"
         >
-          {{ t('chart.proportion') }}
+          {{ isProgressBar ? t('chart.value_formatter_percent') : t('chart.proportion') }}
         </el-checkbox>
       </el-form-item>
       <div style="padding-left: 22px">
