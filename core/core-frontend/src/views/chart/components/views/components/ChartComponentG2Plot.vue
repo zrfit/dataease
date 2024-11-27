@@ -184,11 +184,16 @@ const calcData = async (view, callback) => {
           if (!res?.drillFilters?.length) {
             dynamicAreaId.value = ''
           } else {
-            dynamicAreaId.value =
-              view.chartExtRequest?.drill?.[res?.drillFilters?.length - 1].extra?.adcode + ''
+            const extra = view.chartExtRequest?.drill?.[res?.drillFilters?.length - 1].extra
+            dynamicAreaId.value = extra?.adcode + ''
+            scope = extra?.scope
             // 地图
             if (!dynamicAreaId.value?.startsWith(country.value)) {
-              dynamicAreaId.value = country.value + dynamicAreaId.value
+              if (country.value === 'cus') {
+                dynamicAreaId.value = '156' + dynamicAreaId.value
+              } else {
+                dynamicAreaId.value = country.value + dynamicAreaId.value
+              }
             }
           }
           dvMainStore.setViewDataDetails(view.id, res)
@@ -268,6 +273,7 @@ const dynamicAreaId = ref('')
 const country = ref('')
 const appStore = useAppStoreWithOut()
 const chartContainer = ref<HTMLElement>(null)
+let scope
 let mapTimer: number
 const renderL7Plot = async (chart: ChartObj, chartView: L7PlotChartView<any, any>, callback) => {
   const map = parseJson(chart.customAttr).map
@@ -293,7 +299,8 @@ const renderL7Plot = async (chart: ChartObj, chartView: L7PlotChartView<any, any
       container: containerId,
       chart,
       areaId,
-      action
+      action,
+      scope
     })
     callback?.()
     emit('resetLoading')

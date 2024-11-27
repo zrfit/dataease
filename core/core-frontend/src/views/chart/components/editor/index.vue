@@ -55,7 +55,7 @@ import CalcFieldEdit from '@/views/visualized/data/dataset/form/CalcFieldEdit.vu
 import { getFieldName, guid } from '@/views/visualized/data/dataset/form/util'
 import { cloneDeep, forEach, get } from 'lodash-es'
 import { deleteField, saveField } from '@/api/dataset'
-import { getWorldTree } from '@/api/map'
+import { getWorldTree, listCustomGeoArea } from '@/api/map'
 import chartViewManager from '@/views/chart/components/js/panel'
 import DatasetSelect from '@/views/chart/components/editor/dataset-select/DatasetSelect.vue'
 import { useDraggable } from '@vueuse/core'
@@ -293,8 +293,17 @@ watch(
   newVal => {
     if (showAxis('area')) {
       if (!state.worldTree?.length) {
-        getWorldTree().then(res => {
-          state.worldTree.splice(0, state.worldTree.length, res.data)
+        getWorldTree().then(async res => {
+          const customAreaList = (await listCustomGeoArea()).data
+          const customRoot = {
+            id: 'customRoot',
+            name: '自定义区域',
+            disabled: true
+          }
+          if (customAreaList.length) {
+            customRoot.children = customAreaList
+          }
+          state.worldTree.splice(0, state.worldTree.length, res.data, customRoot)
           state.areaId = view.value?.customAttr?.map?.id
         })
       } else {
@@ -311,7 +320,8 @@ watch(
 )
 const treeProps = {
   label: 'name',
-  children: 'children'
+  children: 'children',
+  disabled: 'disabled'
 }
 
 const recordSnapshotInfo = type => {
@@ -869,6 +879,9 @@ const renderChart = view => {
 }
 
 const onAreaChange = val => {
+  if (val.id === 'customRoot') {
+    return
+  }
   view.value.customAttr.map = { id: val.id, level: val.level }
   renderChart(view.value)
 }

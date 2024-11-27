@@ -29,3 +29,22 @@ UPDATE `visualization_background` SET `name` = 'Board6' WHERE `id` = 'board_6';
 UPDATE `visualization_background` SET `name` = 'Board7' WHERE `id` = 'board_7';
 UPDATE `visualization_background` SET `name` = 'Board8' WHERE `id` = 'board_8';
 UPDATE `visualization_background` SET `name` = 'Board9' WHERE `id` = 'board_9';
+
+DROP TABLE IF EXISTS `core_custom_geo_area`;
+CREATE TABLE core_custom_geo_area
+(
+    id   varchar(50) not null comment 'id'
+        primary key,
+    name varchar(50) null comment '区域名称'
+)
+    comment '自定义地理区域';
+DROP TABLE IF EXISTS `core_custom_geo_sub_area`;
+create table core_custom_geo_sub_area
+(
+    id          bigint        not null comment 'id'
+        primary key,
+    name        varchar(50)   not null comment '名称',
+    scope       varchar(1024) null comment '区域范围',
+    geo_area_id varchar(50)   not null comment '自定义地理区域id'
+)
+    comment '自定义地理区域分区详情';

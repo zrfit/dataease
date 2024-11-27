@@ -333,7 +333,7 @@ declare interface ChartBasicStyle {
   /**
    * 最大行数
    */
-  maxLines?: boolean
+  maxLines?: number
 }
 /**
  * 表头属性

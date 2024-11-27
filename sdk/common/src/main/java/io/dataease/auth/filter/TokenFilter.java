@@ -18,7 +18,7 @@ public class TokenFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String method = request.getMethod();
-        if (!StringUtils.equalsAny(method, "GET", "POST", "OPTIONS")) {
+        if (!StringUtils.equalsAny(method, "GET", "POST", "OPTIONS", "DELETE")) {
             HttpServletResponse res = (HttpServletResponse) servletResponse;
             res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return;
