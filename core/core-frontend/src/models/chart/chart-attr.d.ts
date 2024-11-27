@@ -334,6 +334,18 @@ declare interface ChartBasicStyle {
    * 最大行数
    */
   maxLines?: number
+  /**
+   * 雷达图辅助点
+   */
+  radarShowPoint: boolean
+  /**
+   * 雷达图辅助点大小
+   */
+  radarPointSize: number
+  /**
+   * 雷达图面积颜色开关
+   */
+  radarAreaColor: boolean
 }
 /**
  * 表头属性

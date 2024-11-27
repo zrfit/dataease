@@ -1619,7 +1619,10 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   customIcon: '',
   showHoverStyle: true,
   autoWrap: false,
-  maxLines: 3
+  maxLines: 3,
+  radarShowPoint: true,
+  radarPointSize: 4,
+  radarAreaColor: true
 }
 
 export const BASE_VIEW_CONFIG = {
