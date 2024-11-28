@@ -62,7 +62,7 @@ import { useEmitt } from '@/hooks/web/useEmitt'
 import { valueFormatter } from '@/views/chart/components/js/formatter'
 import { parseJson } from '@/views/chart/components/js/util'
 import { mappingColor } from '@/views/chart/components/js/panel/common/common_table'
-import { CHART_FONT_FAMILY } from '@/views/chart/components/editor/util/chart'
+import { CHART_FONT_FAMILY_ORIGIN } from '@/views/chart/components/editor/util/chart'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 const snapshotStore = snapshotStoreWithOut()
 const errMsg = ref('')
@@ -137,7 +137,7 @@ const myValue = ref('')
 const systemFontFamily = appearanceStore.fontList.map(item => item.name)
 const curFontFamily = () => {
   let result = ''
-  CHART_FONT_FAMILY.concat(
+  CHART_FONT_FAMILY_ORIGIN.concat(
     appearanceStore.fontList.map(ele => ({
       name: ele.name,
       value: ele.name

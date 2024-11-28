@@ -241,7 +241,7 @@ import {
   LIGHT_THEME_DASHBOARD_BACKGROUND
 } from '@/utils/canvasStyle'
 import {
-  CHART_FONT_FAMILY,
+  CHART_FONT_FAMILY_ORIGIN,
   DEFAULT_COLOR_CASE_DARK,
   DEFAULT_COLOR_CASE_LIGHT,
   DEFAULT_TAB_COLOR_CASE_DARK,
@@ -274,7 +274,7 @@ const props = defineProps({
     default: 'light'
   }
 })
-const fontFamily = CHART_FONT_FAMILY.concat(
+const fontFamily = CHART_FONT_FAMILY_ORIGIN.concat(
   appearanceStore.fontList.map(ele => ({
     name: ele.name,
     value: ele.name

@@ -1112,6 +1112,20 @@ export const BASE_ECHARTS_SELECT = {
   }
 }
 
+export const CHART_FONT_FAMILY_ORIGIN = [
+  { name: '微软雅黑', value: 'Microsoft YaHei' },
+  { name: '宋体', value: 'SimSun, "Songti SC", STSong' },
+  { name: '黑体', value: 'SimHei, Helvetica' },
+  { name: '楷体', value: 'KaiTi, "Kaiti SC", STKaiti' }
+]
+
+export const CHART_FONT_FAMILY_MAP_TRANS = {
+  'Microsoft YaHei': 'Microsoft YaHei',
+  'SimSun, "Songti SC", STSong': 'SimSun',
+  'SimHei, Helvetica': 'SimHei',
+  'KaiTi, "Kaiti SC", STKaiti': 'KaiTi'
+}
+
 export const CHART_FONT_FAMILY = [
   { name: '微软雅黑', value: 'Microsoft YaHei' },
   { name: '宋体', value: 'SimSun' },

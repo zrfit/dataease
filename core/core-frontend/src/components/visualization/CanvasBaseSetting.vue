@@ -83,7 +83,7 @@ import { storeToRefs } from 'pinia'
 import { ElFormItem, ElIcon } from 'element-plus-secondary'
 import Icon from '../icon-custom/src/Icon.vue'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
-import { CHART_FONT_FAMILY } from '@/views/chart/components/editor/util/chart'
+import { CHART_FONT_FAMILY_ORIGIN } from '@/views/chart/components/editor/util/chart'
 import { adaptTitleFontFamilyAll } from '@/utils/canvasStyle'
 import { useI18n } from '@/hooks/web/useI18n'
 const snapshotStore = snapshotStoreWithOut()
@@ -91,7 +91,7 @@ const { t } = useI18n()
 const dvMainStore = dvMainStoreWithOut()
 const { canvasStyleData } = storeToRefs(dvMainStore)
 const appearanceStore = useAppearanceStoreWithOut()
-const fontFamily = CHART_FONT_FAMILY.concat(
+const fontFamily = CHART_FONT_FAMILY_ORIGIN.concat(
   appearanceStore.fontList.map(ele => ({
     name: ele.name,
     value: ele.name
