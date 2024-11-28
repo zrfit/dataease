@@ -703,7 +703,7 @@ public class DatasourceServer implements DatasourceApi {
         String datasourceId = req.get("datasourceId");
         DatasetTableDTO datasetTableDTO = new DatasetTableDTO();
         datasetTableDTO.setDatasourceId(Long.valueOf(datasourceId));
-        if (!getTables(datasetTableDTO).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList()).contains("tableName")) {
+        if (!getTables(datasetTableDTO).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList()).contains(tableName)) {
             DEException.throwException("无效的表名！");
         }
         CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
@@ -817,7 +817,7 @@ public class DatasourceServer implements DatasourceApi {
                             sheet.setDeTableName(datasetTableDTO.getTableName());
                             datasourceRequest.setTable(datasetTableDTO.getTableName());
                             List<TableField> oldTableFields = ExcelUtils.getTableFields(datasourceRequest);
-                            mergeFields(sheet.getFields(), oldTableFields);
+                            mergeFields(oldTableFields, sheet.getFields());
                         }
                     }
                     if (!find) {
@@ -866,7 +866,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     private void mergeFields(List<TableField> oldFields, List<TableField> newFields) {
-        oldFields.forEach(tableField -> tableField.setChecked(false));
+        newFields.forEach(tableField -> tableField.setChecked(false));
         for (TableField newField : newFields) {
             for (TableField oldField : oldFields) {
                 if (oldField.getName().equals(newField.getName())) {
