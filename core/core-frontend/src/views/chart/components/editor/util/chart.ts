@@ -1112,6 +1112,20 @@ export const BASE_ECHARTS_SELECT = {
   }
 }
 
+export const CHART_FONT_FAMILY_ORIGIN = [
+  { name: '微软雅黑', value: 'Microsoft YaHei' },
+  { name: '宋体', value: 'SimSun, "Songti SC", STSong' },
+  { name: '黑体', value: 'SimHei, Helvetica' },
+  { name: '楷体', value: 'KaiTi, "Kaiti SC", STKaiti' }
+]
+
+export const CHART_FONT_FAMILY_MAP_TRANS = {
+  'Microsoft YaHei': 'Microsoft YaHei',
+  'SimSun, "Songti SC", STSong': 'SimSun',
+  'SimHei, Helvetica': 'SimHei',
+  'KaiTi, "Kaiti SC", STKaiti': 'KaiTi'
+}
+
 export const CHART_FONT_FAMILY = [
   { name: '微软雅黑', value: 'Microsoft YaHei' },
   { name: '宋体', value: 'SimSun' },
@@ -1546,7 +1560,7 @@ export const CHART_TYPE_CONFIGS = [
 export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   alpha: 100,
   tableBorderColor: '#CCCCCC',
-  tableScrollBarColor: 'rgba(0, 0, 0, 0.15)',
+  tableScrollBarColor: '#1f23294d',
   tableColumnMode: 'adapt',
   tableColumnWidth: 100,
   tableFieldWidth: [],
@@ -1619,7 +1633,10 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   customIcon: '',
   showHoverStyle: true,
   autoWrap: false,
-  maxLines: 3
+  maxLines: 3,
+  radarShowPoint: true,
+  radarPointSize: 4,
+  radarAreaColor: true
 }
 
 export const BASE_VIEW_CONFIG = {

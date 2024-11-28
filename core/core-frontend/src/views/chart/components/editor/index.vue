@@ -1102,13 +1102,19 @@ const onFunctionCfgChange = val => {
 }
 
 const onBackgroundChange = val => {
-  curComponent.value.commonBackground = val
-  if (mobileInPc.value) {
-    //移动端设计
-    useEmitt().emitter.emit('onMobileStatusChange', {
-      type: 'componentStyleChange',
-      value: { type: 'commonBackground', component: JSON.parse(JSON.stringify(curComponent.value)) }
-    })
+  // 修复#13299
+  if (curComponent.value.id === view.value?.id) {
+    curComponent.value.commonBackground = val
+    if (mobileInPc.value) {
+      //移动端设计
+      useEmitt().emitter.emit('onMobileStatusChange', {
+        type: 'componentStyleChange',
+        value: {
+          type: 'commonBackground',
+          component: JSON.parse(JSON.stringify(curComponent.value))
+        }
+      })
+    }
   }
 }
 
@@ -3274,7 +3280,11 @@ const deleteChartFieldItem = id => {
                   @add-ds-window="addDsWindow"
                   @on-dataset-change="recordSnapshotInfo('calcData')"
                 />
-                <el-tooltip :effect="toolTip" content="编辑数据集" placement="top">
+                <el-tooltip
+                  :effect="toolTip"
+                  :content="$t('deDataset.edit_dataset')"
+                  placement="top"
+                >
                   <el-icon
                     v-if="curDatasetWeight >= 7 && !isDataEaseBi"
                     class="field-search-icon-btn"

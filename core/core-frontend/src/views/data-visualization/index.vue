@@ -342,6 +342,7 @@ const newWindowFromDiv = ref(false)
 let p = null
 const XpackLoaded = () => p(true)
 onMounted(async () => {
+  snapshotStore.initSnapShot()
   if (window.location.hash.includes('#/dvCanvas')) {
     newWindowFromDiv.value = true
   }
@@ -428,6 +429,8 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('storage', eventCheck)
   window.removeEventListener('blur', releaseAttachKey)
+  eventBus.off('handleNew', handleNew)
+  eventBus.off('tabSort', tabSort)
 })
 
 const previewStatus = computed(() => editMode.value === 'preview')

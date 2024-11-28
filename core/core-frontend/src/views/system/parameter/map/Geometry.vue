@@ -150,8 +150,8 @@
         </div>
         <div class="sub-area-view" v-else>
           <div id="map-container" class="map-container"></div>
-          <el-divider />
           <div class="sub-area-editor">
+            <el-divider />
             <span class="header">
               <span class="label">
                 <span>自定义区域</span>
@@ -164,7 +164,7 @@
                 <span>添加区域</span>
               </span>
             </span>
-            <el-table :data="subAreaList" stripe style="width: 100%">
+            <el-table :data="subAreaList" stripe style="width: 100%" :height="300">
               <el-table-column prop="name" label="区域名称">
                 <template #default="{ row, $index }">
                   <span
@@ -593,13 +593,7 @@ const mapOption: ChoroplethOptions = {
     lineWidth: 0.6,
     lineOpacity: 1
   },
-  label: {
-    field: 'name',
-    style: {
-      fill: 'black',
-      textAnchor: 'center'
-    }
-  },
+  label: false,
   state: {
     active: { stroke: 'green', lineWidth: 1 }
   },
@@ -656,7 +650,8 @@ const renderMap = async () => {
       fontSize: 20,
       opacity: 1,
       fontWeight: 'bold',
-      textAnchor: 'center'
+      textAnchor: 'center',
+      textAllowOverlap: true
     }
   })
   if (mapInstance) {
@@ -672,7 +667,7 @@ const renderMap = async () => {
       value: area => {
         let color = 'white'
         subAreaList.value?.forEach((subArea, i) => {
-          if (subArea.scope?.includes(area.adcode)) {
+          if (subArea.scopeArr?.includes('156' + area.adcode)) {
             color = AREA_COLOR[i % AREA_COLOR.length]
           }
         })
@@ -845,16 +840,17 @@ onBeforeMount(() => {
 .sub-area-view {
   display: flex;
   flex-direction: column;
-  width: 100;
+  overflow: hidden;
+  width: 100%;
   height: 100%;
   .map-container {
-    flex: 7;
+    flex: 1;
   }
   .ed-divider {
     margin: 10px 0;
   }
   .sub-area-editor {
-    flex: 3;
+    height: 350px;
     .header {
       display: flex;
       justify-content: space-between;

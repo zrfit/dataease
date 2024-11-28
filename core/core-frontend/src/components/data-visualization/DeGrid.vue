@@ -10,7 +10,7 @@
         <path
           :d="smallGridPathD"
           fill="none"
-          stroke="rgba(207, 207, 207, 0.3)"
+          stroke="rgba(207, 207, 207, 0.4)"
           stroke-width="0.8"
         />
       </pattern>
@@ -21,11 +21,11 @@
         patternUnits="userSpaceOnUse"
       >
         <rect :width="middleGridW" :height="middleGridH" fill="url(#smallGrid)" />
-        <path :d="middleGridPathD" fill="none" stroke="rgba(207, 207, 207, 0.3)" stroke-width="1" />
+        <path :d="middleGridPathD" fill="none" stroke="rgba(207, 207, 207, 0.4)" stroke-width="1" />
       </pattern>
       <pattern id="grid" :width="gridW" :height="gridH" patternUnits="userSpaceOnUse">
         <rect :width="gridW" :height="gridH" fill="url(#middleGrid)" />
-        <path :d="pathD" fill="none" stroke="rgba(207, 207, 207, 0.3)" stroke-width="1.2" />
+        <path :d="pathD" fill="none" stroke="rgba(207, 207, 207, 0.4)" stroke-width="1.2" />
       </pattern>
     </defs>
     <rect width="100%" height="100%" fill="url(#grid)" />

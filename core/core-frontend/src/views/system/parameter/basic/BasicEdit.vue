@@ -1,10 +1,19 @@
 <script lang="ts" setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, PropType } from 'vue'
 import { ElMessage, ElLoading } from 'element-plus-secondary'
 import { useI18n } from '@/hooks/web/useI18n'
 import type { FormInstance, FormRules } from 'element-plus-secondary'
 import request from '@/config/axios'
+import dvInfo from '@/assets/svg/dv-info.svg'
 const { t } = useI18n()
+
+const props = defineProps({
+  labelTooltips: {
+    type: Array as PropType<any[]>,
+    default: () => []
+  }
+})
+
 const dialogVisible = ref(false)
 const loadingInstance = ref(null)
 const basicForm = ref<FormInstance>()
@@ -47,6 +56,14 @@ const state = reactive({
     { value: '1', label: t('open_opt.local_page') }
   ]
 })
+
+const tooltipItem = ref({})
+const formatLabel = () => {
+  props.labelTooltips?.length &&
+    props.labelTooltips.forEach(tooltip => {
+      tooltipItem.value[tooltip.key] = tooltip.val
+    })
+}
 
 const rule = reactive<FormRules>({
   dsIntervalTime: [
@@ -229,6 +246,7 @@ const oidChange = () => {
   state.form['platformRid'] = []
   loadRoleOptions()
 }
+formatLabel()
 defineExpose({
   edit
 })
@@ -255,8 +273,22 @@ defineExpose({
         :key="item.pkey"
         :prop="item.pkey"
         :class="{ 'setting-hidden-item': item.pkey === 'dsExecuteTime' }"
-        :label="t(item.label)"
       >
+        <template v-slot:label>
+          <div class="basic-form-info-tips">
+            <span class="custom-form-item__label">{{ t(item.label) }}</span>
+            <el-tooltip
+              v-if="tooltipItem[`setting_basic.${item.pkey}`]"
+              effect="dark"
+              :content="tooltipItem[`setting_basic.${item.pkey}`]"
+              placement="top"
+            >
+              <el-icon
+                ><Icon name="dv-info"><dvInfo class="svg-icon" /></Icon
+              ></el-icon>
+            </el-tooltip>
+          </div>
+        </template>
         <el-switch
           class="de-basic-switch"
           v-if="
@@ -419,6 +451,32 @@ defineExpose({
   .ed-form-item__label {
     line-height: 22px !important;
     height: 22px !important;
+
+    .basic-form-info-tips {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      column-gap: 4px;
+    }
+  }
+
+  .ed-form-item {
+    &.is-required.asterisk-right {
+      .ed-form-item__label:after {
+        display: none;
+      }
+      .basic-form-info-tips {
+        .custom-form-item__label:after {
+          content: '*';
+          color: var(--ed-color-danger);
+          margin-left: 2px;
+          font-family: var(--de-custom_font, 'PingFang');
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+        }
+      }
+    }
   }
   .ed-radio__label {
     font-weight: 400;

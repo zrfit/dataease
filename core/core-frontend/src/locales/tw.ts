@@ -608,6 +608,7 @@ export default {
     secret_length: '密鑰長度'
   },
   components: {
+    effective_during_link: '公共連結生效',
     dashboard_style: '儀表板風格',
     overall_configuration: '整體配置',
     dashboard_background: '儀表板背景',
@@ -1810,7 +1811,13 @@ export default {
     full_display: '全量顯示',
     show_hover_style: '顯示滑鼠懸浮樣式',
     merge_cells: '合併儲存格',
-    length_limit: '長度限制'
+    length_limit: '長度限制',
+    radar_point: '開啟輔助點',
+    radar_point_size: '輔助點大小',
+    radar_area_color: '開啟面積',
+    table_freeze_tip: '合併儲存格後，不支持行列凍結',
+    merge_cells_tips: '合併儲存格後，行列凍結、自動換行會失效',
+    merge_cells_break_line_tip: '合併儲存格後，不支持自動換行'
   },
   dataset: {
     scope_edit: '僅編輯時生效',
@@ -2214,6 +2221,9 @@ export default {
     day_limit: '天不能小於1，大於31'
   },
   commons: {
+    language: '語言',
+    help_center: '幫助中心',
+    assistant: '小助手',
     test_connect: '測試連線',
     consanguinity: '血緣關係',
     collapse_navigation: '收起導航',
@@ -2585,6 +2595,34 @@ export default {
     column_name: '欄位名稱'
   },
   visualization: {
+    condition_style_set: '條件樣式設定',
+    cell_merge_tips: '合併單元格後，行列凍結、自動換行將失效。',
+    image: '圖片',
+    jump_set_tips: '已設定下鑽',
+    input_calc_data: '輸入計算數據',
+    excel_with_format: 'Excel(帶格式)',
+    show_data: '查看數據',
+    sort: '排序',
+    add_query_filter: '添加查詢條件',
+    edit_query_filter: '編輯查詢條件',
+    jump_set_tips: '已設定跳轉',
+    tips_world: '提示詞',
+    query_name_space2: '名稱與選框間距',
+    button_color: '按鈕顏色',
+    button_text: '按鈕文字',
+    font_size: '字號',
+    show_button: '展示按鈕',
+    query_tips:
+      '如果展示查詢按鈕，需要點擊該按鈕後才能觸發圖表查詢；如果不展示查詢按鈕，選擇完查詢條件後立即觸發圖表查詢',
+    custom_query_bg_color: '自定義查詢條件背景',
+    query_condition_space: '查詢條件間距',
+    query_condition_name: '查詢條件名稱',
+    condition_left: '左側',
+    condition_top: '上側',
+    custom_bg_color: '自定義組件背景',
+    background_img: '背景圖片',
+    back_parent: '返回上一級',
+    ext_fullscreen: '退出全屏',
     no_edit_auth: '目標資源沒有編輯權限，請聯繫管理員！',
     select_target_dashboard_tips: '請選擇目標儀表板',
     select_target_screen_tips: '請選擇目標數據大屏',

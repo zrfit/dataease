@@ -195,7 +195,11 @@
         :disabled="canvasStyleData.dashboard.resultMode === 'all'"
       />
     </el-form-item>
-    <el-form-item style="margin-top: 16px; margin-bottom: 8px" :class="'form-item-' + themes">
+    <el-form-item
+      v-show="dvInfo.type === 'dashboard'"
+      style="margin-top: 16px; margin-bottom: 8px"
+      :class="'form-item-' + themes"
+    >
       <el-checkbox
         :effect="themes"
         size="small"
@@ -206,7 +210,7 @@
           <span style="margin-right: 4px"> {{ t('visualization.button_tips') }}</span>
           <el-tooltip class="item" :effect="toolTip" placement="bottom">
             <template #content>
-              <div>{{ t('visualization.effective_during_preview') }}</div>
+              <div>{{ t('visualization.effective_during_link') }}</div>
             </template>
             <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
               <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -215,7 +219,11 @@
         </span>
       </el-checkbox>
     </el-form-item>
-    <el-form-item class="form-item" :class="'form-item-' + themes">
+    <el-form-item
+      v-show="dvInfo.type === 'dashboard'"
+      class="form-item"
+      :class="'form-item-' + themes"
+    >
       <el-checkbox
         :effect="themes"
         size="small"
@@ -241,7 +249,7 @@ import {
   LIGHT_THEME_DASHBOARD_BACKGROUND
 } from '@/utils/canvasStyle'
 import {
-  CHART_FONT_FAMILY,
+  CHART_FONT_FAMILY_ORIGIN,
   DEFAULT_COLOR_CASE_DARK,
   DEFAULT_COLOR_CASE_LIGHT,
   DEFAULT_TAB_COLOR_CASE_DARK,
@@ -274,7 +282,7 @@ const props = defineProps({
     default: 'light'
   }
 })
-const fontFamily = CHART_FONT_FAMILY.concat(
+const fontFamily = CHART_FONT_FAMILY_ORIGIN.concat(
   appearanceStore.fontList.map(ele => ({
     name: ele.name,
     value: ele.name

@@ -268,7 +268,13 @@ const disabledDate = val => {
         .startOf(queryTimeType.value)
         .valueOf() -
         1000 <
-      timeStamp
+        timeStamp ||
+      dayjs(startWindowTime.value)
+        .subtract(maximumSingleQuery, queryTimeType.value)
+        .startOf(queryTimeType.value)
+        .valueOf() +
+        1000 >
+        timeStamp
   }
   if (intervalType === 'none') {
     if (dynamicWindow) return isDynamicWindowTime

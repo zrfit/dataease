@@ -1,5 +1,6 @@
 export default {
   common: {
+    timeout_tips: '请求超时，请稍后再试',
     component: {
       input: '单行输入',
       textarea: '多行输入',
@@ -1812,7 +1813,13 @@ export default {
     full_display: '全量显示',
     show_hover_style: '显示鼠标悬浮样式',
     merge_cells: '合并单元格',
-    length_limit: '长度限制'
+    length_limit: '长度限制',
+    radar_point: '开启辅助点',
+    radar_point_size: '辅助点大小',
+    radar_area_color: '开启面积',
+    table_freeze_tip: '合并单元格后，不支持行列冻结',
+    merge_cells_tips: '合并单元格后，行列冻结、自动换行会失效',
+    merge_cells_break_line_tip: '合并单元格后，不支持自动换行'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
@@ -2216,6 +2223,9 @@ export default {
     day_limit: '天不能小于1，大于31'
   },
   commons: {
+    language: '语言',
+    help_center: '帮助中心',
+    assistant: '小助手',
     test_connect: '测试连接',
     consanguinity: '血缘关系',
     collapse_navigation: '收起导航',
@@ -2587,6 +2597,35 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    effective_during_link: '公共链接生效',
+    condition_style_set: '条件样式设置',
+    cell_merge_tips: '合并单元格后，行列冻结、自动换行会失效。',
+    image: '图片',
+    jump_set_tips: '已设置下钻',
+    input_calc_data: '输入计算数据',
+    excel_with_format: 'Excel(带格式)',
+    show_data: '查看数据',
+    sort: '排序',
+    add_query_filter: '添加查询条件',
+    edit_query_filter: '编辑查询条件',
+    jump_set_tips: '已设置跳转',
+    tips_world: '提示词',
+    query_name_space2: '名称与选框间距',
+    button_color: '按钮颜色',
+    button_text: '按钮文字',
+    font_size: '字号',
+    show_button: '展示按钮',
+    query_tips:
+      '如果展示查询按钮，需要点击该按钮后才能触发图表查询；如果不展示查询按钮，选择完查询条件后立即触发图表查询',
+    custom_query_bg_color: '自定义查询条件背景',
+    query_condition_space: '查询条件间距',
+    query_condition_name: '查询条件名称',
+    condition_left: '左侧',
+    condition_top: '上侧',
+    custom_bg_color: '自定义组件背景',
+    background_img: '背景图片',
+    back_parent: '返回上一级',
+    ext_fullscreen: '退出全屏',
     no_edit_auth: '目标资源没有编辑权限，请联系管理员！',
     select_target_dashboard_tips: '请选择目标仪表板',
     select_target_screen_tips: '请选择目标数据大屏',

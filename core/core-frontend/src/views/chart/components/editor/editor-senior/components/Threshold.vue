@@ -496,7 +496,9 @@ init()
     <el-col v-if="props.chart.type && props.chart.type === 'indicator'">
       <el-col>
         <div class="inner-container">
-          <span class="label" :class="'label-' + props.themes">条件样式设置</span>
+          <span class="label" :class="'label-' + props.themes">{{
+            $t('visualization.condition_style_set')
+          }}</span>
           <span class="right-btns">
             <span
               class="set-text-info"
@@ -594,7 +596,9 @@ init()
     <el-col v-show="showProperty('tableThreshold')">
       <el-col>
         <div class="inner-container">
-          <span class="label" :class="'label-' + props.themes">条件样式设置</span>
+          <span class="label" :class="'label-' + props.themes">{{
+            $t('visualization.condition_style_set')
+          }}</span>
           <span class="right-btns">
             <span
               class="set-text-info"
@@ -792,14 +796,16 @@ init()
     <el-col v-show="showProperty('lineThreshold')">
       <el-col>
         <div class="inner-container">
-          <span class="label" :class="'label-' + props.themes">条件样式设置</span>
+          <span class="label" :class="'label-' + props.themes">{{
+            $t('visualization.condition_style_set')
+          }}</span>
           <span class="right-btns">
             <span
               class="set-text-info"
               :class="{ 'set-text-info-dark': themes === 'dark' }"
               v-if="state.thresholdForm?.tableThreshold?.length > 0"
             >
-              已设置
+              $t('visualization.already_setting')
             </span>
             <el-button
               :title="t('chart.edit')"

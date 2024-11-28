@@ -3,7 +3,7 @@
     <defs>
       <pattern id="grid" :width="gridW" :height="gridH" patternUnits="userSpaceOnUse">
         <rect :width="gridW" :height="gridH" fill="url(#middleGrid)" />
-        <path :d="pathD" fill="none" stroke="rgba(207, 207, 207, 0.2)" stroke-width="0.5" />
+        <path :d="pathD" fill="none" stroke="rgba(207, 207, 207, 0.4)" stroke-width="0.7" />
       </pattern>
       <pattern
         id="middleGrid"
@@ -15,7 +15,7 @@
         <path
           :d="middleGridPathD"
           fill="none"
-          stroke="rgba(207, 207, 207, 0.2)"
+          stroke="rgba(207, 207, 207, 0.4)"
           stroke-width="0.3"
         />
       </pattern>

@@ -320,6 +320,17 @@ const mapCustomRangeValidate = prop => {
   }
   changeBasicStyle(prop)
 }
+/**
+ * 表格是否合并单元格
+ */
+const mergeCell = computed(() => {
+  if (COLUMN_WIDTH_TYPE.includes(props.chart.type)) {
+    let { customAttr } = JSON.parse(JSON.stringify(props.chart))
+    const { tableCell } = customAttr
+    return tableCell.mergeCells
+  }
+  return false
+})
 onMounted(() => {
   init()
 })
@@ -1057,12 +1068,21 @@ onMounted(() => {
       <el-checkbox
         size="small"
         :effect="themes"
+        :disabled="mergeCell"
         v-model="state.basicStyleForm.autoWrap"
         @change="changeBasicStyle('autoWrap')"
       >
         <span class="data-area-label">
           <span style="margin-right: 4px">{{ t('chart.table_auto_break_line') }}</span>
-          <el-tooltip class="item" effect="dark" placement="bottom">
+          <el-tooltip class="item" effect="dark" placement="bottom" v-if="mergeCell">
+            <template #content>
+              <div>{{ t('chart.merge_cells_break_line_tip') }}</div>
+            </template>
+            <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
+              <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" placement="bottom" v-else>
             <template #content>
               <div>{{ t('chart.table_break_line_tip') }}</div>
             </template>
@@ -1086,6 +1106,7 @@ onMounted(() => {
         :show-input-controls="false"
         :min="1"
         :step="1"
+        :disabled="mergeCell"
         @change="changeBasicStyle('maxLines')"
       />
     </el-form-item>
@@ -1277,6 +1298,53 @@ onMounted(() => {
         <el-radio :effect="themes" label="polygon">{{ t('chart.polygon') }}</el-radio>
         <el-radio :effect="themes" label="circle">{{ t('chart.circle') }}</el-radio>
       </el-radio-group>
+    </el-form-item>
+    <el-form-item
+      class="form-item margin-bottom-8"
+      :class="'form-item-' + themes"
+      v-if="showProperty('radarShowPoint')"
+    >
+      <el-checkbox
+        size="small"
+        :effect="themes"
+        v-model="state.basicStyleForm.radarShowPoint"
+        @change="changeBasicStyle('radarShowPoint')"
+      >
+        {{ $t('chart.radar_point') }}
+      </el-checkbox>
+    </el-form-item>
+    <el-form-item
+      style="padding-left: 20px"
+      class="form-item margin-bottom-8"
+      :class="'form-item-' + themes"
+      :label="t('chart.radar_point_size')"
+      v-if="showProperty('radarPointSize')"
+    >
+      <el-input-number
+        style="width: 100%"
+        :effect="themes"
+        controls-position="right"
+        size="middle"
+        :min="0"
+        :max="30"
+        :disabled="!state.basicStyleForm.radarShowPoint"
+        v-model="state.basicStyleForm.radarPointSize"
+        @change="changeBasicStyle('radarPointSize')"
+      />
+    </el-form-item>
+    <el-form-item
+      class="form-item margin-bottom-8"
+      :class="'form-item-' + themes"
+      v-if="showProperty('radarAreaColor')"
+    >
+      <el-checkbox
+        size="small"
+        :effect="themes"
+        v-model="state.basicStyleForm.radarAreaColor"
+        @change="changeBasicStyle('radarAreaColor')"
+      >
+        {{ $t('chart.radar_area_color') }}
+      </el-checkbox>
     </el-form-item>
     <!--radar end-->
     <!--scatter start-->

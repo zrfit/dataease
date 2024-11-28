@@ -580,8 +580,7 @@ const list = [
       color: '',
       padding: 4,
       verticalAlign: 'middle',
-      scrollSpeed: 0,
-      fontFamily: 'Microsoft YaHei'
+      scrollSpeed: 0
     }
   }
 ]
