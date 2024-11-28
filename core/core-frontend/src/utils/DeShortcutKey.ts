@@ -187,16 +187,16 @@ function move(keyCode) {
     const scale = dvMainStore.canvasStyleData.scale / 100
     if (keyCode === leftKey) {
       curComponent.value.style.left = curComponent.value.style.left - scale
-      groupAreaAdaptor(-1, 0)
+      groupAreaAdaptor(-scale, 0)
     } else if (keyCode === rightKey) {
       curComponent.value.style.left = curComponent.value.style.left + scale
-      groupAreaAdaptor(1, 0)
+      groupAreaAdaptor(scale, 0)
     } else if (keyCode === upKey) {
       curComponent.value.style.top = curComponent.value.style.top - scale
-      groupAreaAdaptor(0, -1)
+      groupAreaAdaptor(0, -scale)
     } else if (keyCode === downKey) {
       curComponent.value.style.top = curComponent.value.style.top + scale
-      groupAreaAdaptor(0, 1)
+      groupAreaAdaptor(0, scale)
     }
     snapshotStore.recordSnapshotCache('key-move')
   }
@@ -211,6 +211,11 @@ function groupAreaAdaptor(leftOffset = 0, topOffset = 0) {
     groupStyleRevert(curComponent.value, {
       width: parentNode.offsetWidth,
       height: parentNode.offsetHeight
+    })
+  } else if (curComponent.value.component === 'GroupArea' && areaData.value.components.length > 0) {
+    areaData.value.components.forEach(component => {
+      component.style.top = component.style.top + topOffset
+      component.style.left = component.style.left + leftOffset
     })
   }
 }
