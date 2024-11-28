@@ -1671,6 +1671,7 @@ const drawTextShape = (cell, isHeader) => {
  * @param layoutResult
  */
 export const calculateHeaderHeight = (info, newChart, tableHeader, basicStyle, layoutResult) => {
+  if (tableHeader.showTableHeader === false ) return
   const ev = layoutResult || newChart.facet.layoutResult
   const maxLines = basicStyle.maxLines ?? 1
   const textStyle = { ...newChart.theme.cornerCell.text }
@@ -1763,7 +1764,7 @@ const getWrapTextHeight = (wrapText, textStyle, spreadsheet, maxLines) => {
  * @param showSummary
  */
 export const configSummaryRow = (chart, s2Options, newData, tableHeader, basicStyle, showSummary) =>{
-  if (!showSummary) return
+  if (!showSummary || !newData.length) return
   // 设置汇总行高度和表头一致
   const heightByField = {}
   heightByField[newData.length] = tableHeader.tableTitleHeight
@@ -1821,10 +1822,13 @@ export const configSummaryRow = (chart, s2Options, newData, tableHeader, basicSt
  * @param showSummary
  */
 export const summaryRowStyle = (newChart, newData, tableCell, tableHeader, showSummary) => {
-  if (!showSummary) return
+  if (!showSummary || !newData.length) return
   newChart.on(S2Event.LAYOUT_BEFORE_RENDER, () => {
+    const showHeader = tableHeader.showTableHeader === true
+    // 不显示表头时，减少一个表头的高度
+    const headerAndSummaryHeight = showHeader ? 2 : 1
     const totalHeight =
-      tableHeader.tableTitleHeight * 2 + tableCell.tableItemHeight * (newData.length - 1)
+      tableHeader.tableTitleHeight * headerAndSummaryHeight + tableCell.tableItemHeight * (newData.length - 1)
     if (totalHeight < newChart.options.height) {
       // 6 是阴影高度
       newChart.options.height =
@@ -1843,4 +1847,42 @@ export class SummaryCell extends CustomDataCell {
     const { backgroundColor, backgroundColorOpacity } = this.theme.colCell.cell
     return { backgroundColor, backgroundColorOpacity }
   }
+}
+
+/**
+ * 配置空数据样式
+ * @param newChart
+ * @param basicStyle
+ * @param newData
+ * @param container
+ */
+export const configEmptyDataStyle = (newChart, basicStyle, newData, container) => {
+  /**
+   * 辅助函数：移除空数据dom
+   */
+  const removeEmptyDom = () => {
+    const emptyElement = document.getElementById(container + '_empty')
+    if (emptyElement) {
+      emptyElement.parentElement.removeChild(emptyElement)
+    }
+  }
+  removeEmptyDom()
+  if (newData.length) return
+  newChart.on(S2Event.LAYOUT_AFTER_HEADER_LAYOUT, (ev) => {
+    removeEmptyDom()
+    if (!newData.length) {
+      const emptyDom = document.createElement('div')
+      const left = Math.min(newChart.options.width, ev.colsHierarchy.width) / 2 - 32
+      emptyDom.id = container + '_empty'
+      emptyDom.textContent = t('data_set.no_data')
+      emptyDom.setAttribute(
+        'style',
+        `position: absolute;
+        left: ${left}px;
+        top: 50%;`
+      )
+      const parent = document.getElementById(container)
+      parent.insertBefore(emptyDom, parent.firstChild)
+    }
+  })
 }

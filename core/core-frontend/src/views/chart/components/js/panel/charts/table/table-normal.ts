@@ -1,6 +1,7 @@
 import { useI18n } from '@/hooks/web/useI18n'
 import { formatterItem, valueFormatter } from '@/views/chart/components/js/formatter'
 import {
+  configEmptyDataStyle,
   configSummaryRow,
   copyContent,
   SortTooltip,
@@ -13,6 +14,7 @@ import {
   S2DataConfig,
   S2Event,
   S2Options,
+  ScrollbarPositionType,
   TableColCell,
   TableSheet,
   ViewMeta
@@ -145,7 +147,10 @@ export class TableNormal extends S2ChartView<TableSheet> {
         renderTooltip: sheet => new SortTooltip(sheet)
       },
       interaction: {
-        hoverHighlight: !(basicStyle.showHoverStyle === false)
+        hoverHighlight: !(basicStyle.showHoverStyle === false),
+        scrollbarPosition: newData.length
+          ? ScrollbarPositionType.CONTENT
+          : ScrollbarPositionType.CANVAS
       }
     }
     // 列宽设置
@@ -242,6 +247,7 @@ export class TableNormal extends S2ChartView<TableSheet> {
         ev.colsHierarchy.width = containerWidth
       })
     }
+    configEmptyDataStyle(newChart, basicStyle, newData, container)
     // click
     newChart.on(S2Event.DATA_CELL_CLICK, ev => {
       const cell = newChart.getCell(ev.target)
