@@ -225,7 +225,7 @@ const init = ref({
           // 显示原始手柄并移除克隆手柄
           originalHandle.style.display = ''
           if (cloneHandle) {
-            cloneHandle.parentNode.removeChild(cloneHandle) // 获取原手柄的父元素
+            cloneHandle.parentNode?.removeChild(cloneHandle) // 获取原手柄的父元素
           }
           cloneHandle = null
           originalHandle = null
@@ -539,6 +539,9 @@ const calcData = (view: Chart, callback) => {
   updateEmptyValue(view)
   if (view.tableId || view['dataFrom'] === 'template') {
     const v = JSON.parse(JSON.stringify(view))
+    v.type = 'table-info'
+    v.render = 'antv'
+    v.resultCount = 1
     getData(v)
       .then(res => {
         if (res.code && res.code !== 0) {
@@ -546,6 +549,8 @@ const calcData = (view: Chart, callback) => {
           errMsg.value = res.msg
         } else {
           state.data = res?.data
+          res.type = 'rich-text'
+          res.render = 'custom'
           state.viewDataInfo = res
           state.totalItems = res?.totalItems
           const curViewInfo = canvasViewInfo.value[element.value.id]
