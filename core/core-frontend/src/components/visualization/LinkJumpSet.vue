@@ -626,6 +626,7 @@ import { XpackComponent } from '@/components/plugin'
 import { useCache } from '@/hooks/web/useCache'
 import { useEmbedded } from '@/store/modules/embedded'
 import { guid } from '@/views/visualized/data/dataset/form/util'
+import treeSort from '@/utils/treeSortUtils'
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, canvasViewInfo, componentData } = storeToRefs(dvMainStore)
 const linkJumpInfoTree = ref(null)
@@ -717,6 +718,7 @@ const state = reactive({
   quota: [],
   currentOutParams: []
 })
+const { wsCache } = useCache()
 
 const outerContentEditor = ref(null)
 
@@ -767,6 +769,8 @@ const init = viewItem => {
       state.panelList = rsp
     }
     state.panelList = filterEmptyFolderTree(state.panelList)
+    const curSortType = wsCache.get(`TreeSort-${dvInfo.value.type}`) || 'time_asc'
+    state.panelList = treeSort(state.panelList, curSortType)
   })
 
   // 获取当前过滤条件明细 过滤原则：1.在当前仪表板或者大屏 2.作用于当前图表
