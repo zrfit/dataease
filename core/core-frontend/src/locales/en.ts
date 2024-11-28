@@ -1741,7 +1741,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     p_bottom: 'Bottom alignment',
     p_center: 'Center',
     table_auto_break_line: 'Automatic line break',
-    table_break_line_tip: 'After merging cells, automatic line wrapping is not supported',
+    table_break_line_tip:
+      'Turn on automatic line break, the table header row height setting will be invalid',
     table_break_line_max_lines: 'Maximum number of lines',
     step: 'Step length (px)',
     no_function:
@@ -1855,7 +1856,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     radar_area_color: 'enable area',
     table_freeze_tip: 'after merging cells, column and row freezing is not supported',
     merge_cells_tips:
-      'after merging cells, freezing rows and columns and automatic line wrapping will become invalid'
+      'after merging cells, freezing rows and columns and automatic line wrapping will become invalid',
+    merge_cells_break_line_tip: 'after merging cells, automatic line wrapping is not supported'
   },
   dataset: {
     scope_edit: 'only effective when editing',

@@ -1705,7 +1705,7 @@ export default {
     p_bottom: '下對齊',
     p_center: '居中',
     table_auto_break_line: '自動換行',
-    table_break_line_tip: '合併儲存格後，不支持自動換行',
+    table_break_line_tip: '開啟自動換行，表頭行高設定將失效',
     table_break_line_max_lines: '最大行數',
     step: '步長(px)',
     no_function: '函數尚未支援直接引用，請在欄位表達式中手動輸入。 ',
@@ -1815,7 +1815,8 @@ export default {
     radar_point_size: '輔助點大小',
     radar_area_color: '開啟面積',
     table_freeze_tip: '合併儲存格後，不支持行列凍結',
-    merge_cells_tips: '合併儲存格後，行列凍結、自動換行會失效'
+    merge_cells_tips: '合併儲存格後，行列凍結、自動換行會失效',
+    merge_cells_break_line_tip: '合併儲存格後，不支持自動換行'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

@@ -1708,7 +1708,7 @@ export default {
     p_bottom: '下对齐',
     p_center: '居中',
     table_auto_break_line: '自动换行',
-    table_break_line_tip: '合并单元格后，不支持自动换行',
+    table_break_line_tip: '开启自动换行，表头行高设置将失效',
     table_break_line_max_lines: '最大行数',
     step: '步长(px)',
     no_function: '函数尚未支持直接引用，请在字段表达式中手动输入。',
@@ -1818,7 +1818,8 @@ export default {
     radar_point_size: '辅助点大小',
     radar_area_color: '开启面积',
     table_freeze_tip: '合并单元格后，不支持行列冻结',
-    merge_cells_tips: '合并单元格后，行列冻结、自动换行会失效'
+    merge_cells_tips: '合并单元格后，行列冻结、自动换行会失效',
+    merge_cells_break_line_tip: '合并单元格后，不支持自动换行'
   },
   dataset: {
     scope_edit: '仅编辑时生效',

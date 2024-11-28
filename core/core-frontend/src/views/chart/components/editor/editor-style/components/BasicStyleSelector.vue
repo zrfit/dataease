@@ -1076,6 +1076,14 @@ onMounted(() => {
           <span style="margin-right: 4px">{{ t('chart.table_auto_break_line') }}</span>
           <el-tooltip class="item" effect="dark" placement="bottom" v-if="mergeCell">
             <template #content>
+              <div>{{ t('chart.merge_cells_break_line_tip') }}</div>
+            </template>
+            <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
+              <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
+            </el-icon>
+          </el-tooltip>
+          <el-tooltip class="item" effect="dark" placement="bottom" v-else>
+            <template #content>
               <div>{{ t('chart.table_break_line_tip') }}</div>
             </template>
             <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
