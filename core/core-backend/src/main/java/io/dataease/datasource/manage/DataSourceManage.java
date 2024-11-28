@@ -156,6 +156,13 @@ public class DataSourceManage {
         coreOptRecentManage.saveOpt(sourceData.getId(), OptConstants.OPT_RESOURCE_TYPE.DATASOURCE, OptConstants.OPT_TYPE.UPDATE);
     }
 
+
+    public void encryptDsConfig(){
+        coreDatasourceMapper.selectList(null).forEach(dataSource -> {
+            coreDatasourceMapper.updateById(dataSource);
+        });
+    }
+
     public DatasourceDTO getDs(Long id) {
         CoreDatasource coreDatasource = coreDatasourceMapper.selectById(id);
         DatasourceDTO dto = new DatasourceDTO();
