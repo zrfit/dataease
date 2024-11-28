@@ -276,7 +276,7 @@ defineExpose({
       >
         <template v-slot:label>
           <div class="basic-form-info-tips">
-            <span>{{ t(item.label) }}</span>
+            <span class="custom-form-item__label">{{ t(item.label) }}</span>
             <el-tooltip
               v-if="tooltipItem[`setting_basic.${item.pkey}`]"
               effect="dark"
@@ -451,11 +451,31 @@ defineExpose({
   .ed-form-item__label {
     line-height: 22px !important;
     height: 22px !important;
+
     .basic-form-info-tips {
       width: fit-content;
       display: inline-flex;
       align-items: center;
       column-gap: 4px;
+    }
+  }
+
+  .ed-form-item {
+    &.is-required.asterisk-right {
+      .ed-form-item__label:after {
+        display: none;
+      }
+      .basic-form-info-tips {
+        .custom-form-item__label:after {
+          content: '*';
+          color: var(--ed-color-danger);
+          margin-left: 2px;
+          font-family: var(--de-custom_font, 'PingFang');
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+        }
+      }
     }
   }
   .ed-radio__label {
