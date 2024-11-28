@@ -1180,9 +1180,15 @@ export function configL7Zoom(chart: Chart, plot: L7Plot<PlotOptions> | Scene) {
     return
   }
   if (!plotScene?.getControlByName('zoom')) {
+    let initZoom = basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5
+    let center = getCenter(basicStyle)
+    if (['map', 'bubble-map'].includes(chart.type)) {
+      initZoom = plotScene.getZoom()
+      center = plotScene.getCenter()
+    }
     const newZoomOptions = {
-      initZoom: basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5,
-      center: getCenter(basicStyle),
+      initZoom: initZoom,
+      center: center,
       buttonColor: basicStyle.zoomButtonColor,
       buttonBackground: basicStyle.zoomBackground
     } as any
