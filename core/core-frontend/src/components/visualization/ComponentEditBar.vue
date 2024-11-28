@@ -47,7 +47,7 @@
     <el-tooltip
       effect="dark"
       :placement="showBarTooltipPosition"
-      :content="'visualization.show_data'"
+      :content="t('visualization.show_data')"
       v-if="!['picture-group', 'rich-text'].includes(element.innerType) && barShowCheck('details')"
     >
       <span>

@@ -429,6 +429,8 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('storage', eventCheck)
   window.removeEventListener('blur', releaseAttachKey)
+  eventBus.off('handleNew', handleNew)
+  eventBus.off('tabSort', tabSort)
 })
 
 const previewStatus = computed(() => editMode.value === 'preview')
