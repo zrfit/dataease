@@ -52,3 +52,6 @@ create table core_custom_geo_sub_area
 )
     comment '自定义地理区域分区详情';
 
+
+UPDATE `core_sys_setting` SET `sort` = 11 WHERE `pkey` = 'basic.dsIntervalTime';
+
