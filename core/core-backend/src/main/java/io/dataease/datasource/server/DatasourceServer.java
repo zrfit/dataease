@@ -843,6 +843,10 @@ public class DatasourceServer implements DatasourceApi {
         if (CollectionUtils.isEmpty(newTableFields) || CollectionUtils.isEmpty(oldTableFields)) {
             return false;
         }
+        boolean isHistory = oldTableFields.stream().filter(tableField -> !tableField.isChecked()).collect(Collectors.toList()).size() == oldTableFields.size();
+        if (isHistory) {
+            oldTableFields.forEach(tableField -> tableField.setChecked(true));
+        }
         newTableFields.forEach(tableField -> tableField.setChecked(false));
         for (TableField oldField : oldTableFields) {
             if (!oldField.isChecked()) {
@@ -867,6 +871,10 @@ public class DatasourceServer implements DatasourceApi {
 
     private void mergeFields(List<TableField> oldFields, List<TableField> newFields) {
         newFields.forEach(tableField -> tableField.setChecked(false));
+        boolean isHistory = oldFields.stream().filter(tableField -> !tableField.isChecked()).collect(Collectors.toList()).size() == oldFields.size();
+        if (isHistory) {
+            oldFields.forEach(tableField -> tableField.setChecked(true));
+        }
         for (TableField newField : newFields) {
             for (TableField oldField : oldFields) {
                 if (oldField.getName().equals(newField.getName())) {

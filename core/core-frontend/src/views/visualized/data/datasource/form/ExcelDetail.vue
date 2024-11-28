@@ -215,6 +215,13 @@ const saveExcelDs = (params, successCb, finallyCb) => {
       if (selectNode[i].changeFiled) {
         changeFiled = true
       }
+      if (selectNode[i].fields.filter(field => field.checked).length == 0) {
+        ElMessage({
+          message: selectNode[i].excelLabel + t('datasource.api_field_not_empty'),
+          type: 'error'
+        })
+        return
+      }
       for (let j = 0; j < selectNode[i].fields.length; j++) {
         if (
           selectNode[i].fields[j].checked &&
