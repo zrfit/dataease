@@ -321,7 +321,7 @@ const save = () => {
         <el-tab-pane :label="t('visualization.visualization_component')" name="com"> </el-tab-pane>
         <el-tab-pane :label="t('visualization.component_style')" name="componentStyle">
         </el-tab-pane>
-        <el-tab-pane label="t('visualization.whole_style')" name="style"> </el-tab-pane>
+        <el-tab-pane :label="t('visualization.whole_style')" name="style"> </el-tab-pane>
       </el-tabs>
       <template v-if="!mobileLoading">
         <div class="config-mobile-tab" v-show="activeCollapse === 'style'">
