@@ -1,12 +1,15 @@
 import { cos, sin } from '@/utils/translate'
 import {
+  CHART_FONT_FAMILY_MAP,
+  CHART_FONT_FAMILY_MAP_TRANS,
   DEFAULT_COLOR_CASE,
-  DEFAULT_COLOR_CASE_DARK
+  DEFAULT_COLOR_CASE_DARK,
+  DEFAULT_INDICATOR_STYLE
 } from '@/views/chart/components/editor/util/chart'
 
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { merge } from 'lodash-es'
+import { defaultTo, merge } from 'lodash-es'
 const dvMainStore = dvMainStoreWithOut()
 
 export const LIGHT_THEME_COLOR_MAIN = '#000000'
@@ -424,7 +427,10 @@ export function adaptCurTheme(customStyle, customAttr) {
 
 export function adaptTitleFontFamily(fontFamily, viewInfo) {
   if (viewInfo) {
-    viewInfo.customStyle['text']['fontFamily'] = fontFamily
+    viewInfo.customStyle['text']['fontFamily'] = defaultTo(
+      CHART_FONT_FAMILY_MAP_TRANS[fontFamily],
+      fontFamily
+    )
   }
 }
 
