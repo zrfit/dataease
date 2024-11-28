@@ -82,17 +82,7 @@ const { t } = useI18n()
 
   .layout-container {
     .layout-sidebar {
-      height: calc(100vh - 56px);
-      position: relative;
-      &::after {
-        content: '';
-        width: 100%;
-        height: 1px;
-        background: #1f232926;
-        position: absolute;
-        bottom: 48px;
-        left: 0;
-      }
+      height: calc(100vh - 106px);
     }
 
     .layout-sidebar-collapse {
