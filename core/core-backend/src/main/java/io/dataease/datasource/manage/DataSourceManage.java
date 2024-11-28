@@ -17,10 +17,9 @@ import io.dataease.license.config.XpackInteract;
 import io.dataease.model.BusiNodeRequest;
 import io.dataease.model.BusiNodeVO;
 import io.dataease.operation.manage.CoreOptRecentManage;
-import io.dataease.utils.AuthUtils;
-import io.dataease.utils.BeanUtils;
-import io.dataease.utils.CommunityUtils;
-import io.dataease.utils.TreeUtils;
+import io.dataease.system.dao.auto.entity.CoreSysSetting;
+import io.dataease.system.manage.SysParameterManage;
+import io.dataease.utils.*;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -42,6 +41,9 @@ public class DataSourceManage {
 
     @Resource
     private CoreOptRecentManage coreOptRecentManage;
+
+    @Resource
+    private SysParameterManage sysParameterManage;
 
     private DatasourceNodeBO rootNode() {
         return new DatasourceNodeBO(0L, "root", false, 7, -1L, 0, "mysql");
@@ -157,10 +159,20 @@ public class DataSourceManage {
     }
 
 
-    public void encryptDsConfig(){
-        coreDatasourceMapper.selectList(null).forEach(dataSource -> {
-            coreDatasourceMapper.updateById(dataSource);
-        });
+    public void encryptDsConfig() {
+        List<CoreSysSetting> coreSysSettings = sysParameterManage.groupList("datasource.encrypt");
+        if (CollectionUtils.isEmpty(coreSysSettings)) {
+            coreDatasourceMapper.selectList(null).forEach(dataSource -> {
+                coreDatasourceMapper.updateById(dataSource);
+            });
+            CoreSysSetting coreSysSetting = new CoreSysSetting();
+            coreSysSetting.setId(IDUtils.snowID());
+            coreSysSetting.setPkey("datasource.encrypt");
+            coreSysSetting.setPval("true");
+            coreSysSetting.setType("text");
+            coreSysSetting.setSort(1);
+            sysParameterManage.insert(coreSysSetting);
+        }
     }
 
     public DatasourceDTO getDs(Long id) {
