@@ -195,7 +195,11 @@
         :disabled="canvasStyleData.dashboard.resultMode === 'all'"
       />
     </el-form-item>
-    <el-form-item style="margin-top: 16px; margin-bottom: 8px" :class="'form-item-' + themes">
+    <el-form-item
+      v-show="dvInfo.type === 'dashboard'"
+      style="margin-top: 16px; margin-bottom: 8px"
+      :class="'form-item-' + themes"
+    >
       <el-checkbox
         :effect="themes"
         size="small"
@@ -215,7 +219,11 @@
         </span>
       </el-checkbox>
     </el-form-item>
-    <el-form-item class="form-item" :class="'form-item-' + themes">
+    <el-form-item
+      v-show="dvInfo.type === 'dashboard'"
+      class="form-item"
+      :class="'form-item-' + themes"
+    >
       <el-checkbox
         :effect="themes"
         size="small"
