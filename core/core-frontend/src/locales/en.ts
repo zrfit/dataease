@@ -4029,6 +4029,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       datetime: 'Date'
     },
     data: {
+      send_status: 'Task Assignment Status',
+      df_task_status: 'Task Filling Status',
       data_not_exists: 'Data does not exist',
       cannot_select_all: 'Cannot select all',
       commit_time: 'Commit time',

@@ -3926,6 +3926,8 @@ export default {
       datetime: '日期'
     },
     data: {
+      send_status: '任務下發狀態',
+      df_task_status: '任務填報狀態',
       data_not_exists: '資料不存在',
       cannot_select_all: '不能全選',
       commit_time: '提交時間',
