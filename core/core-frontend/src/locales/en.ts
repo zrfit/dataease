@@ -2657,6 +2657,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     column_name: 'Field name'
   },
   visualization: {
+    effective_during_link: 'Public link active',
     condition_style_set: 'Condition Style Settings',
     cell_merge_tips:
       'After merging cells, row/column freezing and automatic line wrapping will be disabled.',

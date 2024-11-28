@@ -2597,6 +2597,7 @@ export default {
     column_name: '字段名称'
   },
   visualization: {
+    effective_during_link: '公共链接生效',
     condition_style_set: '条件样式设置',
     cell_merge_tips: '合并单元格后，行列冻结、自动换行会失效。',
     image: '图片',

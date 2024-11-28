@@ -168,8 +168,8 @@ const XpackLoaded = () => p(true)
 onMounted(async () => {
   useEmitt({
     name: 'canvasDownload',
-    callback: function () {
-      downloadH2('img')
+    callback: function (type = 'img') {
+      downloadH2(type)
     }
   })
   await new Promise(r => (p = r))

@@ -52,7 +52,7 @@
             <span style="margin-right: 4px">{{ t('visualization.show_zoom_button') }}</span>
             <el-tooltip class="item" :effect="themes" placement="bottom">
               <template #content>
-                <div>{{ t('visualization.effective_during_preview') }}</div>
+                <div>{{ t('visualization.effective_during_link') }}</div>
               </template>
               <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                 <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>

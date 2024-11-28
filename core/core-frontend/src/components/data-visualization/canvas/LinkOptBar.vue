@@ -128,7 +128,7 @@ const back2Last = () => {
   window.location.reload()
 }
 const exportPDF = () => {
-  useEmitt().emitter.emit('canvasDownload')
+  useEmitt().emitter.emit('canvasDownload', 'pdf')
 }
 </script>
 
