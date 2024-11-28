@@ -13,6 +13,7 @@
     "
   />
   <InfoTemplate
+    v-if="loginInoSettings?.length"
     ref="loginTemplate"
     class="login-setting-template"
     :label-tooltips="tooltips"
@@ -28,6 +29,7 @@
   />
 
   <InfoTemplate
+    v-if="thirdInfoSettings?.length"
     ref="thirdTemplate"
     class="login-setting-template"
     :label-tooltips="tooltips"
@@ -41,7 +43,7 @@
       )
     "
   />
-  <basic-edit ref="editor" @saved="refresh" />
+  <basic-edit ref="editor" :label-tooltips="tooltips" @saved="refresh" />
 </template>
 
 <script lang="ts" setup>
@@ -249,9 +251,9 @@ const search = cb => {
 const refresh = () => {
   search(() => {
     nextTick(() => {
-      infoTemplate?.value.init()
-      loginTemplate?.value.init()
-      thirdTemplate?.value.init()
+      infoTemplate?.value?.init()
+      loginTemplate?.value?.init()
+      thirdTemplate?.value?.init()
     })
   })
 }
