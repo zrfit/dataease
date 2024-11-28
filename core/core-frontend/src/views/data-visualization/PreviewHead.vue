@@ -34,7 +34,7 @@ const favorited = ref(false)
 const preview = () => {
   const baseUrl = isDataEaseBi.value ? embeddedStore.baseUrl : ''
   const url = baseUrl + '#/preview?dvId=' + dvInfo.value.id + '&ignoreParams=true'
-  const newWindow = window.open(url, openType)
+  const newWindow = window.open(url, '_blank')
   initOpenHandler(newWindow)
 }
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
