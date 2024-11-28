@@ -14,4 +14,5 @@ interface CustomGeoArea {
 type CustomGeoSubArea = CustomGeoArea & {
   geoAreaId: string
   scope: string
+  scopeArr?: string[]
 }
