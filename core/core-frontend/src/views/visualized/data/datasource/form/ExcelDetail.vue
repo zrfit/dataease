@@ -653,14 +653,6 @@ defineExpose({
               {{ t('data_set.field_selection') }}
             </el-button>
           </div>
-          <el-button @click="refreshData" secondary>
-            <template #icon>
-              <el-icon>
-                <Icon><icon_refresh_outlined class="svg-icon" /></Icon>
-              </el-icon>
-            </template>
-            {{ t('data_set.refresh_data') }}
-          </el-button>
         </div>
         <div class="info-table" v-if="isResize">
           <el-auto-resizer v-if="currentMode === 'preview'">
