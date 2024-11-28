@@ -608,6 +608,7 @@ export default {
     secret_length: '密鑰長度'
   },
   components: {
+    effective_during_link: '公共連結生效',
     dashboard_style: '儀表板風格',
     overall_configuration: '整體配置',
     dashboard_background: '儀表板背景',
