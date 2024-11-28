@@ -74,14 +74,6 @@ const closeEditComponentName = () => {
 
 const dragOnEnd = ({ oldIndex, newIndex }) => {
   const source = componentData.value[newIndex]
-  const comLength = componentData.value.length
-  // 还原数组
-  componentData.value.splice(newIndex, 1)
-  componentData.value.splice(oldIndex, 0, source)
-  const target = componentData.value[comLength - 1 - oldIndex]
-  // 反向移动数组
-  componentData.value.splice(comLength - 1 - oldIndex, 1)
-  componentData.value.splice(comLength - 1 - newIndex, 0, target)
   dvMainStore.setCurTabName(source.title)
   eventBus.emit('onTabSortChange-' + tabElement.value?.id)
   snapshotStore.recordSnapshotCache()
