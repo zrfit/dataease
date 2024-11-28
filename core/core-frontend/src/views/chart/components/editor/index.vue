@@ -1102,13 +1102,19 @@ const onFunctionCfgChange = val => {
 }
 
 const onBackgroundChange = val => {
-  curComponent.value.commonBackground = val
-  if (mobileInPc.value) {
-    //移动端设计
-    useEmitt().emitter.emit('onMobileStatusChange', {
-      type: 'componentStyleChange',
-      value: { type: 'commonBackground', component: JSON.parse(JSON.stringify(curComponent.value)) }
-    })
+  // 修复#13299
+  if (curComponent.value.id === view.value?.id) {
+    curComponent.value.commonBackground = val
+    if (mobileInPc.value) {
+      //移动端设计
+      useEmitt().emitter.emit('onMobileStatusChange', {
+        type: 'componentStyleChange',
+        value: {
+          type: 'commonBackground',
+          component: JSON.parse(JSON.stringify(curComponent.value))
+        }
+      })
+    }
   }
 }
 
