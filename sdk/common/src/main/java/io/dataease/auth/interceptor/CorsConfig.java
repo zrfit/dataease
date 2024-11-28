@@ -15,6 +15,9 @@ import java.util.List;
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 
+    @Value("${dataease.cors-strict:false}")
+    private boolean corsStrict;
+
 
     @Value("#{'${dataease.origin-list:http://127.0.0.1:8100}'.split(',')}")
     private List<String> originList;
@@ -29,15 +32,19 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         operateCorsRegistration = registry.addMapping("/**")
-                .allowCredentials(true)
-                .allowedOrigins(originList.toArray(new String[0]))
+                .allowCredentials(false)
                 .allowedHeaders("*")
                 .maxAge(3600)
                 .allowedMethods("GET", "POST", "DELETE");
+        if (corsStrict) {
+            operateCorsRegistration.allowedOrigins(originList.toArray(new String[0]));
+            return;
+        }
+        operateCorsRegistration.allowedOrigins("*");
     }
 
     public void addAllowedOrigins(List<String> origins) {
-        if (CollectionUtils.isEmpty(origins)) {
+        if (!corsStrict || CollectionUtils.isEmpty(origins)) {
             return;
         }
         origins.addAll(originList);
