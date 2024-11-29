@@ -9,6 +9,11 @@ const props = defineProps({
 })
 const emits = defineEmits(['setCollapse'])
 const setCollapse = () => {
+  if (props.isCollapse) {
+    setWidth()
+  } else {
+    width.value = 64
+  }
   emits('setCollapse', !props.isCollapse)
 }
 const width = ref(280)
