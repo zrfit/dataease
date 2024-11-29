@@ -2662,7 +2662,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     cell_merge_tips:
       'After merging cells, row/column freezing and automatic line wrapping will be disabled.',
     image: 'Image',
-    jump_set_tips: 'Drill-down has been set',
+    drill_set_tips: 'Drill-down has been set',
     input_calc_data: 'Enter calculation data',
     excel_with_format: 'Excel (with format)',
     show_data: 'View Data',
