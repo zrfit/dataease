@@ -316,7 +316,7 @@ const eventEnable = computed(
 )
 
 const onWrapperClick = e => {
-  if (eventEnable.value) {
+  if (eventEnable.value && showPosition.value !== 'canvas-multiplexing') {
     if (config.value.events.type === 'showHidden') {
       // 打开弹框区域
       nextTick(() => {
