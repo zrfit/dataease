@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import icon_sideFold_outlined from '@/assets/svg/icon_side-fold_outlined.svg'
 import icon_sideExpand_outlined from '@/assets/svg/icon_side-expand_outlined.svg'
-import { useMoveLine } from '@/hooks/web/useMoveLine'
+import { useCache } from '@/hooks/web/useCache'
+import { useEmitt } from '@/hooks/web/useEmitt'
+import { ref, onMounted } from 'vue'
 const props = defineProps({
   isCollapse: Boolean
 })
@@ -9,7 +11,20 @@ const emits = defineEmits(['setCollapse'])
 const setCollapse = () => {
   emits('setCollapse', !props.isCollapse)
 }
-const { width } = useMoveLine('DATASET')
+const width = ref(280)
+const { wsCache } = useCache('localStorage')
+const setWidth = () => {
+  const num = wsCache.get('current-collapse_bar')
+  if (!num) return
+  width.value = num
+}
+onMounted(() => {
+  useEmitt({
+    name: 'current-collapse_bar',
+    callback: setWidth
+  })
+  setWidth()
+})
 </script>
 
 <template>
