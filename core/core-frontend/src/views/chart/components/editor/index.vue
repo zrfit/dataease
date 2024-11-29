@@ -72,13 +72,21 @@ import {
   iconFieldCalculatedQMap
 } from '@/components/icon-group/field-calculated-list'
 import { useCache } from '@/hooks/web/useCache'
+import { canvasSave } from '@/utils/canvasUtils'
 
 const { wsCache } = useCache('localStorage')
 const embeddedStore = useEmbedded()
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
-const { canvasCollapse, curComponent, componentData, editMode, mobileInPc, fullscreenFlag } =
-  storeToRefs(dvMainStore)
+const {
+  canvasCollapse,
+  curComponent,
+  componentData,
+  editMode,
+  mobileInPc,
+  fullscreenFlag,
+  dvInfo
+} = storeToRefs(dvMainStore)
 const router = useRouter()
 let componentNameEdit = ref(false)
 let inputComponentName = ref('')
@@ -1435,8 +1443,20 @@ const editDs = () => {
     }
   })
   const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
-  const newWindow = window.open(routeData.href, openType)
-  initOpenHandler(newWindow)
+  // 检查是否保存
+  if (openType === '_self') {
+    if (!dvInfo.value.id) {
+      ElMessage.warning(t('visualization.save_page_tips'))
+      return
+    }
+    canvasSave(() => {
+      const newWindow = window.open(routeData.href, openType)
+      initOpenHandler(newWindow)
+    })
+  } else {
+    const newWindow = window.open(routeData.href, openType)
+    initOpenHandler(newWindow)
+  }
 }
 
 const showQuotaEditCompare = item => {

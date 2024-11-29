@@ -292,7 +292,7 @@ const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
   if (cmd === 'delete') {
     const msg = data.leaf ? '' : t('visualization.delete_tips')
     const tips_label = data.leaf ? resourceLabel : t('visualization.folder')
-    ElMessageBox.confirm(t('visualization.delete_tips', tips_label), {
+    ElMessageBox.confirm(t('visualization.delete_warn', [tips_label]), {
       confirmButtonType: 'danger',
       type: 'warning',
       tip: msg,
