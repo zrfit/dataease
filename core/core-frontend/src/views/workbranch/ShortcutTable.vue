@@ -104,7 +104,7 @@ const preview = id => {
     path: '/preview',
     query: { dvId: id }
   })
-  window.open(routeUrl.href, openType)
+  window.open(routeUrl.href, '_blank')
 }
 
 const openDataset = id => {

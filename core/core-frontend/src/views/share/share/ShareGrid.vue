@@ -47,8 +47,7 @@ const triggerFilterPanel = () => {
 }
 const preview = id => {
   const routeUrl = `/#/preview?dvId=${id}`
-  const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
-  window.open(routeUrl, openType)
+  window.open(routeUrl, '_blank')
 }
 const formatterTime = (_, _column, cellValue) => {
   if (!cellValue) {
