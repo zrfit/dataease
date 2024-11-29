@@ -120,7 +120,7 @@ const onJumpValueChange = () => {
 <style scoped lang="less">
 .form-item-dark {
   .ed-radio {
-    margin-right: 4px !important;
+    margin-right: 3px !important;
   }
 }
 </style>
