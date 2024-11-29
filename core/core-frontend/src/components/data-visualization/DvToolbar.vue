@@ -146,11 +146,10 @@ const saveCanvasWithCheck = () => {
         appData: appData.value
       }
       nextTick(() => {
-        console.log('===test444')
         resourceAppOpt.value.init(params)
       })
     } else {
-      const params = { name: dvInfo.value.name, leaf: true, id: dvInfo.value.pid }
+      const params = { name: dvInfo.value.name, leaf: true, id: dvInfo.value.pid || '0' }
       resourceGroupOpt.value.optInit('leaf', params, 'newLeaf', true)
     }
     return
@@ -278,6 +277,7 @@ onBeforeUnmount(() => {
   eventBus.off('preview', preview)
   eventBus.off('save', saveCanvasWithCheck)
   eventBus.off('clearCanvas', clearCanvas)
+  dvMainStore.setAppDataInfo(null)
 })
 
 const openOuterParamsSet = () => {
