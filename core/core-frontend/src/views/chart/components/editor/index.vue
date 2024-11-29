@@ -89,7 +89,7 @@ const {
 } = storeToRefs(dvMainStore)
 const router = useRouter()
 let componentNameEdit = ref(false)
-let inputComponentName = ref('')
+let inputComponentName = ref({ id: null, name: null })
 let componentNameInput = ref(null)
 
 const { t } = useI18n()
@@ -131,24 +131,32 @@ const onComponentNameChange = () => {
 
 const closeEditComponentName = () => {
   componentNameEdit.value = false
-  if (!inputComponentName.value || !inputComponentName.value.trim()) {
+  if (curComponent.value.id !== inputComponentName.value.id) {
     return
   }
-  if (inputComponentName.value.trim() === view.value.title) {
+  if (!inputComponentName.value.name || !inputComponentName.value.name.trim()) {
     return
   }
-  if (inputComponentName.value.trim().length > 64 || inputComponentName.value.trim().length < 2) {
+  if (inputComponentName.value.name.trim() === view.value.title) {
+    return
+  }
+  if (
+    inputComponentName.value.name.trim().length > 64 ||
+    inputComponentName.value.name.trim().length < 2
+  ) {
     ElMessage.warning('名称字段长度2-64个字符')
     editComponentName()
     return
   }
-  view.value.title = inputComponentName.value
-  inputComponentName.value = ''
+  view.value.title = inputComponentName.value.name
+  inputComponentName.value.name = ''
+  inputComponentName.value.id = ''
 }
 
 const editComponentName = () => {
   componentNameEdit.value = true
-  inputComponentName.value = view.value.title
+  inputComponentName.value.name = view.value.title
+  inputComponentName.value.id = view.value.id
   nextTick(() => {
     componentNameInput.value.focus()
   })
@@ -3873,7 +3881,7 @@ const deleteChartFieldItem = id => {
   <Teleport v-if="componentNameEdit" :to="'#component-name'">
     <input
       ref="componentNameInput"
-      v-model="inputComponentName"
+      v-model="inputComponentName.name"
       :effect="themes"
       width="100%"
       @change="onComponentNameChange"
