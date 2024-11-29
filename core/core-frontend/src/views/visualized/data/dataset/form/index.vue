@@ -757,6 +757,7 @@ const tabChange = val => {
 
 const addComplete = () => {
   state.nodeNameList = [...datasetDrag.value.nodeNameList]
+  changeUpdate()
   if (!state.nodeNameList?.length) {
     columns.value = []
     tableData.value = []
