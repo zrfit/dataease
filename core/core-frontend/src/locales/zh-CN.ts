@@ -2601,7 +2601,7 @@ export default {
     condition_style_set: '条件样式设置',
     cell_merge_tips: '合并单元格后，行列冻结、自动换行会失效。',
     image: '图片',
-    jump_set_tips: '已设置下钻',
+    drill_set_tips: '已设置下钻',
     input_calc_data: '输入计算数据',
     excel_with_format: 'Excel(带格式)',
     show_data: '查看数据',
