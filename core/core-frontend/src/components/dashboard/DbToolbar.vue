@@ -19,7 +19,7 @@ import { ElMessage, ElMessageBox } from 'element-plus-secondary'
 import eventBus from '@/utils/eventBus'
 import { useEmbedded } from '@/store/modules/embedded'
 import { deepCopy } from '@/utils/utils'
-import { nextTick, reactive, ref, computed, toRefs } from 'vue'
+import { nextTick, reactive, ref, computed, toRefs, onBeforeUnmount, onMounted } from 'vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { useAppStoreWithOut } from '@/store/modules/app'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
@@ -198,7 +198,10 @@ const saveCanvasWithCheck = () => {
         },
         appData: appData.value
       }
-      resourceAppOpt.value.init(params)
+      nextTick(() => {
+        console.log('===test333')
+        resourceAppOpt.value.init(params)
+      })
     } else {
       const params = { name: dvInfo.value.name, leaf: true, id: dvInfo.value.pid }
       resourceGroupOpt.value.optInit('leaf', params, 'newLeaf', true)
@@ -304,11 +307,16 @@ const backHandler = (url: string) => {
 const multiplexingCanvasOpen = () => {
   multiplexingRef.value.dialogInit()
 }
-
-eventBus.on('preview', previewInner)
-eventBus.on('save', saveCanvasWithCheck)
-eventBus.on('clearCanvas', clearCanvas)
-
+onMounted(() => {
+  eventBus.on('preview', previewInner)
+  eventBus.on('save', saveCanvasWithCheck)
+  eventBus.on('clearCanvas', clearCanvas)
+})
+onBeforeUnmount(() => {
+  eventBus.off('preview', previewInner)
+  eventBus.off('save', saveCanvasWithCheck)
+  eventBus.off('clearCanvas', clearCanvas)
+})
 const openDataBoardSetting = () => {
   dvMainStore.setCurComponent({ component: null, index: null })
 }
