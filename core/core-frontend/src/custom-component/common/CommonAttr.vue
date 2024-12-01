@@ -94,7 +94,12 @@ const tabTitleShow = computed(() => {
 })
 
 const styleShow = computed(() => {
-  return element.value && element.value.style && element.value.component !== 'DeTabs'
+  return (
+    element.value &&
+    element.value.style &&
+    element.value.component !== 'DeTabs' &&
+    Object.keys(element.value.style).length > 0
+  )
 })
 
 onMounted(() => {

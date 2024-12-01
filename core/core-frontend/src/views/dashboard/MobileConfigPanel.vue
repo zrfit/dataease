@@ -371,6 +371,7 @@ const save = () => {
 .mobile-config-panel {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
   position: relative;
   background: #f5f6f7;
 
