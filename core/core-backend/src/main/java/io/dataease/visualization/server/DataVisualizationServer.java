@@ -59,6 +59,7 @@ import io.dataease.visualization.utils.VisualizationUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -527,6 +528,13 @@ public class DataVisualizationServer implements DataVisualizationApi {
     public List<VisualizationResourceVO> findRecent(@RequestBody VisualizationWorkbranchQueryRequest request) {
         request.setQueryFrom("recent");
         IPage<VisualizationResourceVO> result = coreVisualizationManage.query(1, 20, request);
+        List<VisualizationResourceVO> resourceVOS = result.getRecords();
+        if(!CollectionUtils.isEmpty(resourceVOS)){
+            resourceVOS.stream().forEach(item ->{
+                item.setCreator(StringUtils.equals(item.getCreator(), "1")?item.getCreator():"管理员");
+                item.setLastEditor(StringUtils.equals(item.getLastEditor(), "1")?item.getLastEditor():"管理员");
+            });
+        }
         return result.getRecords();
     }
 
