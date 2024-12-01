@@ -643,7 +643,11 @@ export const dvMainStore = defineStore('dataVisualization', {
       if (this.batchOptComponentType !== 'UserView') {
         this.batchOptComponentInfo = {
           collapseName: 'background',
-          commonBackground: deepCopy(COMMON_COMPONENT_BACKGROUND_BASE),
+          commonBackground: deepCopy(
+            this.curOriginThemes === 'light'
+              ? COMMON_COMPONENT_BACKGROUND_LIGHT
+              : COMMON_COMPONENT_BACKGROUND_DARK
+          ),
           style: {}
         }
 
@@ -678,7 +682,11 @@ export const dvMainStore = defineStore('dataVisualization', {
         } else {
           this.batchOptComponentInfo = {
             collapseName: 'background',
-            commonBackground: deepCopy(COMMON_COMPONENT_BACKGROUND_BASE),
+            commonBackground: deepCopy(
+              this.curOriginThemes === 'light'
+                ? COMMON_COMPONENT_BACKGROUND_LIGHT
+                : COMMON_COMPONENT_BACKGROUND_DARK
+            ),
             style: {}
           }
           this.mixPropertiesInner['common-style']?.forEach(styleKey => {
