@@ -10,6 +10,7 @@ import io.dataease.dataset.utils.SqlUtils;
 import io.dataease.dataset.utils.TableUtils;
 import io.dataease.datasource.dao.auto.entity.CoreDatasource;
 import io.dataease.datasource.dao.auto.mapper.CoreDatasourceMapper;
+import io.dataease.datasource.manage.DataSourceManage;
 import io.dataease.datasource.manage.EngineManage;
 import io.dataease.engine.constant.ExtFieldConstant;
 import io.dataease.engine.constant.SQLConstants;
@@ -61,6 +62,9 @@ public class DatasetSQLManage {
 
     @Autowired(required = false)
     private PluginManageApi pluginManage;
+
+    @Resource
+    private DataSourceManage dataSourceManage;
 
     private static Logger logger = LoggerFactory.getLogger(DatasetSQLManage.class);
 
@@ -379,7 +383,7 @@ public class DatasetSQLManage {
         DatasourceSchemaDTO datasourceSchemaDTO = dsMap.get(datasourceId);
         String type;
         if (datasourceSchemaDTO == null) {
-            CoreDatasource coreDatasource = coreDatasourceMapper.selectById(datasourceId);
+            CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasourceId);
             if (coreDatasource == null) {
                 DEException.throwException(Translator.get("i18n_dataset_ds_error") + ",ID:" + datasourceId);
             }
@@ -479,7 +483,7 @@ public class DatasetSQLManage {
 
         String schemaAlias;
         if (StringUtils.equalsIgnoreCase(ds.getType(), DatasetTableType.DB) || StringUtils.equalsIgnoreCase(ds.getType(), DatasetTableType.SQL)) {
-            CoreDatasource coreDatasource = coreDatasourceMapper.selectById(ds.getDatasourceId());
+            CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(ds.getDatasourceId());
             if (coreDatasource == null) {
                 DEException.throwException(Translator.get("i18n_dataset_ds_error") + ",ID:" + ds.getDatasourceId());
             }
@@ -501,7 +505,7 @@ public class DatasetSQLManage {
                 dsMap.put(coreDatasource.getId(), datasourceSchemaDTO);
             }
         } else if (StringUtils.equalsIgnoreCase(ds.getType(), DatasetTableType.Es)) {
-            CoreDatasource coreDatasource = coreDatasourceMapper.selectById(ds.getDatasourceId());
+            CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(ds.getDatasourceId());
             schemaAlias = String.format(SQLConstants.SCHEMA, coreDatasource.getId());
             if (!dsMap.containsKey(coreDatasource.getId())) {
                 DatasourceSchemaDTO datasourceSchemaDTO = new DatasourceSchemaDTO();

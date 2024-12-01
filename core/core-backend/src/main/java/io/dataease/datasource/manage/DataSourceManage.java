@@ -140,7 +140,7 @@ public class DataSourceManage {
     public void move(DatasourceDTO dataSourceDTO) {
         Long id = dataSourceDTO.getId();
         CoreDatasource sourceData = null;
-        if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(sourceData = coreDatasourceMapper.selectById(id))) {
+        if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(sourceData = getCoreDatasource(id))) {
             DEException.throwException("resource not exist");
         }
         checkName(dataSourceDTO);
@@ -157,14 +157,19 @@ public class DataSourceManage {
     }
 
 
-    public void encryptDsConfig(){
+    public void encryptDsConfig() {
         coreDatasourceMapper.selectList(null).forEach(dataSource -> {
             coreDatasourceMapper.updateById(dataSource);
         });
     }
 
+    @XpackInteract(value = "datasourceResourceTree", before = false)
+    public CoreDatasource getCoreDatasource(Long id) {
+        return coreDatasourceMapper.selectById(id);
+    }
+
     public DatasourceDTO getDs(Long id) {
-        CoreDatasource coreDatasource = coreDatasourceMapper.selectById(id);
+        CoreDatasource coreDatasource = getCoreDatasource(id);
         DatasourceDTO dto = new DatasourceDTO();
         BeanUtils.copyBean(dto, coreDatasource);
         return dto;

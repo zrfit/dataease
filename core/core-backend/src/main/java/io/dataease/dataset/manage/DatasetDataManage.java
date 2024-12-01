@@ -16,6 +16,7 @@ import io.dataease.dataset.utils.FieldUtils;
 import io.dataease.dataset.utils.TableUtils;
 import io.dataease.datasource.dao.auto.entity.CoreDatasource;
 import io.dataease.datasource.dao.auto.mapper.CoreDatasourceMapper;
+import io.dataease.datasource.manage.DataSourceManage;
 import io.dataease.datasource.manage.EngineManage;
 import io.dataease.datasource.utils.DatasourceUtils;
 import io.dataease.engine.constant.ExtFieldConstant;
@@ -80,6 +81,9 @@ public class DatasetDataManage {
     @Resource
     private CorePermissionManage corePermissionManage;
 
+    @Resource
+    private DataSourceManage dataSourceManage;
+
     private static Logger logger = LoggerFactory.getLogger(DatasetDataManage.class);
 
     public static final List<String> notFullDs = List.of("mysql", "mariadb", "Excel", "API");
@@ -90,7 +94,7 @@ public class DatasetDataManage {
         String type = datasetTableDTO.getType();
         DatasetTableInfoDTO tableInfoDTO = JsonUtil.parseObject(datasetTableDTO.getInfo(), DatasetTableInfoDTO.class);
         if (StringUtils.equalsIgnoreCase(type, DatasetTableType.DB) || StringUtils.equalsIgnoreCase(type, DatasetTableType.SQL)) {
-            CoreDatasource coreDatasource = coreDatasourceMapper.selectById(datasetTableDTO.getDatasourceId());
+            CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasetTableDTO.getDatasourceId());
             DatasourceSchemaDTO datasourceSchemaDTO = new DatasourceSchemaDTO();
             if (StringUtils.equalsIgnoreCase("excel", coreDatasource.getType()) || StringUtils.equalsIgnoreCase("api", coreDatasource.getType())) {
                 coreDatasource = engineManage.getDeEngine();
@@ -133,7 +137,7 @@ public class DatasetDataManage {
 
             tableFields = provider.fetchTableField(datasourceRequest);
         } else if (StringUtils.equalsIgnoreCase(type, DatasetTableType.Es)) {
-            CoreDatasource coreDatasource = coreDatasourceMapper.selectById(datasetTableDTO.getDatasourceId());
+            CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasetTableDTO.getDatasourceId());
             Provider provider = ProviderFactory.getProvider(type);
             DatasourceRequest datasourceRequest = new DatasourceRequest();
             DatasourceSchemaDTO datasourceSchemaDTO = new DatasourceSchemaDTO();
@@ -381,7 +385,7 @@ public class DatasetDataManage {
     }
 
     public Map<String, Object> previewSql(PreviewSqlDTO dto) throws DEException {
-        CoreDatasource coreDatasource = coreDatasourceMapper.selectById(dto.getDatasourceId());
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(dto.getDatasourceId());
         DatasourceSchemaDTO datasourceSchemaDTO = new DatasourceSchemaDTO();
         if (coreDatasource.getType().equalsIgnoreCase("API") || coreDatasource.getType().equalsIgnoreCase("Excel")) {
             BeanUtils.copyBean(datasourceSchemaDTO, engineManage.getDeEngine());
