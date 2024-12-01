@@ -142,7 +142,6 @@ const onMouseMove = e => {
   const walkY = y - startY
   canvasOut.value.wrapRef.scrollLeft = scrollLeft - walkX
   canvasOut.value.wrapRef.scrollTop = scrollTop - walkY
-  console.log('====onMouseMove==walkX=' + walkX + ';walkY=' + walkY)
 }
 
 // 禁用拖动
@@ -160,6 +159,7 @@ const contentStyle = computed(() => {
     }
   } else {
     return {
+      minWidth: '1600px',
       width: width * 1.5 + 'px',
       height: height * 1.5 + 'px'
     }
