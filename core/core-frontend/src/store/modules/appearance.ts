@@ -175,7 +175,9 @@ export const useAppearanceStore = defineStore('appearanceStore', {
         fontStyleElement.innerHTML = `@font-face {
             font-family: '${name}';
             src: url(${
-              embeddedStore.baseUrl ? embeddedStore.baseUrl : basePath
+              embeddedStore.baseUrl
+                ? (embeddedStore.baseUrl + basePath).replace('/./', '/')
+                : basePath
             }/typeface/download/${currentFont.fileTransName});
             font-weight: normal;
             font-style: normal;
@@ -212,9 +214,11 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       defaultFont().then(res => {
         const [font] = res || []
         setDefaultFont(
-          `${embeddedStore.baseUrl ? embeddedStore.baseUrl : basePath}/typeface/download/${
-            font?.fileTransName
-          }`,
+          `${
+            embeddedStore.baseUrl
+              ? (embeddedStore.baseUrl + basePath).replace('/./', '/')
+              : basePath
+          }/typeface/download/${font?.fileTransName}`,
           font?.name,
           font?.fileTransName
         )
