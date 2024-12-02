@@ -509,6 +509,7 @@ const list = [
       borderWidth: 1,
       borderStyle: 'solid',
       borderColor: '#cccccc',
+      borderActive: true,
       backgroundColor: 'rgba(236,231,231,0.1)',
       backdropFilter: 'blur(0px)'
     }
@@ -524,6 +525,7 @@ const list = [
       height: 200,
       borderWidth: 1,
       borderColor: '#cccccc',
+      borderActive: true,
       backgroundColor: 'rgba(236,231,231,0.1)',
       backdropFilter: 'blur(0px)'
     }
