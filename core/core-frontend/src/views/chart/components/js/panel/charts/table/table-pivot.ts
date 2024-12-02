@@ -213,6 +213,21 @@ export class TablePivot extends S2ChartView<PivotSheet> {
       }
       sortParams.push(sort)
     }
+    //列维度为空，行排序按照指标列来排序，取第一个有排序设置的指标
+    if (!columnFields?.length) {
+      const sortField = valueFields?.find(v => !['none', 'custom_sort'].includes(v.sort))
+      if (sortField) {
+        const sort = {
+          sortFieldId: r[0],
+          sortMethod: sortField.sort.toUpperCase(),
+          sortByMeasure: TOTAL_VALUE,
+          query: {
+            [EXTRA_FIELD]: sortField.dataeaseName
+          }
+        }
+        sortParams.push(sort)
+      }
+    }
     // 自定义总计小计
     const totals = [
       tableTotal.row.calcTotals,
