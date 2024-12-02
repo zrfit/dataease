@@ -417,22 +417,6 @@ const disabledFieldLength = item => {
   }
 }
 
-const disabledSetKey = item => {
-  if (item.hasOwnProperty('children') && item.children.length > 0) {
-    return true
-  }
-  if (copyItem.value || copyDs.value) {
-    return false
-  }
-  if (editItem.value) {
-    return true
-  }
-  if (!item.checked) {
-    return true
-  }
-  return false
-}
-
 const disabledChangeFieldByChildren = item => {
   if (apiItem.type == 'params') {
     return true
@@ -824,7 +808,7 @@ defineExpose({
                 <el-checkbox
                   :key="scope.row.jsonPath"
                   v-model="scope.row.primaryKey"
-                  :disabled="disabledSetKey(scope.row)"
+                  :disabled="editItem || !scope.row.checked"
                 >
                 </el-checkbox>
               </template>
