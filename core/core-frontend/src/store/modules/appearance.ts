@@ -212,7 +212,9 @@ export const useAppearanceStore = defineStore('appearanceStore', {
       defaultFont().then(res => {
         const [font] = res || []
         setDefaultFont(
-          `${basePath}/typeface/download/${font?.fileTransName}`,
+          `${embeddedStore.baseUrl ? embeddedStore.baseUrl : basePath}/typeface/download/${
+            font?.fileTransName
+          }`,
           font?.name,
           font?.fileTransName
         )
