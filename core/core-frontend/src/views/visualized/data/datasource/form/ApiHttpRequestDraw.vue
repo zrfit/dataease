@@ -31,6 +31,7 @@ export interface ApiItem {
   type: string
   deTableName?: string
   url: string
+  copy: boolean
   method: string
   request: ApiRequest
   fields: Field[]
@@ -163,8 +164,12 @@ const rule = reactive<FormRules>({
 })
 const activeName = ref('table')
 const editItem = ref(false)
+const copyItem = ref(false)
+const copyDs = ref(false)
 provide('api-active-name', activeName)
 const initApiItem = (val: ApiItem, from, name, edit) => {
+  copyItem.value = val.copy
+  copyDs.value = from.copy
   activeName.value = name
   editItem.value = edit
   apiItemList = from.apiConfiguration
@@ -283,9 +288,19 @@ const saveItem = () => {
         }
       }
     }
-    if (msg !== '') {
+    if (msg !== '' && !(copyDs.value || copyItem.value)) {
       ElMessage.error(t('datasource.primary_key_change') + msg)
       return
+    }
+    for (let i = 0; i < apiItem.fields.length; i++) {
+      if (
+        apiItem.fields[i].primaryKey &&
+        !apiItem.fields[i].length &&
+        apiItem.fields[i].deExtractType === 0
+      ) {
+        ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
+        return
+      }
     }
   } else {
     for (let i = 0; i < apiItem.fields.length; i++) {
@@ -400,6 +415,22 @@ const disabledFieldLength = item => {
   } else {
     return item.deExtractType !== 0
   }
+}
+
+const disabledSetKey = item => {
+  if (item.hasOwnProperty('children') && item.children.length > 0) {
+    return true
+  }
+  if (copyItem.value || copyDs.value) {
+    return false
+  }
+  if (editItem.value) {
+    return true
+  }
+  if (!item.checked) {
+    return true
+  }
+  return false
 }
 
 const disabledChangeFieldByChildren = item => {
@@ -793,7 +824,7 @@ defineExpose({
                 <el-checkbox
                   :key="scope.row.jsonPath"
                   v-model="scope.row.primaryKey"
-                  :disabled="editItem || !scope.row.checked"
+                  :disabled="disabledSetKey(scope.row)"
                 >
                 </el-checkbox>
               </template>

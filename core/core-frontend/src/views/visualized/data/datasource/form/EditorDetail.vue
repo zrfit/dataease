@@ -367,6 +367,7 @@ const copyItem = (item?: ApiConfiguration) => {
   newItem.deTableName = ''
   newItem.serialNumber =
     form.value.apiConfiguration[form.value.apiConfiguration.length - 1].serialNumber + 1
+  newItem.copy = true
   const reg = new RegExp(item.name + '_copy_' + '([0-9]*)', 'gim')
   let number = 0
   for (let i = 1; i < form.value.apiConfiguration.length; i++) {

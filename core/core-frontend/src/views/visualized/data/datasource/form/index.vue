@@ -39,6 +39,7 @@ interface Form {
   id?: string
   description: string
   type: string
+  copy: boolean
   configuration?: Configuration
   apiConfiguration?: ApiConfiguration[]
   paramsConfiguration?: ApiConfiguration[]
