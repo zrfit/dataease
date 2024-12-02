@@ -446,7 +446,8 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
             layout,
             style: {
               fill: l.color,
-              fontSize: l.fontSize
+              fontSize: l.fontSize,
+              fontFamily: chart.fontFamily
             },
             formatter: param => {
               let yaxis = yAxis[0]
