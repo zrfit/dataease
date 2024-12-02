@@ -548,6 +548,7 @@ eventBus.on('tabSort', tabSort)
                 :canvas-id="state.canvasId"
                 :base-height="state.baseHeight"
                 :base-width="state.baseWidth"
+                :font-family="canvasStyleData.fontFamily"
               >
                 <template v-slot:canvasDragTips>
                   <div class="canvas-drag-tip">

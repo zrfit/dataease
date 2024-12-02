@@ -83,6 +83,12 @@ const props = defineProps({
   showPopBar: {
     type: Boolean,
     default: false
+  },
+  // 字体
+  fontFamily: {
+    type: String,
+    required: false,
+    default: 'inherit'
   }
 })
 
@@ -97,7 +103,8 @@ const {
   downloadStatus,
   outerScale,
   outerSearchCount,
-  showPopBar
+  showPopBar,
+  fontFamily
 } = toRefs(props)
 const domId = 'preview-' + canvasId.value
 const scaleWidthPoint = ref(100)
@@ -468,6 +475,7 @@ defineExpose({
         :search-count="curSearchCount"
         :scale="mobileInPc && isDashboard() ? 100 : scaleMin"
         :is-selector="props.isSelector"
+        :font-family="canvasStyleData.fontFamily || fontFamily"
         @userViewEnlargeOpen="userViewEnlargeOpen($event, item)"
         @datasetParamsInit="datasetParamsInit(item)"
         @onPointClick="onPointClick"
