@@ -254,7 +254,7 @@ export default {
     customize: '自定义',
     that_day: '当天',
     value: '值',
-    name_use_parameters: '可用\$\{参数名\}，使用参数',
+    name_use_parameters: '可用${参数名}，使用参数',
     add_parameters: '添加参数',
     data_source_name: '数据源名称',
     data_source_name_de: '请输入数据源名称',

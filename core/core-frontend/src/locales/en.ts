@@ -261,7 +261,7 @@ export default {
     customize: 'Customize',
     that_day: 'That day',
     value: 'Value',
-    name_use_parameters: 'You can use \$\{parameter name\}, use parameters',
+    name_use_parameters: 'You can use ${parameter name}, use parameters',
     add_parameters: 'Add parameters',
     data_source_name: 'Datasource name',
     data_source_name_de: 'Please enter the Datasource name',
