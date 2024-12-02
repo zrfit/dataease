@@ -533,7 +533,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const rowPath = getTreePath(query, row)
     const colPath = getTreePath(query, col)
     const path = [...rowPath, ...colPath]
-    const { data } = colSubTotal?.[subLevel]
+    const data = colSubTotal?.[subLevel]?.data
     let val
     if (path.length && data) {
       path.push(quotaField)
@@ -563,7 +563,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const colPath = getTreePath(query, col)
     const rowPath = getTreePath(query, row)
     const path = [...colPath, ...rowPath]
-    const { data } = rowSubTotal?.[rowLevel]
+    const data = rowSubTotal?.[rowLevel]?.data
     let val
     if (path.length && rowSubTotal) {
       path.push(quotaField)
@@ -602,7 +602,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const { rowSubInColSub } = customCalc
     const rowSubLevel = getSubLevel(query, row)
     const colSubLevel = getSubLevel(query, col)
-    const { data } = rowSubInColSub?.[rowSubLevel]?.[colSubLevel]
+    const data = rowSubInColSub?.[rowSubLevel]?.[colSubLevel]?.data
     const rowPath = getTreePath(query, row)
     const colPath = getTreePath(query, col)
     const path = [...rowPath, ...colPath]
