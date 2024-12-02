@@ -146,6 +146,11 @@ export function getTheme(chart: Chart) {
       }
     }
   }
+  if (chart.fontFamily) {
+    theme.styleSheet = {
+      fontFamily: chart.fontFamily
+    }
+  }
   return theme
 }
 // 通用label

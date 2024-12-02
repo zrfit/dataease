@@ -225,7 +225,8 @@ const renderChart = async (view, callback?) => {
   // 与默认图表对象合并，方便增加配置项
   const chart = deepCopy({
     ...defaultsDeep(view, cloneDeep(BASE_VIEW_CONFIG)),
-    data: chartData.value
+    data: chartData.value,
+    fontFamily: props.fontFamily
   })
   const chartView = chartViewManager.getChartView(view.render, view.type)
   recursionTransObj(customAttrTrans, chart.customAttr, scale.value, terminal.value)
