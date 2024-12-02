@@ -288,7 +288,7 @@ public class DatasetGroupManage {
     }
 
     private DataSetNodeBO convert(DataSetNodePO po) {
-        return new DataSetNodeBO(po.getId(), po.getName(), StringUtils.equals(po.getNodeType(), leafType), 7, po.getPid(), 0);
+        return new DataSetNodeBO(po.getId(), po.getName(), StringUtils.equals(po.getNodeType(), leafType), 9, po.getPid(), 0);
     }
 
     public void checkName(DatasetGroupInfoDTO dto) {

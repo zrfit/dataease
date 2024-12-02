@@ -54,7 +54,7 @@ public class DataSourceManage {
         }
         Integer flag = dataSourceType.getFlag();
         int extraFlag = StringUtils.equalsIgnoreCase("error", po.getStatus()) ? Math.negateExact(flag) : flag;
-        return new DatasourceNodeBO(po.getId(), po.getName(), !StringUtils.equals(po.getType(), "folder"), 7, po.getPid(), extraFlag, dataSourceType.name());
+        return new DatasourceNodeBO(po.getId(), po.getName(), !StringUtils.equals(po.getType(), "folder"), 9, po.getPid(), extraFlag, dataSourceType.name());
     }
 
     @XpackInteract(value = "datasourceResourceTree", replace = true, invalid = true)
