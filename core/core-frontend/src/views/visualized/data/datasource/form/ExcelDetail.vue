@@ -644,7 +644,7 @@ defineExpose({
         ></SheetTabs>
 
         <div class="table-select_mode">
-          <div class="btn-select" v-if="param.id === '0' || sheetObj.newSheet">
+          <div class="btn-select" v-if="param.editType === 0">
             <el-button
               @click="changeCurrentMode('preview')"
               :class="[currentMode === 'preview' && 'is-active']"
@@ -705,7 +705,7 @@ defineExpose({
             <el-table-column
               prop="length"
               :label="t('datasource.length')"
-              v-if="param.id === '0' || sheetObj.newSheet"
+              v-if="param.editType === 0"
             >
               <template #default="scope">
                 <el-input-number
@@ -728,7 +728,7 @@ defineExpose({
               class-name="checkbox-table"
               :label="t('datasource.set_key')"
               width="100"
-              v-if="param.id === '0' || sheetObj.newSheet"
+              v-if="param.editType === 0"
             >
               <template #default="scope">
                 <el-checkbox

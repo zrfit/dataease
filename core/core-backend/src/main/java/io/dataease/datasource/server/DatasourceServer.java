@@ -808,18 +808,10 @@ public class DatasourceServer implements DatasourceApi {
                 datasourceRequest.setDatasource(transDTO(coreDatasource));
                 List<DatasetTableDTO> datasetTableDTOS = ExcelUtils.getTables(datasourceRequest);
                 for (ExcelSheetData sheet : excelFileData.getSheets()) {
-                    boolean find = false;
                     for (DatasetTableDTO datasetTableDTO : datasetTableDTOS) {
                         if (excelDataTableName(datasetTableDTO.getTableName()).equals(sheet.getTableName()) || isCsv(file.getOriginalFilename())) {
-                            find = true;
                             sheet.setDeTableName(datasetTableDTO.getTableName());
-                            datasourceRequest.setTable(datasetTableDTO.getTableName());
-                            List<TableField> oldTableFields = ExcelUtils.getTableFields(datasourceRequest);
-                            mergeFields(oldTableFields, sheet.getFields());
                         }
-                    }
-                    if (!find) {
-                        sheet.setNewSheet(true);
                     }
                 }
             }
