@@ -187,7 +187,8 @@ const renderChart = (viewInfo: Chart, resetPageInfo: boolean) => {
   // view 为引用对象 需要存库 view.data 直接赋值会导致保存不必要的数据
   actualChart = deepCopy({
     ...defaultsDeep(viewInfo, cloneDeep(BASE_VIEW_CONFIG)),
-    data: chartData.value
+    data: chartData.value,
+    fontFamily: props.fontFamily
   } as ChartObj)
 
   recursionTransObj(customAttrTrans, actualChart.customAttr, scale.value, terminal.value)

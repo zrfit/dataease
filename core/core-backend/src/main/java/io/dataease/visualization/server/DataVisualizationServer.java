@@ -186,6 +186,7 @@ public class DataVisualizationServer implements DataVisualizationApi {
                     result.setWatermarkInfo(watermarkInfo);
                 }
             }
+            result.setWeight(9);
             return result;
         } else {
             DEException.throwException("资源不存在或已经被删除...");
@@ -527,6 +528,13 @@ public class DataVisualizationServer implements DataVisualizationApi {
     public List<VisualizationResourceVO> findRecent(@RequestBody VisualizationWorkbranchQueryRequest request) {
         request.setQueryFrom("recent");
         IPage<VisualizationResourceVO> result = coreVisualizationManage.query(1, 20, request);
+        List<VisualizationResourceVO> resourceVOS = result.getRecords();
+        if (!CollectionUtils.isEmpty(resourceVOS)) {
+            resourceVOS.stream().forEach(item -> {
+                item.setCreator(StringUtils.equals(item.getCreator(), "1") ? item.getCreator() : "管理员");
+                item.setLastEditor(StringUtils.equals(item.getLastEditor(), "1") ? item.getLastEditor() : "管理员");
+            });
+        }
         return result.getRecords();
     }
 

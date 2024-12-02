@@ -97,6 +97,7 @@ public class VisualizationStoreManage {
         Long uid = AuthUtils.getUser().getUserId();
         QueryWrapper<Object> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("s.uid", uid);
+        queryWrapper.isNotNull("s.resource_id");
         if (StringUtils.isNotBlank(request.getType())) {
             BusiResourceEnum busiResourceEnum = BusiResourceEnum.valueOf(request.getType().toUpperCase());
             if (ObjectUtils.isEmpty(busiResourceEnum)) {

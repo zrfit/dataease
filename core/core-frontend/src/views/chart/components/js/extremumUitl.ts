@@ -85,8 +85,7 @@ function createExtremumDiv(id, value, formatterCfg, chart) {
     const span = document.createElement('span')
     span.setAttribute(
       'style',
-      `display: block;
-        width: 0px;
+      `width: 0px;
         height: 0px;
         border: 4px solid transparent;
         border-top-color: red;
@@ -319,10 +318,9 @@ export const createExtremumPoint = (chart, ev) => {
           )
           if (pointElement && point._origin.EXTREME) {
             pointElement.style.position = 'absolute'
-            pointElement.style.top =
-              (point.y[1] ? point.y[1] : point.y) -
-              (fontSize + (pointSize ? pointSize : 0) + 12) +
-              'px'
+            const top =
+              (point.y[1] ? point.y[1] : point.y) - (fontSize + (pointSize ? pointSize : 0) + 12)
+            pointElement.style.top = top + 'px'
             pointElement.style.left = point.x + 'px'
             pointElement.style.zIndex = '10'
             pointElement.style.fontSize = fontSize + 'px'
@@ -334,6 +332,18 @@ export const createExtremumPoint = (chart, ev) => {
             pointElement.children[0]['style'].borderTopColor =
               'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'
             pointElement.style.display = 'table'
+            // 显示箭头
+            const childNode = pointElement.childNodes[1]
+            // 最值在数据点下方显示
+            const translateYValue = Math.ceil(point.y + Math.abs(Math.floor(top)) + 6)
+            // 最值dom高度超过50%时，最值dom向下
+            if (top < 0 && (Math.abs(top) / point.y) * 100 >= 50) {
+              pointElement.style.transform = `translateX(-50%) translateY(${translateYValue}px)`
+              childNode.style.marginTop = '-12px'
+              childNode.style.transform = 'rotate(180deg)'
+            } else {
+              childNode.style.display = 'block'
+            }
           }
         })
       } else {

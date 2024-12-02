@@ -72,16 +72,24 @@ import {
   iconFieldCalculatedQMap
 } from '@/components/icon-group/field-calculated-list'
 import { useCache } from '@/hooks/web/useCache'
+import { canvasSave } from '@/utils/canvasUtils'
 
 const { wsCache } = useCache('localStorage')
 const embeddedStore = useEmbedded()
 const snapshotStore = snapshotStoreWithOut()
 const dvMainStore = dvMainStoreWithOut()
-const { canvasCollapse, curComponent, componentData, editMode, mobileInPc, fullscreenFlag } =
-  storeToRefs(dvMainStore)
+const {
+  canvasCollapse,
+  curComponent,
+  componentData,
+  editMode,
+  mobileInPc,
+  fullscreenFlag,
+  dvInfo
+} = storeToRefs(dvMainStore)
 const router = useRouter()
 let componentNameEdit = ref(false)
-let inputComponentName = ref('')
+let inputComponentName = ref({ id: null, name: null })
 let componentNameInput = ref(null)
 
 const { t } = useI18n()
@@ -123,24 +131,32 @@ const onComponentNameChange = () => {
 
 const closeEditComponentName = () => {
   componentNameEdit.value = false
-  if (!inputComponentName.value || !inputComponentName.value.trim()) {
+  if (curComponent.value.id !== inputComponentName.value.id) {
     return
   }
-  if (inputComponentName.value.trim() === view.value.title) {
+  if (!inputComponentName.value.name || !inputComponentName.value.name.trim()) {
     return
   }
-  if (inputComponentName.value.trim().length > 64 || inputComponentName.value.trim().length < 2) {
+  if (inputComponentName.value.name.trim() === view.value.title) {
+    return
+  }
+  if (
+    inputComponentName.value.name.trim().length > 64 ||
+    inputComponentName.value.name.trim().length < 2
+  ) {
     ElMessage.warning('名称字段长度2-64个字符')
     editComponentName()
     return
   }
-  view.value.title = inputComponentName.value
-  inputComponentName.value = ''
+  view.value.title = inputComponentName.value.name
+  inputComponentName.value.name = ''
+  inputComponentName.value.id = ''
 }
 
 const editComponentName = () => {
   componentNameEdit.value = true
-  inputComponentName.value = view.value.title
+  inputComponentName.value.name = view.value.title
+  inputComponentName.value.id = view.value.id
   nextTick(() => {
     componentNameInput.value.focus()
   })
@@ -1435,8 +1451,20 @@ const editDs = () => {
     }
   })
   const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
-  const newWindow = window.open(routeData.href, openType)
-  initOpenHandler(newWindow)
+  // 检查是否保存
+  if (openType === '_self') {
+    if (!dvInfo.value.id) {
+      ElMessage.warning(t('visualization.save_page_tips'))
+      return
+    }
+    canvasSave(() => {
+      const newWindow = window.open(routeData.href, openType)
+      initOpenHandler(newWindow)
+    })
+  } else {
+    const newWindow = window.open(routeData.href, openType)
+    initOpenHandler(newWindow)
+  }
 }
 
 const showQuotaEditCompare = item => {
@@ -3853,7 +3881,7 @@ const deleteChartFieldItem = id => {
   <Teleport v-if="componentNameEdit" :to="'#component-name'">
     <input
       ref="componentNameInput"
-      v-model="inputComponentName"
+      v-model="inputComponentName.name"
       :effect="themes"
       width="100%"
       @change="onComponentNameChange"

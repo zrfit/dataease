@@ -806,6 +806,7 @@ const handleCopy = async data => {
       lastSyncTime
     })
     datasource.id = ''
+    datasource.copy = true
     datasource.name = t('datasource.copy')
     if (datasource.type === 'API') {
       for (let i = 0; i < datasource.apiConfiguration.length; i++) {

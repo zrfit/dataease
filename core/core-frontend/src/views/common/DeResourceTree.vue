@@ -45,7 +45,7 @@ import DeResourceCreateOptV2 from '@/views/common/DeResourceCreateOptV2.vue'
 import { useCache } from '@/hooks/web/useCache'
 import { findParentIdByChildIdRecursive } from '@/utils/canvasUtils'
 import { XpackComponent } from '@/components/plugin'
-import treeSort from '@/utils/treeSortUtils'
+import treeSort, { treeParentWeight } from '@/utils/treeSortUtils'
 import router from '@/router'
 const { wsCache } = useCache()
 
@@ -86,6 +86,7 @@ const resourceGroupOpt = ref()
 const resourceCreateOpt = ref()
 const returnMounted = ref(false)
 const state = reactive({
+  pWeightMap: {},
   curSortType: 'time_desc',
   resourceTree: [] as BusiTreeNode[],
   originResourceTree: [] as BusiTreeNode[],
@@ -160,32 +161,52 @@ const { handleDrop, allowDrop, handleDragStart } = treeDraggbleChart(
   'resourceTree',
   curCanvasType.value
 )
-const menuList = computed(() => {
-  const list = [
-    {
-      label: t('visualization.copy'), //'复制',
-      command: 'copy',
-      svgName: dvCopyDark
-    },
-    {
-      label: t('visualization.move_to'), //'移动到',
-      command: 'move',
-      svgName: dvMove
-    },
-    {
-      label: t('visualization.rename'), //'重命名',
-      command: 'rename',
-      svgName: dvRename
-    },
-    {
-      label: t('visualization.delete'), //'删除',
-      command: 'delete',
-      svgName: dvDelete,
-      divided: true
-    }
-  ]
-  return list
-})
+
+const menuListWeight = id => {
+  const pWeight = state.pWeightMap[id]
+  return pWeight < 7 ? menuList : menuListWithCopy
+}
+const menuListWithCopy = [
+  {
+    label: t('visualization.copy'), //'复制',
+    command: 'copy',
+    svgName: dvCopyDark
+  },
+  {
+    label: t('visualization.move_to'), //'移动到',
+    command: 'move',
+    svgName: dvMove
+  },
+  {
+    label: t('visualization.rename'), //'重命名',
+    command: 'rename',
+    svgName: dvRename
+  },
+  {
+    label: t('visualization.delete'), //'删除',
+    command: 'delete',
+    svgName: dvDelete,
+    divided: true
+  }
+]
+const menuList = [
+  {
+    label: t('visualization.move_to'), //'移动到',
+    command: 'move',
+    svgName: dvMove
+  },
+  {
+    label: t('visualization.rename'), //'重命名',
+    command: 'rename',
+    svgName: dvRename
+  },
+  {
+    label: t('visualization.delete'), //'删除',
+    command: 'delete',
+    svgName: dvDelete,
+    divided: true
+  }
+]
 
 const infoId = wsCache.get(curCanvasType.value === 'dashboard' ? 'db-info-id' : 'dv-info-id')
 const routerDvId = router.currentRoute.value.query.dvId
@@ -267,6 +288,7 @@ function flatTree(tree: BusiTreeNode[]) {
 }
 
 const afterTreeInit = () => {
+  state.pWeightMap = treeParentWeight(state.originResourceTree, rootManage.value ? 9 : 0)
   mounted.value = true
   if (selectedNodeKey.value && returnMounted.value) {
     expandedArray.value = getDefaultExpandedKeys()
@@ -292,7 +314,7 @@ const operation = (cmd: string, data: BusiTreeNode, nodeType: string) => {
   if (cmd === 'delete') {
     const msg = data.leaf ? '' : t('visualization.delete_tips')
     const tips_label = data.leaf ? resourceLabel : t('visualization.folder')
-    ElMessageBox.confirm(t('visualization.delete_tips', tips_label), {
+    ElMessageBox.confirm(t('visualization.delete_warn', [tips_label]), {
       confirmButtonType: 'danger',
       type: 'warning',
       tip: msg,
@@ -699,7 +721,7 @@ defineExpose({
                 :node="data"
                 :any-manage="anyManage"
                 :resource-type="curCanvasType"
-                :menu-list="data.leaf ? menuList : state.folderMenuList"
+                :menu-list="data.leaf ? menuListWeight(data.id) : state.folderMenuList"
               ></dv-handle-more>
             </div>
           </span>

@@ -57,7 +57,7 @@ const newSource =
     : t('visualization.new_dataset')
 
 const sourceName = computed(() =>
-  props.sourceType === 'datasource' ? t('visualization.datasource') : t('visualization.dataset')
+  props.sourceType === 'datasource' ? t('datasource.datasource') : t('visualization.dataset')
 )
 
 const sortTypeChange = arr => {

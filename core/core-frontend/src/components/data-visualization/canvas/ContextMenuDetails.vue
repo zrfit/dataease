@@ -50,8 +50,13 @@ const lock = () => {
 }
 
 const unlock = () => {
-  snapshotStore.recordSnapshotCache()
-  lockStore.unlock()
+  if (curComponent.value && !isGroupArea.value) {
+    lockStore.unlock()
+  } else if (areaData.value.components.length) {
+    areaData.value.components.forEach(component => {
+      lockStore.unlock(component)
+    })
+  }
   menuOpt('unlock')
 }
 
@@ -330,10 +335,13 @@ const editQueryCriteria = () => {
           </li>
           <el-divider class="custom-divider" />
           <li @click="hide" v-show="curComponent['isShow']">{{ t('visualization.hidden') }}</li>
-          <li @click="show" v-show="!curComponent['isShow']">
+          <li @click="show" v-show="!curComponent['isShow'] || isGroupArea">
             {{ t('visualization.cancel_hidden') }}
           </li>
           <li @click="lock">{{ t('visualization.lock') }}</li>
+          <li v-if="curComponent['isLock'] || isGroupArea" @click="unlock">
+            {{ t('visualization.unlock') }}
+          </li>
           <el-divider class="custom-divider" />
           <li v-if="activePosition === 'aside'" @click="rename">{{ t('visualization.rename') }}</li>
           <li @click="copy">{{ t('visualization.copy') }}</li>

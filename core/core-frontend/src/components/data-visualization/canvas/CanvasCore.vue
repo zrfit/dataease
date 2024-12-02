@@ -736,7 +736,7 @@ function addItemToPositionBox(item) {
           pb[j][i].el = item
         }
       } catch (e) {
-        console.error(e)
+        console.warn(e)
       }
     }
   }
@@ -772,7 +772,7 @@ function removeItemFromPositionBox(item) {
           pb[j][i].el = false
         }
       } catch (e) {
-        console.error(e)
+        console.warn(e)
       }
     }
   }

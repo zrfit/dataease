@@ -17,9 +17,10 @@ import io.dataease.license.config.XpackInteract;
 import io.dataease.model.BusiNodeRequest;
 import io.dataease.model.BusiNodeVO;
 import io.dataease.operation.manage.CoreOptRecentManage;
-import io.dataease.system.dao.auto.entity.CoreSysSetting;
-import io.dataease.system.manage.SysParameterManage;
-import io.dataease.utils.*;
+import io.dataease.utils.AuthUtils;
+import io.dataease.utils.BeanUtils;
+import io.dataease.utils.CommunityUtils;
+import io.dataease.utils.TreeUtils;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -42,9 +43,6 @@ public class DataSourceManage {
     @Resource
     private CoreOptRecentManage coreOptRecentManage;
 
-    @Resource
-    private SysParameterManage sysParameterManage;
-
     private DatasourceNodeBO rootNode() {
         return new DatasourceNodeBO(0L, "root", false, 7, -1L, 0, "mysql");
     }
@@ -56,7 +54,7 @@ public class DataSourceManage {
         }
         Integer flag = dataSourceType.getFlag();
         int extraFlag = StringUtils.equalsIgnoreCase("error", po.getStatus()) ? Math.negateExact(flag) : flag;
-        return new DatasourceNodeBO(po.getId(), po.getName(), !StringUtils.equals(po.getType(), "folder"), 7, po.getPid(), extraFlag, dataSourceType.name());
+        return new DatasourceNodeBO(po.getId(), po.getName(), !StringUtils.equals(po.getType(), "folder"), 9, po.getPid(), extraFlag, dataSourceType.name());
     }
 
     @XpackInteract(value = "datasourceResourceTree", replace = true, invalid = true)
@@ -142,7 +140,7 @@ public class DataSourceManage {
     public void move(DatasourceDTO dataSourceDTO) {
         Long id = dataSourceDTO.getId();
         CoreDatasource sourceData = null;
-        if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(sourceData = coreDatasourceMapper.selectById(id))) {
+        if (ObjectUtils.isEmpty(id) || ObjectUtils.isEmpty(sourceData = getCoreDatasource(id))) {
             DEException.throwException("resource not exist");
         }
         checkName(dataSourceDTO);
@@ -160,23 +158,18 @@ public class DataSourceManage {
 
 
     public void encryptDsConfig() {
-        List<CoreSysSetting> coreSysSettings = sysParameterManage.groupList("datasource.encrypt");
-        if (CollectionUtils.isEmpty(coreSysSettings)) {
-            coreDatasourceMapper.selectList(null).forEach(dataSource -> {
-                coreDatasourceMapper.updateById(dataSource);
-            });
-            CoreSysSetting coreSysSetting = new CoreSysSetting();
-            coreSysSetting.setId(IDUtils.snowID());
-            coreSysSetting.setPkey("datasource.encrypt");
-            coreSysSetting.setPval("true");
-            coreSysSetting.setType("text");
-            coreSysSetting.setSort(1);
-            sysParameterManage.insert(coreSysSetting);
-        }
+        coreDatasourceMapper.selectList(null).forEach(dataSource -> {
+            coreDatasourceMapper.updateById(dataSource);
+        });
+    }
+
+    @XpackInteract(value = "datasourceResourceTree", before = false)
+    public CoreDatasource getCoreDatasource(Long id) {
+        return coreDatasourceMapper.selectById(id);
     }
 
     public DatasourceDTO getDs(Long id) {
-        CoreDatasource coreDatasource = coreDatasourceMapper.selectById(id);
+        CoreDatasource coreDatasource = getCoreDatasource(id);
         DatasourceDTO dto = new DatasourceDTO();
         BeanUtils.copyBean(dto, coreDatasource);
         return dto;

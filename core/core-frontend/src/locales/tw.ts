@@ -2598,7 +2598,7 @@ export default {
     condition_style_set: '條件樣式設定',
     cell_merge_tips: '合併單元格後，行列凍結、自動換行將失效。',
     image: '圖片',
-    jump_set_tips: '已設定下鑽',
+    drill_set_tips: '已設定下鑽',
     input_calc_data: '輸入計算數據',
     excel_with_format: 'Excel(帶格式)',
     show_data: '查看數據',
@@ -3926,6 +3926,8 @@ export default {
       datetime: '日期'
     },
     data: {
+      send_status: '任務下發狀態',
+      df_task_status: '任務填報狀態',
       data_not_exists: '資料不存在',
       cannot_select_all: '不能全選',
       commit_time: '提交時間',

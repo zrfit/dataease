@@ -13,7 +13,7 @@ import icon_undo_outlined from '@/assets/svg/icon_undo_outlined.svg'
 import icon_redo_outlined from '@/assets/svg/icon_redo_outlined.svg'
 import { ElMessage, ElMessageBox } from 'element-plus-secondary'
 import eventBus from '@/utils/eventBus'
-import { ref, nextTick, computed, toRefs } from 'vue'
+import { ref, nextTick, computed, toRefs, onBeforeUnmount, onMounted } from 'vue'
 import { useEmbedded } from '@/store/modules/embedded'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
@@ -145,9 +145,11 @@ const saveCanvasWithCheck = () => {
         },
         appData: appData.value
       }
-      resourceAppOpt.value.init(params)
+      nextTick(() => {
+        resourceAppOpt.value.init(params)
+      })
     } else {
-      const params = { name: dvInfo.value.name, leaf: true, id: dvInfo.value.pid }
+      const params = { name: dvInfo.value.name, leaf: true, id: dvInfo.value.pid || '0' }
       resourceGroupOpt.value.optInit('leaf', params, 'newLeaf', true)
     }
     return
@@ -265,9 +267,18 @@ const appStore = useAppStoreWithOut()
 const isDataEaseBi = computed(() => appStore.getIsDataEaseBi)
 const multiplexingRef = ref(null)
 
-eventBus.on('preview', preview)
-eventBus.on('save', saveCanvasWithCheck)
-eventBus.on('clearCanvas', clearCanvas)
+onMounted(() => {
+  eventBus.on('preview', preview)
+  eventBus.on('save', saveCanvasWithCheck)
+  eventBus.on('clearCanvas', clearCanvas)
+})
+
+onBeforeUnmount(() => {
+  eventBus.off('preview', preview)
+  eventBus.off('save', saveCanvasWithCheck)
+  eventBus.off('clearCanvas', clearCanvas)
+  dvMainStore.setAppDataInfo(null)
+})
 
 const openOuterParamsSet = () => {
   if (componentData.value.length === 0) {

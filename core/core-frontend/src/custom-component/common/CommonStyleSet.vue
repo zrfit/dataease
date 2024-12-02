@@ -291,7 +291,6 @@ import dvStyleHeadFontActiveColor from '@/assets/svg/dv-style-headFontActiveColo
 import dvStyleHeadFontColor from '@/assets/svg/dv-style-headFontColor.svg'
 import dvStyleScrollSpeed from '@/assets/svg/dv-style-scroll-speed.svg'
 import dvStyleOpacity from '@/assets/svg/dv-style-opacity.svg'
-import dvStyleTabHead from '@/assets/svg/dv-style-tab-head.svg'
 import dvStyleBlur from '@/assets/svg/dv-style-blur.svg'
 import dvStyleFontSize from '@/assets/svg/dv-style-fontSize.svg'
 import dvStyleLetterSpacing from '@/assets/svg/dv-style-letterSpacing.svg'
@@ -362,6 +361,7 @@ const scrollSpeedList = [
 ]
 
 const opacitySizeList = [
+  { name: '0', value: 0 },
   { name: '0.1', value: 0.1 },
   { name: '0.2', value: 0.2 },
   { name: '0.3', value: 0.3 },

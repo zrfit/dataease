@@ -216,6 +216,7 @@ onBeforeMount(() => {
             :config="state.multiplexInfo"
             :canvas-style-data="canvasStyleData"
             :dv-info="dvInfo"
+            :show-position="'canvas-multiplexing'"
             :canvas-view-info="canvasViewInfo"
           />
           <empty-background

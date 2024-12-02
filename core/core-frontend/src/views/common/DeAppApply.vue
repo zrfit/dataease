@@ -37,7 +37,6 @@
             :data="state.dvTree"
             :props="state.propsTree"
             @node-click="dvTreeSelect"
-            :filter-method="dvTreeFilterMethod"
             :render-after-expand="false"
             filterable
           >
@@ -287,14 +286,6 @@ const init = params => {
   state.form = params.base
   state.appData.datasourceInfo = deepCopy(appData.value?.datasourceInfo)
   initData()
-}
-
-const dvTreeFilterMethod = value => {
-  state.dvTree = [...state.dvTree].filter(item => item.name.includes(value))
-}
-
-const dsTreeFilterMethod = value => {
-  state.dsTree = [...state.dsTree].filter(item => item.name.includes(value))
 }
 
 const dvTreeSelect = element => {

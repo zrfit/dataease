@@ -2662,7 +2662,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     cell_merge_tips:
       'After merging cells, row/column freezing and automatic line wrapping will be disabled.',
     image: 'Image',
-    jump_set_tips: 'Drill-down has been set',
+    drill_set_tips: 'Drill-down has been set',
     input_calc_data: 'Enter calculation data',
     excel_with_format: 'Excel (with format)',
     show_data: 'View Data',
@@ -4029,6 +4029,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       datetime: 'Date'
     },
     data: {
+      send_status: 'Task Assignment Status',
+      df_task_status: 'Task Filling Status',
       data_not_exists: 'Data does not exist',
       cannot_select_all: 'Cannot select all',
       commit_time: 'Commit time',

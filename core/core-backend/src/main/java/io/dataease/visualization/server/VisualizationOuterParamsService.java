@@ -79,6 +79,9 @@ public class VisualizationOuterParamsService implements VisualizationOuterParams
         extOuterParamsMapper.deleteOuterParamsTargetWithVisualizationId(visualizationId);
         extOuterParamsMapper.deleteOuterParamsInfoWithVisualizationId(visualizationId);
         extOuterParamsMapper.deleteOuterParamsWithVisualizationId(visualizationId);
+        if(CollectionUtils.isEmpty(outerParamsDTO.getOuterParamsInfoArray())){
+            return;
+        }
         // 插入新的数据
         String paramsId = UUID.randomUUID().toString();
         outerParamsDTO.setParamsId(paramsId);

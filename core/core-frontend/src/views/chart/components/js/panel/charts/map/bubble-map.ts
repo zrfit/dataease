@@ -63,15 +63,48 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     chart.container = container
     let geoJson = {} as FeatureCollection
     let customSubArea: CustomGeoSubArea[] = []
-    if (areaId.startsWith('custom_') || scope) {
+    let data = chart.data?.data
+    if (areaId.startsWith('custom_')) {
       customSubArea = (await getCustomGeoArea(areaId)).data || []
       customSubArea.forEach(a => (a.scopeArr = a.scope?.split(',') || []))
       geoJson = cloneDeep(await getGeoJsonFile('156'))
-      if (scope) {
-        geoJson.features = geoJson.features.filter(f => scope.includes('156' + f.properties.adcode))
-      }
+      const areaNameMap = geoJson.features.reduce((p, n) => {
+        p['156' + n.properties.adcode] = n.properties.name
+        return p
+      }, {})
+      const { areaMapping } = parseJson(chart.senior)
+      const areaMap = customSubArea.reduce((p, n) => {
+        const mappedName = areaMapping?.[areaId]?.[n.name]
+        if (mappedName) {
+          n.name = mappedName
+        }
+        p[n.name] = n
+        n.scopeArr = n.scope?.split(',') || []
+        return p
+      }, {})
+      const fakeData = []
+      data?.forEach(d => {
+        const area = areaMap[d.name]
+        if (area) {
+          area.scopeArr.forEach(adcode => {
+            fakeData.push({
+              ...d,
+              name: areaNameMap[adcode],
+              field: areaNameMap[adcode],
+              scope: area.scopeArr,
+              areaName: d.name
+            })
+          })
+        }
+      })
+      data = fakeData
     } else {
-      geoJson = cloneDeep(await getGeoJsonFile(areaId))
+      if (scope) {
+        geoJson = cloneDeep(await getGeoJsonFile('156'))
+        geoJson.features = geoJson.features.filter(f => scope.includes('156' + f.properties.adcode))
+      } else {
+        geoJson = cloneDeep(await getGeoJsonFile(areaId))
+      }
     }
     let options: ChoroplethOptions = {
       preserveDrawingBuffer: true,
@@ -83,7 +116,7 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         type: 'geojson'
       },
       source: {
-        data: chart.data?.data || [],
+        data: data || [],
         joinBy: {
           sourceField: 'name',
           geoField: 'name',
@@ -125,7 +158,10 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     if (!areaId.startsWith('custom_')) {
       dotLayer.options = { ...dotLayer.options, tooltip }
     }
-    this.configZoomButton(chart, view)
+    // 完成地图渲染后配置缩放按钮，为了能够获取到默认的缩放比例
+    view.on('loaded', () => {
+      this.configZoomButton(chart, view)
+    })
     mapRendering(container)
     view.once('loaded', () => {
       // 修改地图鼠标样式为默认
@@ -164,7 +200,7 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
       })
       dotLayer.once('loaded', () => {
         chart.container = container
-        configCarouselTooltip(chart, view, chart.data?.data || [], null)
+        configCarouselTooltip(chart, view, data || [], null, customSubArea, drawOption)
       })
     })
     return view
@@ -239,6 +275,8 @@ export class BubbleMap extends L7PlotChartView<ChoroplethOptions, Choropleth> {
               features: areaJsonArr
             }
             const center = centroid(areaJson)
+            // 轮播用
+            area.centroid = [center.geometry.coordinates[0], center.geometry.coordinates[1]]
             dotData.push({
               name: area.name,
               size: d.value,

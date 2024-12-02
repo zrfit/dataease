@@ -213,6 +213,21 @@ export class TablePivot extends S2ChartView<PivotSheet> {
       }
       sortParams.push(sort)
     }
+    //列维度为空，行排序按照指标列来排序，取第一个有排序设置的指标
+    if (!columnFields?.length) {
+      const sortField = valueFields?.find(v => !['none', 'custom_sort'].includes(v.sort))
+      if (sortField) {
+        const sort = {
+          sortFieldId: r[0],
+          sortMethod: sortField.sort.toUpperCase(),
+          sortByMeasure: TOTAL_VALUE,
+          query: {
+            [EXTRA_FIELD]: sortField.dataeaseName
+          }
+        }
+        sortParams.push(sort)
+      }
+    }
     // 自定义总计小计
     const totals = [
       tableTotal.row.calcTotals,
@@ -533,7 +548,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const rowPath = getTreePath(query, row)
     const colPath = getTreePath(query, col)
     const path = [...rowPath, ...colPath]
-    const { data } = colSubTotal?.[subLevel]
+    const data = colSubTotal?.[subLevel]?.data
     let val
     if (path.length && data) {
       path.push(quotaField)
@@ -563,7 +578,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const colPath = getTreePath(query, col)
     const rowPath = getTreePath(query, row)
     const path = [...colPath, ...rowPath]
-    const { data } = rowSubTotal?.[rowLevel]
+    const data = rowSubTotal?.[rowLevel]?.data
     let val
     if (path.length && rowSubTotal) {
       path.push(quotaField)
@@ -602,7 +617,7 @@ function getCustomCalcResult(query, axisMap, chart: ChartObj, status: TotalStatu
     const { rowSubInColSub } = customCalc
     const rowSubLevel = getSubLevel(query, row)
     const colSubLevel = getSubLevel(query, col)
-    const { data } = rowSubInColSub?.[rowSubLevel]?.[colSubLevel]
+    const data = rowSubInColSub?.[rowSubLevel]?.[colSubLevel]?.data
     const rowPath = getTreePath(query, row)
     const colPath = getTreePath(query, col)
     const path = [...rowPath, ...colPath]

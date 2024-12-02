@@ -539,9 +539,8 @@ const calcData = (view: Chart, callback) => {
   updateEmptyValue(view)
   if (view.tableId || view['dataFrom'] === 'template') {
     const v = JSON.parse(JSON.stringify(view))
-    v.type = 'table-info'
-    v.render = 'antv'
     v.resultCount = 1
+    v.resultMode = 'custom'
     getData(v)
       .then(res => {
         if (res.code && res.code !== 0) {
@@ -549,8 +548,6 @@ const calcData = (view: Chart, callback) => {
           errMsg.value = res.msg
         } else {
           state.data = res?.data
-          res.type = 'rich-text'
-          res.render = 'custom'
           state.viewDataInfo = res
           state.totalItems = res?.totalItems
           const curViewInfo = canvasViewInfo.value[element.value.id]

@@ -23,4 +23,6 @@ public class FreeRelationVO implements Serializable {
     private List<FreeRelationLink> links;
 
     private List<FreeRelationNode> nodes;
+
+    private int maxNodeSize;
 }

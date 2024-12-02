@@ -188,6 +188,7 @@ defineExpose({
 }
 
 .ruler-outer-scroll {
+  min-width: 1600px;
   display: flex;
   justify-content: center;
 }

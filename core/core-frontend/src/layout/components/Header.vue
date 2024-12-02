@@ -60,6 +60,7 @@ const downloadClick = params => {
 }
 const routers: any[] = formatRoute(permissionStore.getRoutersNotHidden as AppCustomRouteRecordRaw[])
 const showSystem = ref(false)
+const showMsg = ref(false)
 const showToolbox = ref(false)
 const showOverlay = ref(false)
 const showOverlayCopilot = ref(false)
@@ -74,6 +75,9 @@ const handleSelect = (index: string) => {
 }
 const initShowSystem = () => {
   showSystem.value = permissionStore.getRouters.some(route => route.path === '/system')
+}
+const initShowMsg = () => {
+  showMsg.value = permissionStore.getRouters.some(route => route.path === '/msg')
 }
 const initShowToolbox = () => {
   showToolbox.value = permissionStore.getRouters.some(route => route.path === '/toolbox')
@@ -125,6 +129,7 @@ const badgeCount = ref('0')
 onMounted(() => {
   initShowSystem()
   initShowToolbox()
+  initShowMsg()
   initAiBase()
   initCopilotBase()
 
@@ -189,7 +194,12 @@ onMounted(() => {
       />
       <ToolboxCfg v-if="showToolbox" />
       <TopDoc v-if="appearanceStore.getShowDoc" />
-      <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
+      <el-tooltip
+        v-if="showMsg"
+        effect="dark"
+        :content="$t('v_query.msg_center')"
+        placement="bottom"
+      >
         <el-badge
           style="margin-right: 10px"
           :hidden="[0, '0'].includes(badgeCount)"

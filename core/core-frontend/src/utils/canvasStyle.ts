@@ -427,10 +427,14 @@ export function adaptCurTheme(customStyle, customAttr) {
 
 export function adaptTitleFontFamily(fontFamily, viewInfo) {
   if (viewInfo) {
-    viewInfo.customStyle['text']['fontFamily'] = defaultTo(
-      CHART_FONT_FAMILY_MAP_TRANS[fontFamily],
-      fontFamily
-    )
+    const _fontFamily = defaultTo(CHART_FONT_FAMILY_MAP_TRANS[fontFamily], fontFamily)
+    viewInfo.customStyle['text']['fontFamily'] = _fontFamily
+    //针对指标卡设置字体
+    if (viewInfo.type === 'indicator') {
+      viewInfo.customAttr['indicator']['fontFamily'] = fontFamily
+      viewInfo.customAttr['indicator']['suffixFontFamily'] = fontFamily
+      viewInfo.customAttr['indicatorName']['fontFamily'] = fontFamily
+    }
   }
 }
 
@@ -444,18 +448,18 @@ export function adaptTitleFontFamilyAll(fontFamily) {
     } else if (item.component === 'Group') {
       item.propValue.forEach(groupItem => {
         if (groupItem.component === 'UserView') {
-          const viewDetails = dvMainStore.canvasViewInfo[item.id]
+          const viewDetails = dvMainStore.canvasViewInfo[groupItem.id]
           adaptTitleFontFamily(fontFamily, viewDetails)
-          useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+          useEmitt().emitter.emit('renderChart-' + groupItem.id, viewDetails)
         }
       })
     } else if (item.component === 'DeTabs') {
       item.propValue.forEach(tabItem => {
         tabItem.componentData.forEach(tabComponent => {
           if (tabComponent.component === 'UserView') {
-            const viewDetails = dvMainStore.canvasViewInfo[item.id]
+            const viewDetails = dvMainStore.canvasViewInfo[tabComponent.id]
             adaptTitleFontFamily(fontFamily, viewDetails)
-            useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+            useEmitt().emitter.emit('renderChart-' + tabComponent.id, viewDetails)
           }
         })
       })

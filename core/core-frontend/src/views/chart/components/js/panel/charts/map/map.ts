@@ -208,7 +208,10 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     options = this.setupOptions(chart, options, context)
     const { Choropleth } = await import('@antv/l7plot/dist/esm/plots/choropleth')
     const view = new Choropleth(container, options)
-    this.configZoomButton(chart, view)
+    // 完成地图渲染后配置缩放按钮，为了能够获取到默认的缩放比例
+    view.on('loaded', () => {
+      this.configZoomButton(chart, view)
+    })
     mapRendering(container)
     view.once('loaded', () => {
       mapRendered(container)
@@ -235,7 +238,7 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         })
       })
       chart.container = container
-      configCarouselTooltip(chart, view, data, null)
+      configCarouselTooltip(chart, view, data, null, customSubArea, drawOption)
     })
     return view
   }
@@ -381,7 +384,8 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
       domStyles: {
         'l7plot-legend__category-value': {
           fontSize: legend.fontSize + 'px',
-          color: legend.color
+          color: legend.color,
+          'font-family': chart.fontFamily ? chart.fontFamily : undefined
         },
         'l7plot-legend__category-marker': {
           ...LEGEND_SHAPE_STYLE_MAP[legend.icon],
@@ -455,31 +459,38 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
     const customAttr = parseJson(chart.customAttr)
     const { label } = customAttr
     const data = chart.data.data
-    const areaMap = data.reduce((obj, value) => {
+    const areaMap = data?.reduce((obj, value) => {
       obj[value['field']] = value
       return obj
     }, {})
+    const geoJsonMap = geoJson.features.reduce((p, n) => {
+      if (n.properties['adcode']) {
+        p['156' + n.properties['adcode']] = n
+      }
+      return p
+    }, {})
+    customSubArea.forEach(area => {
+      const areaJsonArr = []
+      area.scopeArr?.forEach(adcode => {
+        const json = geoJsonMap[adcode]
+        json && areaJsonArr.push(json)
+      })
+      if (areaJsonArr.length) {
+        const areaJson: FeatureCollection = {
+          type: 'FeatureCollection',
+          features: areaJsonArr
+        }
+        const center = centroid(areaJson)
+        // 轮播用
+        area.centroid = [center.geometry.coordinates[0], center.geometry.coordinates[1]]
+      }
+    })
     //处理label
     options.label = false
     if (label.show) {
-      const geoJsonMap = geoJson.features.reduce((p, n) => {
-        if (n.properties['adcode']) {
-          p['156' + n.properties['adcode']] = n
-        }
-        return p
-      }, {})
       const labelLocation = []
       customSubArea.forEach(area => {
-        const areaJsonArr = []
-        area.scopeArr?.forEach(adcode => {
-          const json = geoJsonMap[adcode]
-          json && areaJsonArr.push(json)
-        })
-        if (areaJsonArr.length) {
-          const areaJson: FeatureCollection = {
-            type: 'FeatureCollection',
-            features: areaJsonArr
-          }
+        if (area.centroid) {
           const content = []
           if (label.showDimension) {
             content.push(area.name)
@@ -488,11 +499,10 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
             areaMap[area.name] &&
               content.push(valueFormatter(areaMap[area.name].value, label.quotaLabelFormatter))
           }
-          const center = centroid(areaJson)
           labelLocation.push({
             name: content.join('\n\n'),
-            x: center.geometry.coordinates[0],
-            y: center.geometry.coordinates[1]
+            x: area.centroid[0],
+            y: area.centroid[1]
           })
         }
       })

@@ -146,6 +146,11 @@ export function getTheme(chart: Chart) {
       }
     }
   }
+  if (chart.fontFamily) {
+    theme.styleSheet = {
+      fontFamily: chart.fontFamily
+    }
+  }
   return theme
 }
 // 通用label
@@ -191,7 +196,8 @@ export function getLabel(chart: Chart) {
           layout,
           style: {
             fill: l.color,
-            fontSize: l.fontSize
+            fontSize: l.fontSize,
+            fontFamily: chart.fontFamily
           },
           formatter: function (param: Datum) {
             return valueFormatter(param.value, l.labelFormatter)
@@ -545,11 +551,6 @@ export function getYAxis(chart: Chart) {
           fontSize: yAxis.axisLabel.fontSize,
           textBaseline,
           textAlign
-        },
-        formatter: value => {
-          return value.length > yAxis.axisLabel.lengthLimit
-            ? value.substring(0, yAxis.axisLabel.lengthLimit) + '...'
-            : value
         }
       }
     : null
@@ -903,6 +904,9 @@ export function configL7Label(chart: Chart): false | LabelOptions {
     style.textAllowOverlap = false
     style.padding = [2, 2]
   }
+  if (chart.fontFamily) {
+    style.fontFamily = chart.fontFamily
+  }
   return {
     visible: label.show,
     style
@@ -981,7 +985,8 @@ export function configL7Tooltip(chart: Chart): TooltipOptions {
       'l7plot-tooltip': {
         'background-color': tooltip.backgroundColor,
         'font-size': `${tooltip.fontSize}px`,
-        'line-height': 1.6
+        'line-height': 1.6,
+        'font-family': chart.fontFamily ? chart.fontFamily : undefined
       },
       'l7plot-tooltip__name': {
         color: tooltip.color
@@ -1180,9 +1185,15 @@ export function configL7Zoom(chart: Chart, plot: L7Plot<PlotOptions> | Scene) {
     return
   }
   if (!plotScene?.getControlByName('zoom')) {
+    let initZoom = basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5
+    let center = getCenter(basicStyle)
+    if (['map', 'bubble-map'].includes(chart.type)) {
+      initZoom = plotScene.getZoom()
+      center = plotScene.getCenter()
+    }
     const newZoomOptions = {
-      initZoom: basicStyle.autoFit === false ? basicStyle.zoomLevel : 2.5,
-      center: getCenter(basicStyle),
+      initZoom: initZoom,
+      center: center,
       buttonColor: basicStyle.zoomButtonColor,
       buttonBackground: basicStyle.zoomBackground
     } as any

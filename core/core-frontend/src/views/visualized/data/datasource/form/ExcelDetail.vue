@@ -207,7 +207,6 @@ const saveExcelDs = (params, successCb, finallyCb) => {
   let effectExtField = false
   let changeFiled = false
   let selectNode = state.excelData[0]?.sheets
-  console.log(1)
   for (let i = 0; i < selectNode.length; i++) {
     if (selectNode[i].sheet) {
       if (selectNode[i].effectExtField) {
@@ -244,7 +243,6 @@ const saveExcelDs = (params, successCb, finallyCb) => {
       sheetFileMd5.push(selectNode[i].fieldsMd5)
     }
   }
-  console.log(2)
   if (!selectedSheet.length) {
     ElMessage({
       message: t('dataset.ple_select_excel'),

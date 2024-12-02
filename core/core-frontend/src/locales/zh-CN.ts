@@ -556,7 +556,7 @@ export default {
     cross_domain_settings: '跨域设置',
     embedded_secret_len_change: '密钥长度变化，密钥即将重置，是否确认',
     embedded_management: '嵌入式管理',
-    to_5_applications: '最多支持创建5个应用',
+    to_5_applications: '最多支持创建 {0} 个应用',
     update_app_secret: '确定更新APP Secret吗？',
     operate_with_caution: '重置后现有的APP Secret将会失效，请谨慎操作。',
     no_application: '暂无应用',
@@ -2601,7 +2601,7 @@ export default {
     condition_style_set: '条件样式设置',
     cell_merge_tips: '合并单元格后，行列冻结、自动换行会失效。',
     image: '图片',
-    jump_set_tips: '已设置下钻',
+    drill_set_tips: '已设置下钻',
     input_calc_data: '输入计算数据',
     excel_with_format: 'Excel(带格式)',
     show_data: '查看数据',
@@ -3950,6 +3950,8 @@ export default {
       data_not_found: ']的数据不存在'
     },
     task: {
+      send_status: '任务下发状态',
+      df_task_status: '任务填报状态',
       time_check_5_minute_later_than_current: '不能小于当前时间5分钟后',
       time_check_later_than_current: '不能小于当前时间',
       time_check_earlier_than_end: '不能大于结束时间',

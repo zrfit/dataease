@@ -415,10 +415,9 @@ const windowsJump = (url, jumpType, size = 'middle') => {
       const width = screen.width * sizeX
       const left = screen.width * ((1 - sizeX) / 2)
       const top = screen.height * ((1 - sizeY) / 2)
-      const openType = wsCache.get('open-backend') === '1' ? '_self' : '_blank'
       newWindow = window.open(
         url,
-        openType,
+        '_blank',
         `width=${width},height=${height},left=${left},top=${top},toolbar=no,scrollbars=yes,resizable=yes,location=no`
       )
     } else if ('_self' === jumpType) {
@@ -1143,6 +1142,7 @@ const titleTooltipWidth = computed(() => {
         :view="view"
         :show-position="showPosition"
         :suffixId="suffixId"
+        :font-family="fontFamily"
       />
       <chart-component-g2-plot
         :scale="scale"
@@ -1151,6 +1151,7 @@ const titleTooltipWidth = computed(() => {
         :show-position="showPosition"
         :element="element"
         :suffixId="suffixId"
+        :font-family="fontFamily"
         v-else-if="
           showChartView(ChartLibraryType.G2_PLOT, ChartLibraryType.L7_PLOT, ChartLibraryType.L7)
         "
@@ -1167,6 +1168,7 @@ const titleTooltipWidth = computed(() => {
         :show-position="showPosition"
         :element="element"
         :drill-length="drillClickLength"
+        :font-family="fontFamily"
         v-else-if="showChartView(ChartLibraryType.S2)"
         ref="chartComponent"
         @onPointClick="onPointClick"

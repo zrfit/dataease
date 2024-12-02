@@ -107,8 +107,6 @@ public class DatasourceServer implements DatasourceApi {
     private PluginManageApi pluginManage;
     @Autowired(required = false)
     private RelationApi relationManage;
-    @Autowired
-    private CoreDatasourceMapper coreDatasourceMapper;
 
     public enum UpdateType {
         all_scope, add_scope
@@ -208,7 +206,7 @@ public class DatasourceServer implements DatasourceApi {
         if (StringUtils.isEmpty(dataSourceDTO.getName())) {
             DEException.throwException("名称不能为空！");
         }
-        CoreDatasource datasource = datasourceMapper.selectById(dataSourceDTO.getId());
+        CoreDatasource datasource = dataSourceManage.getCoreDatasource(dataSourceDTO.getId());
         datasource.setName(dataSourceDTO.getName());
         dataSourceDTO.setPid(datasource.getPid());
         dataSourceManage.checkName(dataSourceDTO);
@@ -490,7 +488,7 @@ public class DatasourceServer implements DatasourceApi {
 
     @Override
     public DatasourceDTO getSimpleDs(Long datasourceId) throws DEException {
-        CoreDatasource datasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource datasource = dataSourceManage.getCoreDatasource(datasourceId);
         if (datasource == null) {
             DEException.throwException("不存在的数据源！");
         }
@@ -517,7 +515,7 @@ public class DatasourceServer implements DatasourceApi {
 
     @Override
     public String getName(Long datasourceId) throws DEException {
-        CoreDatasource datasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource datasource = dataSourceManage.getCoreDatasource(datasourceId);
         if (datasource == null) {
             DEException.throwException("不存在的数据源！");
         }
@@ -578,7 +576,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     public void recursionDel(Long datasourceId) throws DEException {
-        CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasourceId);
         if (ObjectUtils.isEmpty(coreDatasource)) {
             return;
         }
@@ -635,7 +633,7 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public DatasourceDTO validate(Long datasourceId) throws DEException {
         CoreDatasource coreDatasource = new CoreDatasource();
-        BeanUtils.copyBean(coreDatasource, datasourceMapper.selectById(datasourceId));
+        BeanUtils.copyBean(coreDatasource, dataSourceManage.getCoreDatasource(datasourceId));
         return validate(coreDatasource);
     }
 
@@ -671,7 +669,7 @@ public class DatasourceServer implements DatasourceApi {
 
     @Override
     public List<DatasetTableDTO> getTables(DatasetTableDTO datasetTableDTO) throws DEException {
-        CoreDatasource coreDatasource = datasourceMapper.selectById(datasetTableDTO.getDatasourceId());
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasetTableDTO.getDatasourceId());
         if (coreDatasource == null) {
             DEException.throwException("无效数据源！");
         }
@@ -706,7 +704,7 @@ public class DatasourceServer implements DatasourceApi {
         if (!getTables(datasetTableDTO).stream().map(DatasetTableDTO::getTableName).collect(Collectors.toList()).contains(tableName)) {
             DEException.throwException("无效的表名！");
         }
-        CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(Long.parseLong(datasourceId));
         DatasourceRequest datasourceRequest = new DatasourceRequest();
         datasourceRequest.setDatasource(transDTO(coreDatasource));
         if (coreDatasource.getType().equals("API") || coreDatasource.getType().equals("Excel")) {
@@ -746,7 +744,7 @@ public class DatasourceServer implements DatasourceApi {
     public void syncApiDs(Map<String, String> req) throws Exception {
         Long datasourceId = Long.valueOf(req.get("datasourceId"));
         CoreDatasourceTask coreDatasourceTask = datasourceTaskServer.selectByDSId(datasourceId);
-        CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasourceId);
         DatasourceServer.UpdateType updateType = DatasourceServer.UpdateType.valueOf(coreDatasourceTask.getUpdateType());
         datasourceSyncManage.extractedData(null, coreDatasource, updateType, MANUAL.toString());
     }
@@ -774,7 +772,7 @@ public class DatasourceServer implements DatasourceApi {
     private static final Integer append = 1;
 
     public ExcelFileData excelUpload(@RequestParam("file") MultipartFile file, @RequestParam("id") long datasourceId, @RequestParam("editType") Integer editType) throws DEException {
-        CoreDatasource coreDatasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(datasourceId);
 
         ExcelUtils excelUtils = new ExcelUtils();
         ExcelFileData excelFileData = excelUtils.excelSaveAndParse(file);
@@ -975,7 +973,7 @@ public class DatasourceServer implements DatasourceApi {
         wrapper.orderByDesc("start_time");
         Page<CoreDatasourceTaskLogDTO> page = new Page<>(goPage, pageSize);
         IPage<CoreDatasourceTaskLogDTO> pager = taskLogExtMapper.pager(page, wrapper);
-        CoreDatasource coreDatasource = datasourceMapper.selectById(dsId);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(dsId);
         DatasourceRequest datasourceRequest = new DatasourceRequest();
         datasourceRequest.setDatasource(transDTO(coreDatasource));
         List<DatasetTableDTO> datasetTableDTOS = ApiUtils.getTables(datasourceRequest);
@@ -1075,7 +1073,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     private void getParents(Long pid, List<Long> ids) {
-        CoreDatasource parent = datasourceMapper.selectById(pid);// 查找父级folder
+        CoreDatasource parent = dataSourceManage.getCoreDatasource(pid);// 查找父级folder
         ids.add(parent.getId());
         if (parent.getPid() != null && parent.getPid() != 0) {
             getParents(parent.getPid(), ids);
@@ -1130,7 +1128,7 @@ public class DatasourceServer implements DatasourceApi {
     }
 
     private DatasourceDTO getDatasourceDTOById(Long datasourceId, boolean hidePw) throws DEException {
-        CoreDatasource datasource = datasourceMapper.selectById(datasourceId);
+        CoreDatasource datasource = dataSourceManage.getCoreDatasource(datasourceId);
         if (datasource == null) {
             DEException.throwException("不存在的数据源！");
         }
@@ -1240,7 +1238,7 @@ public class DatasourceServer implements DatasourceApi {
     @Override
     public DsSimpleVO simple(Long id) {
         if (ObjectUtils.isEmpty(id)) DEException.throwException("id is null");
-        CoreDatasource coreDatasource = coreDatasourceMapper.selectById(id);
+        CoreDatasource coreDatasource = dataSourceManage.getCoreDatasource(id);
         if (ObjectUtils.isEmpty(coreDatasource)) return null;
         DsSimpleVO vo = new DsSimpleVO();
         vo.setName(coreDatasource.getName());
