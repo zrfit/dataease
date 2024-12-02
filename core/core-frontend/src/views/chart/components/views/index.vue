@@ -1151,6 +1151,7 @@ const titleTooltipWidth = computed(() => {
         :show-position="showPosition"
         :element="element"
         :suffixId="suffixId"
+        :font-family="fontFamily"
         v-else-if="
           showChartView(ChartLibraryType.G2_PLOT, ChartLibraryType.L7_PLOT, ChartLibraryType.L7)
         "
@@ -1167,6 +1168,7 @@ const titleTooltipWidth = computed(() => {
         :show-position="showPosition"
         :element="element"
         :drill-length="drillClickLength"
+        :font-family="fontFamily"
         v-else-if="showChartView(ChartLibraryType.S2)"
         ref="chartComponent"
         @onPointClick="onPointClick"

@@ -358,7 +358,6 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
         fill: style.stroke
       }
     }
-    console.log(optionTmp)
     return optionTmp
   }
   protected setupOptions(chart: Chart, options: LineOptions): LineOptions {
