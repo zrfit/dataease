@@ -289,7 +289,11 @@ const saveItem = () => {
     }
   } else {
     for (let i = 0; i < apiItem.fields.length; i++) {
-      if (apiItem.fields[i].primaryKey && !apiItem.fields[i].length) {
+      if (
+        apiItem.fields[i].primaryKey &&
+        !apiItem.fields[i].length &&
+        apiItem.fields[i].deExtractType === 0
+      ) {
         ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
         return
       }

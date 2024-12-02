@@ -207,6 +207,7 @@ const saveExcelDs = (params, successCb, finallyCb) => {
   let effectExtField = false
   let changeFiled = false
   let selectNode = state.excelData[0]?.sheets
+  console.log(1)
   for (let i = 0; i < selectNode.length; i++) {
     if (selectNode[i].sheet) {
       if (selectNode[i].effectExtField) {
@@ -243,6 +244,7 @@ const saveExcelDs = (params, successCb, finallyCb) => {
       sheetFileMd5.push(selectNode[i].fieldsMd5)
     }
   }
+  console.log(2)
   if (!selectedSheet.length) {
     ElMessage({
       message: t('dataset.ple_select_excel'),
@@ -644,7 +646,7 @@ defineExpose({
         ></SheetTabs>
 
         <div class="table-select_mode">
-          <div class="btn-select" v-if="param.id === '0' || sheetObj.newSheet">
+          <div class="btn-select" v-if="param.editType === 0">
             <el-button
               @click="changeCurrentMode('preview')"
               :class="[currentMode === 'preview' && 'is-active']"
@@ -705,7 +707,7 @@ defineExpose({
             <el-table-column
               prop="length"
               :label="t('datasource.length')"
-              v-if="param.id === '0' || sheetObj.newSheet"
+              v-if="param.editType === 0"
             >
               <template #default="scope">
                 <el-input-number
@@ -728,7 +730,7 @@ defineExpose({
               class-name="checkbox-table"
               :label="t('datasource.set_key')"
               width="100"
-              v-if="param.id === '0' || sheetObj.newSheet"
+              v-if="param.editType === 0"
             >
               <template #default="scope">
                 <el-checkbox

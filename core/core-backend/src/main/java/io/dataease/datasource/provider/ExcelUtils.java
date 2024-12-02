@@ -486,6 +486,7 @@ public class ExcelUtils {
                 tableFiled.setName(filedName);
                 tableFiled.setOriginName(filedName);
                 tableFiled.setFieldType(null);
+                tableFiled.setChecked(true);
                 fields.add(tableFiled);
             }
 
