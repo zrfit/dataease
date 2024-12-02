@@ -687,7 +687,8 @@ export function getSlider(chart: Chart) {
       }
       if (senior.functionCfg.sliderTextColor) {
         cfg.textStyle = {
-          fill: senior.functionCfg.sliderTextColor
+          fill: senior.functionCfg.sliderTextColor,
+          fontFamily: chart.fontFamily
         }
         cfg.handlerStyle = {
           fill: senior.functionCfg.sliderTextColor,
