@@ -550,11 +550,6 @@ export function getYAxis(chart: Chart) {
           fontSize: yAxis.axisLabel.fontSize,
           textBaseline,
           textAlign
-        },
-        formatter: value => {
-          return value.length > yAxis.axisLabel.lengthLimit
-            ? value.substring(0, yAxis.axisLabel.lengthLimit) + '...'
-            : value
         }
       }
     : null

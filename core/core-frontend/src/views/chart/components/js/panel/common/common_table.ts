@@ -15,6 +15,7 @@ import {
 import {
   BaseTooltip,
   DataCellBrushSelection,
+  FONT_FAMILY,
   getAutoAdjustPosition,
   getEmptyPlaceholder,
   getPolygonPoints,
@@ -40,7 +41,7 @@ import {
   TableDataCell,
   updateShapeAttr,
   ViewMeta
-} from "@antv/s2";
+} from '@antv/s2'
 import { cloneDeep, filter, find, intersection, keys, merge, repeat } from 'lodash-es'
 import { createVNode, render } from 'vue'
 import TableTooltip from '@/views/chart/components/editor/common/TableTooltip.vue'
@@ -64,7 +65,7 @@ export function getCustomTheme(chart: Chart): S2Theme {
   )
   const scrollBarColor = DEFAULT_BASIC_STYLE.tableScrollBarColor
   const scrollBarHoverColor = resetRgbOpacity(scrollBarColor, 3)
-
+  const textFontFamily = chart.fontFamily ? chart.fontFamily : FONT_FAMILY
   const theme: S2Theme = {
     background: {
       color: '#00000000'
@@ -87,17 +88,20 @@ export function getCustomTheme(chart: Chart): S2Theme {
       text: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       bolderText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       measureText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       }
     },
     rowCell: {
@@ -110,22 +114,26 @@ export function getCustomTheme(chart: Chart): S2Theme {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
         textAlign: headerAlign,
-        textBaseline: 'middle'
+        textBaseline: 'middle',
+        fontFamily: textFontFamily
       },
       bolderText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       measureText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       seriesText: {
         fill: DEFAULT_TABLE_CELL.tableItemBgColor,
         fontSize: DEFAULT_TABLE_CELL.tableItemFontSize,
-        textAlign: itemAlign
+        textAlign: itemAlign,
+        fontFamily: textFontFamily
       }
     },
     colCell: {
@@ -137,17 +145,20 @@ export function getCustomTheme(chart: Chart): S2Theme {
       text: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       bolderText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       },
       measureText: {
         fill: DEFAULT_TABLE_HEADER.tableHeaderFontColor,
         fontSize: DEFAULT_TABLE_HEADER.tableTitleFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       }
     },
     dataCell: {
@@ -159,17 +170,20 @@ export function getCustomTheme(chart: Chart): S2Theme {
       text: {
         fill: DEFAULT_TABLE_CELL.tableFontColor,
         fontSize: DEFAULT_TABLE_CELL.tableItemFontSize,
-        textAlign: itemAlign
+        textAlign: itemAlign,
+        fontFamily: textFontFamily
       },
       bolderText: {
         fill: DEFAULT_TABLE_CELL.tableFontColor,
         fontSize: DEFAULT_TABLE_CELL.tableItemFontSize,
-        textAlign: itemAlign
+        textAlign: itemAlign,
+        fontFamily: textFontFamily
       },
       measureText: {
         fill: DEFAULT_TABLE_CELL.tableFontColor,
         fontSize: DEFAULT_TABLE_CELL.tableItemFontSize,
-        textAlign: headerAlign
+        textAlign: headerAlign,
+        fontFamily: textFontFamily
       }
     },
     scrollBar: {
@@ -246,21 +260,24 @@ export function getCustomTheme(chart: Chart): S2Theme {
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           text: {
             fill: tableHeaderFontColor,
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           measureText: {
             fill: tableHeaderFontColor,
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           }
         },
         colCell: {
@@ -272,21 +289,24 @@ export function getCustomTheme(chart: Chart): S2Theme {
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           text: {
             fill: tableHeaderFontColor,
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           measureText: {
             fill: tableHeaderFontColor,
             fontSize: tableTitleFontSize,
             textAlign: tableHeaderAlign,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           }
         }
       }
@@ -355,22 +375,26 @@ export function getCustomTheme(chart: Chart): S2Theme {
           bolderText: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
-            fontSize: tableItemFontSize
+            fontSize: tableItemFontSize,
+            fontFamily: textFontFamily
           },
           text: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
-            fontSize: tableItemFontSize
+            fontSize: tableItemFontSize,
+            fontFamily: textFontFamily
           },
           measureText: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
-            fontSize: tableItemFontSize
+            fontSize: tableItemFontSize,
+            fontFamily: textFontFamily
           },
           seriesText: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
-            fontSize: tableItemFontSize
+            fontSize: tableItemFontSize,
+            fontFamily: textFontFamily
           }
         },
         dataCell: {
@@ -383,28 +407,32 @@ export function getCustomTheme(chart: Chart): S2Theme {
             textAlign: tableItemAlign,
             fontSize: tableItemFontSize,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           text: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
             fontSize: tableItemFontSize,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           measureText: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
             fontSize: tableItemFontSize,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           },
           seriesText: {
             fill: tableFontColor,
             textAlign: tableItemAlign,
             fontSize: tableItemFontSize,
             fontStyle,
-            fontWeight
+            fontWeight,
+            fontFamily: textFontFamily
           }
         }
       }
@@ -983,11 +1011,13 @@ export function configHeaderInteraction(chart: Chart, option: S2Options) {
 
 export function configTooltip(chart: Chart, option: S2Options) {
   const { tooltip } = parseJson(chart.customAttr)
+  const textFontFamily = chart.fontFamily ? chart.fontFamily : FONT_FAMILY
   option.tooltip = {
     ...option.tooltip,
     style: {
       background: tooltip.backgroundColor,
       fontSize: tooltip.fontSize + 'px',
+      fontFamily: textFontFamily,
       color: tooltip.color,
       boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 8px 0px',
       borderRadius: '3px',
@@ -1714,20 +1744,20 @@ const   getWrapText = (sourceText, textStyle, cellWidth, spreadsheet) => {
 
   let resultWrapText = ''
   let restText = ''
-  let restTextWidth = 10
+  let restTextWidth = 0
   for (let i = 0; i < sourceText.length; i++) {
     const char = sourceText[i]
     const charWidth = getTextWidth(char)
     restTextWidth += charWidth
     restText += char
     // 中文时，需要单元格宽度减去16个文字宽度，否则会超出单元格宽度
-    const cWidth = char.charCodeAt(0) >= 128 ? 16 : 10
+    const cWidth = char.charCodeAt(0) >= 128 ? 12 : 8
     // 添加换行
     if (restTextWidth >= cellWidth - textStyle.fontSize - cWidth) {
       // 最后一个字符不添加换行符
       resultWrapText += restText + (i !== sourceText.length - 1 ? '\n' : '')
       restText = ''
-      restTextWidth = 10
+      restTextWidth = 0
     }
   }
 
