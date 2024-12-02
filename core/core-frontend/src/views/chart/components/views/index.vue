@@ -1142,6 +1142,7 @@ const titleTooltipWidth = computed(() => {
         :view="view"
         :show-position="showPosition"
         :suffixId="suffixId"
+        :font-family="fontFamily"
       />
       <chart-component-g2-plot
         :scale="scale"
