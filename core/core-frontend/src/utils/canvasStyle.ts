@@ -444,18 +444,18 @@ export function adaptTitleFontFamilyAll(fontFamily) {
     } else if (item.component === 'Group') {
       item.propValue.forEach(groupItem => {
         if (groupItem.component === 'UserView') {
-          const viewDetails = dvMainStore.canvasViewInfo[item.id]
+          const viewDetails = dvMainStore.canvasViewInfo[groupItem.id]
           adaptTitleFontFamily(fontFamily, viewDetails)
-          useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+          useEmitt().emitter.emit('renderChart-' + groupItem.id, viewDetails)
         }
       })
     } else if (item.component === 'DeTabs') {
       item.propValue.forEach(tabItem => {
         tabItem.componentData.forEach(tabComponent => {
           if (tabComponent.component === 'UserView') {
-            const viewDetails = dvMainStore.canvasViewInfo[item.id]
+            const viewDetails = dvMainStore.canvasViewInfo[tabComponent.id]
             adaptTitleFontFamily(fontFamily, viewDetails)
-            useEmitt().emitter.emit('renderChart-' + item.id, viewDetails)
+            useEmitt().emitter.emit('renderChart-' + tabComponent.id, viewDetails)
           }
         })
       })
