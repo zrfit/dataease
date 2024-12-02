@@ -384,7 +384,8 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
       domStyles: {
         'l7plot-legend__category-value': {
           fontSize: legend.fontSize + 'px',
-          color: legend.color
+          color: legend.color,
+          'font-family': chart.fontFamily ? chart.fontFamily : undefined
         },
         'l7plot-legend__category-marker': {
           ...LEGEND_SHAPE_STYLE_MAP[legend.icon],

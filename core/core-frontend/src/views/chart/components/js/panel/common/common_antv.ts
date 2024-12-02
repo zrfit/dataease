@@ -196,7 +196,8 @@ export function getLabel(chart: Chart) {
           layout,
           style: {
             fill: l.color,
-            fontSize: l.fontSize
+            fontSize: l.fontSize,
+            fontFamily: chart.fontFamily
           },
           formatter: function (param: Datum) {
             return valueFormatter(param.value, l.labelFormatter)
@@ -903,6 +904,9 @@ export function configL7Label(chart: Chart): false | LabelOptions {
     style.textAllowOverlap = false
     style.padding = [2, 2]
   }
+  if (chart.fontFamily) {
+    style.fontFamily = chart.fontFamily
+  }
   return {
     visible: label.show,
     style
@@ -981,7 +985,8 @@ export function configL7Tooltip(chart: Chart): TooltipOptions {
       'l7plot-tooltip': {
         'background-color': tooltip.backgroundColor,
         'font-size': `${tooltip.fontSize}px`,
-        'line-height': 1.6
+        'line-height': 1.6,
+        'font-family': chart.fontFamily ? chart.fontFamily : undefined
       },
       'l7plot-tooltip__name': {
         color: tooltip.color

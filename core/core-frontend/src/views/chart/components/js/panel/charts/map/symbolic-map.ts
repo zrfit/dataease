@@ -394,7 +394,7 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
           }
         `
       document.head.appendChild(style)
-      const htmlPrefix = `<div style='font-size:${tooltip.fontSize}px;color:${tooltip.color}'>`
+      const htmlPrefix = `<div style='font-size:${tooltip.fontSize}px;color:${tooltip.color};font-family: ${chart.fontFamily}'>`
       const htmlSuffix = '</div>'
       const containerElement = document.getElementById(container)
       if (containerElement) {
@@ -522,7 +522,8 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
           .style({
             textAllowOverlap: label.fullDisplay,
             textAnchor: 'center',
-            textOffset: [0, 0]
+            textOffset: [0, 0],
+            fontFamily: chart.fontFamily ? chart.fontFamily : undefined
           })
       )
     }
