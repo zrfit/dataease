@@ -127,7 +127,6 @@ public class TableInfoHandler extends DefaultChartHandler {
         querySql = provider.rebuildSQL(querySql, sqlMeta, crossDs, dsMap);
         datasourceRequest.setQuery(querySql);
         logger.debug("calcite chart sql: " + querySql);
-        System.out.println(querySql);
         List<String[]> data = (List<String[]>) provider.fetchResultField(datasourceRequest).get("data");
         //自定义排序
         data = ChartDataUtil.resultCustomSort(xAxis, data);
