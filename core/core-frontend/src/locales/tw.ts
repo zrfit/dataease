@@ -253,7 +253,7 @@ export default {
     customize: '自訂',
     that_day: '當天',
     value: '值',
-    name_use_parameters: '可用${參數名稱}，使用參數',
+    name_use_parameters: '可用\$\{參數名稱\}，使用參數',
     add_parameters: '新增參數',
     data_source_name: '資料來源名稱',
     data_source_name_de: '請輸入資料來源名稱',

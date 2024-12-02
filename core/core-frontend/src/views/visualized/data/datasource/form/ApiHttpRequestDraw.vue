@@ -245,6 +245,51 @@ const saveItem = () => {
         }
       }
     }
+  } else {
+    if (editItem.value) {
+      let msg = ''
+      for (let i = 0; i < apiItem.fields.length; i++) {
+        if (apiItem.fields[i].primaryKey) {
+          let find = false
+          for (let j = 0; j < fields.length; j++) {
+            if (fields[j].name === apiItem.fields[i].name && fields[j].primaryKey) {
+              find = true
+            }
+          }
+          if (!find) {
+            msg = msg + ' ' + apiItem.fields[i].name
+          }
+        }
+      }
+      for (let i = 0; i < fields.length; i++) {
+        if (fields[i].primaryKey) {
+          let find = false
+          for (let j = 0; j < apiItem.fields.length; j++) {
+            if (fields[i].name === apiItem.fields[j].name && apiItem.fields[j].primaryKey) {
+              find = true
+            }
+          }
+          if (!find) {
+            msg = msg + ' ' + fields[i].name
+          }
+        }
+      }
+      if (msg !== '') {
+        ElMessage.error(t('datasource.primary_key_change') + msg)
+        return
+      }
+    } else {
+      for (let i = 0; i < apiItem.fields.length; i++) {
+        if (
+          apiItem.fields[i].primaryKey &&
+          !apiItem.fields[i].length &&
+          apiItem.fields[i].deExtractType === 0
+        ) {
+          ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
+          return
+        }
+      }
+    }
   }
 
   for (let i = 0; i < apiItem.fields.length - 1; i++) {
@@ -255,50 +300,7 @@ const saveItem = () => {
       }
     }
   }
-  if (editItem.value) {
-    let msg = ''
-    for (let i = 0; i < apiItem.fields.length; i++) {
-      if (apiItem.fields[i].primaryKey) {
-        let find = false
-        for (let j = 0; j < fields.length; j++) {
-          if (fields[j].name === apiItem.fields[i].name && fields[j].primaryKey) {
-            find = true
-          }
-        }
-        if (!find) {
-          msg = msg + ' ' + apiItem.fields[i].name
-        }
-      }
-    }
-    for (let i = 0; i < fields.length; i++) {
-      if (fields[i].primaryKey) {
-        let find = false
-        for (let j = 0; j < apiItem.fields.length; j++) {
-          if (fields[i].name === apiItem.fields[j].name && apiItem.fields[j].primaryKey) {
-            find = true
-          }
-        }
-        if (!find) {
-          msg = msg + ' ' + fields[i].name
-        }
-      }
-    }
-    if (msg !== '') {
-      ElMessage.error(t('datasource.primary_key_change') + msg)
-      return
-    }
-  } else {
-    for (let i = 0; i < apiItem.fields.length; i++) {
-      if (
-        apiItem.fields[i].primaryKey &&
-        !apiItem.fields[i].length &&
-        apiItem.fields[i].deExtractType === 0
-      ) {
-        ElMessage.error(t('datasource.primary_key_length') + apiItem.fields[i].name)
-        return
-      }
-    }
-  }
+
   returnAPIItem('returnItem', cloneDeep(apiItem))
   edit_api_item.value = false
 }

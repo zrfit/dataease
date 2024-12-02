@@ -451,14 +451,18 @@ const returnItem = apiItem => {
       form.value.apiConfiguration.push(apiItem)
     }
   } else {
-    for (let i = 0; i < form.value.paramsConfiguration.length; i++) {
-      if (form.value.paramsConfiguration[i].serialNumber === apiItem.serialNumber) {
-        find = true
-        form.value.paramsConfiguration[i] = apiItem
-        if (apiItem.serialNumber === activeParamsID.value) {
-          setActiveName(apiItem)
+    if (form.value.paramsConfiguration) {
+      for (let i = 0; i < form.value.paramsConfiguration.length; i++) {
+        if (form.value.paramsConfiguration[i].serialNumber === apiItem.serialNumber) {
+          find = true
+          form.value.paramsConfiguration[i] = apiItem
+          if (apiItem.serialNumber === activeParamsID.value) {
+            setActiveName(apiItem)
+          }
         }
       }
+    } else {
+      form.value.paramsConfiguration = []
     }
     if (!find) {
       state.itemRef = []
