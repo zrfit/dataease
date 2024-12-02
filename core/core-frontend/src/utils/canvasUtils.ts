@@ -408,21 +408,6 @@ export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
           if (ele.component === 'VQuery') {
             ele.mPropValue = mPropValue
           }
-          if (ele.component === 'DeTabs') {
-            ele.propValue.forEach(tabItem => {
-              tabItem.componentData.forEach(tabComponent => {
-                tabComponent.mx = tabComponent.mx
-                tabComponent.my = tabComponent.my
-                tabComponent.mSizeX = tabComponent.mSizeX
-                tabComponent.mSizeY = tabComponent.mSizeY
-                tabComponent.mEvents = tEvents
-                tabComponent.mCommonBackground = tCommonBackground
-                if (tabComponent.component === 'VQuery') {
-                  tabComponent.mPropValue = tPropValue
-                }
-              })
-            })
-          }
         }
       })
       Object.keys(mobileViewInfo).forEach(key => {
