@@ -316,31 +316,23 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
     const xAxisExt = chart.xAxisExt[0]
     if (xAxisExt?.customSort?.length > 0) {
       // 图例自定义排序
-      const l = optionTmp.legend
-      const basicStyle = parseJson(chart.customAttr).basicStyle
       const sort = xAxisExt.customSort ?? []
-      const legendItems = []
-      sort.forEach((item, index) => {
-        legendItems.push({
-          name: item,
-          value: item,
-          marker: {
-            symbol: l.marker.symbol,
-            style: {
-              r: 4,
-              fill: basicStyle.colors[index % basicStyle.colors.length]
-            }
+      if (sort?.length) {
+        // 用值域限定排序，有可能出现新数据但是未出现在图表上，所以这边要遍历一下子维度，加到后面，让新数据显示出来
+        const data = optionTmp.data
+        data?.forEach(d => {
+          const cat = d['category']
+          if (cat && !sort.includes(cat)) {
+            sort.push(cat)
           }
         })
-      })
-      const legend = {
-        ...l,
-        custom: true,
-        items: legendItems
-      }
-      return {
-        ...optionTmp,
-        legend
+        optionTmp.meta = {
+          ...optionTmp.meta,
+          category: {
+            type: 'cat',
+            values: sort
+          }
+        }
       }
     }
 
