@@ -11,6 +11,8 @@ import { useCache } from '@/hooks/web/useCache'
 import Board from '@/components/de-board/Board.vue'
 import { dvMainStoreWithOut } from '@/store/modules/data-visualization/dvMain'
 import { activeWatermarkCheckUser, removeActiveWatermark } from '@/components/watermark/watermark'
+import { isMobile } from '@/utils/utils'
+import { isDashboard } from '@/utils/canvasUtils'
 
 const componentWrapperInnerRef = ref(null)
 const componentEditBarRef = ref(null)
@@ -312,7 +314,8 @@ const eventEnable = computed(
     ) ||
       ['indicator', 'rich-text'].includes(config.value.innerType)) &&
     config.value.events &&
-    config.value.events.checked
+    config.value.events.checked &&
+    (isDashboard() || (!isDashboard() && !isMobile()))
 )
 
 const onWrapperClick = e => {
