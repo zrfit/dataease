@@ -28,6 +28,8 @@ import FlowMapLineSelector from '@/views/chart/components/editor/editor-style/co
 import FlowMapPointSelector from '@/views/chart/components/editor/editor-style/components/FlowMapPointSelector.vue'
 import CommonEvent from '@/custom-component/common/CommonEvent.vue'
 import CommonBorderSetting from '@/custom-component/common/CommonBorderSetting.vue'
+import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
+const snapshotStore = snapshotStoreWithOut()
 
 const dvMainStore = dvMainStoreWithOut()
 const { dvInfo, batchOptStatus, mobileInPc } = storeToRefs(dvMainStore)
@@ -202,10 +204,12 @@ const onBasicStyleChange = (val, prop) => {
 }
 
 const onBackgroundChange = (val, prop) => {
+  snapshotStore.recordSnapshotCache()
   state.initReady && emit('onBackgroundChange', val, prop)
 }
 
 const onActiveChange = val => {
+  snapshotStore.recordSnapshotCache()
   state.initReady &&
     emit('onStyleAttrChange', {
       custom: 'style',
