@@ -1188,6 +1188,9 @@ span {
     background: #f5f6f7;
     &.field-style-dark {
       background: #1a1a1a;
+      :deep(.field-text) {
+        color: #a6a6a6;
+      }
     }
   }
 }
