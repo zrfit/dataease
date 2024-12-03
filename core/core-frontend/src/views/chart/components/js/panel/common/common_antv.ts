@@ -342,7 +342,7 @@ export function getLegend(chart: Chart) {
             if (chart.drill) {
               offsetY = -18
             } else {
-              offsetY = -6
+              offsetY = -10
             }
           } else {
             offsetY = 0
