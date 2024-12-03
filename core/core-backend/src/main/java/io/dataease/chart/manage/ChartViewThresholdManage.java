@@ -413,7 +413,7 @@ public class ChartViewThresholdManage {
         DatasetTableFieldDTO field = item.getField();
         String dataeaseName = field.getDataeaseName();
         String value = item.getValue();
-        float tempFVal = 0f;
+        Float tempFVal = StringUtils.equalsAny(value, "min", "max") ? null : 0f;
         int validLen = 0;
 
         for (Map<String, Object> row : rows) {
@@ -421,9 +421,17 @@ public class ChartViewThresholdManage {
             if (ObjectUtils.isEmpty(o)) continue;
             float fvalue = Float.parseFloat(o.toString());
             if (StringUtils.equals("min", value)) {
-                tempFVal = Math.min(tempFVal, fvalue);
+                if (ObjectUtils.isEmpty(tempFVal)) {
+                    tempFVal = fvalue;
+                } else {
+                    tempFVal = Math.min(tempFVal, fvalue);
+                }
             } else if (StringUtils.equals("max", value)) {
-                tempFVal = Math.max(tempFVal, fvalue);
+                if (ObjectUtils.isEmpty(tempFVal)) {
+                    tempFVal = fvalue;
+                } else {
+                    tempFVal = Math.max(tempFVal, fvalue);
+                }
             } else if (StringUtils.equals("average", value)) {
                 tempFVal += fvalue;
                 validLen++;
