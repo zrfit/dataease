@@ -220,6 +220,7 @@ const saveExcelDs = (params, successCb, finallyCb) => {
           message: selectNode[i].excelLabel + t('datasource.api_field_not_empty'),
           type: 'error'
         })
+        finallyCb?.()
         return
       }
       for (let j = 0; j < selectNode[i].fields.length; j++) {
@@ -237,6 +238,7 @@ const saveExcelDs = (params, successCb, finallyCb) => {
               selectNode[i].fields[j].name,
             type: 'error'
           })
+          finallyCb?.()
           return
         }
       }
@@ -249,9 +251,11 @@ const saveExcelDs = (params, successCb, finallyCb) => {
       message: t('dataset.ple_select_excel'),
       type: 'error'
     })
+    finallyCb?.()
     return
   }
   if (!validate) {
+    finallyCb?.()
     return
   }
 
