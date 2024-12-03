@@ -1505,7 +1505,7 @@ export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S
                   showText: j === textIndex
                 })
               }
-              if (index === end) {
+              if (index === end && lastVal === curVal) {
                 tmpMergeCells.push({
                   colIndex: showIndex ? i + 1 : i,
                   rowIndex: index,
@@ -1513,7 +1513,7 @@ export function configMergeCells(chart: Chart, options: S2Options, dataConfig: S
                 })
               }
               mergedCellsInfo.push(tmpMergeCells)
-              curMergedColInfo.push([lastIndex, index === end ? index : index - 1])
+              curMergedColInfo.push([lastIndex, index === end && lastVal === curVal ? index : index - 1])
             }
             lastVal = curVal
             lastIndex = index
