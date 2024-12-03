@@ -47,7 +47,7 @@
     <el-tooltip
       effect="dark"
       :placement="showBarTooltipPosition"
-      :content="t('visualization.show_data')"
+      :content="t('visualization.show_data_info')"
       v-if="!['picture-group', 'rich-text'].includes(element.innerType) && barShowCheck('details')"
     >
       <span>
@@ -117,7 +117,7 @@
                 !['picture-group', 'rich-text'].includes(element.innerType) &&
                 barShowCheck('details')
               "
-              >{{ t('visualization.show_data') }}</el-dropdown-item
+              >{{ t('visualization.show_data_info') }}</el-dropdown-item
             >
             <el-dropdown-item
               style="padding: 0"

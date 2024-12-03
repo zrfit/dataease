@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-form ref="form">
-      <el-form-item v-show="formatInfo.showDate" :label="t('visualization.show_data')">
+      <el-form-item v-show="formatInfo.showDate" :label="t('visualization.show_date')">
         <el-select
           v-model="formatInfo.dateFormat"
           :effect="themes"
