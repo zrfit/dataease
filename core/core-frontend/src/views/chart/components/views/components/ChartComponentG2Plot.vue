@@ -93,6 +93,8 @@ const isError = ref(false)
 const errMsg = ref('')
 const linkageActiveHistory = ref(false)
 
+const dataVMobile = !isDashboard() && isMobile()
+
 const state = reactive({
   trackBarStyle: {
     position: 'absolute',
@@ -383,10 +385,9 @@ const action = param => {
       trackBarY = barStyleTemp.top
       state.trackBarStyle.top = barStyleTemp.top + 'px'
     }
-    if (!isDashboard() && isMobile()) {
-      state.trackBarStyle.left = trackBarX / props.scale + 'px'
-      state.trackBarStyle.top = trackBarY / props.scale + 'px'
-      state.trackBarStyle['zoom'] = props.scale
+    if (dataVMobile) {
+      state.trackBarStyle.left = trackBarX + 40 + 'px'
+      state.trackBarStyle.top = trackBarY + 70 + 'px'
     } else {
       state.trackBarStyle.left = trackBarX + 'px'
       state.trackBarStyle.top = trackBarY + 'px'
@@ -600,6 +601,7 @@ onBeforeUnmount(() => {
       ref="viewTrack"
       :track-menu="trackMenu"
       :font-family="fontFamily"
+      :is-data-v-mobile="dataVMobile"
       class="track-bar"
       :style="state.trackBarStyle"
       @trackClick="trackClick"
