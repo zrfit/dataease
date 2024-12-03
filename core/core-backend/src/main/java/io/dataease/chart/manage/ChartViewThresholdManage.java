@@ -524,20 +524,25 @@ public class ChartViewThresholdManage {
                 }
             } else if (Objects.equals(deType, DeTypeConstants.DE_INT) || Objects.equals(deType, DeTypeConstants.DE_FLOAT)) {
                 if (valueObj == null) return false;
+                if (ObjectUtils.isEmpty(item.getValue())) {
+                    return false;
+                }
+                float targetVal = Float.parseFloat(item.getValue());
+                float originVal = Float.parseFloat(valueObj.toString());
                 if (StringUtils.equals(term, "eq")) {
-                    return StringUtils.equals(item.getValue().toString(), valueObj.toString());
+                    return StringUtils.equals(String.valueOf(originVal), String.valueOf(targetVal));
                 } else if (StringUtils.equals(term, "not_eq")) {
-                    return !StringUtils.equals(item.getValue().toString(), valueObj.toString());
+                    return !StringUtils.equals(String.valueOf(originVal), String.valueOf(targetVal));
                 } else if (StringUtils.equals(term, "gt")) {
-                    return Float.parseFloat(item.getValue().toString()) < Float.parseFloat(valueObj.toString());
+                    return targetVal < originVal;
                 } else if (StringUtils.equals(term, "ge")) {
-                    return Float.parseFloat(item.getValue().toString()) <= Float.parseFloat(valueObj.toString());
+                    return targetVal <= originVal;
                 } else if (StringUtils.equals(term, "lt")) {
-                    return Float.parseFloat(item.getValue().toString()) > Float.parseFloat(valueObj.toString());
+                    return targetVal > originVal;
                 } else if (StringUtils.equals(term, "le")) {
-                    return Float.parseFloat(item.getValue().toString()) >= Float.parseFloat(valueObj.toString());
+                    return targetVal >= originVal;
                 } else {
-                    return StringUtils.equals(item.getValue().toString(), valueObj.toString());
+                    return StringUtils.equals(item.getValue(), valueObj.toString());
                 }
             } else if (Objects.equals(deType, DeTypeConstants.DE_TIME)) {
                 // 补充时间逻辑
