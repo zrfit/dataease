@@ -617,6 +617,8 @@ onBeforeMount(() => {
 const listenerEnable = computed(() => {
   return !showPosition.value.includes('viewDialog')
 })
+// 存储所有数据集字段，用于判断图表拖入的字段是否存在
+const viewAllDatasetFields = new Map()
 const showEmpty = ref(false)
 const checkFieldIsAllowEmpty = (allField?) => {
   showEmpty.value = false
@@ -632,47 +634,68 @@ const checkFieldIsAllowEmpty = (allField?) => {
       return
     }
     const axisConfigMap = new Map(Object.entries(chartView.axisConfig))
-    // 验证拖入的字段是否包含在当前数据集字段中，如果一个都不在数据集字段中，则显示空图表
+    // 验证拖入的字段是否包含在当前数据集字段中，如果有一个不在数据集字段中，则显示空图表
     let includeDatasetField = false
     if (allField && allField.length > 0) {
-      axisConfigMap.forEach((value, key) => {
-        if (view.value?.[key]?.length > 0) {
-          view.value[key].forEach(item => {
-            if (!allField.find(field => field.id === item.id)) {
-              includeDatasetField = true
-              return false
-            }
-          })
-          if (includeDatasetField) {
-            return false
+      viewAllDatasetFields.set(view.value.id, allField)
+      outerLoop: for (const [key, value] of axisConfigMap) {
+        // 只判断必须的
+        if (value['allowEmpty']) continue
+        if (!view.value?.[key]?.length) continue
+        for (const item of view.value[key]) {
+          if (!allField.find(field => field.id === item.id)) {
+            includeDatasetField = true
+            break outerLoop
           }
         }
-      })
+      }
     }
     if (includeDatasetField) {
       showEmpty.value = true
       return
     }
-    axisConfigMap.forEach((value, key) => {
-      // 不允许为空,并且没限制长度
-      if (!value['allowEmpty'] && !value['limit'] && view.value?.[key]?.length === 0) {
-        showEmpty.value = true
-        return false
+    for (const [key, value] of axisConfigMap) {
+      // 跳过允许为空的配置项
+      if (value['allowEmpty']) continue
+
+      // 如果有数据集字段并且字段值存在且不为空
+      if (viewAllDatasetFields.get(view.value?.id)) {
+        if (!view.value?.[key]?.length) continue
+        // 检查图表字段是否有不在数据集中
+        for (const item of view.value[key]) {
+          if (!viewAllDatasetFields.get(view.value?.id).find(field => field.id === item.id)) {
+            includeDatasetField = true
+            break
+          }
+        }
+        // 如果有不在数据集中
+        if (includeDatasetField) {
+          showEmpty.value = true
+          break
+        }
       }
-      // 不允许为空， 限制长度
+
+      // 如果没有限制长度，且值为空，标记为空并跳出
+      if (!value['limit'] && view.value?.[key]?.length === 0) {
+        showEmpty.value = true
+        break
+      }
+
+      // 如果有限制长度，且字段长度不足，标记为空并跳出
       if (
-        !value['allowEmpty'] &&
         value['limit'] &&
         (!view.value?.[key] || view.value?.[key]?.length < parseInt(value['limit']))
       ) {
         showEmpty.value = true
-        return false
+        break
       }
+
+      // 如果是table-info类型且字段为空，标记为空并跳出
       if (view.value?.type === 'table-info' && view.value?.[key]?.length === 0) {
         showEmpty.value = true
-        return false
+        break
       }
-    })
+    }
   }
 }
 const changeChartType = () => {
