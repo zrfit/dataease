@@ -28,7 +28,14 @@ const pvpOptions = [
   { value: '3', label: t('commons.date.three_months') },
   { value: '4', label: t('commons.date.one_month') }
 ]
-
+const requireKeys = [
+  'logLiveTime',
+  'thresholdLogLiveTime',
+  'exportFileLiveTime',
+  'frontTimeOut',
+  'loginLimitTime',
+  'loginLimitRate'
+]
 const state = reactive({
   form: reactive({
     dsIntervalTime: '30',
@@ -166,16 +173,7 @@ const edit = (
   state.openOptions = openOptions || []
   state.settingList = list.map(item => {
     const pkey = item.pkey
-    if (pkey === 'basic.logLiveTime' || pkey === 'basic.thresholdLogLiveTime') {
-      rule[pkey.split('.')[1]] = [
-        {
-          required: true,
-          message: t('common.require'),
-          trigger: ['blur', 'change']
-        }
-      ]
-    }
-    if (pkey === 'basic.exportFileLiveTime' || pkey === 'basic.frontTimeOut') {
+    if (requireKeys.some(requireKey => `basic.${requireKey}` === pkey)) {
       rule[pkey.split('.')[1]] = [
         {
           required: true,
