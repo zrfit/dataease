@@ -54,6 +54,7 @@ import { viewFieldTimeTrans } from '@/utils/viewUtils'
 import { CHART_TYPE_CONFIGS } from '@/views/chart/components/editor/util/chart'
 import request from '@/config/axios'
 import { store } from '@/store'
+import { clearExtremum } from '@/views/chart/components/js/extremumUitl'
 
 const { wsCache } = useCache()
 const chartComponent = ref<any>()
@@ -138,8 +139,7 @@ const props = defineProps({
   }
 })
 const dynamicAreaId = ref('')
-const { view, showPosition, element, active, searchCount, scale } = toRefs(props)
-
+const { view, showPosition, element, active, searchCount, scale, suffixId } = toRefs(props)
 const titleShow = computed(() => {
   return (
     !['rich-text', 'picture-group'].includes(element.value.innerType) &&
@@ -814,6 +814,15 @@ onMounted(() => {
     name: 'updateTitle-' + view.value.id,
     callback: () => {
       initTitle()
+    }
+  })
+  useEmitt({
+    name: 'chart-type-change-' + view.value.id,
+    callback: () => {
+      const chart = cloneDeep(view.value)
+      chart.container =
+        'container-' + showPosition.value + '-' + view.value.id + '-' + suffixId.value
+      clearExtremum(chart)
     }
   })
 
