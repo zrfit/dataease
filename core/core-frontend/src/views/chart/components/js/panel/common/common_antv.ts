@@ -360,6 +360,12 @@ export function getLegend(chart: Chart) {
               r: l.size
             }
           },
+          itemName: {
+            style: {
+              fill: l.color,
+              fontSize: l.fontSize
+            }
+          },
           itemHeight: (l.fontSize > l.size * 2 ? l.fontSize : l.size * 2) + 4,
           radio: false,
           pageNavigator: {

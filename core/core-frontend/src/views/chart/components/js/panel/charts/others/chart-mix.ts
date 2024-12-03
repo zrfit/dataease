@@ -573,20 +573,18 @@ export class ColumnLineMix extends G2PlotChartView<DualAxesOptions, DualAxes> {
       const left = cloneDeep(chart.data?.left?.data)
       const right = cloneDeep(chart.data?.right?.data)
 
-      o.legend.itemName = {
-        formatter: (text: string, item: any, index: number) => {
-          let name = undefined
-          if (item.viewId === 'left-axes-view' && text === 'value') {
-            name = left[0]?.categories[0]
-          } else if (item.viewId === 'right-axes-view' && text === 'valueExt') {
-            name = right[0]?.categories[0]
-          }
-          item.id = item.id + '__' + index //防止重复的图例出现问题，但是左右轴如果有相同的怎么办
-          if (name === undefined) {
-            return text
-          } else {
-            return name
-          }
+      o.legend.itemName.formatter = (text: string, item: any, index: number) => {
+        let name = undefined
+        if (item.viewId === 'left-axes-view' && text === 'value') {
+          name = left[0]?.categories[0]
+        } else if (item.viewId === 'right-axes-view' && text === 'valueExt') {
+          name = right[0]?.categories[0]
+        }
+        item.id = item.id + '__' + index //防止重复的图例出现问题，但是左右轴如果有相同的怎么办
+        if (name === undefined) {
+          return text
+        } else {
+          return name
         }
       }
 
