@@ -1119,3 +1119,26 @@ export function getLineLabelColorByCondition(conditions, value, fieldId) {
   }
   return color
 }
+
+/**
+ * 获取文本在画布中的测量信息
+ * @param chart 图表内容
+ * @param text 测量文本
+ * @param font 文本样式
+ * @param type 测量类型，高度宽度
+ **/
+export const measureText = (chart, text, font, type) => {
+  const container = document.getElementById(chart.container)
+  const canvas = container.querySelector('canvas')
+  const ctx = canvas.getContext('2d')
+  const { fontWeight, fontSize, fontFamily } = font
+  ctx.font = [fontWeight, `${fontSize}px`, fontFamily].join(' ').trim()
+  const textMetrics = ctx.measureText(text)
+  if (type === 'height') {
+    return textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+  }
+  if (type === 'width') {
+    return textMetrics.actualBoundingBoxRight + textMetrics.actualBoundingBoxLeft
+  }
+  return 0
+}

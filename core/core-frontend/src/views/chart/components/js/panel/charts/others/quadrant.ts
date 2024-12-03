@@ -8,7 +8,13 @@ import { valueFormatter } from '@/views/chart/components/js/formatter'
 import { useI18n } from '@/hooks/web/useI18n'
 import { defaults, isEmpty, map } from 'lodash-es'
 import { cloneDeep, defaultTo } from 'lodash-es'
-import { configPlotTooltipEvent, getTooltipContainer, TOOLTIP_TPL } from '../../common/common_antv'
+import {
+  configAxisLabelLengthLimit,
+  configPlotTooltipEvent,
+  configYaxisTitleLengthLimit,
+  getTooltipContainer,
+  TOOLTIP_TPL
+} from '../../common/common_antv'
 import { DEFAULT_LEGEND_STYLE } from '@/views/chart/components/editor/util/chart'
 
 const { t } = useI18n()
@@ -204,13 +210,15 @@ export class Quadrant extends G2PlotChartView<ScatterOptions, G2Scatter> {
         stroke: '#bbb'
       }
     }
-
+    chart.container = container
     const options = this.setupOptions(chart, baseOptions)
     const { Scatter: G2Scatter } = await import('@antv/g2plot/esm/plots/scatter')
     const newChart = new G2Scatter(container, options)
     newChart.on('point:click', action)
     newChart.on('click', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
     newChart.on('afterrender', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
+    configYaxisTitleLengthLimit(chart, newChart)
+    configAxisLabelLengthLimit(chart, newChart, 'axis-title')
     configPlotTooltipEvent(chart, newChart)
     return newChart
   }
