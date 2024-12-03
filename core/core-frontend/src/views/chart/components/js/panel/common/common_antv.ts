@@ -1377,43 +1377,41 @@ export function getConditions(chart: Chart) {
       continue
     }
     for (const t of field.conditions) {
-      if ([2, 3, 4].includes(field.field.deType)) {
-        const annotation = {
-          type: 'regionFilter',
-          start: ['start', 'median'],
-          end: ['end', 'min'],
-          color: t.color
-        }
-        // 加中线
-        const annotationLine = {
-          type: 'line',
-          start: ['start', t.value],
-          end: ['end', t.value],
-          style: {
-            stroke: t.color,
-            lineDash: [2, 2]
-          }
-        }
-        if (t.term === 'between') {
-          annotation.start = ['start', parseFloat(t.min)]
-          annotation.end = ['end', parseFloat(t.max)]
-          annotationLine.start = ['start', parseFloat(t.min)]
-          annotationLine.end = ['end', parseFloat(t.min)]
-          annotations.push(JSON.parse(JSON.stringify(annotationLine)))
-          annotationLine.start = ['start', parseFloat(t.max)]
-          annotationLine.end = ['end', parseFloat(t.max)]
-          annotations.push(annotationLine)
-        } else if (['lt', 'le'].includes(t.term)) {
-          annotation.start = ['start', t.value]
-          annotation.end = ['end', 'min']
-          annotations.push(annotationLine)
-        } else if (['gt', 'ge'].includes(t.term)) {
-          annotation.start = ['start', t.value]
-          annotation.end = ['end', 'max']
-          annotations.push(annotationLine)
-        }
-        annotations.push(annotation)
+      const annotation = {
+        type: 'regionFilter',
+        start: ['start', 'median'],
+        end: ['end', 'min'],
+        color: t.color
       }
+      // 加中线
+      const annotationLine = {
+        type: 'line',
+        start: ['start', t.value],
+        end: ['end', t.value],
+        style: {
+          stroke: t.color,
+          lineDash: [2, 2]
+        }
+      }
+      if (t.term === 'between') {
+        annotation.start = ['start', parseFloat(t.min)]
+        annotation.end = ['end', parseFloat(t.max)]
+        annotationLine.start = ['start', parseFloat(t.min)]
+        annotationLine.end = ['end', parseFloat(t.min)]
+        annotations.push(JSON.parse(JSON.stringify(annotationLine)))
+        annotationLine.start = ['start', parseFloat(t.max)]
+        annotationLine.end = ['end', parseFloat(t.max)]
+        annotations.push(annotationLine)
+      } else if (['lt', 'le'].includes(t.term)) {
+        annotation.start = ['start', t.value]
+        annotation.end = ['end', 'min']
+        annotations.push(annotationLine)
+      } else if (['gt', 'ge'].includes(t.term)) {
+        annotation.start = ['start', t.value]
+        annotation.end = ['end', 'max']
+        annotations.push(annotationLine)
+      }
+      annotations.push(annotation)
     }
   }
   return annotations
