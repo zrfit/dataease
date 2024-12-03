@@ -1438,8 +1438,11 @@ export function configAxisLabelLengthLimit(chart, plot) {
   }
   plot.on('axis-label:mouseenter', e => {
     const field = e.target.cfg.delegateObject.component.cfg.field
+    // 不分图表纵轴通过位置判断，左右为纵轴，目前仅热力图
+    const position = e.target.cfg.delegateObject.component.cfg.position
+    const isYaxis = position === 'left' || position === 'right'
     // 先只处理竖轴
-    if (field !== 'field' && field !== 'title') {
+    if (field !== 'field' && field !== 'title' && !isYaxis) {
       return
     }
     const realContent = e.target.attrs.text
@@ -1482,8 +1485,11 @@ export function configAxisLabelLengthLimit(chart, plot) {
   })
   plot.on('axis-label:mouseleave', e => {
     const field = e.target.cfg.delegateObject.component.cfg.field
+    // 不分图表纵轴通过位置判断，左右为纵轴，目前仅热力图
+    const position = e.target.cfg.delegateObject.component.cfg.position
+    const isYaxis = position === 'left' || position === 'right'
     // 先只处理竖轴
-    if (field !== 'field' && field !== 'title') {
+    if (field !== 'field' && field !== 'title' && !isYaxis) {
       return
     }
     const realContent = e.target.attrs.text
