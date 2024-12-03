@@ -551,6 +551,11 @@ export function getYAxis(chart: Chart) {
           fontSize: yAxis.axisLabel.fontSize,
           textBaseline,
           textAlign
+        },
+        formatter: value => {
+          return value.length > yAxis.axisLabel.lengthLimit
+            ? value.substring(0, yAxis.axisLabel.lengthLimit) + '...'
+            : value
         }
       }
     : null
@@ -1427,8 +1432,9 @@ const AXIS_LABEL_TOOLTIP_STYLE = {
 const AXIS_LABEL_TOOLTIP_TPL =
   '<div class="g2-axis-label-tooltip">' + '<div class="g2-tooltip-title">{title}</div>' + '</div>'
 export function configAxisLabelLengthLimit(chart, plot) {
-  const { customStyle } = parseJson(chart)
+  const { customStyle, customAttr } = parseJson(chart)
   const { lengthLimit, fontSize, color, show } = customStyle.yAxis.axisLabel
+  const { tooltip } = customAttr
   if (!lengthLimit || !show || !customStyle.yAxis.show || chart.type === 'bidirectional-bar') {
     return
   }
@@ -1449,6 +1455,8 @@ export function configAxisLabelLengthLimit(chart, plot) {
       const title = e.target.cfg.delegateObject.item.name
       const domStr = substitute(AXIS_LABEL_TOOLTIP_TPL, { title })
       labelTooltipDom = createDom(domStr)
+      AXIS_LABEL_TOOLTIP_STYLE.backgroundColor = tooltip.backgroundColor
+      AXIS_LABEL_TOOLTIP_STYLE.boxShadow = tooltip.backgroundColor + ' 0px 0px 5px'
       _.assign(labelTooltipDom.style, AXIS_LABEL_TOOLTIP_STYLE)
       parentNode.appendChild(labelTooltipDom)
     } else {
