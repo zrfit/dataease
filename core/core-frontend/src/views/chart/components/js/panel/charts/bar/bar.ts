@@ -132,6 +132,7 @@ export class Bar extends G2PlotChartView<ColumnOptions, Column> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
+            fontFamily: chart.fontFamily,
             fill: labelCfg.color
           }
         })
