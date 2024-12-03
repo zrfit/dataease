@@ -178,6 +178,7 @@ export class Line extends G2PlotChartView<LineOptions, G2Line> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
+            fontFamily: chart.fontFamily,
             fill: color
           }
         })

@@ -224,6 +224,7 @@ export class HorizontalBar extends G2PlotChartView<BarOptions, Bar> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
+            fontFamily: chart.fontFamily,
             fill: labelCfg.color
           }
         })

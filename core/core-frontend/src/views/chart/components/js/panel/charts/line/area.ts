@@ -179,6 +179,7 @@ export class Area extends G2PlotChartView<AreaOptions, G2Area> {
             textAlign: 'start',
             textBaseline: 'top',
             fontSize: labelCfg.fontSize,
+            fontFamily: chart.fontFamily,
             fill: color
           }
         })

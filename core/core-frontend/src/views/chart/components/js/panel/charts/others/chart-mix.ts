@@ -226,6 +226,7 @@ export class ColumnLineMix extends G2PlotChartView<DualAxesOptions, DualAxes> {
               textAlign: 'start',
               textBaseline: 'top',
               fontSize: labelCfg.fontSize,
+              fontFamily: chart.fontFamily,
               fill: labelCfg.color
             }
           })

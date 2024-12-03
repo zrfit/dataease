@@ -492,6 +492,7 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
                   textAlign: label.position === 'middle' ? 'start' : textAlign,
                   textBaseline: 'top',
                   fontSize: labelCfg.fontSize,
+                  fontFamily: chart.fontFamily,
                   fill: labelCfg.color
                 }
               })
