@@ -4101,7 +4101,7 @@ export default {
     international_lark_desc: '绑定后，您可通过国际飞书扫码进行登录',
     bind: '绑定',
     unbind_success: '解绑成功',
-    confirm_unbind_dingtalk: '确定解除钉钉绑定吗？',
+    confirm_unbind_dingtalk: '确定解除{0}绑定吗？',
     pls_use: '请使用',
     bind_use_qr: '扫描二维码绑定',
     pls_use_dingtalk: '请使用钉钉扫描二维码登录',
