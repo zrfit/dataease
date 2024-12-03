@@ -1,4 +1,4 @@
-import { hexColorToRGBA, isAlphaColor, isTransparent, parseJson } from '../../util'
+import { hexColorToRGBA, isAlphaColor, isTransparent, measureText, parseJson } from '../../util'
 import {
   DEFAULT_BASIC_STYLE,
   DEFAULT_LEGEND_STYLE,
@@ -1435,77 +1435,170 @@ const AXIS_LABEL_TOOLTIP_STYLE = {
 }
 const AXIS_LABEL_TOOLTIP_TPL =
   '<div class="g2-axis-label-tooltip">' + '<div class="g2-tooltip-title">{title}</div>' + '</div>'
-export function configAxisLabelLengthLimit(chart, plot) {
+export function configAxisLabelLengthLimit(chart, plot, triggerObjName) {
+  // 设置触发事件的名称，如果未传入，则默认为 'axis-label'
+  const triggerName = triggerObjName || 'axis-label'
+
+  // 判断是否是Y轴标题
+  const isYaxisTitle = triggerName === 'axis-title'
+
+  // 解析图表的自定义样式和属性
   const { customStyle, customAttr } = parseJson(chart)
   const { lengthLimit, fontSize, color, show } = customStyle.yAxis.axisLabel
   const { tooltip } = customAttr
-  if (!lengthLimit || !show || !customStyle.yAxis.show || chart.type === 'bidirectional-bar') {
+
+  // 如果不是标题，判断没有设置长度限制、没有显示或Y轴不显示，或图表类型为双向条形图，则不执行后续操作
+  if (
+    !isYaxisTitle &&
+    (!lengthLimit || !show || !customStyle.yAxis.show || chart.type === 'bidirectional-bar')
+  )
     return
-  }
-  plot.on('axis-label:mouseenter', e => {
+
+  // 鼠标进入事件
+  plot.on(triggerName + ':mouseenter', e => {
     const field = e.target.cfg.delegateObject.component.cfg.field
-    // 不分图表纵轴通过位置判断，左右为纵轴，目前仅热力图
     const position = e.target.cfg.delegateObject.component.cfg.position
     const isYaxis = position === 'left' || position === 'right'
-    // 先只处理竖轴
-    if (field !== 'field' && field !== 'title' && !isYaxis) {
-      return
-    }
+
+    // 如果不是 'field' 或 'title'，且不是Y轴，直接返回
+    if (field !== 'field' && field !== 'title' && !isYaxis) return
+
+    // 获取轴标签的实际内容
     const realContent = e.target.attrs.text
-    if (realContent.length < lengthLimit || !(realContent?.slice(-3) === '...')) {
+
+    // 不是标题时，判断标签长度小于限制或已经省略（以'...'结尾），则不显示 tooltip
+    if (
+      isYaxisTitle ? false : realContent.length < lengthLimit || !(realContent.slice(-3) === '...')
+    )
       return
-    }
+
+    // 获取当前鼠标事件的坐标
     const { x, y } = e
     const parentNode = e.event.target.parentNode
-    let labelTooltipDom = parentNode.getElementsByClassName('g2-axis-label-tooltip')?.[0]
+
+    // 获取父节点中是否已有 tooltip
+    let labelTooltipDom = parentNode.getElementsByClassName('g2-axis-label-tooltip')[0]
+
+    // 获取轴的标题
+    const title =
+      e.target.cfg.delegateObject.item?.name ||
+      e.target.cfg.delegateObject.axis.cfg.title.originalText
+
+    // 如果没有 tooltip，创建新的 tooltip DOM 元素
     if (!labelTooltipDom) {
-      const title = e.target.cfg.delegateObject.item.name
       const domStr = substitute(AXIS_LABEL_TOOLTIP_TPL, { title })
       labelTooltipDom = createDom(domStr)
+
+      // 设置 tooltip 的样式
       AXIS_LABEL_TOOLTIP_STYLE.backgroundColor = tooltip.backgroundColor
-      AXIS_LABEL_TOOLTIP_STYLE.boxShadow = tooltip.backgroundColor + ' 0px 0px 5px'
+      AXIS_LABEL_TOOLTIP_STYLE.boxShadow = `${tooltip.backgroundColor} 0px 0px 5px`
+      AXIS_LABEL_TOOLTIP_STYLE.maxWidth = '200px'
       _.assign(labelTooltipDom.style, AXIS_LABEL_TOOLTIP_STYLE)
+
+      // 将 tooltip 添加到父节点
       parentNode.appendChild(labelTooltipDom)
     } else {
-      labelTooltipDom.getElementsByClassName('g2-tooltip-title')[0].innerHTML =
-        e.target.cfg.delegateObject.item.name
+      // 如果已有 tooltip，更新其标题并使其可见
+      labelTooltipDom.getElementsByClassName('g2-tooltip-title')[0].innerHTML = title
       labelTooltipDom.style.visibility = 'visible'
     }
+
+    // 获取父节点的尺寸和 tooltip 的尺寸
     const { height, width } = parentNode.getBoundingClientRect()
     const { offsetHeight, offsetWidth } = labelTooltipDom
+
+    // 如果 tooltip 的尺寸超出了父节点的尺寸，则将其位置重置为 (0, 0)
     if (offsetHeight > height || offsetWidth > width) {
-      labelTooltipDom.style.left = labelTooltipDom.style.top = `0px`
+      labelTooltipDom.style.left = labelTooltipDom.style.top = '0px'
       return
     }
+
+    // 计算 tooltip 的初始位置
     const initPosition = { left: x + 10, top: y + 15 }
-    if (initPosition.left + offsetWidth > width) {
-      initPosition.left = width - offsetWidth - 10
-    }
-    if (initPosition.top + offsetHeight > height) {
-      initPosition.top -= offsetHeight + 15
-    }
+
+    // 调整位置，避免 tooltip 超出边界
+    if (initPosition.left + offsetWidth > width) initPosition.left = width - offsetWidth - 10
+    if (initPosition.top + offsetHeight > height) initPosition.top -= offsetHeight + 15
+
+    // 设置 tooltip 的位置和样式
     labelTooltipDom.style.left = `${initPosition.left}px`
     labelTooltipDom.style.top = `${initPosition.top}px`
     labelTooltipDom.style.color = color
     labelTooltipDom.style.fontSize = `${fontSize}px`
   })
-  plot.on('axis-label:mouseleave', e => {
+
+  // 鼠标离开事件
+  plot.on(triggerName + ':mouseleave', e => {
     const field = e.target.cfg.delegateObject.component.cfg.field
-    // 不分图表纵轴通过位置判断，左右为纵轴，目前仅热力图
     const position = e.target.cfg.delegateObject.component.cfg.position
     const isYaxis = position === 'left' || position === 'right'
-    // 先只处理竖轴
-    if (field !== 'field' && field !== 'title' && !isYaxis) {
-      return
-    }
+
+    // 如果不是 'field' 或 'title'，且不是Y轴，直接返回
+    if (field !== 'field' && field !== 'title' && !isYaxis) return
+
+    // 获取轴标签的实际内容
     const realContent = e.target.attrs.text
-    if (realContent.length < lengthLimit || !(realContent?.slice(-3) === '...')) {
+
+    // 如果标签长度小于限制或已经省略（以'...'结尾），则不显示 tooltip
+    if (
+      isYaxisTitle ? false : realContent.length < lengthLimit || !(realContent.slice(-3) === '...')
+    )
       return
-    }
+
+    // 获取父节点中的 tooltip
     const parentNode = e.event.target.parentNode
-    const labelTooltipDom = parentNode.getElementsByClassName('g2-axis-label-tooltip')?.[0]
-    if (labelTooltipDom) {
-      labelTooltipDom.style.visibility = 'hidden'
+    const labelTooltipDom = parentNode.getElementsByClassName('g2-axis-label-tooltip')[0]
+
+    // 如果 tooltip 存在，隐藏它
+    if (labelTooltipDom) labelTooltipDom.style.visibility = 'hidden'
+  })
+}
+
+/**
+ * y轴标题截取
+ * @param chart
+ * @param plot
+ */
+export function configYaxisTitleLengthLimit(chart, plot) {
+  // 监听图表渲染前事件
+  plot.on('beforerender', ev => {
+    // 获取图表的Y轴自定义样式
+    const { yAxis } = parseJson(chart.customStyle)
+
+    // 计算最大可用空间高度，80% 为最大高度比
+    const maxHeightRatio =
+      0.8 * (ev.view.canvas.cfg.height - (ev.view.canvas.cfg.height < 120 ? 60 : 30))
+
+    // 计算Y轴标题的每行高度
+    const titleHeight = measureText(
+      chart,
+      yAxis.name,
+      { fontSize: yAxis.fontSize, fontFamily: chart.fontFamily },
+      'height'
+    )
+
+    // 用于存储截取后的标题
+    let wrappedTitle = ''
+
+    // 循环截取标题内容，直到超过最大高度
+    for (
+      let charIndex = 0;
+      charIndex < yAxis.name.length && (charIndex + 1) * titleHeight <= maxHeightRatio;
+      charIndex++
+    ) {
+      wrappedTitle += yAxis.name[charIndex]
     }
+
+    // 如果标题被截断，添加省略号
+    if (yAxis.name.length > wrappedTitle.length) {
+      wrappedTitle =
+        wrappedTitle.length > 2
+          ? wrappedTitle.slice(0, wrappedTitle.length - 2) + '...'
+          : wrappedTitle + '...'
+    }
+
+    // 更新Y轴标题的原始文本和截断后的文本
+    ev.view.options.axes.yAxisExt.title.originalText = yAxis.name
+    ev.view.options.axes.yAxisExt.title.text = wrappedTitle
   })
 }
