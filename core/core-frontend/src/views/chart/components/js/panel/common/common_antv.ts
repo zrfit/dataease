@@ -147,9 +147,7 @@ export function getTheme(chart: Chart) {
     }
   }
   if (chart.fontFamily) {
-    theme.styleSheet = {
-      fontFamily: chart.fontFamily
-    }
+    theme.styleSheet.fontFamily = chart.fontFamily
   }
   return theme
 }
