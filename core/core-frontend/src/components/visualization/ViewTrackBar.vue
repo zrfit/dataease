@@ -3,7 +3,7 @@
     <el-dropdown :teleported="false" trigger="click">
       <input id="input" ref="trackButton" type="button" hidden />
       <template #dropdown>
-        <div>
+        <div :class="{ 'data-mobile': isDataVMobile }">
           <el-dropdown-menu
             class="track-menu"
             :style="{ 'font-family': fontFamily }"
@@ -33,6 +33,11 @@ const props = defineProps({
   trackMenu: {
     type: Array,
     required: true
+  },
+  isDataVMobile: {
+    type: Boolean,
+    required: false,
+    default: false
   },
   fontFamily: {
     type: String,
@@ -81,5 +86,9 @@ defineExpose({
 
 :deep(.ed-popper[x-placement^='bottom']) {
   margin-top: -80px !important;
+}
+
+.data-mobile {
+  zoom: 0.3;
 }
 </style>
