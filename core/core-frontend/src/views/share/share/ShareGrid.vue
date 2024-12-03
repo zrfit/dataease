@@ -31,9 +31,9 @@ const state = reactive({
   tableData: [],
   curTypeList: ['all_types', 'panel', 'screen'],
   tableColumn: [
-    { field: 'creator', label: '分享人' },
-    { field: 'time', label: '分享时间', type: 'time' },
-    { field: 'exp', label: '有效期', type: 'time' }
+    { field: 'creator', label: t('visualization.who_share') },
+    { field: 'time', label: t('visualization.when_share'), type: 'time' },
+    { field: 'exp', label: t('visualization.over_time'), type: 'time' }
   ]
 })
 
