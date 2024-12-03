@@ -1142,3 +1142,19 @@ export const measureText = (chart, text, font, type) => {
   }
   return 0
 }
+
+/**
+ * 获取十六进制颜色值
+ * @param hex
+ * @param alpha
+ */
+export const hexToRgba = (hex, alpha = 1) => {
+  // 去掉 # 号
+  hex = hex.replace('#', '')
+  // 转换为 RGB 分量
+  const r = parseInt(hex.slice(0, 2), 16)
+  const g = parseInt(hex.slice(2, 4), 16)
+  const b = parseInt(hex.slice(4, 6), 16)
+  // 返回 RGBA 格式
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
