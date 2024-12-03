@@ -23,8 +23,8 @@ import { defaultsDeep, cloneDeep } from 'lodash-es'
 import ChartError from '@/views/chart/components/views/components/ChartError.vue'
 import { BASE_VIEW_CONFIG } from '../../editor/util/chart'
 import { customAttrTrans, customStyleTrans, recursionTransObj } from '@/utils/canvasStyle'
-import { deepCopy } from '@/utils/utils'
-import { trackBarStyleCheck } from '@/utils/canvasUtils'
+import { deepCopy, isMobile } from '@/utils/utils'
+import { isDashboard, trackBarStyleCheck } from '@/utils/canvasUtils'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { L7ChartView } from '@/views/chart/components/js/panel/types/impl/l7'
 
@@ -92,10 +92,14 @@ const { view, showPosition, scale, terminal, suffixId } = toRefs(props)
 const isError = ref(false)
 const errMsg = ref('')
 const linkageActiveHistory = ref(false)
-const antVRenderStatus = ref(false)
 
 const state = reactive({
   trackBarStyle: {
+    position: 'absolute',
+    left: '50px',
+    top: '50px'
+  },
+  trackBarStyleMobile: {
     position: 'absolute',
     left: '50px',
     top: '50px'
@@ -369,12 +373,25 @@ const action = param => {
       top: param.y + 10
     }
     trackBarStyleCheck(props.element, barStyleTemp, props.scale, trackMenu.value.length)
+    const trackBarX = barStyleTemp.left
+    let trackBarY = 50
     state.trackBarStyle.left = barStyleTemp.left + 'px'
     if (curView.type === 'symbolic-map') {
+      trackBarY = param.y + 10
       state.trackBarStyle.top = param.y + 10 + 'px'
     } else {
+      trackBarY = barStyleTemp.top
       state.trackBarStyle.top = barStyleTemp.top + 'px'
     }
+    if (!isDashboard() && isMobile()) {
+      state.trackBarStyle.left = trackBarX / props.scale + 'px'
+      state.trackBarStyle.top = trackBarY / props.scale + 'px'
+      state.trackBarStyle['zoom'] = props.scale
+    } else {
+      state.trackBarStyle.left = trackBarX + 'px'
+      state.trackBarStyle.top = trackBarY + 'px'
+    }
+
     viewTrack.value.trackButtonClick()
   }
 }
