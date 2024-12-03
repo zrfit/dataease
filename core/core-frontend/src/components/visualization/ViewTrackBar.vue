@@ -3,18 +3,20 @@
     <el-dropdown :teleported="false" trigger="click">
       <input id="input" ref="trackButton" type="button" hidden />
       <template #dropdown>
-        <el-dropdown-menu
-          class="track-menu"
-          :style="{ 'font-family': fontFamily }"
-          :append-to-body="false"
-        >
-          <el-dropdown-item
-            v-for="(item, key) in trackMenu"
-            :key="key"
-            @click="trackMenuClick(item)"
-            ><span class="menu-item">{{ state.i18n_map[item] }}</span></el-dropdown-item
+        <div>
+          <el-dropdown-menu
+            class="track-menu"
+            :style="{ 'font-family': fontFamily }"
+            :append-to-body="false"
           >
-        </el-dropdown-menu>
+            <el-dropdown-item
+              v-for="(item, key) in trackMenu"
+              :key="key"
+              @click="trackMenuClick(item)"
+              ><span class="menu-item">{{ state.i18n_map[item] }}</span></el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </div>
       </template>
     </el-dropdown>
   </div>
