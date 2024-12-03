@@ -226,7 +226,8 @@ const saveExcelDs = (params, successCb, finallyCb) => {
         if (
           selectNode[i].fields[j].checked &&
           selectNode[i].fields[j].primaryKey &&
-          !selectNode[i].fields[j].length
+          !selectNode[i].fields[j].length &&
+          selectNode[i].fields[j].deExtractType === 0
         ) {
           ElMessage({
             message:
