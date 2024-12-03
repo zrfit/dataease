@@ -1,5 +1,5 @@
 import { valueFormatter } from '@/views/chart/components/js/formatter'
-import { parseJson } from '@/views/chart/components/js/util'
+import { hexToRgba, parseJson } from '@/views/chart/components/js/util'
 import { isEmpty } from 'lodash-es'
 
 export const clearExtremum = chart => {
@@ -326,7 +326,10 @@ export const createExtremumPoint = (chart, ev) => {
             pointElement.style.fontSize = fontSize + 'px'
             pointElement.style.lineHeight = fontSize + 'px'
             // 渐变颜色时需要获取最后一个rgba的值作为背景
-            const { r, b, g, a } = getRgbaColorLastRgba(point.color)
+            const color = point.color.startsWith('#')
+              ? hexToRgba(point.color, basicStyle.alpha / 100)
+              : getRgbaColorLastRgba(point.color)
+            const { r, b, g, a } = color
             pointElement.style.backgroundColor = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')'
             pointElement.style.color = isColorLight(point.color) ? '#000' : '#fff'
             pointElement.children[0]['style'].borderTopColor =
