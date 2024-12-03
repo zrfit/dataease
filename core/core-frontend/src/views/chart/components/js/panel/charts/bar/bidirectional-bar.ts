@@ -318,15 +318,13 @@ export class BidirectionalHorizontalBar extends G2PlotChartView<
   protected configLegend(chart: Chart, options: BidirectionalBarOptions): BidirectionalBarOptions {
     const o = super.configLegend(chart, options)
     if (o.legend) {
-      o.legend.itemName = {
-        formatter: (_text: string, _item: any, index: number) => {
-          const yaxis = chart.yAxis[0]
-          const yaxisExt = chart.yAxisExt[0]
-          if (index === 0) {
-            return yaxis.chartShowName ? yaxis.chartShowName : yaxis.name
-          }
-          return yaxisExt.chartShowName ? yaxisExt.chartShowName : yaxisExt.name
+      o.legend.itemName.formatter = (_text: string, _item: any, index: number) => {
+        const yaxis = chart.yAxis[0]
+        const yaxisExt = chart.yAxisExt[0]
+        if (index === 0) {
+          return yaxis.chartShowName ? yaxis.chartShowName : yaxis.name
         }
+        return yaxisExt.chartShowName ? yaxisExt.chartShowName : yaxisExt.name
       }
     }
     return o
