@@ -2,7 +2,7 @@
 import icon_edit_outlined from '@/assets/svg/icon_edit_outlined.svg'
 import icon_deleteTrash_outlined from '@/assets/svg/icon_delete-trash_outlined.svg'
 import eventBus from '@/utils/eventBus'
-import { isMobile } from '@/utils/utils'
+import { isISOMobile, isMobile } from '@/utils/utils'
 import { ElMessage } from 'element-plus-secondary'
 import { snapshotStoreWithOut } from '@/store/modules/data-visualization/snapshot'
 import QueryConditionConfiguration from './QueryConditionConfiguration.vue'
@@ -674,7 +674,18 @@ const marginRight = computed<CSSProperties>(() => {
 })
 
 const autoStyle = computed(() => {
-  return { zoom: scale.value }
+  if (isISOMobile()) {
+    return {
+      position: 'absolute',
+      height: 100 / scale.value + '%!important',
+      width: 100 / scale.value + '%!important',
+      left: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+      top: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+      transform: 'scale(' + scale.value + ') translateZ(0)'
+    } as CSSProperties
+  } else {
+    return { zoom: scale.value }
+  }
 })
 </script>
 

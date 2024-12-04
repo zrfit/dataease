@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, toRefs, PropType } from 'vue'
+import { computed, toRefs, PropType, CSSProperties } from 'vue'
 import Chart from '@/views/chart/components/views/index.vue'
+import { isISOMobile } from '@/utils/utils'
 
 const props = defineProps({
   active: {
@@ -69,7 +70,18 @@ const props = defineProps({
 const { element, view, active, searchCount, scale } = toRefs(props)
 const autoStyle = computed(() => {
   if (element.value.innerType === 'rich-text') {
-    return { zoom: scale.value }
+    if (isISOMobile()) {
+      return {
+        position: 'absolute',
+        height: 100 / scale.value + '%!important',
+        width: 100 / scale.value + '%!important',
+        left: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+        top: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+        transform: 'scale(' + scale.value + ') translateZ(0)'
+      } as CSSProperties
+    } else {
+      return { zoom: scale.value }
+    }
   } else {
     return {}
   }

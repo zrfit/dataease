@@ -136,6 +136,10 @@ export function isMobile() {
   )
 }
 
+export function isISOMobile() {
+  return navigator.userAgent.match(/(iPhone|iPad|iPod)/i) && !isTablet()
+}
+
 export const isDingTalk = window.navigator.userAgent.toLowerCase().includes('dingtalk')
 
 export const setTitle = (title?: string) => {
