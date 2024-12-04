@@ -783,7 +783,7 @@ export default {
     cannot_delete: '無法刪除',
     confirm_delete: '確定刪除該組織嗎？ ',
     delete_children_first: '請先刪除子組織後，再刪除目前組織',
-    confirm_content: '友情提示，組織被刪除後，組織下的資源也會被刪除',
+    confirm_content: '友情提示，組織被刪除後，組織下的資源將作為遊離資源處理',
     give_up_resource: '放棄資源，直接刪除',
     move_resource_first: '先遷移資源',
     default_parent_tips: '(預設目前組織)',

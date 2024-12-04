@@ -785,7 +785,7 @@ export default {
     cannot_delete: '无法删除',
     confirm_delete: '确定删除该组织吗？',
     delete_children_first: '请先删除子组织后，再删除当前组织',
-    confirm_content: '友情提示，组织被删除后，组织下的资源也将被删除',
+    confirm_content: '友情提示，组织被删除后，组织下的资源将作为游离资源处理',
     give_up_resource: '放弃资源，直接删除',
     move_resource_first: '先迁移资源',
     default_parent_tips: '(默认当前组织)',
