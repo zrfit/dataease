@@ -368,8 +368,20 @@ export class HorizontalStackBar extends HorizontalBar {
   }
 
   protected setupOptions(chart: Chart, options: BarOptions): BarOptions {
-    const tmp = super.setupOptions(chart, options)
-    return flow(this.configData)(chart, tmp, {}, this)
+    return flow(
+      this.configTheme,
+      this.configEmptyDataStrategy,
+      this.configData,
+      this.configColor,
+      this.configBasicStyle,
+      this.configLabel,
+      this.configTooltip,
+      this.configLegend,
+      this.configXAxis,
+      this.configYAxis,
+      this.configSlider,
+      this.configAnalyseHorizontal
+    )(chart, options, {}, this)
   }
 
   constructor(name = 'bar-stack-horizontal') {

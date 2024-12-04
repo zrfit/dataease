@@ -363,6 +363,7 @@ export class StackBar extends Bar {
     return flow(
       this.configTheme,
       this.configEmptyDataStrategy,
+      this.configData,
       this.configColor,
       this.configBasicStyle,
       this.configLabel,
@@ -371,8 +372,7 @@ export class StackBar extends Bar {
       this.configXAxis,
       this.configYAxis,
       this.configSlider,
-      this.configAnalyse,
-      this.configData
+      this.configAnalyse
     )(chart, options, {}, this)
   }
 
