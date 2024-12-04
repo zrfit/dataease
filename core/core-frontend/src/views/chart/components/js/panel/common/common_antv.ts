@@ -836,9 +836,9 @@ export function getAnalyseHorizontal(chart: Chart) {
       })
       assistLine.push({
         type: 'text',
-        position: [xAxisPosition === 'left' ? 'start' : 'end', value],
+        position: ['start', value],
         content: content,
-        offsetY: xAxisPosition === 'left' ? -2 : -10 * (content.length - 2),
+        offsetY: 5,
         offsetX: 2,
         rotate: Math.PI / 2,
         style: {
