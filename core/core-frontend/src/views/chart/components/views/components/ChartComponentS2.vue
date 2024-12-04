@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {
   computed,
+  CSSProperties,
   inject,
   nextTick,
   onBeforeUnmount,
@@ -25,7 +26,7 @@ import ChartError from '@/views/chart/components/views/components/ChartError.vue
 import { defaultsDeep, cloneDeep, debounce } from 'lodash-es'
 import { BASE_VIEW_CONFIG } from '../../editor/util/chart'
 import { customAttrTrans, customStyleTrans, recursionTransObj } from '@/utils/canvasStyle'
-import { deepCopy } from '@/utils/utils'
+import { deepCopy, isISOMobile } from '@/utils/utils'
 import { useEmitt } from '@/hooks/web/useEmitt'
 import { trackBarStyleCheck } from '@/utils/canvasUtils'
 import { type SpreadSheet } from '@antv/s2'
@@ -628,7 +629,18 @@ onBeforeUnmount(() => {
 })
 
 const autoStyle = computed(() => {
-  return { zoom: scale.value }
+  if (isISOMobile()) {
+    return {
+      position: 'absolute',
+      height: 100 / scale.value + '%!important',
+      width: 100 / scale.value + '%!important',
+      left: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+      top: 50 * (1 - 1 / scale.value) + '%', // 放大余量 除以 2
+      transform: 'scale(' + scale.value + ') translateZ(0)'
+    } as CSSProperties
+  } else {
+    return { zoom: scale.value }
+  }
 })
 
 const autoHeightStyle = computed(() => {
