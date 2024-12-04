@@ -299,6 +299,7 @@ const multiplexingCanvasOpen = () => {
   multiplexingRef.value.dialogInit('dataV')
 }
 
+const isIframe = computed(() => appStore.getIsIframe)
 const fullScreenPreview = () => {
   dvMainStore.canvasStateChange({ key: 'curPointArea', value: 'base' })
   fullScreeRef.value.toggleFullscreen()
@@ -436,7 +437,12 @@ const fullScreenPreview = () => {
         >
           {{ t('visualization.edit') }}
         </el-button>
-        <el-button v-else class="preview-button" @click="fullScreenPreview" style="float: right">
+        <el-button
+          v-else-if="!isIframe"
+          class="preview-button"
+          @click="fullScreenPreview"
+          style="float: right"
+        >
           {{ t('visualization.preview') }}
         </el-button>
         <el-button
