@@ -341,7 +341,7 @@ const dfsDatasetTree = (ds, id) => {
 }
 
 onBeforeMount(() => {
-  const paramId = wsCache.get('dataset-info-id')
+  const paramId = wsCache.get('dataset-info-id') || route.params.id
   nodeInfo.id = (paramId as string) || (route.query.id as string) || ''
   wsCache.delete('dataset-info-id')
   wsCache.delete('db-info-id')
