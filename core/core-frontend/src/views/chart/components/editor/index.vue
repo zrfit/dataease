@@ -4991,6 +4991,12 @@ span {
   :deep(.ed-select) {
     display: block;
   }
+  :deep(div.ed-select--dark div[data-key='customRoot'] li.is-disabled span) {
+    color: white;
+  }
+  :deep(div[data-key='customRoot'] li.is-disabled span) {
+    color: black;
+  }
 }
 
 .chart-type-select {
