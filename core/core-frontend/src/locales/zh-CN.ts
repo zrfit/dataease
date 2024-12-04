@@ -4033,7 +4033,8 @@ export default {
     record: '检测记录',
     module_name: '阈值告警',
     setting: '阈值告警设置',
-    no_view_tip: '请在设置阈值告警前先保存'
+    no_view_tip: '请在设置阈值告警前先保存',
+    selected_view: '已选择图表：'
   },
   relation: {
     no_permission: '没有查看权限',

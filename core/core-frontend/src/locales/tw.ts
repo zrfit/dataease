@@ -4029,7 +4029,8 @@ export default {
     record: '檢測記錄',
     module_name: '閾值警報',
     setting: '閾值警告設定',
-    no_view_tip: '請在設定閾值警報前先儲存'
+    no_view_tip: '請在設定閾值警報前先儲存',
+    selected_view: '已選擇圖表：'
   },
   relation: {
     no_permission: '沒有查看權限',
