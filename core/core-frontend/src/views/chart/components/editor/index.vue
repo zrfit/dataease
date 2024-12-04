@@ -1435,6 +1435,10 @@ const initOpenHandler = newWindow => {
   }
 }
 const addDsWindow = () => {
+  if (!dvInfo.value.id) {
+    ElMessage.warning(t('visualization.save_page_tips'))
+    return
+  }
   const path =
     embeddedStore.getToken && appStore.getIsIframe ? 'dataset-embedded-form' : '/dataset-form'
   let routeData = router.resolve(path)
