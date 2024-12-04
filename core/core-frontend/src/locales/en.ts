@@ -806,7 +806,7 @@ export default {
     delete_children_first:
       'Please delete the child organization first, then delete the current organization',
     confirm_content:
-      'Friendly reminder, after the organization is deleted, the resources under the organization will also be deleted',
+      'A friendly reminder: After an organization is deleted, the resources under it will be treated as free-floating resources.',
     give_up_resource: 'Give up resources and delete directly',
     move_resource_first: 'Migrate resources first',
     default_parent_tips: '(Default current organization)',
