@@ -115,11 +115,17 @@ public class ChartDataServer implements ChartDataApi {
                 viewDTO.setXAxis(JsonUtil.parseList(JsonUtil.toJSONString(sourceFields).toString(), listTypeReference));
             }
             int curLimit = Math.toIntExact(ExportCenterUtils.getExportLimit("view"));
+            int curDsLimit = Math.toIntExact(ExportCenterUtils.getExportLimit("dataset"));
             if (ChartConstants.VIEW_RESULT_MODE.CUSTOM.equals(viewDTO.getResultMode())) {
                 Integer limitCount = viewDTO.getResultCount();
                 viewDTO.setResultCount(Math.min(curLimit, limitCount));
             } else {
-                viewDTO.setResultCount(curLimit);
+                // 普通导出取图表限制 原始明细导出时 取图表和数据集限制最小的值
+                if("dataset".equals(request.getDownloadType())){
+                    viewDTO.setResultCount(Math.min(curLimit,curDsLimit));
+                }else{
+                    viewDTO.setResultCount(curLimit);
+                }
             }
             chartViewInfo = getData(viewDTO);
             List<Object[]> tableRow = (List) chartViewInfo.getData().get("sourceData");
