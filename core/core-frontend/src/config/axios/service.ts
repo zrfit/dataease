@@ -14,7 +14,7 @@ import { useEmbedded } from '@/store/modules/embedded'
 import { useLinkStoreWithOut } from '@/store/modules/link'
 import { config } from './config'
 import { configHandler } from './refresh'
-import { isMobile } from '@/utils/utils'
+import { isMobile, getLocale } from '@/utils/utils'
 import { useRequestStoreWithOut } from '@/store/modules/request'
 type AxiosErrorWidthLoading<T> = T & {
   config: {
@@ -120,9 +120,9 @@ service.interceptors.request.use(
     } else if (embeddedStore.token) {
       ;(config.headers as AxiosRequestHeaders)['X-EMBEDDED-TOKEN'] = embeddedStore.token
     }
-    if (wsCache.get('user.language')) {
-      const key = wsCache.get('user.language')
-      const val = mapping[key] || key
+    const locale = getLocale()
+    if (locale) {
+      const val = mapping[locale] || locale
       ;(config.headers as AxiosRequestHeaders)['Accept-Language'] = val
     }
 
