@@ -648,8 +648,8 @@ defineExpose({
           :tab-list="tabList"
         ></SheetTabs>
 
-        <div class="table-select_mode">
-          <div class="btn-select" v-if="param.editType === 0">
+        <div class="table-select_mode" v-if="param.editType === 0">
+          <div class="btn-select">
             <el-button
               @click="changeCurrentMode('preview')"
               :class="[currentMode === 'preview' && 'is-active']"
@@ -666,7 +666,11 @@ defineExpose({
             </el-button>
           </div>
         </div>
-        <div class="info-table" v-if="isResize">
+        <div
+          class="info-table"
+          :class="param.editType === 0 && 'info-table_height'"
+          v-if="isResize"
+        >
           <el-auto-resizer v-if="currentMode === 'preview'">
             <template #default="{ height, width }">
               <el-table-v2
@@ -841,7 +845,10 @@ defineExpose({
 
     .info-table {
       width: 100%;
-      height: calc(100% - 379px);
+      height: calc(100% - 200px);
+      &.info-table_height {
+        height: calc(100% - 379px);
+      }
     }
   }
 }
