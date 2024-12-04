@@ -531,7 +531,7 @@ export default {
     such_as_uid: "過濾器[可能的選項是cn或uid或sAMAccountName={'{'}0{'}'}, 如：(uid={'{'}0{'}'})]",
     ldap_attribute_mapping: 'LDAP屬性映射',
     incorrect_please_re_enter_de: 'url格式錯誤，請重新輸入',
-    oauth2_settings: 'OAUTH2設定',
+    oauth2_settings: 'OAuth2設定',
     authorization_end_address: '授權端位址',
     token_end_address: 'Token 端位址',
     information_end_address: '使用者訊息端位址',

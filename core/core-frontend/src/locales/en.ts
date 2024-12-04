@@ -546,7 +546,7 @@ export default {
       "Filter [Possible options are cn or uid or sAMAccountName={'{'}0{'}'}, such as: (uid={'{'}0{'}'})]",
     ldap_attribute_mapping: 'LDAP attribute mapping',
     incorrect_please_re_enter_de: 'URL format error, please re-enter',
-    oauth2_settings: 'OAUTH2 settings',
+    oauth2_settings: 'OAuth2 settings',
     authorization_end_address: 'Authorization end address',
     token_end_address: 'Token end address',
     information_end_address: 'User information end address',
