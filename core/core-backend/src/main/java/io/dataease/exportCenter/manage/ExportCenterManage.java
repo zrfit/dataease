@@ -31,6 +31,7 @@ import io.dataease.engine.utils.Utils;
 import io.dataease.exception.DEException;
 import io.dataease.exportCenter.dao.auto.entity.CoreExportTask;
 import io.dataease.exportCenter.dao.auto.mapper.CoreExportTaskMapper;
+import io.dataease.exportCenter.util.ExportCenterUtils;
 import io.dataease.extensions.datasource.api.PluginManageApi;
 import io.dataease.extensions.datasource.dto.DatasetTableFieldDTO;
 import io.dataease.extensions.datasource.dto.DatasourceRequest;
@@ -43,7 +44,6 @@ import io.dataease.extensions.view.dto.ColumnPermissionItem;
 import io.dataease.extensions.view.dto.DatasetRowPermissionsTreeObj;
 import io.dataease.i18n.Translator;
 import io.dataease.license.config.XpackInteract;
-import io.dataease.license.manage.F2CLicLimitedManage;
 import io.dataease.license.utils.LicenseUtil;
 import io.dataease.model.ExportTaskDTO;
 import io.dataease.system.manage.CoreUserManage;
@@ -101,8 +101,7 @@ public class ExportCenterManage implements BaseExportApi {
     @Value("${dataease.export.max.size:10}")
     private int max;
 
-    @Value("${dataease.export.dataset.limit:100000}")
-    private Long limit;
+
     private final static String DATA_URL_TITLE = "data:image/jpeg;base64,";
     private static final String exportData_path = "/opt/dataease2.0/data/exportData/";
 
@@ -136,8 +135,6 @@ public class ExportCenterManage implements BaseExportApi {
         return dataFillingApi;
     }
 
-    @Resource(name = "f2CLicLimitedManage")
-    private F2CLicLimitedManage f2CLicLimitedManage;
 
     @PostConstruct
     public void init() {
@@ -167,13 +164,6 @@ public class ExportCenterManage implements BaseExportApi {
         }
     }
 
-    public String exportLimit() {
-        return String.valueOf(getExportLimit());
-    }
-
-    private Long getExportLimit() {
-        return Math.min(f2CLicLimitedManage.checkDatasetLimit(), limit);
-    }
 
     public void download(String id, HttpServletResponse response) throws Exception {
         CoreExportTask exportTask = exportTaskMapper.selectById(id);
@@ -516,7 +506,7 @@ public class ExportCenterManage implements BaseExportApi {
                 Order2SQLObj.getOrders(sqlMeta, dto.getSortFields(), allFields, crossDs, dsMap, Utils.getParams(allFields), null, pluginManage);
                 String replaceSql = provider.rebuildSQL(SQLProvider.createQuerySQL(sqlMeta, false, false, false), sqlMeta, crossDs, dsMap);
                 Long totalCount = datasetDataManage.getDatasetTotal(dto, replaceSql, null);
-                Long curLimit = getExportLimit();
+                Long curLimit = ExportCenterUtils.getExportLimit("dataset");
                 totalCount = totalCount > curLimit ? curLimit : totalCount;
 
                 Long sheetCount = (totalCount / sheetLimit) + (totalCount % sheetLimit > 0 ? 1 : 0);
