@@ -157,7 +157,7 @@
                 <span>自定义区域</span>
                 <span>(仅对中国的省份、直辖市，支持自定义地理区域)</span>
               </span>
-              <span class="add-btn" @click="editCustomSubArea">
+              <span class="add-btn" @click="editCustomSubArea()">
                 <el-icon>
                   <Icon name="icon_add_outlined"><icon_add_outlined /></Icon>
                 </el-icon>
@@ -202,6 +202,7 @@
     v-model="customAreaDialog"
     :title="`${editedCustomArea.id ? '编辑' : '新建'}自定义地理区域`"
     width="500"
+    destroy-on-close
   >
     <el-form
       ref="areaFormRef"
@@ -225,6 +226,7 @@
     v-model="customSubAreaDialog"
     :title="`${customSubArea.id ? '编辑' : '新建'}自定义区域`"
     width="500"
+    destroy-on-close
   >
     <el-form
       ref="subAreaFormRef"
@@ -233,10 +235,10 @@
       label-width="auto"
       :rules="areaRules"
     >
-      <el-form-item label="区域名称" label-position="top" required prop="name">
+      <el-form-item label="区域名称" label-position="top" prop="name">
         <el-input v-model="customSubArea.name" :minlenegth="1" :maxlength="50" />
       </el-form-item>
-      <el-form-item label="请选择省份或直辖市" label-position="top" required prop="scopeArr">
+      <el-form-item label="请选择省份或直辖市" label-position="top" prop="scopeArr">
         <el-select v-model="customSubArea.scopeArr" multiple style="width: 100%" filterable>
           <el-option
             v-for="item in subAreaOptions"
@@ -504,10 +506,17 @@ const subAreaList = ref([])
 const subAreaFormRef = ref()
 const areaRules = reactive<FormRules>({
   name: [
-    { required: true, message: '请输入名称', trigger: 'blur' },
+    { type: 'string', required: true, message: '请输入名称', trigger: 'change' },
     { min: 1, max: 50, message: '名称长度为 1~50 格字符', trigger: 'blur' }
   ],
-  scopeArr: [{ type: 'array', required: true, message: '请选择区域', trigger: 'change' }]
+  scopeArr: [
+    {
+      type: 'array',
+      required: true,
+      message: '请选择区域',
+      trigger: 'change'
+    }
+  ]
 })
 const editCustomSubArea = (subArea?) => {
   customSubArea.geoAreaId = curCustomGeoArea.id
