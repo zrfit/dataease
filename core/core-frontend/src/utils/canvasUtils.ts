@@ -410,9 +410,9 @@ export async function backCanvasData(dvId, mobileViewInfo, busiFlag, callBack) {
           }
         }
       })
-      Object.keys(mobileViewInfo).forEach(key => {
-        if (canvasViewInfo.value[key] && mobileViewInfo[key]) {
-          const { customAttrMobile, customStyleMobile } = mobileViewInfo[key]
+      Object.keys(canvasViewInfoPreview).forEach(key => {
+        if (canvasViewInfo.value[key] && canvasViewInfoPreview[key]) {
+          const { customAttrMobile, customStyleMobile } = canvasViewInfoPreview[key]
           // 此处作为还原移动设计使用
           canvasViewInfo.value[key]['customStyleMobile'] = customStyleMobile
           canvasViewInfo.value[key]['customAttrMobile'] = customAttrMobile
