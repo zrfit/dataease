@@ -1048,10 +1048,6 @@ onMounted(async () => {
   await new Promise(r => (p = r))
   await initEdite()
   getDatasource()
-  useEmitt({
-    name: 'onDatasetSave',
-    callback: saveAndBack
-  })
   window.addEventListener('resize', handleResize)
   getSqlResultHeight()
   quotaTableHeight.value = sqlResultHeight.value - 242
@@ -2194,7 +2190,11 @@ const getDsIconName = data => {
       </template>
     </el-drawer>
   </div>
-  <creat-ds-group @finish="finish" ref="creatDsFolder"></creat-ds-group>
+  <creat-ds-group
+    @finish="finish"
+    @onDatasetSave="saveAndBack"
+    ref="creatDsFolder"
+  ></creat-ds-group>
   <el-dialog
     custom-class="calc-field-edit-dialog"
     v-model="editCalcField"
