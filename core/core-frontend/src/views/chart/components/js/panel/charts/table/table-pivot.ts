@@ -240,6 +240,10 @@ export class TablePivot extends S2ChartView<PivotSheet> {
       col: chart.xAxisExt,
       quota: chart.yAxis
     }
+    //树形模式下，列维度为空，行小计会变成列总计，特殊处理下
+    if (basicStyle.tableLayoutMode === 'tree' && !chart.xAxisExt?.length) {
+      tableTotal.col.calcTotals = tableTotal.row.calcSubTotals
+    }
     totals.forEach(total => {
       if (total.cfg?.length) {
         delete total.aggregation
