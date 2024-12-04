@@ -187,6 +187,11 @@ public class XpackShareManage {
     public IPage<XpackShareGridVO> query(int pageNum, int pageSize, VisualizationWorkbranchQueryRequest request) {
         IPage<XpackSharePO> poiPage = proxy().querySharePage(pageNum, pageSize, request);
         List<XpackShareGridVO> vos = proxy().formatResult(poiPage.getRecords());
+        if (!org.springframework.util.CollectionUtils.isEmpty(vos)) {
+            vos.stream().forEach(item -> {
+                item.setCreator(StringUtils.equals(item.getCreator(), "1") ? "管理员" : item.getCreator());
+            });
+        }
         IPage<XpackShareGridVO> ipage = new Page<>();
         ipage.setSize(poiPage.getSize());
         ipage.setCurrent(poiPage.getCurrent());

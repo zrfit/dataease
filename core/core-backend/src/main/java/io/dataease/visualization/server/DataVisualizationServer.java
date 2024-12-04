@@ -531,8 +531,8 @@ public class DataVisualizationServer implements DataVisualizationApi {
         List<VisualizationResourceVO> resourceVOS = result.getRecords();
         if (!CollectionUtils.isEmpty(resourceVOS)) {
             resourceVOS.stream().forEach(item -> {
-                item.setCreator(StringUtils.equals(item.getCreator(), "1") ? item.getCreator() : "管理员");
-                item.setLastEditor(StringUtils.equals(item.getLastEditor(), "1") ? item.getLastEditor() : "管理员");
+                item.setCreator(StringUtils.equals(item.getCreator(), "1") ? "管理员" : item.getCreator());
+                item.setLastEditor(StringUtils.equals(item.getLastEditor(), "1") ? "管理员" : item.getLastEditor());
             });
         }
         return result.getRecords();
