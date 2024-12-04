@@ -86,8 +86,8 @@ const service: AxiosInstanceWithLoading = axios.create({
 })
 const mapping = {
   'zh-CN': 'zh-CN',
-  en: 'en_US',
-  tw: 'zh_TW'
+  en: 'en-US',
+  tw: 'zh-TW'
 }
 const permissionStore = usePermissionStoreWithOut()
 const linkStore = useLinkStoreWithOut()
