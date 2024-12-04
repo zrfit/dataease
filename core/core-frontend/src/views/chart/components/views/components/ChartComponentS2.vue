@@ -26,9 +26,9 @@ import ChartError from '@/views/chart/components/views/components/ChartError.vue
 import { defaultsDeep, cloneDeep, debounce } from 'lodash-es'
 import { BASE_VIEW_CONFIG } from '../../editor/util/chart'
 import { customAttrTrans, customStyleTrans, recursionTransObj } from '@/utils/canvasStyle'
-import { deepCopy, isISOMobile } from '@/utils/utils'
+import { deepCopy, isISOMobile, isMobile } from '@/utils/utils'
 import { useEmitt } from '@/hooks/web/useEmitt'
-import { trackBarStyleCheck } from '@/utils/canvasUtils'
+import { isDashboard, trackBarStyleCheck } from '@/utils/canvasUtils'
 import { type SpreadSheet } from '@antv/s2'
 import { parseJson } from '../../js/util'
 
@@ -93,6 +93,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['onPointClick', 'onChartClick', 'onDrillFilters', 'onJumpClick'])
+const dataVMobile = !isDashboard() && isMobile()
 
 const { view, showPosition, scale, terminal, drillLength, suffixId } = toRefs(props)
 
@@ -359,8 +360,14 @@ const action = param => {
       top: param.y + 10
     }
     trackBarStyleCheck(props.element, barStyleTemp, props.scale, trackMenu.value.length)
-    state.trackBarStyle.left = barStyleTemp.left + 'px'
-    state.trackBarStyle.top = barStyleTemp.top + 'px'
+    if (dataVMobile) {
+      state.trackBarStyle.left = barStyleTemp.left + 40 + 'px'
+      state.trackBarStyle.top = barStyleTemp.top + 70 + 'px'
+    } else {
+      state.trackBarStyle.left = barStyleTemp.left + 'px'
+      state.trackBarStyle.top = barStyleTemp.top + 'px'
+    }
+
     viewTrack.value.trackButtonClick()
   }
 }
@@ -671,6 +678,7 @@ const tablePageClass = computed(() => {
       class="track-bar"
       :style="state.trackBarStyle"
       @trackClick="trackClick"
+      :is-data-v-mobile="dataVMobile"
       @mousemove="mouseMove"
     />
     <div v-if="!isError" class="canvas-content">
