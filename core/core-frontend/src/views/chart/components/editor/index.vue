@@ -917,6 +917,7 @@ const onTypeChange = (render, type) => {
   view.value.render = render
   view.value.type = type
   emitter.emit('chart-type-change')
+  emitter.emit('chart-type-change-' + view.value.id)
   // 处理配置项默认值，不同图表的同一配置项默认值不同
   const chartViewInstance = chartViewManager.getChartView(view.value.render, view.value.type)
   if (chartViewInstance) {

@@ -148,6 +148,7 @@ onBeforeUnmount(() => {
       <el-form-item
         v-if="curComponent.style.adaptation"
         class="form-item form-item-custom"
+        :class="'form-item-' + themes"
         :label="t('visualization.pic_adaptor_type')"
         size="small"
         :effect="themes"

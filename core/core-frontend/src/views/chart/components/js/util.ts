@@ -456,8 +456,12 @@ export const getGeoJsonFile = async (areaId: string): Promise<FeatureCollection>
   return toRaw(geoJson)
 }
 
-const getExcelDownloadRequest = data => {
-  const fields = JSON.parse(JSON.stringify(data.fields))
+const getExcelDownloadRequest = (data, type?) => {
+  let fields = JSON.parse(JSON.stringify(data.fields))
+  // liquid gauge 只需要导出一个字段
+  if (['gauge', 'liquid'].includes(type) && fields.length > 1) {
+    fields = fields.slice(1)
+  }
   const tableRow = JSON.parse(JSON.stringify(data.tableRow))
   const excelHeader = fields.map(item => item.chartShowName ?? item.name)
   const excelTypes = fields.map(item => item.deType)
@@ -516,7 +520,7 @@ export const exportExcelDownload = (chart, callBack?) => {
       delete request.multiInfo
     }
   } else {
-    const req = getExcelDownloadRequest(chart.data)
+    const req = getExcelDownloadRequest(chart.data, chart.type)
     request = {
       ...request,
       ...req
