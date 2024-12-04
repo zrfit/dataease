@@ -137,6 +137,17 @@ export class Bar extends G2PlotChartView<ColumnOptions, Column> {
           }
         })
         return group
+      },
+      position: data => {
+        if (data.value < 0) {
+          if (tmpOptions.label?.position === 'top') {
+            return 'bottom'
+          }
+          if (tmpOptions.label?.position === 'bottom') {
+            return 'top'
+          }
+        }
+        return tmpOptions.label?.position
       }
     }
     return {
