@@ -673,7 +673,7 @@ public class ExportCenterManage implements BaseExportApi {
                             sheetIndex++;
                             details.clear();
                             exportTask.setExportStatus("IN_PROGRESS");
-                            double exportRogress = (double) (i / chartViewDTO.getTotalPage() + 1);
+                            double exportRogress = (double) (i / (chartViewDTO.getTotalPage() + 1));
                             DecimalFormat df = new DecimalFormat("#.##");
                             String formattedResult = df.format((exportRogress) * 100);
                             exportTask.setExportProgress(formattedResult);
