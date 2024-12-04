@@ -426,15 +426,12 @@ const editCustomArea = (data?) => {
   customAreaDialog.value = true
 }
 const deleteCustomArea = data => {
-  ElMessageBox.confirm(
-    '该操作会导致使用了自定义区域的地图无法正常展示，确定删除？',
-    `删除[${data.name}]`,
-    {
-      type: 'warning',
-      confirmButtonType: 'danger',
-      customClass: 'area-delete-dialog'
-    }
-  )
+  ElMessageBox.confirm('该操作会导致使用了自定义区域的地图无法正常展示，确定删除？', '', {
+    type: 'warning',
+    confirmButtonType: 'danger',
+    customClass: 'area-delete-dialog',
+    autofocus: false
+  })
     .then(async () => {
       await deleteCustomGeoArea(data.id)
       await loadCustomGeoArea()
@@ -539,10 +536,11 @@ const saveGeoSubArea = async () => {
   })
 }
 const deleteCustomSubArea = async data => {
-  ElMessageBox.confirm('确定删除该自定义区域？', `删除[${data.name}]`, {
+  ElMessageBox.confirm('确定删除该自定义区域？', '', {
     type: 'warning',
     confirmButtonType: 'danger',
-    customClass: 'area-delete-dialog'
+    customClass: 'area-delete-dialog',
+    autofocus: false
   })
     .then(async () => {
       await deleteCustomGeoSubArea(data.id)
@@ -908,6 +906,7 @@ onBeforeMount(() => {
 }
 
 .area-delete-dialog {
+  padding: 10px;
   .ed-message-box__header {
     display: flex;
     justify-content: space-between;
