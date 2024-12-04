@@ -4136,7 +4136,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     record: 'Detection record',
     module_name: 'Threshold alarm',
     setting: 'Threshold alarm setting',
-    no_view_tip: 'Please save before setting threshold alarm'
+    no_view_tip: 'Please save before setting threshold alarm',
+    selected_view: 'Selected chart:'
   },
   relation: {
     no_permission: 'No view permission',
