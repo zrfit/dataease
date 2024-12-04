@@ -27,15 +27,4 @@ public class ChartExtFilterDTO {
     private List<String> originValue;
     private int filterType;// 0-过滤组件，1-下钻，2-联动，外部参数
 
-
-    public List<String> getValue() {
-        if (CollectionUtils.isNotEmpty(value)) {
-            List<String> values = new ArrayList<>();
-            value.forEach(v -> {
-                values.add(v.replace("\n", "\\n"));
-            });
-            return values;
-        }
-        return value;
-    }
 }
