@@ -2610,7 +2610,6 @@ export default {
     query_name_space2: '名稱與選框間距',
     button_color: '按鈕顏色',
     button_text: '按鈕文字',
-    font_size: '字號',
     show_button: '展示按鈕',
     query_tips:
       '如果展示查詢按鈕，需要點擊該按鈕後才能觸發圖表查詢；如果不展示查詢按鈕，選擇完查詢條件後立即觸發圖表查詢',
@@ -2869,7 +2868,6 @@ export default {
     cancel_group: '取消組合',
     move_to_screen_show: '移動到大屏顯示區',
     move_to_pop_area: '移動到大屏彈窗區',
-    sort: '排序',
     hidden: '隱藏',
     cancel_hidden: '取消隱藏',
     template_view_tips: '當前為模板圖表，請更換數據集...',
@@ -3580,7 +3578,6 @@ export default {
     please_choose_database_type: '請選擇資料庫類型',
     please_choose_database: '請選擇資料庫',
     please_choose_table: '請選擇表格',
-    please_enter_sql: '請輸入SQL',
     please_choose_incremental_field: '請選擇增量欄位',
     please_enter_table_name: '請輸入表名',
     input_limit_64: '長度不能超過64個字元',
