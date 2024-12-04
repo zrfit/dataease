@@ -19,7 +19,7 @@
           <el-input
             v-model="state.form.appName"
             autocomplete="off"
-            :placeholder="t('visualization.input_name')"
+            :placeholder="t('common.input_name')"
           />
         </el-form-item>
         <el-form-item :label="t('visualization.app_version')" prop="version">
