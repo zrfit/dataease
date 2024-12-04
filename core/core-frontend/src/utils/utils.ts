@@ -218,3 +218,10 @@ export const formatExt = (num: number): number[] | null => {
   const reversedNumArray = reversedStr?.split('')?.map(Number) ?? []
   return reversedNumArray
 }
+
+export const getBrowserLocale = () => {
+  return navigator.language
+}
+export const getLocale = () => {
+  return wsCache.get('user.language') || getBrowserLocale() || 'zh-CN'
+}
