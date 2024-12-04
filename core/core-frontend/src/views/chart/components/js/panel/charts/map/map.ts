@@ -389,9 +389,22 @@ export class Map extends L7PlotChartView<ChoroplethOptions, Choropleth> {
         },
         'l7plot-legend__category-marker': {
           ...LEGEND_SHAPE_STYLE_MAP[legend.icon],
-          width: '9px',
-          height: '9px',
-          ...(legend.icon === 'triangle' ? {} : { border: '0.01px solid #f4f4f4' })
+          width: legend.size + 'px',
+          height: legend.size + 'px',
+          ...(legend.icon === 'triangle'
+            ? {
+                ...LEGEND_SHAPE_STYLE_MAP[legend.icon]['triangle'],
+                borderLeft: `${legend.size / 2}px solid transparent`,
+                borderRight: `${legend.size / 2}px solid transparent`,
+                borderBottom: `${legend.size}px solid var(--bgColor)`
+              }
+            : { border: '0.01px solid #f4f4f4' }),
+          ...(legend.icon === 'diamond'
+            ? {
+                transform: 'rotate(45deg)',
+                marginBottom: `${legend.size / 4}px`
+              }
+            : {})
         }
       }
     }
