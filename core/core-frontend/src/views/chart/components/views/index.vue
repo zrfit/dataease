@@ -660,12 +660,13 @@ const checkFieldIsAllowEmpty = (allField?) => {
 
       // 如果有数据集字段并且字段值存在且不为空
       if (viewAllDatasetFields.get(view.value?.id)) {
-        if (!view.value?.[key]?.length) continue
-        // 检查图表字段是否有不在数据集中
-        for (const item of view.value[key]) {
-          if (!viewAllDatasetFields.get(view.value?.id).find(field => field.id === item.id)) {
-            includeDatasetField = true
-            break
+        if (view.value?.[key]?.length) {
+          // 检查图表字段是否有不在数据集中
+          for (const item of view.value[key]) {
+            if (!viewAllDatasetFields.get(view.value?.id).find(field => field.id === item.id)) {
+              includeDatasetField = true
+              break
+            }
           }
         }
         // 如果有不在数据集中
