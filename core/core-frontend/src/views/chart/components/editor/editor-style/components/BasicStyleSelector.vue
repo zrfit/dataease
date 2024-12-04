@@ -1107,6 +1107,7 @@ onMounted(() => {
         :min="1"
         :step="1"
         :disabled="mergeCell"
+        :precision="0"
         @change="changeBasicStyle('maxLines')"
       />
     </el-form-item>
