@@ -1169,6 +1169,7 @@ export default {
     color_technology: '科技',
     color_simple: '簡潔',
     not_alpha: '不透明度',
+    column_width_ratio: '柱寬比例',
     area_border_color: '地圖邊線',
     area_base_color: '地圖區塊填充',
     size: '大小',

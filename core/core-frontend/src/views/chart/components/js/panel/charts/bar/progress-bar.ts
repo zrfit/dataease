@@ -16,6 +16,7 @@ import {
 import { cloneDeep, defaultTo } from 'lodash-es'
 import { valueFormatter } from '@/views/chart/components/js/formatter'
 import { Options } from '@antv/g2plot/esm'
+import { DEFAULT_BASIC_STYLE } from '@/views/chart/components/editor/util/chart'
 
 const { t } = useI18n()
 
@@ -54,7 +55,7 @@ export class ProgressBar extends G2PlotChartView<BarOptions, G2Progress> {
     'legend-selector': null,
     'background-overall-component': ['all'],
     'border-style': ['all'],
-    'basic-style-selector': ['colors', 'alpha', 'gradient', 'radiusColumnBar'],
+    'basic-style-selector': ['colors', 'alpha', 'gradient', 'radiusColumnBar', 'columnWidthRatio'],
     'label-selector': ['hPosition', 'color', 'fontSize', 'showQuota', 'showProportion'],
     'tooltip-selector': ['fontSize', 'color', 'backgroundColor', 'tooltipFormatter', 'show'],
     'y-axis-selector': [
@@ -194,6 +195,20 @@ export class ProgressBar extends G2PlotChartView<BarOptions, G2Progress> {
         barStyle
       }
     }
+
+    let barWidthRatio
+    const _v = basicStyle.columnWidthRatio ?? DEFAULT_BASIC_STYLE.columnWidthRatio
+    if (_v >= 1 && _v <= 100) {
+      barWidthRatio = _v / 100.0
+    } else if (_v < 1) {
+      barWidthRatio = 1 / 100.0
+    } else if (_v > 100) {
+      barWidthRatio = 1
+    }
+    if (barWidthRatio) {
+      options.barWidthRatio = barWidthRatio
+    }
+
     return options
   }
   protected configTooltip(chart: Chart, options: BarOptions): BarOptions {

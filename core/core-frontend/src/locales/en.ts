@@ -1197,6 +1197,7 @@ export default {
     color_technology: 'Technology',
     color_simple: 'Simple',
     not_alpha: 'Opacity',
+    column_width_ratio: 'Column Width Ratio',
     area_border_color: 'Map border',
     area_base_color: 'Map area fill',
     size: 'Size',

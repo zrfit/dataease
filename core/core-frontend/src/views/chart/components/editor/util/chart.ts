@@ -1589,6 +1589,7 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   barDefault: true,
   radiusColumnBar: 'rightAngle',
   columnBarRightAngleRadius: 20,
+  columnWidthRatio: 60,
   barWidth: 40,
   barGap: 0.4,
   lineType: 'solid',
