@@ -65,6 +65,22 @@ const onAlphaChange = v => {
   changeBasicStyle('alpha')
 }
 
+const onColumnWidthRatioChange = v => {
+  const _v = parseInt(v)
+  if (_v >= 1 && _v <= 100) {
+    state.basicStyleForm.columnWidthRatio = _v
+  } else if (_v < 1) {
+    state.basicStyleForm.columnWidthRatio = 1
+  } else if (_v > 100) {
+    state.basicStyleForm.columnWidthRatio = 100
+  } else {
+    const basicStyle = cloneDeep(props.chart.customAttr.basicStyle)
+    const oldForm = defaultsDeep(basicStyle, cloneDeep(DEFAULT_BASIC_STYLE)) as ChartBasicStyle
+    state.basicStyleForm.columnWidthRatio = oldForm.columnWidthRatio
+  }
+  changeBasicStyle('columnWidthRatio')
+}
+
 const changeMisc = prop => {
   emit('onMiscChange', { data: state.miscForm, requestData: true }, prop)
 }
@@ -1207,6 +1223,40 @@ onMounted(() => {
         @change="changeBasicStyle('barGap')"
       />
     </el-form-item>
+    <div class="alpha-setting" v-if="showProperty('columnWidthRatio')">
+      <label class="alpha-label" :class="{ dark: 'dark' === themes }">
+        {{ t('chart.column_width_ratio') }}
+      </label>
+      <el-row style="flex: 1" :gutter="8">
+        <el-col :span="13">
+          <el-form-item class="form-item alpha-slider" :class="'form-item-' + themes">
+            <el-slider
+              :effect="themes"
+              :min="1"
+              :max="100"
+              v-model="state.basicStyleForm.columnWidthRatio"
+              @change="changeBasicStyle('columnWidthRatio')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="11" style="padding-top: 2px">
+          <el-form-item class="form-item" :class="'form-item-' + themes">
+            <el-input
+              type="number"
+              :effect="themes"
+              v-model="state.basicStyleForm.columnWidthRatio"
+              :min="1"
+              :max="100"
+              class="basic-input-number"
+              :controls="false"
+              @change="onColumnWidthRatioChange"
+            >
+              <template #suffix> % </template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </div>
     <!--bar end-->
     <!--line area start-->
     <el-row :gutter="8">
