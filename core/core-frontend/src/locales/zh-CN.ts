@@ -4144,5 +4144,8 @@ export default {
     sync_to_org: '迁移至目标组织',
     sync_org_placeholder: '请选择目标组织',
     relation_picture: '血缘关系图'
+  },
+  security: {
+    title: '安全设置'
   }
 }
