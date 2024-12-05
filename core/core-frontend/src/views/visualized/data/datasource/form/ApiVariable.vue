@@ -265,7 +265,7 @@ const timeFunLists = [
       </template>
     </draggable>
 
-    <el-button @click="change" text>
+    <el-button style="margin-top: 14px" @click="change" text>
       <template #icon>
         <icon name="icon_add_outlined"><icon_add_outlined class="svg-icon" /></icon>
       </template>
