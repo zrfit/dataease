@@ -12,7 +12,6 @@
         v-if="optType === 'enlarge' && exportPermissions[0]"
         v-model="pixel"
         class="pixel-select"
-        size="small"
       >
         <el-option-group v-for="group in pixelOptions" :key="group.label" :label="group.label">
           <el-option

@@ -16,7 +16,6 @@ import dvPreviewDownload from '@/assets/svg/dv-preview-download.svg'
 import ToolboxCfg from './ToolboxCfg.vue'
 import { findBaseParams } from '@/api/aiComponent'
 import icon_more_outlined from '@/assets/svg/icon_more_outlined.svg'
-import msgNotice from '@/assets/svg/msg-notice.svg'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useAppearanceStoreWithOut } from '@/store/modules/appearance'
 import { msgCountApi } from '@/api/msg'
@@ -46,9 +45,6 @@ const redirectUser = () => {
   const sysMenu = resolve('/sys-setting')
   const kidPath = sysMenu.matched[0].children[0].path
   push(`${sysMenu.path}/${kidPath}`)
-}
-const msgNoticePush = () => {
-  push('/msg/msg-fill')
 }
 const initShowToolbox = () => {
   showToolbox.value = permissionStore.getRouters.some(route => route.path === '/toolbox')
@@ -93,18 +89,6 @@ onMounted(() => {
     >
       <Icon><dvPreviewDownload @click="downloadClick" class="svg-icon" /></Icon>
     </el-icon>
-  </el-tooltip>
-  <el-tooltip effect="dark" :content="$t('v_query.msg_center')" placement="bottom">
-    <el-badge
-      style="margin-left: 10px"
-      :hidden="[0, '0'].includes(badgeCount)"
-      :value="badgeCount"
-      class="ed-badge_custom"
-    >
-      <el-icon class="preview-download_icon" :class="navigateBg === 'light' && 'is-light-setting'">
-        <Icon><msgNotice @click="msgNoticePush" class="svg-icon" /></Icon>
-      </el-icon>
-    </el-badge>
   </el-tooltip>
   <el-tooltip
     class="box-item"
