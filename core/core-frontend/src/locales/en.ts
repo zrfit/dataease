@@ -129,10 +129,6 @@ export default {
     delete_this_folder: 'Are you sure you want to delete this folder?',
     a_new_dataset: 'Create a new dataset',
     structure_preview: 'Structure preview',
-    by_creation_time: 'In ascending order by creation time',
-    by_creation_time_de: 'In descending order by creation time',
-    by_name_ascending: 'In ascending order by name',
-    order_by_name: 'In descending order by name',
     data_set_yet: 'No dataset yet',
     new_data_screen: 'Create a new data screen',
     pieces_in_total: 'Show 100 pieces of data, a total of {msg} pieces',
@@ -229,10 +225,6 @@ export default {
     verification_successful: 'Verification successful',
     verification_failed: 'Verification failed',
     create_successfully: 'Created successfully',
-    by_creation_time: 'In ascending order by creation time',
-    by_creation_time_de: 'In descending order by creation time',
-    order_by_name: 'In ascending order by name',
-    order_by_name_de: 'In descending order by name',
     operate_with_caution:
       'After deletion, all resources under this folder will be deleted. Please operate with caution.',
     confirm_to_delete:
