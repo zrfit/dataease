@@ -37,4 +37,8 @@ public interface PerSettingApi {
     @Operation(summary = "保存MFA设置")
     @PostMapping("/mfa/save")
     void saveMfa(@RequestBody List<PerSettingItemVO> settings);
+
+    @Operation(summary = "查询MFA状态")
+    @GetMapping("/mfaStatus")
+    Integer mfaStatus();
 }
