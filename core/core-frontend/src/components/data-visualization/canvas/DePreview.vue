@@ -318,18 +318,25 @@ const initWatermark = (waterDomId = 'preview-canvas-main') => {
 // 目标校验： 需要校验targetSourceId 是否是当前可视化资源ID
 const winMsgHandle = event => {
   const msgInfo = event.data
-  // 校验targetSourceId
-  if (
-    msgInfo &&
-    msgInfo.type === 'attachParams' &&
-    msgInfo.targetSourceId === dvInfo.value.id + '' &&
-    isMainCanvas(canvasId.value)
-  ) {
-    const attachParams = msgInfo.params
-    state.initState = false
-    dvMainStore.addOuterParamsFilter(attachParams, baseComponentData.value, 'outer')
-    state.initState = true
-  }
+  if (msgInfo?.targetSourceId === dvInfo.value.id + '' && isMainCanvas(canvasId.value))
+    if (msgInfo.type === 'attachParams') {
+      winMsgOuterParamsHandle(event)
+    } else if (msgInfo.type === 'webParams') {
+      // 网络消息处理
+      winMsgWebParamsHandle(msgInfo)
+    }
+}
+
+const winMsgWebParamsHandle = msgInfo => {
+  const params = msgInfo.params
+  dvMainStore.addWebParamsFilter(params, baseComponentData.value)
+}
+
+const winMsgOuterParamsHandle = msgInfo => {
+  const attachParams = msgInfo.params
+  state.initState = false
+  dvMainStore.addOuterParamsFilter(attachParams, baseComponentData.value, 'outer')
+  state.initState = true
 }
 
 onMounted(() => {
