@@ -520,10 +520,15 @@ const sortTypeTip = computed(() => {
   return sortList.find(ele => ele.value === state.curSortType).name
 })
 
-const sortTypeChange = sortType => {
+const handleSortTypeChange = sortType => {
   state.resourceTree = treeSort(state.originResourceTree, sortType)
   state.curSortType = sortType
   wsCache.set('TreeSort-' + curCanvasType.value, state.curSortType)
+}
+
+const sortTypeChange = sortType => {
+  state.resourceTree = treeSort(state.originResourceTree, sortType)
+  state.curSortType = sortType
 }
 
 watch(filterText, val => {
@@ -628,7 +633,7 @@ defineExpose({
           </el-icon>
         </template>
       </el-input>
-      <el-dropdown @command="sortTypeChange" trigger="click">
+      <el-dropdown @command="handleSortTypeChange" trigger="click">
         <el-icon class="filter-icon-span">
           <el-tooltip :offset="16" effect="dark" :content="sortTypeTip" placement="top">
             <Icon v-if="state.curSortType.includes('asc')" name="dv-sort-asc" class="opt-icon"
