@@ -673,6 +673,9 @@ const addAxis = (e, axis: AxisType) => {
     if (list && list.length > 0) {
       let valid = true
       for (let i = 0; i < list.length; i++) {
+        if (list[i].groupType === 'd' && list[i].deType === 1) {
+          list[i].sort = 'asc'
+        }
         if (!(list[i].groupType === 'q' || (list[i].groupType === 'd' && list[i].deType === 1))) {
           list.splice(i, 1)
           valid = false
