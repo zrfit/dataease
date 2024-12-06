@@ -30,11 +30,11 @@ public interface PerSettingApi {
     @GetMapping("/baisc/single/{key}")
     String singleValue(@PathVariable("key") String key);
 
-    @Operation(summary = "查询FMA设置")
+    @Operation(summary = "查询MFA设置")
     @GetMapping("/mfa/query")
     List<PerSettingItemVO> mfaSetting();
 
-    @Operation(summary = "保存FMA设置")
+    @Operation(summary = "保存MFA设置")
     @PostMapping("/mfa/save")
     void saveMfa(@RequestBody List<PerSettingItemVO> settings);
 }
