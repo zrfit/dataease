@@ -539,20 +539,20 @@ const dfsDatasourceTree = (ds, id) => {
 const creatDsFolder = ref()
 const sortList = [
   {
-    name: t('data_source.by_creation_time'),
+    name: t('visualization.time_asc'),
     value: 'time_asc'
   },
   {
-    name: t('data_source.by_creation_time_de'),
+    name: t('visualization.time_desc'),
     value: 'time_desc',
     divided: true
   },
   {
-    name: t('data_source.order_by_name'),
+    name: t('visualization.name_asc'),
     value: 'name_asc'
   },
   {
-    name: t('data_source.order_by_name_de'),
+    name: t('visualization.name_desc'),
     value: 'name_desc'
   }
 ]

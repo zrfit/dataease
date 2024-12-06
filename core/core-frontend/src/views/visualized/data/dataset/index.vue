@@ -708,20 +708,20 @@ const defaultTab = [
 
 const sortList = [
   {
-    name: t('data_set.by_creation_time'),
+    name: t('visualization.time_asc'),
     value: 'time_asc'
   },
   {
-    name: t('data_set.by_creation_time_de'),
+    name: t('visualization.time_desc'),
     value: 'time_desc',
     divided: true
   },
   {
-    name: t('data_set.by_name_ascending'),
+    name: t('visualization.name_asc'),
     value: 'name_asc'
   },
   {
-    name: t('data_set.order_by_name'),
+    name: t('visualization.name_desc'),
     value: 'name_desc'
   }
 ]
