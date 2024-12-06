@@ -691,6 +691,17 @@ const setParameters = field => {
       .filter(ele => fieldArr.includes(ele.id) && !!ele.variableName)
       .concat(curComponent.value.parameters.filter(ele => fieldArr.includes(ele.id)))
   )
+  fields.value.forEach(ele => {
+    if (
+      ele.id === field.id &&
+      curComponent.value.checkedFields?.includes(ele.componentId) &&
+      !curComponent.value.checkedFieldsMap[ele.componentId]
+    ) {
+      ele.activelist = field.activelist
+      curComponent.value.checkedFieldsMap[ele.componentId] =
+        curComponent.value.checkedFieldsMap[field.componentId]
+    }
+  })
   nextTick(() => {
     if (isTimeParameter.value) {
       const timeParameter = curComponent.value.parameters.find(ele => ele.deType === 1)
