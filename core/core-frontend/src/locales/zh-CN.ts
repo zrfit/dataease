@@ -4148,5 +4148,18 @@ export default {
   },
   security: {
     title: '安全设置'
+  },
+  setting_mfa: {
+    title: 'MFA 设置',
+    status: '全局启用 MFA 认证',
+    platformEnable: '第三方认证开启 MFA',
+    exp: 'MFA 校验有效期',
+    otpName: 'OPT 扫描后的名称',
+    rate: 'OTP 延迟有效次数',
+    status_0: '未启用',
+    status_1: '所有用户',
+    status_2: '仅系统管理员',
+    platform_tips: '第三方登录方式包括：OIDC、CAS',
+    exp_tips: '单位：秒，目前仅在查看账号密码校验 MFA 时生效'
   }
 }
