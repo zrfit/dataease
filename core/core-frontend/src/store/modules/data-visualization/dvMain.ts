@@ -15,7 +15,6 @@ import {
 import { useEmitt } from '@/hooks/web/useEmitt'
 import chartViewManager from '@/views/chart/components/js/panel'
 import {
-  COMMON_COMPONENT_BACKGROUND_BASE,
   COMMON_COMPONENT_BACKGROUND_DARK,
   COMMON_COMPONENT_BACKGROUND_LIGHT,
   defaultStyleValue,
@@ -1016,6 +1015,29 @@ export const dvMainStore = defineStore('dataVisualization', {
         useEmitt().emitter.emit('query-data-' + viewId)
       })
     },
+    addWebParamsFilter(params, curComponentData = this.componentData) {
+      if (params) {
+        for (let index = 0; index < curComponentData.length; index++) {
+          const element = curComponentData[index]
+          if (['UserView'].includes(element.component)) {
+            this.trackWebFilterCursor(element, params)
+            this.componentData[index] = element
+          } else if (element.component === 'Group') {
+            element.propValue.forEach((groupItem, index) => {
+              this.trackWebFilterCursor(groupItem, params)
+              element.propValue[index] = groupItem
+            })
+          } else if (element.component === 'DeTabs') {
+            element.propValue.forEach(tabItem => {
+              tabItem.componentData.forEach((tabComponent, index) => {
+                this.trackWebFilterCursor(tabComponent, params)
+                tabItem.componentData[index] = tabComponent
+              })
+            })
+          }
+        }
+      }
+    },
     // 添加外部参数的过滤条件
     addOuterParamsFilter(paramsPre, curComponentData = this.componentData, source = 'inner') {
       // params 结构 {key1:value1,key2:value2}
@@ -1085,6 +1107,13 @@ export const dvMainStore = defineStore('dataVisualization', {
             })
           }
         }
+      }
+    },
+    trackWebFilterCursor(element, params) {
+      if (params[element.id]) {
+        const currentFilters = []
+        currentFilters.push(params[element.id])
+        element['webParamsFilters'] = currentFilters
       }
     },
     trackOuterFilterCursor(element, params, preActiveComponentIds, trackInfo, source) {
