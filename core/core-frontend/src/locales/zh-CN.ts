@@ -4153,6 +4153,7 @@ export default {
     status_2: '仅系统管理员',
     platform_tips: '第三方登录方式包括：OIDC、CAS',
     exp_tips: '单位：秒，目前仅在查看账号密码校验 MFA 时生效',
-    user_enable: '启用 MFA 多因子认证'
+    user_enable: '启用 MFA 多因子认证',
+    code_input_msg: '请输入 {0} 位数字'
   }
 }
