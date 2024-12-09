@@ -1363,6 +1363,7 @@ export default {
     y_Q: 'Year Quarter',
     y_W: 'Year Week',
     y_M_d: 'Year Month Day',
+    M_d: 'Month Day',
     H_m_s: 'Hours Minutes Seconds',
     y_M_d_H_m: 'Year Month Day Hours Minutes',
     y_M_d_H_m_s: 'Year Month Day Hours Minutes Seconds',
