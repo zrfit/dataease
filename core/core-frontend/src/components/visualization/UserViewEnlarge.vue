@@ -45,7 +45,7 @@
         "
         @click="downloadViewDetails('view')"
       >
-        导出Excel
+        {{ t('chart.export_excel') }}
       </el-button>
       <el-button
         class="m-button"
@@ -59,7 +59,7 @@
           requestStore.loadingMap[permissionStore.currentPath] > 0 || state.dataFrom === 'template'
         "
       >
-        导出原始明细
+        {{ t('chart.export_raw_details') }}
       </el-button>
       <el-button
         class="m-button"
@@ -70,7 +70,7 @@
         :loading="exportLoading"
         @click="exportAsFormattedExcel"
       >
-        <span>导出Excel(带格式)</span>
+        <span>{{ t('chart.export_excel_formatter') }}</span>
       </el-button>
       <el-divider
         class="close-divider"
@@ -80,7 +80,7 @@
     </div>
     <div
       v-loading="downLoading"
-      element-loading-text="导出中..."
+      :element-loading-text="t('visualization.export_loading')"
       element-loading-background="rgba(122, 122, 122, 1)"
       class="enlarge-outer"
       v-if="dialogShow"
@@ -330,7 +330,7 @@ const downloadViewDetails = (downloadType = 'view') => {
   const viewDataInfo = dvMainStore.getViewDataDetails(viewInfo.value.id)
   const viewInfoSource = dvMainStore.getViewDetails(viewInfo.value.id)
   if (!viewDataInfo) {
-    ElMessage.error('当前无字段，无法导出')
+    ElMessage.error(t('chart.field_is_empty_export_error'))
     return
   }
   const chartExtRequest = dvMainStore.getLastViewRequestInfo(viewInfo.value.id)
@@ -366,7 +366,7 @@ const openMessageLoading = cb => {
   const customClass = `de-message-loading de-message-export`
   ElMessage({
     message: h('p', null, [
-      '后台导出中,可前往',
+      t('data_fill.exporting'),
       h(
         ElButton,
         {
@@ -379,7 +379,7 @@ const openMessageLoading = cb => {
         },
         t('data_export.export_center')
       ),
-      '查看进度，进行下载'
+      t('data_fill.progress_to_download')
     ]),
     iconClass,
     icon: h(RefreshLeft),
