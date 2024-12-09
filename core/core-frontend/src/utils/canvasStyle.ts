@@ -270,7 +270,10 @@ export const THEME_STYLE_TRANS_SLAVE1 = {
 }
 
 export const THEME_ATTR_TRANS_MAIN = {
-  label: ['color'],
+  label: {
+    color: 'color',
+    proportionSeriesFormatter: ['color']
+  },
   tooltip: ['color'],
   indicatorName: ['color']
 }
