@@ -375,7 +375,7 @@ watch(
             :effect="themes"
             v-if="showProperties('indicator-value-selector')"
             name="indicator-value"
-            title="指标值"
+            :title="t('chart.indicator_value')"
           >
             <indicator-value-selector
               ref="indicatorValueRef"

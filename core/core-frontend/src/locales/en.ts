@@ -1850,7 +1850,11 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     table_freeze_tip: 'after merging cells, column and row freezing is not supported',
     merge_cells_tips:
       'after merging cells, freezing rows and columns and automatic line wrapping will become invalid',
-    merge_cells_break_line_tip: 'after merging cells, automatic line wrapping is not supported'
+    merge_cells_break_line_tip: 'after merging cells, automatic line wrapping is not supported',
+    font_family_ya_hei: 'Microsoft YaHei',
+    font_family_song_ti: 'SimSun',
+    font_family_kai_ti: 'KaiTi',
+    font_family_hei_ti: 'SimHei'
   },
   dataset: {
     scope_edit: 'only effective when editing',

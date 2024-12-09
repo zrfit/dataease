@@ -303,7 +303,7 @@ onMounted(() => {
         v-if="showProperty('fontSize')"
       >
         <template #label> &nbsp; </template>
-        <el-tooltip content="字号" :effect="toolTip" placement="top">
+        <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
           <el-select
             style="width: 108px"
             :effect="themes"

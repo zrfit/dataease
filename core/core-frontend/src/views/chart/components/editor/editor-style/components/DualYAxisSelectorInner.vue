@@ -175,7 +175,7 @@ onMounted(() => {
         v-if="showProperty('fontSize')"
         style="padding-left: 4px"
       >
-        <el-tooltip content="字号" :effect="toolTip" placement="top">
+        <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
           <el-select
             style="width: 108px"
             :effect="props.themes"
@@ -384,7 +384,7 @@ onMounted(() => {
           </el-form-item>
           <el-form-item class="form-item" :class="'form-item-' + themes" style="padding-left: 4px">
             <template #label>&nbsp;</template>
-            <el-tooltip content="字号" :effect="toolTip" placement="top">
+            <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
               <el-select
                 :disabled="!state.axisForm.axisLabel.show"
                 style="width: 108px"

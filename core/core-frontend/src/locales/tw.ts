@@ -1810,7 +1810,11 @@ export default {
     radar_area_color: '開啟面積',
     table_freeze_tip: '合併儲存格後，不支持行列凍結',
     merge_cells_tips: '合併儲存格後，行列凍結、自動換行會失效',
-    merge_cells_break_line_tip: '合併儲存格後，不支持自動換行'
+    merge_cells_break_line_tip: '合併儲存格後，不支持自動換行',
+    font_family_ya_hei: '微軟雅黙',
+    font_family_song_ti: '宋體',
+    font_family_kai_ti: '楷體',
+    font_family_hei_ti: '黑體'
   },
   dataset: {
     scope_edit: '僅編輯時生效',
