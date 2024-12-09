@@ -1817,7 +1817,10 @@ export default {
     font_family_ya_hei: '微软雅黑',
     font_family_song_ti: '宋体',
     font_family_kai_ti: '楷体',
-    font_family_hei_ti: '黑体'
+    font_family_hei_ti: '黑体',
+    gauge_condition_style_tips: `条件样式设置，决定仪表盘区间颜色，为空则不开启阈值，范围(0-100)，逐级递增<br/>例如：输入 30,70；表示：分为3段，分别为[0,30],(30,70],(70,100]`,
+    light_theme: '浅色主题',
+    dark_theme: '深色主题'
   },
   dataset: {
     scope_edit: '仅编辑时生效',

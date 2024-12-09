@@ -1623,7 +1623,7 @@ export default {
     value_formatter_auto: 'Automatic',
     value_formatter_value: 'Number',
     value_formatter_percent: 'Percentage',
-    value_formatter_unit: 'Unit of quantity',
+    value_formatter_unit: 'Unit',
     value_formatter_decimal_count: 'Number of decimal places',
     value_formatter_suffix: 'Unit suffix',
     show_gap: 'Show interval value',
@@ -1855,7 +1855,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     font_family_ya_hei: 'Microsoft YaHei',
     font_family_song_ti: 'SimSun',
     font_family_kai_ti: 'KaiTi',
-    font_family_hei_ti: 'SimHei'
+    font_family_hei_ti: 'SimHei',
+    gauge_condition_style_tips: `Condition style settings, determine dashboard interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], (30,70], (70,100]`,
+    light_theme: 'Light Theme',
+    dark_theme: 'Dark Theme'
   },
   dataset: {
     scope_edit: 'only effective when editing',

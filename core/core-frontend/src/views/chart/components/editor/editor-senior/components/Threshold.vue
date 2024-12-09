@@ -383,9 +383,7 @@ init()
           <el-tooltip effect="dark" placement="bottom">
             <el-icon style="margin-left: 10px"><InfoFilled /></el-icon>
             <template #content>
-              条件样式设置，决定仪表盘区间颜色，为空则不开启阈值，范围(0-100)，逐级递增
-              <br />
-              例如：输入 30,70；表示：分为3段，分别为[0,30],(30,70],(70,100]
+              <span v-html="t('chart.gauge_condition_style_tips')"></span>
             </template>
           </el-tooltip>
         </el-form-item>
