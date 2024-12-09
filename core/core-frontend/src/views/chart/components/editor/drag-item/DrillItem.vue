@@ -164,7 +164,7 @@ onMounted(() => {
           <template #content>
             <table>
               <tr>
-                <td>{{ t('dataset.field_name') }}</td>
+                <td>{{ t('dataset.field_origin_name') }}</td>
                 <td>:</td>
                 <td>{{ item.name }}</td>
               </tr>
