@@ -78,6 +78,8 @@ public class WhitelistUtils {
                 || StringUtils.startsWithAny(requestURI, "/websocket")
                 || StringUtils.startsWithAny(requestURI, "/map/")
                 || StringUtils.startsWithAny(requestURI, "/oauth2/")
+                || StringUtils.startsWithAny(requestURI, "/mfa/qr/")
+                || StringUtils.startsWithAny(requestURI, "/mfa/login")
                 || StringUtils.startsWithAny(requestURI, "/typeface/download")
                 || StringUtils.startsWithAny(requestURI, "/typeface/defaultFont")
                 || StringUtils.startsWithAny(requestURI, "/typeface/listFont")
