@@ -491,7 +491,28 @@ onMounted(() => {
                   </el-dropdown-item>
                   <el-dropdown-item
                     class="menu-item-padding"
-                    v-if="!chart.type.includes('bar-range')"
+                    v-if="
+                      !(chart.type.includes('bar-range') && ['quota', 'quotaExt'].includes(type))
+                    "
+                    :command="beforeDateStyle('M_d')"
+                  >
+                    <span
+                      class="sub-menu-content"
+                      :class="'M_d' === item.dateStyle ? 'content-active' : ''"
+                    >
+                      {{ t('chart.M_d') }}
+                      <el-icon class="sub-menu-content--icon">
+                        <Icon name="icon_done_outlined" v-if="'M_d' === item.dateStyle"
+                          ><icon_done_outlined class="svg-icon"
+                        /></Icon>
+                      </el-icon>
+                    </span>
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    class="menu-item-padding"
+                    v-if="
+                      !(chart.type.includes('bar-range') && ['quota', 'quotaExt'].includes(type))
+                    "
                     :command="beforeDateStyle('H_m_s')"
                     divided
                   >
@@ -510,7 +531,9 @@ onMounted(() => {
                   <el-dropdown-item
                     class="menu-item-padding"
                     :command="beforeDateStyle('y_M_d_H_m')"
-                    :divided="chart.type.includes('bar-range')"
+                    :divided="
+                      chart.type.includes('bar-range') && ['quota', 'quotaExt'].includes(type)
+                    "
                   >
                     <span
                       class="sub-menu-content"
