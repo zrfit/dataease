@@ -1812,7 +1812,11 @@ export default {
     radar_area_color: '开启面积',
     table_freeze_tip: '合并单元格后，不支持行列冻结',
     merge_cells_tips: '合并单元格后，行列冻结、自动换行会失效',
-    merge_cells_break_line_tip: '合并单元格后，不支持自动换行'
+    merge_cells_break_line_tip: '合并单元格后，不支持自动换行',
+    font_family_ya_hei: '微软雅黑',
+    font_family_song_ti: '宋体',
+    font_family_kai_ti: '楷体',
+    font_family_hei_ti: '黑体'
   },
   dataset: {
     scope_edit: '仅编辑时生效',

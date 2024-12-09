@@ -1113,10 +1113,10 @@ export const BASE_ECHARTS_SELECT = {
 }
 
 export const CHART_FONT_FAMILY_ORIGIN = [
-  { name: '微软雅黑', value: 'Microsoft YaHei' },
-  { name: '宋体', value: 'SimSun, "Songti SC", STSong' },
-  { name: '黑体', value: 'SimHei, Helvetica' },
-  { name: '楷体', value: 'KaiTi, "Kaiti SC", STKaiti' }
+  { name: t('chart.font_family_ya_hei'), value: 'Microsoft YaHei' },
+  { name: t('chart.font_family_song_ti'), value: 'SimSun, "Songti SC", STSong' },
+  { name: t('chart.font_family_hei_ti'), value: 'SimHei, Helvetica' },
+  { name: t('chart.font_family_kai_ti'), value: 'KaiTi, "Kaiti SC", STKaiti' }
 ]
 
 export const CHART_FONT_FAMILY_MAP_TRANS = {
@@ -1127,10 +1127,10 @@ export const CHART_FONT_FAMILY_MAP_TRANS = {
 }
 
 export const CHART_FONT_FAMILY = [
-  { name: '微软雅黑', value: 'Microsoft YaHei' },
-  { name: '宋体', value: 'SimSun' },
-  { name: '黑体', value: 'SimHei' },
-  { name: '楷体', value: 'KaiTi' }
+  { name: t('chart.font_family_ya_hei'), value: 'Microsoft YaHei' },
+  { name: t('chart.font_family_song_ti'), value: 'SimSun' },
+  { name: t('chart.font_family_hei_ti'), value: 'SimHei' },
+  { name: t('chart.font_family_kai_ti'), value: 'KaiTi' }
 ]
 
 export const CHART_FONT_FAMILY_MAP = {

@@ -548,7 +548,7 @@ const isProgressBar = computed(() => {
           v-if="showProperty('fontSize')"
         >
           <template #label>&nbsp;</template>
-          <el-tooltip content="字号" :effect="toolTip" placement="top">
+          <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
             <el-select
               size="small"
               style="width: 108px"
@@ -812,7 +812,7 @@ const isProgressBar = computed(() => {
             v-if="showProperty('totalFontSize')"
           >
             <template #label>&nbsp;</template>
-            <el-tooltip content="字号" :effect="toolTip" placement="top">
+            <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
               <el-select
                 size="small"
                 style="width: 108px"
@@ -1198,7 +1198,7 @@ const isProgressBar = computed(() => {
             </el-form-item>
             <el-form-item class="form-item" :class="'form-item-' + themes">
               <template #label>&nbsp;</template>
-              <el-tooltip content="字号" :effect="toolTip" placement="top">
+              <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
                 <el-select
                   size="small"
                   :disabled="!curSeriesFormatter.show"
@@ -1377,7 +1377,7 @@ const isProgressBar = computed(() => {
             v-if="showProperty('fontSize')"
           >
             <template #label>&nbsp;</template>
-            <el-tooltip content="字号" :effect="toolTip" placement="top">
+            <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
               <el-select
                 :disabled="!state.labelForm.childrenShow"
                 size="small"
@@ -1640,7 +1640,7 @@ const isProgressBar = computed(() => {
             v-if="showProperty('fontSize')"
           >
             <template #label>&nbsp;</template>
-            <el-tooltip content="字号" :effect="toolTip" placement="top">
+            <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
               <el-select
                 :disabled="!state.labelForm.childrenShow"
                 size="small"
@@ -1789,7 +1789,7 @@ const isProgressBar = computed(() => {
             v-if="showProperty('fontSize')"
           >
             <template #label>&nbsp;</template>
-            <el-tooltip content="字号" :effect="toolTip" placement="top">
+            <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
               <el-select
                 :disabled="!state.labelForm.proportionSeriesFormatter.show"
                 size="small"
