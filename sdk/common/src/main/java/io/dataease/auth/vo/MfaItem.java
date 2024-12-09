@@ -1,5 +1,7 @@
 package io.dataease.auth.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serial;
@@ -13,4 +15,7 @@ public class MfaItem implements Serializable {
     private boolean enabled;
 
     private boolean ready;
+
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long uid;
 }
