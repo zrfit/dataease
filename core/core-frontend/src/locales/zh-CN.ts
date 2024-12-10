@@ -1827,7 +1827,8 @@ export default {
     field_is_empty_export_error: '当前无字段，无法导出',
     chart_symbolic_map: '符号地图',
     chart_stock_line: 'K 线图',
-    liquid_condition_style_tips: `条件样式设置，决定水波图颜色，为空则不开启阈值，范围(0-100)，逐级递增<br/>例如：输入 30,70；表示：分为3段，分别为[0,30],[30,70],[70,100]`
+    liquid_condition_style_tips: `条件样式设置，决定水波图颜色，为空则不开启阈值，范围(0-100)，逐级递增<br/>例如：输入 30,70；表示：分为3段，分别为[0,30],[30,70],[70,100]`,
+    conversion_rate: '转化率'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
