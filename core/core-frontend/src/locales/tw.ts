@@ -1864,7 +1864,9 @@ export default {
     wave_rings: '水波環數',
     symbolic_map_symbol_shape: '符號形狀',
     symbolic_map_symbol_shape_tip: '自訂時, 支援 1MB 以內的 SVG, JPG, JPEG, PNG 檔案',
-    size_range: '大小區間'
+    size_range: '大小區間',
+    x_axis_constant_line: 'X 軸恆線',
+    y_axis_constant_line: 'Y 軸恆線'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

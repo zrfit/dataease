@@ -1866,7 +1866,9 @@ export default {
     wave_rings: '水波环数',
     symbolic_map_symbol_shape: '符号形状',
     symbolic_map_symbol_shape_tip: '自定义时, 支持 1MB 以内的 SVG, JPG, JPEG, PNG 文件',
-    size_range: '大小区间'
+    size_range: '大小区间',
+    x_axis_constant_line: 'X 轴恒线',
+    y_axis_constant_line: 'Y 轴恒线'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
