@@ -1816,7 +1816,7 @@ export default {
     font_family_song_ti: '宋體',
     font_family_kai_ti: '楷體',
     font_family_hei_ti: '黑體',
-    gauge_condition_style_tips: `條件樣式設定，決定儀表板區間顏色，為空則不啟用閾值，範圍(0-100)，逐級遞增<br/>例如：輸入 30,70；表示：分為3段，分別為[0,30],(30,70],(70,100]`,
+    gauge_condition_style_tips: `條件樣式設定，決定儀表板區間顏色，為空則不啟用閾值，範圍(0-100)，逐級遞增<br/>例如：輸入 30,70；表示：分為3段，分別為[0,30],[30,70],[70,100]`,
     light_theme: '浅色主題',
     dark_theme: '暗色主題',
     export_excel: '導出Excel',
@@ -1824,7 +1824,8 @@ export default {
     export_raw_details: '導出原始明細',
     field_is_empty_export_error: '目前無欄位，無法匯出',
     chart_symbolic_map: '符號地圖',
-    chart_stock_line: 'K 線圖'
+    chart_stock_line: 'K 線圖',
+    liquid_condition_style_tips: `條件樣式設定，決定水波圖區間顏色，為空則不啟用閾值，範圍(0-100)，逐級遞增<br/>例如：輸入 30,70；表示：分為3段，分別為[0,30],[30,70],[70,100]`
   },
   dataset: {
     scope_edit: '僅編輯時生效',

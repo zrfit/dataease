@@ -1856,7 +1856,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     font_family_song_ti: 'SimSun',
     font_family_kai_ti: 'KaiTi',
     font_family_hei_ti: 'SimHei',
-    gauge_condition_style_tips: `Condition style settings, determine dashboard interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], (30,70], (70,100]`,
+    gauge_condition_style_tips: `Condition style settings, determine dashboard interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], [30,70], [70,100]`,
     light_theme: 'Light Theme',
     dark_theme: 'Dark Theme',
     export_excel: 'Excel',
@@ -1864,7 +1864,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     export_raw_details: 'Raw Details',
     field_is_empty_export_error: 'No fields available, unable to export',
     chart_symbolic_map: 'Symbolic map',
-    chart_stock_line: 'K line'
+    chart_stock_line: 'K line',
+    liquid_condition_style_tips: `Condition style settings, determine water wave chart interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], [30,70], [70,100]`
   },
   dataset: {
     scope_edit: 'only effective when editing',
