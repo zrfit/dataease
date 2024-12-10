@@ -2,6 +2,8 @@ package io.dataease.api.permissions.user.api;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
+import io.dataease.api.permissions.login.dto.MfaLoginDTO;
+import io.dataease.api.permissions.login.vo.MfaQrVO;
 import io.dataease.api.permissions.role.dto.UserRequest;
 import io.dataease.api.permissions.user.dto.*;
 import io.dataease.api.permissions.user.vo.*;
@@ -209,5 +211,20 @@ public interface UserApi {
     List<Long> getUserIdByName(String name);
 
     List<Map<String, Object>> listUserInfosByIds(List<Long> ids);
+
+    @GetMapping("/mfaQr")
+    MfaQrVO mfaQr();
+
+    @GetMapping("/mfabound")
+    Boolean mfaBound();
+
+    @PostMapping("/mfaBind")
+    void mfaBind(@RequestBody MfaLoginDTO dto);
+
+    @PostMapping("/mfaUnbind")
+    void mfaUnbind();
+
+    @PostMapping("/mfaRest/{id}")
+    void resetBind(@PathVariable("id") Long id);
 
 }
