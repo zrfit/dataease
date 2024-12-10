@@ -1676,13 +1676,13 @@ export default {
     font_family: 'font',
     letter_space: 'letter spacing',
     font_shadow: 'font shadow',
-    chart_area: 'area chart',
+    chart_area: 'Area chart',
     fix: 'fixed value',
     dynamic: 'dynamic value',
     gauge_size_field_delete: 'field in dynamic value has changed, please re-edit',
     chart_group: 'subcategory',
-    chart_bar_group: 'grouped bar chart',
-    chart_bar_group_stack: 'grouped stacked bar chart',
+    chart_bar_group: 'Grouped bar chart',
+    chart_bar_group_stack: 'Grouped stacked bar chart',
     field_dynamic: 'dynamic value',
     aggregation: 'aggregation method',
     filter_between: 'between',
@@ -1862,7 +1862,9 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     export_excel: 'Excel',
     export_excel_formatter: 'Excel(with Formatting)',
     export_raw_details: 'Raw Details',
-    field_is_empty_export_error: 'No fields available, unable to export'
+    field_is_empty_export_error: 'No fields available, unable to export',
+    chart_symbolic_map: 'Symbolic map',
+    chart_stock_line: 'K line'
   },
   dataset: {
     scope_edit: 'only effective when editing',

@@ -1824,7 +1824,9 @@ export default {
     export_excel: '导出Excel',
     export_excel_formatter: '导出Excel(带格式)',
     export_raw_details: '导出原始明细',
-    field_is_empty_export_error: '当前无字段，无法导出'
+    field_is_empty_export_error: '当前无字段，无法导出',
+    chart_symbolic_map: '符号地图',
+    chart_stock_line: 'K 线图'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
