@@ -20,6 +20,7 @@ import {
   onBeforeMount,
   provide,
   unref,
+  onBeforeUnmount,
   onMounted
 } from 'vue'
 import Icon from '@/components/icon-custom/src/Icon.vue'
@@ -181,6 +182,11 @@ const clearRemove = items => {
 
 onBeforeMount(() => {
   cacheId = route.query.id as unknown as string
+})
+
+onBeforeUnmount(() => {
+  view.value.tableId = ''
+  cacheId = ''
 })
 
 onMounted(() => {
