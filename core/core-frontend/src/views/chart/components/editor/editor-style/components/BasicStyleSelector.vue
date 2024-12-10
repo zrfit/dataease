@@ -518,7 +518,7 @@ onMounted(() => {
       </el-row>
       <div class="alpha-setting">
         <label class="alpha-label" :class="{ dark: 'dark' === themes }">
-          {{ t('chart.chart_map') + t('chart.map_pitch') }}
+          {{ t('chart.chart_map') + ' ' + t('chart.map_pitch') }}
         </label>
         <el-row style="flex: 1" :gutter="8">
           <el-col>
@@ -577,10 +577,10 @@ onMounted(() => {
           <el-form-item class="form-item" :class="'form-item-' + themes">
             <template #label>
               <span class="data-area-label">
-                <span style="margin-right: 4px">符号形状</span>
+                <span style="margin-right: 4px">{{ t('chart.symbolic_map_symbol_shape') }}</span>
                 <el-tooltip class="item" effect="dark" placement="bottom">
-                  <template v-if="state.basicStyleForm.mapSymbol === 'custom'" #content>
-                    <div>支持 1MB 以内的 SVG, JPG, JPEG, PNG 文件</div>
+                  <template #content>
+                    <div>{{ t('chart.symbolic_map_symbol_shape_tip') }}</div>
                   </template>
                   <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                     <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -646,7 +646,7 @@ onMounted(() => {
       </div>
       <div class="alpha-setting">
         <label class="alpha-label" :class="{ dark: 'dark' === themes }">
-          {{ t('chart.size') }}区间
+          {{ t('chart.size_range') }}
         </label>
         <el-row style="flex: 1">
           <el-col :span="11">
@@ -810,7 +810,7 @@ onMounted(() => {
           <el-form-item
             class="form-item"
             :class="'form-item-' + themes"
-            :label="t('chart.central_point') + t('chart.longitude')"
+            :label="t('chart.central_point') + ' ' + t('chart.longitude')"
           >
             <el-input-number
               controls-position="right"
@@ -826,7 +826,7 @@ onMounted(() => {
           <el-form-item
             class="form-item"
             :class="'form-item-' + themes"
-            :label="t('chart.central_point') + t('chart.latitude')"
+            :label="t('chart.central_point') + ' ' + t('chart.latitude')"
           >
             <el-input-number
               controls-position="right"

@@ -539,7 +539,7 @@ watch(
           <el-collapse-item
             :effect="themes"
             name="flowMapLineSelector"
-            title="线条"
+            :title="t('chart.line')"
             v-if="showProperties('flow-map-line-selector')"
           >
             <flow-map-line-selector
