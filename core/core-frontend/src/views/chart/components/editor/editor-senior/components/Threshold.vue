@@ -416,9 +416,7 @@ init()
           <el-tooltip effect="dark" placement="bottom">
             <el-icon style="margin-left: 10px"><InfoFilled /></el-icon>
             <template #content>
-              条件样式设置，决定水波图颜色，为空则不开启阈值，范围(0-100)，逐级递增
-              <br />
-              例如：输入 30,70；表示：分为3段，分别为[0,30],(30,70],(70,100]
+              <span v-html="t('chart.liquid_condition_style_tips')"></span>
             </template>
           </el-tooltip>
         </el-form-item>
@@ -503,7 +501,7 @@ init()
               :class="{ 'set-text-info-dark': themes === 'dark' }"
               v-if="state.thresholdForm?.labelThreshold?.length > 0"
             >
-              已设置
+              {{ t('visualization.already_setting') }}
             </span>
             <el-button
               :title="t('chart.edit')"
@@ -603,7 +601,7 @@ init()
               :class="{ 'set-text-info-dark': themes === 'dark' }"
               v-if="state.thresholdForm?.tableThreshold?.length > 0"
             >
-              已设置
+              {{ t('visualization.already_setting') }}
             </span>
             <el-button
               :title="t('chart.edit')"
