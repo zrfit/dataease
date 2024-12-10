@@ -1829,7 +1829,15 @@ export default {
     chart_symbolic_map: '符號地圖',
     chart_stock_line: 'K 線圖',
     liquid_condition_style_tips: `條件樣式設定，決定水波圖區間顏色，為空則不啟用閾值，範圍(0-100)，逐級遞增<br/>例如：輸入 30,70；表示：分為3段，分別為[0,30],[30,70],[70,100]`,
-    conversion_rate: '轉換率'
+    conversion_rate: '轉換率',
+    show_extremum: '顯示極值',
+    left_axis: '左軸',
+    right_axis: '右軸',
+    no_other_configurable_properties: '無其他可配置屬性',
+    custom_label_content_tip: "可以使用 ${'{'}fieldName{'}'} 的形式讀取欄位值（不支援換行）",
+    number_of_scales_tip: '期望的座標軸刻度數量，非最終結果',
+    assist_line_settings: '輔助線設置',
+    invalid_field: '無效欄位'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

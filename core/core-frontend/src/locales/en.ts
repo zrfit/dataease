@@ -1869,7 +1869,16 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     chart_symbolic_map: 'Symbolic map',
     chart_stock_line: 'K line',
     liquid_condition_style_tips: `Condition style settings, determine water wave chart interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], [30,70], [70,100]`,
-    conversion_rate: 'Conversion rate'
+    conversion_rate: 'Conversion rate',
+    show_extremum: 'Show extremum',
+    left_axis: 'Left axis',
+    right_axis: 'Right axis',
+    no_other_configurable_properties: 'No other configurable properties',
+    custom_label_content_tip:
+      "Can read field values in the form of ${'{'}fieldName{'}'} (does not support line breaks) ",
+    number_of_scales_tip: 'Expected number of axis ticks, not the final result',
+    assist_line_settings: 'Auxiliary line settings',
+    invalid_field: 'Invalid field'
   },
   dataset: {
     scope_edit: 'only effective when editing',

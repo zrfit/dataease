@@ -41,7 +41,7 @@ const yAxisTypes = [
 const state = reactive({
   lineArr: [],
   lineObj: {
-    name: '辅助线',
+    name: t('chart.assist_line'),
     field: '0', // 固定值
     fieldId: '',
     summary: 'avg',

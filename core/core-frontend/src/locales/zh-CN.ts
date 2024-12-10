@@ -1831,7 +1831,15 @@ export default {
     chart_symbolic_map: '符号地图',
     chart_stock_line: 'K 线图',
     liquid_condition_style_tips: `条件样式设置，决定水波图颜色，为空则不开启阈值，范围(0-100)，逐级递增<br/>例如：输入 30,70；表示：分为3段，分别为[0,30],[30,70],[70,100]`,
-    conversion_rate: '转化率'
+    conversion_rate: '转化率',
+    show_extremum: '显示最值',
+    left_axis: '左轴',
+    right_axis: '右轴',
+    no_other_configurable_properties: '无其他可配置属性',
+    custom_label_content_tip: "可以${'{'}fieldName{'}'}的形式读取字段值（不支持换行）",
+    number_of_scales_tip: '期望的坐标轴刻度数量，非最终结果',
+    assist_line_settings: '辅助线设置',
+    invalid_field: '无效字段'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
