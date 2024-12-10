@@ -359,6 +359,8 @@ declare interface ChartTableHeaderAttr {
    * 表头背景颜色
    */
   tableHeaderBgColor: string
+  tableHeaderCornerBgColor: string
+  tableHeaderColBgColor: string
   /**
    * 表头字体大小
    */
