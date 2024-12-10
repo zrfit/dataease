@@ -4174,7 +4174,7 @@ export default {
     bind_ready: '已绑定',
     bind_unready: '未绑定',
     bind_title: '绑定 MFA 多因子认证',
-    enable_siwtch_tips: '管理员已设置所有用户开启 MFA 认证',
+    enable_switch_tips: '管理员已设置所有用户开启 MFA 认证',
     reset_key_tips: '重置 FMA'
   }
 }
