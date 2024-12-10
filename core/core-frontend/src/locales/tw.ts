@@ -1837,7 +1837,8 @@ export default {
     custom_label_content_tip: "可以使用 ${'{'}fieldName{'}'} 的形式讀取欄位值（不支援換行）",
     number_of_scales_tip: '期望的座標軸刻度數量，非最終結果',
     assist_line_settings: '輔助線設置',
-    invalid_field: '無效欄位'
+    invalid_field: '無效欄位',
+    k_line_yaxis_tip: '開盤價-收盤價-最低價-最高價'
   },
   dataset: {
     scope_edit: '僅編輯時生效',
