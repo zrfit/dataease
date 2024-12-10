@@ -65,7 +65,7 @@ export function getCustomTheme(chart: Chart): S2Theme {
   )
   const scrollBarColor = DEFAULT_BASIC_STYLE.tableScrollBarColor
   const scrollBarHoverColor = resetRgbOpacity(scrollBarColor, 3)
-  const textFontFamily = chart.fontFamily ? chart.fontFamily : FONT_FAMILY
+  const textFontFamily = chart.fontFamily && chart.fontFamily !== 'inherit' ? chart.fontFamily : FONT_FAMILY
   const theme: S2Theme = {
     background: {
       color: '#00000000'
