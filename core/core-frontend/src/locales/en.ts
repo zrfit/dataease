@@ -1908,7 +1908,9 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     symbolic_map_symbol_shape: 'Symbol Shape',
     symbolic_map_symbol_shape_tip:
       'When Customizing, Supports SVG, JPG, JPEG, and PNG files up to 1MB',
-    size_range: 'Size Range'
+    size_range: 'Size Range',
+    x_axis_constant_line: 'X-axis Constant Line',
+    y_axis_constant_line: 'Y-axis Constant Line'
   },
   dataset: {
     scope_edit: 'only effective when editing',
