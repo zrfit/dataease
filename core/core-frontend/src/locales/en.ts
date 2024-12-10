@@ -203,7 +203,7 @@ export default {
     select_data_source: 'Select Datasource',
     invalid_data_source: 'Invalid Datasource',
     be_reported_incorrectly:
-      "You are doing cross-data source table association, please make sure to use calcite'S standard syntax and functions,otherwise it will cause dataset errors",
+      "You are doing cross-data source table association, please make sure to use calcite's standard syntax and functions,otherwise it will cause dataset errors",
     refresh_data: 'Refresh data',
     convert_to_indicator: 'Convert to indicator',
     convert_to_dimension: 'Convert to dimension',
@@ -218,7 +218,7 @@ export default {
     successfully_created: 'Created successfully',
     continue_to_create: 'Continue to create',
     data_source_list: 'Return to Datasource list',
-    prompts_next_time: "Don'T prompt next time",
+    prompts_next_time: "Don't prompt next time",
     also_want_to: 'You may also want',
     or_large_screen: 'Prepare for the next dashboard or large screen',
     go_to_create: 'Go to create',
@@ -525,7 +525,7 @@ export default {
     authentication_settings: 'Authentication settings',
     be_turned_on: 'After the test connection is valid, it can be turned on',
     platform_information_first: 'Please save the platform information first',
-    for_example: "Such as: {'{'}'Account':'uid','Name':'Cn','Email':'Mail'{'}'}",
+    for_example: "Such as: {'{'}'account':'uid','name':'cn','email':'mail'{'}'}",
     in_json_format: 'Please enter json format',
     ldap_settings: 'LDAP settings',
     ldap_address: 'LDAP address',
@@ -548,7 +548,7 @@ export default {
     callback_address: 'Callback address',
     field_mapping: 'Field Mapping',
     oauth2name:
-      "For example: {'{'}'Account': 'Oauth2Account', 'Name': 'Oauth2Name', 'Email': 'Email'{'}'}",
+      "For example: {'{'}'account': 'oauth2Account', 'name': 'oauth2Name', 'email': 'email'{'}'}",
     oidc_settings: 'OIDC Settings',
     test_mail_recipient: 'Only used as a test email recipient',
     to_enable_ssl: 'If the SMTP port is 465, you usually need to enable SSL',
@@ -1001,7 +1001,7 @@ export default {
     value: 'Value',
     data_path: 'Extract data',
     data_path_desc: 'Please use JsonPath to fill in the data path',
-    body_form_data: 'Form-data',
+    body_form_data: 'form-data',
     body_x_www_from_urlencoded: 'x-www-form-urlencoded',
     body_json: 'json',
     body_xml: 'xml',
@@ -1724,7 +1724,7 @@ export default {
     axis_tip:
       'Minimum value, maximum value, and interval are all numeric types; if not filled in, this item will be considered automatic. <br/>Please make sure that the filled value can be calculated correctly, otherwise the axis value will not be displayed normally. ',
     format_tip: `The template variables are {a}, {b}, {c}, {d}, which represent the series name, data name, data value, etc. <br>
-When the trigger position is 'Coordinate axis', there will be multiple series of data. At this time, the index of the series can be represented by {a0}, {a1}, {a2} followed by an index. <br>
+When the trigger position is 'coordinate axis', there will be multiple series of data. At this time, the index of the series can be represented by {a0}, {a1}, {a2} followed by an index. <br>
 The meanings of {a}, {b}, {c}, {d} in different chart types are different. The variables {a}, {b}, {c}, {d} represent the data meanings in different chart types: <br><br>
 Line (area) chart, column (bar) chart, dashboard: {a} (series name), {b} (category value), {c} (value) <br>
 Pie chart, funnel chart: {a} (series name), {b} (data item name), {c} (value), {d} (percentage) <br>
@@ -2351,7 +2351,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     stop: 'Stop',
     first_login_tips: 'You are using the initial password, remember to change it',
     roger_that: 'Got it',
-    donot_noti: "Don'T prompt again",
+    donot_noti: "Don't prompt again",
     apply: 'Apply',
     search: 'Search',
     folder: 'Directory',
@@ -3340,7 +3340,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     show_title: 'Title',
     default_settings: 'Default Settings',
     choose_background: 'Choose Component Background',
-    choose_background_tips: "The component'S own background will overwrite the current setting",
+    choose_background_tips: "The component's own background will overwrite the current setting",
     setting_background: 'Set Background',
     setting_jump: 'Jump Setting',
     select_view: 'Please select a chart',
@@ -3474,10 +3474,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     back_parent: 'Back to the previous level'
   },
   plugin: {
-    'Flag-all': 'All',
-    'Flag-ds': 'Datasource plug-in',
-    'Flag-view': 'Chart plug-in',
-    'Flag-df': 'Data reporting plug-in'
+    'flag-all': 'All',
+    'flag-ds': 'Datasource plug-in',
+    'flag-view': 'Chart plug-in',
+    'flag-df': 'Data reporting plug-in'
   },
   online_map: {
     geometry: 'Geographic information',
@@ -3913,7 +3913,7 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     last_status_success: 'Success'
   },
   variable: {
-    give_up: 'S',
+    give_up: 's',
     save_apply: 'Save and apply'
   },
   data_fill: {
@@ -4233,8 +4233,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     bar: 'Bar chart',
     pie: 'Pie chart',
     sorry:
-      "Sorry, I can'T answer this question based on the known information.Please rephrase your question or provide more information~",
-    hello1: "Hello, I'M Copilot,I 'M happy to serve you~",
+      "Sorry, I can't answer this question based on the known information.Please rephrase your question or provide more information~",
+    hello1: "Hello, I'm Copilot,I'm happy to serve you~",
     answer: 'Answering',
     example: 'You can ask me: Pie chart of sales share of each sales department in 2020',
     switch_chart: 'Switch chart type',
