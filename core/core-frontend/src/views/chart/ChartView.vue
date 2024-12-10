@@ -28,6 +28,7 @@ const ScreenPanel = defineAsyncComponent(() => import('@/views/data-visualizatio
 const DashboardPanel = defineAsyncComponent(
   () => import('@/views/dashboard/DashboardPreviewShow.vue')
 )
+const Copilot = defineAsyncComponent(() => import('@/views/copilot/index.vue'))
 
 const AsyncXpackComponent = defineAsyncComponent(() => import('@/components/plugin/src/index.vue'))
 
@@ -39,7 +40,8 @@ const componentMap = {
   Dataset,
   Datasource,
   ScreenPanel,
-  DashboardPanel
+  DashboardPanel,
+  Copilot
 }
 const iframeStyle = ref(null)
 const setStyle = debounce(() => {
