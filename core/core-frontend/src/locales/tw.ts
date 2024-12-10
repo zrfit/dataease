@@ -1822,7 +1822,9 @@ export default {
     export_excel: '導出Excel',
     export_excel_formatter: '導出Excel(帶格式)',
     export_raw_details: '導出原始明細',
-    field_is_empty_export_error: '目前無欄位，無法匯出'
+    field_is_empty_export_error: '目前無欄位，無法匯出',
+    chart_symbolic_map: '符號地圖',
+    chart_stock_line: 'K 線圖'
   },
   dataset: {
     scope_edit: '僅編輯時生效',

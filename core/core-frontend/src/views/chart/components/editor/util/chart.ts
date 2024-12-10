@@ -1361,7 +1361,7 @@ export const CHART_TYPE_CONFIGS = [
         render: 'antv',
         category: 'trend',
         value: 'stock-line',
-        title: 'K 线图',
+        title: t('chart.chart_stock_line'),
         icon: 'stock-line'
       }
     ]
@@ -1459,7 +1459,7 @@ export const CHART_TYPE_CONFIGS = [
         render: 'antv',
         category: 'map',
         value: 'symbolic-map',
-        title: '符号地图',
+        title: t('chart.chart_symbolic_map'),
         icon: 'symbolic-map'
       }
     ]
