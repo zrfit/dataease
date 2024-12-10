@@ -1865,7 +1865,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     field_is_empty_export_error: 'No fields available, unable to export',
     chart_symbolic_map: 'Symbolic map',
     chart_stock_line: 'K line',
-    liquid_condition_style_tips: `Condition style settings, determine water wave chart interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], [30,70], [70,100]`
+    liquid_condition_style_tips: `Condition style settings, determine water wave chart interval colors, leave blank to disable thresholds, range (0-100), incremental levels<br>Example: input 30,70; this means: divided into 3 segments, namely [0,30], [30,70], [70,100]`,
+    conversion_rate: 'Conversion rate'
   },
   dataset: {
     scope_edit: 'only effective when editing',

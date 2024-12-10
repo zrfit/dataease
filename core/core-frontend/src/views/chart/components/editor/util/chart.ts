@@ -336,7 +336,7 @@ export const DEFAULT_LABEL: ChartLabelAttr = {
   conversionTag: {
     show: false,
     precision: 2,
-    text: '转化率'
+    text: t('chart.conversion_rate')
   },
   showTotal: false,
   totalFontSize: 12,
@@ -374,8 +374,8 @@ export const DEFAULT_TABLE_TOTAL: ChartTableTotalAttr = {
     showSubTotals: true,
     reverseLayout: false,
     reverseSubLayout: false,
-    label: '总计',
-    subLabel: '小计',
+    label: t('chart.total_show'),
+    subLabel: t('chart.sub_total_show'),
     subTotalsDimensions: [],
     calcTotals: {
       aggregation: 'SUM',
@@ -393,8 +393,8 @@ export const DEFAULT_TABLE_TOTAL: ChartTableTotalAttr = {
     showSubTotals: true,
     reverseLayout: false,
     reverseSubLayout: false,
-    label: '总计',
-    subLabel: '小计',
+    label: t('chart.total_show'),
+    subLabel: t('chart.sub_total_show'),
     subTotalsDimensions: [],
     calcTotals: {
       aggregation: 'SUM',
@@ -409,7 +409,7 @@ export const DEFAULT_TABLE_TOTAL: ChartTableTotalAttr = {
   }
 }
 export const DEFAULT_TABLE_HEADER: ChartTableHeaderAttr = {
-  indexLabel: '序号',
+  indexLabel: t('relation.index'),
   showIndex: false,
   tableHeaderAlign: 'left',
   tableHeaderBgColor: '#6D9A49',
@@ -1536,7 +1536,7 @@ export const CHART_TYPE_CONFIGS = [
   },
   {
     category: 'other',
-    title: '其他',
+    title: t('datasource.other'),
     display: 'hidden',
     details: [
       {
@@ -1614,11 +1614,11 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
   tableLayoutMode: 'grid',
   calcTopN: false,
   topN: 5,
-  topNLabel: '其他',
+  topNLabel: t('datasource.other'),
   gaugeAxisLine: true,
   gaugePercentLabel: true,
   showSummary: false,
-  summaryLabel: '总计',
+  summaryLabel: t('chart.total_show'),
   seriesColor: [],
   layout: 'horizontal',
   mapSymbolSizeMin: 4,
@@ -1642,7 +1642,7 @@ export const DEFAULT_BASIC_STYLE: ChartBasicStyle = {
 
 export const BASE_VIEW_CONFIG = {
   id: '', // 图表id
-  title: '图表',
+  title: t('data_set.view'),
   sceneId: 0, // 仪表板id
   tableId: '', // 数据集id
   type: 'bar',
