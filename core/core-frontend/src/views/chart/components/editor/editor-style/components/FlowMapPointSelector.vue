@@ -95,7 +95,11 @@ onMounted(() => {
   <el-form ref="pointForm" :model="state.pointForm" size="small" label-position="top">
     <div style="padding-bottom: 8px">
       <el-space>
-        <el-form-item class="form-item" :class="'form-item-' + themes" label="标注点文本">
+        <el-form-item
+          class="form-item"
+          :class="'form-item-' + themes"
+          :label="t('chart.point_text')"
+        >
           <el-color-picker
             :effect="themes"
             size="default"
@@ -130,7 +134,11 @@ onMounted(() => {
       </el-space>
     </div>
     <el-space>
-      <el-form-item class="form-item" :class="'form-item-' + themes" label="标注点气泡颜色">
+      <el-form-item
+        class="form-item"
+        :class="'form-item-' + themes"
+        :label="t('chart.point_bubble_color')"
+      >
         <el-color-picker
           :effect="themes"
           size="default"
@@ -143,7 +151,9 @@ onMounted(() => {
       </el-form-item>
     </el-space>
     <div class="alpha-setting">
-      <label class="alpha-label" :class="{ dark: 'dark' === themes }"> 标注点气泡大小 </label>
+      <label class="alpha-label" :class="{ dark: 'dark' === themes }">
+        {{ t('chart.point_bubble_size') }}
+      </label>
       <el-row style="flex: 1">
         <el-col>
           <el-form-item class="form-item alpha-slider" :class="'form-item-' + themes">

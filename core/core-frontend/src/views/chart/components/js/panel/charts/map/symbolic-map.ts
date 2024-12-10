@@ -56,12 +56,12 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
   axis: AxisType[] = ['xAxis', 'xAxisExt', 'extBubble', 'filter', 'extLabel', 'extTooltip']
   axisConfig: AxisConfig = {
     xAxis: {
-      name: `经纬度 / ${t('chart.dimension')}`,
+      name: `${t('chart.symbolic_map_coordinates')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 2
     },
     xAxisExt: {
-      name: `颜色 / ${t('chart.dimension')}`,
+      name: `${t('chart.color')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 1,
       allowEmpty: true
@@ -70,8 +70,7 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
       name: `${t('chart.bubble_size')} / ${t('chart.quota')}`,
       type: 'q',
       limit: 1,
-      tooltip:
-        '该指标生效时，样式基础样式中的大小属性将失效，同时可在样式基础样式中的大小区间配置大小区间',
+      tooltip: t('chart.symbolic_map_bubble_size_tip'),
       allowEmpty: true
     }
   }

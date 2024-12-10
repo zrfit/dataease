@@ -1879,7 +1879,36 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     number_of_scales_tip: 'Expected number of axis ticks, not the final result',
     assist_line_settings: 'Auxiliary line settings',
     invalid_field: 'Invalid field',
-    k_line_yaxis_tip: 'Open Price-Close Price-Low Price-High Price'
+    k_line_yaxis_tip: 'Open Price-Close Price-Low Price-High Price',
+    carousel_enable: 'Enable Carousel',
+    carousel_stay_time: 'Stay Duration (seconds)',
+    carousel_interval: 'Carousel Interval (seconds)',
+    custom_tooltip_content_tip:
+      "Can read field values in the form of ${'{'}fieldName{'}'} (Support HTML) ",
+    legend_range_division: 'Legend range division',
+    legend_equal_range: 'Equal range',
+    legend_custom_range: 'Custom range',
+    start_coordinates: 'Start coordinates',
+    end_coordinates: 'End coordinates',
+    start_name: 'Start name',
+    end_name: 'End name',
+    flow_map_line_width: 'Line Width',
+    flow_map_line_width_tip:
+      'When this metric is active, the line width property configured in the style will be overridden',
+    symbolic_map_coordinates: 'Coordinates',
+    symbolic_map_bubble_size_tip:
+      'When this metric is active, the size property configured in the base style will be overridden. Additionally, you can configure a size range in the base style',
+    point_text: 'Point Text',
+    point_bubble_color: 'Point Bubble Color',
+    point_bubble_size: 'Point Bubble Size',
+    animation_type: 'Animation Type',
+    water_wave: 'Water Wave',
+    animation_speed: 'Animation Speed',
+    wave_rings: 'Wave Rings',
+    symbolic_map_symbol_shape: 'Symbol Shape',
+    symbolic_map_symbol_shape_tip:
+      'When Customizing, Supports SVG, JPG, JPEG, and PNG files up to 1MB',
+    size_range: 'Size Range'
   },
   dataset: {
     scope_edit: 'only effective when editing',
