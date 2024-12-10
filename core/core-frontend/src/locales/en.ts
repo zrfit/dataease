@@ -1658,6 +1658,9 @@ export default {
     field: 'Field',
     textColor: 'Text',
     backgroundColor: 'Background',
+    rowBackgroundColor: 'Row Background',
+    colBackgroundColor: 'Column Background',
+    cornerBackgroundColor: 'Corner Background',
     field_can_not_empty: 'Field cannot be empty',
     conditions_can_not_empty:
       'Field conditions cannot be empty. If there are no conditions, please delete the field directly',

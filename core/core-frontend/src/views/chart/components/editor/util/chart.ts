@@ -41,7 +41,9 @@ export const DEFAULT_COLOR_CASE: DeepPartial<ChartAttr> = {
     valueFontColor: '#5470c6'
   },
   tableHeader: {
-    tableHeaderBgColor: '#6D9A49',
+    tableHeaderBgColor: '#1E90FF',
+    tableHeaderCornerBgColor: '#1E90FF',
+    tableHeaderColBgColor: '#1E90FF',
     tableHeaderFontColor: '#000000'
   },
   tableCell: {
@@ -90,6 +92,8 @@ export const DEFAULT_COLOR_CASE_LIGHT: DeepPartial<ChartAttr> = {
   },
   tableHeader: {
     tableHeaderBgColor: '#1E90FF',
+    tableHeaderCornerBgColor: '#1E90FF',
+    tableHeaderColBgColor: '#1E90FF',
     tableHeaderFontColor: '#000000'
   },
   tableCell: {
@@ -137,6 +141,8 @@ export const DEFAULT_COLOR_CASE_DARK: DeepPartial<ChartAttr> = {
   },
   tableHeader: {
     tableHeaderBgColor: '#1E90FF',
+    tableHeaderCornerBgColor: '#1E90FF',
+    tableHeaderColBgColor: '#1E90FF',
     tableHeaderFontColor: '#FFFFFF'
   },
   tableCell: {
@@ -412,7 +418,9 @@ export const DEFAULT_TABLE_HEADER: ChartTableHeaderAttr = {
   indexLabel: t('relation.index'),
   showIndex: false,
   tableHeaderAlign: 'left',
-  tableHeaderBgColor: '#6D9A49',
+  tableHeaderBgColor: '#1E90FF',
+  tableHeaderCornerBgColor: '#1E90FF',
+  tableHeaderColBgColor: '#1E90FF',
   tableHeaderFontColor: '#000000',
   tableTitleFontSize: 12,
   tableTitleHeight: 36,
