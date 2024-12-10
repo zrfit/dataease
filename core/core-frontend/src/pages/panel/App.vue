@@ -23,6 +23,8 @@ const DashboardPanel = defineAsyncComponent(
   () => import('@/views/dashboard/DashboardPreviewShow.vue')
 )
 
+const Copilot = defineAsyncComponent(() => import('@/views/copilot/index.vue'))
+
 const Preview = defineAsyncComponent(() => import('@/views/data-visualization/PreviewCanvas.vue'))
 const DashboardEmpty = defineAsyncComponent(() => import('@/views/mobile/panel/DashboardEmpty.vue'))
 
@@ -45,7 +47,8 @@ const componentMap = {
   ScreenPanel,
   DashboardPanel,
   DatasetEditor,
-  DashboardEmpty
+  DashboardEmpty,
+  Copilot
 }
 
 const isDataFilling = ref(false)
