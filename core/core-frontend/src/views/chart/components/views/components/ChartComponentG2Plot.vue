@@ -232,7 +232,7 @@ const renderChart = async (view, callback?) => {
   const chart = deepCopy({
     ...defaultsDeep(view, cloneDeep(BASE_VIEW_CONFIG)),
     data: chartData.value,
-    fontFamily: props.fontFamily
+    ...(props.fontFamily && props.fontFamily !== 'inherit' ? { fontFamily: props.fontFamily } : {})
   })
   const chartView = chartViewManager.getChartView(view.render, view.type)
   recursionTransObj(customAttrTrans, chart.customAttr, scale.value, terminal.value)
