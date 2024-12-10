@@ -1878,7 +1878,8 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
       "Can read field values in the form of ${'{'}fieldName{'}'} (does not support line breaks) ",
     number_of_scales_tip: 'Expected number of axis ticks, not the final result',
     assist_line_settings: 'Auxiliary line settings',
-    invalid_field: 'Invalid field'
+    invalid_field: 'Invalid field',
+    k_line_yaxis_tip: 'Open Price-Close Price-Low Price-High Price'
   },
   dataset: {
     scope_edit: 'only effective when editing',

@@ -1839,7 +1839,8 @@ export default {
     custom_label_content_tip: "可以${'{'}fieldName{'}'}的形式读取字段值（不支持换行）",
     number_of_scales_tip: '期望的坐标轴刻度数量，非最终结果',
     assist_line_settings: '辅助线设置',
-    invalid_field: '无效字段'
+    invalid_field: '无效字段',
+    k_line_yaxis_tip: '开盘价-收盘价-最低价-最高价'
   },
   dataset: {
     scope_edit: '仅编辑时生效',
