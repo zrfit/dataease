@@ -29,17 +29,6 @@ const badgeCount = ref('0')
 const permissionStore = usePermissionStore()
 const appearanceStore = useAppearanceStoreWithOut()
 const navigateBg = computed(() => appearanceStore.getNavigateBg)
-const help = computed(() => appearanceStore.getHelp)
-const cardInfoList = [
-  { name: '帮助文档', url: help.value || 'https://dataease.io/docs/v2/', icon: topHelpDoc },
-  { name: '产品论坛', url: 'https://bbs.fit2cloud.com/c/de/6', icon: topProductBbs },
-  {
-    name: '技术博客',
-    url: 'https://blog.fit2cloud.com/categories/dataease',
-    icon: topTechnology
-  },
-  { name: '企业版试用', url: 'https://jinshuju.net/f/TK5TTd', icon: topEnterpriseTrial }
-]
 const { push, resolve } = useRouter()
 const redirectUser = () => {
   const sysMenu = resolve('/sys-setting')
@@ -135,29 +124,6 @@ onMounted(() => {
           ></TopDesktopCard>
         </div>
         <div class="border-top">
-          <el-popover
-            :teleported="false"
-            popper-class="popper-class_ai-copilot"
-            placement="left-start"
-            :width="224"
-            trigger="click"
-            ><template #default>
-              <div style="display: flex; padding: 8px; flex-wrap: wrap">
-                <top-doc-card
-                  :span="12"
-                  v-for="(item, index) in cardInfoList"
-                  :key="index"
-                  :card-info="item"
-                ></top-doc-card>
-              </div>
-            </template>
-            <template #reference
-              ><div class="item-select_info">
-                {{ $t('commons.help_center') }}
-                <el-icon style="font-size: 16px">
-                  <Icon><icon_right_outlined></icon_right_outlined></Icon>
-                </el-icon></div></template
-          ></el-popover>
           <el-popover
             :teleported="false"
             popper-class="popper-class_ai-copilot"
