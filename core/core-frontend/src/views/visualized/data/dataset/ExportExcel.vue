@@ -243,12 +243,12 @@ const callbackExportSuc = () => {
 const downLoadAll = () => {
   if (multipleSelection.value.length === 0) {
     tableData.value.forEach(item => {
-      window.open(PATH_URL + '/exportCenter/download/' + item.id, openType)
+      window.open(PATH_URL + '/exportCenter/download/' + item.id)
     })
     return
   }
   multipleSelection.value.map(ele => {
-    window.open(PATH_URL + '/exportCenter/download/' + ele.id, openType)
+    window.open(PATH_URL + '/exportCenter/download/' + ele.id)
   })
 }
 const showMsg = item => {
