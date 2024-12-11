@@ -45,6 +45,7 @@ export default {
       if (!prefix.endsWith('/')) {
         prefix += '/'
       }
+      console.log('newSockJS')
       const socket = new SockJS(prefix + 'websocket?userId=' + wsCache.get('user.uid'))
       stompClient = Stomp.over(socket)
       const heads = {
