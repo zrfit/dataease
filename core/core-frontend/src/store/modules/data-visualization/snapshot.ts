@@ -94,6 +94,8 @@ export const snapshotStore = defineStore('snapshot', {
         this.snapshotIndex--
         const componentSnapshot =
           deepCopy(this.snapshotData[this.snapshotIndex]) || getDefaultCanvasInfo()
+        componentSnapshot.dvInfo.id = dvInfo.value.id
+        componentSnapshot.dvInfo.pid = dvInfo.value.pid
         // undo 是当前没有记录
         this.snapshotPublish(componentSnapshot)
         this.styleChangeTimes++
@@ -104,6 +106,8 @@ export const snapshotStore = defineStore('snapshot', {
       if (this.snapshotIndex < this.snapshotData.length - 1) {
         this.snapshotIndex++
         const snapshotInfo = deepCopy(this.snapshotData[this.snapshotIndex])
+        snapshotInfo.dvInfo.id = dvInfo.value.id
+        snapshotInfo.dvInfo.pid = dvInfo.value.pid
         this.snapshotPublish(snapshotInfo)
         this.styleChangeTimes++
       }
@@ -114,7 +118,6 @@ export const snapshotStore = defineStore('snapshot', {
       dvMainStore.setCanvasViewInfo(snapshotInfo.canvasViewInfo)
       dvMainStore.setNowPanelJumpInfoInner(snapshotInfo.nowPanelJumpInfo)
       dvMainStore.setNowPanelTrackInfo(snapshotInfo.nowPanelTrackInfo)
-      dvMainStore.updateCurDvInfo(snapshotInfo.dvInfo)
       const curCacheViewIdInfo = deepCopy(this.cacheViewIdInfo)
       this.cacheViewIdInfo = snapshotInfo.cacheViewIdInfo
 
