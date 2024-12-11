@@ -12,11 +12,13 @@ import io.dataease.api.dataset.union.DatasetGroupInfoDTO;
 import io.dataease.api.dataset.union.UnionDTO;
 import io.dataease.api.export.BaseExportApi;
 import io.dataease.api.permissions.dataset.dto.DataSetRowPermissionsTreeDTO;
+import io.dataease.api.permissions.user.vo.UserFormVO;
 import io.dataease.api.xpack.dataFilling.DataFillingApi;
 import io.dataease.api.xpack.dataFilling.dto.DataFillFormTableDataRequest;
 import io.dataease.auth.bo.TokenUserBO;
 import io.dataease.chart.dao.auto.mapper.CoreChartViewMapper;
 import io.dataease.chart.server.ChartDataServer;
+import io.dataease.commons.utils.ExcelWatermarkUtils;
 import io.dataease.dataset.dao.auto.entity.CoreDatasetGroup;
 import io.dataease.dataset.dao.auto.mapper.CoreDatasetGroupMapper;
 import io.dataease.dataset.manage.*;
@@ -49,9 +51,13 @@ import io.dataease.model.ExportTaskDTO;
 import io.dataease.system.manage.CoreUserManage;
 import io.dataease.system.manage.SysParameterManage;
 import io.dataease.utils.*;
+import io.dataease.visualization.dao.auto.entity.VisualizationWatermark;
+import io.dataease.visualization.dao.auto.mapper.VisualizationWatermarkMapper;
+import io.dataease.visualization.dto.WatermarkContentDTO;
 import io.dataease.visualization.server.DataVisualizationServer;
 import io.dataease.websocket.WsMessage;
 import io.dataease.websocket.WsService;
+import io.dataease.xpack.permissions.user.manage.UserPageManage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,6 +66,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -100,7 +107,12 @@ public class ExportCenterManage implements BaseExportApi {
     private int core;
     @Value("${dataease.export.max.size:10}")
     private int max;
+    @Resource
+    private VisualizationWatermarkMapper watermarkMapper;
 
+
+    @Resource(name = "userPageManage")
+    private UserPageManage userPageManage;
 
     private final static String DATA_URL_TITLE = "data:image/jpeg;base64,";
     private static final String exportData_path = "/opt/dataease2.0/data/exportData/";
@@ -644,7 +656,7 @@ public class ExportCenterManage implements BaseExportApi {
             try {
                 exportTask.setExportStatus("IN_PROGRESS");
                 exportTaskMapper.updateById(exportTask);
-                Workbook wb = new SXSSFWorkbook();
+                XSSFWorkbook wb = new XSSFWorkbook();
                 CellStyle cellStyle = wb.createCellStyle();
                 Font font = wb.createFont();
                 font.setFontHeightInPoints((short) 12);
@@ -683,12 +695,22 @@ public class ExportCenterManage implements BaseExportApi {
                 } else {
                     downloadNotTableInfoData(request, wb);
                 }
-
+                VisualizationWatermark watermark = watermarkMapper.selectById("system_default");
+                WatermarkContentDTO watermarkContent = JsonUtil.parseObject(watermark.getSettingContent(), WatermarkContentDTO.class);
+                if (watermarkContent.getExcelEnable()) {
+                    UserFormVO userInfo = userPageManage.queryForm(AuthUtils.getUser().getUserId());
+                    // 在主逻辑中添加水印
+                    int watermarkPictureIdx = ExcelWatermarkUtils.addWatermarkImage(wb, watermarkContent,userInfo); // 生成水印图片并获取 ID
+                    for (Sheet sheet : wb) {
+                        ExcelWatermarkUtils.addWatermarkToSheet(sheet, wb, watermarkPictureIdx); // 为每个 Sheet 添加水印
+                    }
+                }
+                SXSSFWorkbook sxssfWorkbook = new SXSSFWorkbook(wb);
                 try (FileOutputStream outputStream = new FileOutputStream(dataPath + "/" + exportTask.getId() + ".xlsx")) {
-                    wb.write(outputStream);
+                    sxssfWorkbook.write(outputStream);
                     outputStream.flush();
                 }
-                wb.close();
+                sxssfWorkbook.close();
                 exportTask.setExportProgress("100");
                 exportTask.setExportStatus("SUCCESS");
                 setFileSize(dataPath + "/" + exportTask.getId() + ".xlsx", exportTask);
