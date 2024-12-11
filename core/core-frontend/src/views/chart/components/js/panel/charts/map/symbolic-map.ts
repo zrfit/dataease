@@ -25,6 +25,7 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
     'background-overall-component',
     'border-style',
     'basic-style-selector',
+    'symbolic-style-selector',
     'title-selector',
     'label-selector',
     'tooltip-selector'
@@ -35,13 +36,13 @@ export class SymbolicMap extends L7ChartView<Scene, L7Config> {
       'colors',
       'alpha',
       'mapBaseStyle',
-      'symbolicMapStyle',
       'zoom',
       'showLabel',
       'autoFit',
       'mapCenter',
       'zoomLevel'
     ],
+    'symbolic-style-selector': ['symbolicMapStyle'],
     'label-selector': ['color', 'fontSize', 'showFields', 'customContent'],
     'tooltip-selector': [
       'color',
