@@ -108,7 +108,7 @@ public class H2EngineProvider extends EngineProvider {
                     columnFields.append("bigint(20)").append(",`");
                     break;
                 case 3:
-                    columnFields.append("varchar(100)").append(",`");
+                    columnFields.append("decimal(27,8)").append(",`");
                     break;
                 case 4:
                     columnFields.append("TINYINT(length)".replace("length", String.valueOf(tableField.getPrecision()))).append(",`");

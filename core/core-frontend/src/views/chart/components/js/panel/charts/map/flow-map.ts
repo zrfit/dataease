@@ -44,32 +44,32 @@ export class FlowMap extends L7ChartView<Scene, L7Config> {
   axis: AxisType[] = ['xAxis', 'xAxisExt', 'filter', 'flowMapStartName', 'flowMapEndName', 'yAxis']
   axisConfig: AxisConfig = {
     xAxis: {
-      name: `起点经纬度 / ${t('chart.dimension')}`,
+      name: `${t('chart.start_coordinates')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 2
     },
     xAxisExt: {
-      name: `终点经纬度 / ${t('chart.dimension')}`,
+      name: `${t('chart.end_coordinates')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 2
     },
     flowMapStartName: {
-      name: `起点名称 / ${t('chart.dimension')}`,
+      name: `${t('chart.start_name')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 1,
       allowEmpty: true
     },
     flowMapEndName: {
-      name: `终点名称 / ${t('chart.dimension')}`,
+      name: `${t('chart.end_name')} / ${t('chart.dimension')}`,
       type: 'd',
       limit: 1,
       allowEmpty: true
     },
     yAxis: {
-      name: `线条粗细 / ${t('chart.quota')}`,
+      name: `${t('chart.flow_map_line_width')} / ${t('chart.quota')}`,
       type: 'q',
       limit: 1,
-      tooltip: '该指标生效时，样式中线条配置的线条宽度属性将失效',
+      tooltip: t('chart.flow_map_line_width_tip'),
       allowEmpty: true
     }
   }

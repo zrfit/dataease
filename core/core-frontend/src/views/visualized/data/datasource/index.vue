@@ -213,10 +213,15 @@ const selectDataset = row => {
 
 const originResourceTree = shallowRef([])
 
-const sortTypeChange = sortType => {
+const handleSortTypeChange = sortType => {
   state.datasourceTree = treeSort(originResourceTree.value, sortType)
   state.curSortType = sortType
   wsCache.set('TreeSort-datasource', state.curSortType)
+}
+
+const sortTypeChange = sortType => {
+  state.datasourceTree = treeSort(originResourceTree.value, sortType)
+  state.curSortType = sortType
 }
 const handleSizeChange = pageSize => {
   state.paginationConfig.currentPage = 1
@@ -473,7 +478,7 @@ const listDs = () => {
   rawDatasourceList.value = []
   dsLoading.value = true
   let curSortType = sortList[Number(wsCache.get('TreeSort-backend')) ?? 1].value
-  curSortType = wsCache.get('TreeSort-dataset') ?? curSortType
+  curSortType = wsCache.get('TreeSort-datasource') ?? curSortType
   const request = { busiFlag: 'datasource' } as BusiTreeRequest
   interactiveStore
     .setInteractive(request)
@@ -534,20 +539,20 @@ const dfsDatasourceTree = (ds, id) => {
 const creatDsFolder = ref()
 const sortList = [
   {
-    name: t('data_source.by_creation_time'),
+    name: t('visualization.time_asc'),
     value: 'time_asc'
   },
   {
-    name: t('data_source.by_creation_time_de'),
+    name: t('visualization.time_desc'),
     value: 'time_desc',
     divided: true
   },
   {
-    name: t('data_source.order_by_name'),
+    name: t('visualization.name_asc'),
     value: 'name_asc'
   },
   {
-    name: t('data_source.order_by_name_de'),
+    name: t('visualization.name_desc'),
     value: 'name_desc'
   }
 ]
@@ -1093,7 +1098,7 @@ const getMenuList = (val: boolean) => {
               </el-icon>
             </template>
           </el-input>
-          <el-dropdown @command="sortTypeChange" trigger="click">
+          <el-dropdown @command="handleSortTypeChange" trigger="click">
             <el-icon class="filter-icon-span">
               <el-tooltip :offset="16" effect="dark" :content="sortTypeTip" placement="top">
                 <Icon name="dv-sort-asc" class="opt-icon"

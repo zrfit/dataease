@@ -198,6 +198,11 @@ export class Quadrant extends G2PlotChartView<ScatterOptions, G2Scatter> {
     })
     const baseOptions: ScatterOptions = {
       colorField: 'field',
+      meta: {
+        field: {
+          type: 'cat'
+        }
+      },
       quadrant: {
         ...defaultBaselineQuadrant
       },
@@ -217,8 +222,11 @@ export class Quadrant extends G2PlotChartView<ScatterOptions, G2Scatter> {
     newChart.on('point:click', action)
     newChart.on('click', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
     newChart.on('afterrender', () => quadrantDefaultBaseline(defaultBaselineQuadrant))
-    configYaxisTitleLengthLimit(chart, newChart)
-    configAxisLabelLengthLimit(chart, newChart, 'axis-title')
+    const yAxis = parseJson(chart.customStyle).yAxis
+    if (yAxis?.name) {
+      configYaxisTitleLengthLimit(chart, newChart)
+      configAxisLabelLengthLimit(chart, newChart, 'axis-title')
+    }
     configPlotTooltipEvent(chart, newChart)
     return newChart
   }

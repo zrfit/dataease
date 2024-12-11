@@ -73,10 +73,6 @@ const handleLogin = () => {
   if (!formRef.value) return
   formRef.value.validate(async (valid: boolean) => {
     if (valid) {
-      /* if (!checkUsername(state.loginForm.username) || !validatePwd(state.loginForm.password)) {
-        ElMessage.error('用户名或密码错误')
-        return
-      } */
       const name = state.loginForm.username.trim()
       const pwd = state.loginForm.password
       if (!wsCache.get(appStore.getDekey)) {
@@ -88,7 +84,12 @@ const handleLogin = () => {
       cleanPlatformFlag()
       loginApi(param)
         .then(res => {
-          const { token, exp } = res.data
+          const { token, exp, mfa } = res.data
+          if (mfa?.enabled) {
+            xpackLoginHandler.value?.invokeMethod({ methodName: 'toMfa', args: mfa })
+            duringLogin.value = false
+            return
+          }
           userStore.setToken(token)
           userStore.setExp(exp)
           userStore.setTime(Date.now())

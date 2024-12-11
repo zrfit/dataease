@@ -78,6 +78,14 @@ public class DatasetSQLManage {
                 filterParametersAdaptor(parameters, filterDTO, datasetTableId);
             }
         }
+        if (chartExtRequest != null && ObjectUtils.isNotEmpty(chartExtRequest.getWebParamsFilters())) {
+            for (ChartExtFilterDTO filterDTO : chartExtRequest.getWebParamsFilters()) {
+                if (CollectionUtils.isEmpty(filterDTO.getValue())) {
+                    continue;
+                }
+                filterParametersAdaptor(parameters, filterDTO, datasetTableId);
+            }
+        }
         if (chartExtRequest != null && ObjectUtils.isNotEmpty(chartExtRequest.getFilter())) {
             for (ChartExtFilterDTO filterDTO : chartExtRequest.getFilter()) {
                 if (CollectionUtils.isEmpty(filterDTO.getValue())) {

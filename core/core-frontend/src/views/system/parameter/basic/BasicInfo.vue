@@ -53,6 +53,7 @@ import BasicEdit from './BasicEdit.vue'
 import request from '@/config/axios'
 import { SettingRecord } from '@/views/system/common/SettingTemplate'
 import { reactive } from 'vue'
+import { isDesktop } from '@/utils/ModelUtil'
 import { cloneDeep } from 'lodash-es'
 import { useI18n } from '@/hooks/web/useI18n'
 const { t } = useI18n()
@@ -61,6 +62,7 @@ const infoTemplate = ref()
 const loginTemplate = ref()
 const thirdTemplate = ref()
 const showDefaultLogin = ref(false)
+const desktop = isDesktop()
 const pvpOptions = [
   { value: '0', label: t('commons.date.permanent') },
   { value: '1', label: t('commons.date.one_year') },
@@ -126,7 +128,7 @@ const state = reactive({
     { value: '1', label: 'LDAP' },
     { value: '2', label: 'OIDC' },
     { value: '3', label: 'CAS' },
-    { value: '9', label: 'OAUTH2' }
+    { value: '9', label: 'OAuth2' }
   ],
   sortOptions: [
     { value: '0', label: t('resource_sort.time_asc') },
@@ -147,7 +149,11 @@ const selectedRName = ref<string[]>([])
 const selectedPvp = ref('0')
 
 const baseInfoSettings = computed(() =>
-  state.templateList.filter(item => !loginSettings.concat(thirdSettings).includes(item.pkey))
+  state.templateList.filter(
+    item =>
+      !loginSettings.concat(thirdSettings).includes(item.pkey) &&
+      (!desktop || item.pkey !== 'setting_basic.defaultOpen')
+  )
 )
 
 const thirdInfoSettings = computed(() =>

@@ -162,7 +162,7 @@ defineExpose({ getFormData })
           />
         </el-form-item>
         <el-form-item class="form-item" :class="'form-item-' + themes" style="padding: 0 4px">
-          <el-tooltip content="字号" :effect="toolTip" placement="top">
+          <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
             <el-select
               style="width: 56px"
               :effect="themes"

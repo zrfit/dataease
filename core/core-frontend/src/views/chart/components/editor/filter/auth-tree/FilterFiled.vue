@@ -3,8 +3,6 @@ import icon_searchOutline_outlined from '@/assets/svg/icon_search-outline_outlin
 import icon_deleteTrash_outlined from '@/assets/svg/icon_delete-trash_outlined.svg'
 import { ref, inject, computed, watch, onBeforeMount, toRefs, nextTick } from 'vue'
 import { useI18n } from '@/hooks/web/useI18n'
-import type { SelectConfig } from '../TimeDialog.vue'
-import TimeDialog from '@/views/chart/components/editor/filter/TimeDialog.vue'
 import { multFieldValuesForPermissions } from '@/api/dataset'
 import {
   textOptions,
@@ -23,9 +21,7 @@ export interface Item {
   enumValue: string
   name: string
   value: number
-  filterTypeTime?: string
   timeValue: string
-  dynamicTimeSetting?: SelectConfig
 }
 
 type Props = {
@@ -42,9 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
     deType: 0,
     enumValue: '',
     name: '',
-    filterTypeTime: 'dateValue',
     value: null,
-    dynamicTimeSetting: null,
     timeValue: ''
   })
 })
@@ -175,80 +169,6 @@ const initEnumOptions = () => {
   }
 }
 
-const dialogVisible = ref(false)
-const timeDialog = ref()
-const handleClick = () => {
-  dialogVisible.value = true
-  nextTick(() => {
-    timeDialog.value.init(item.value.dynamicTimeSetting || {})
-  })
-}
-
-const relativeToCurrentTypeMap = {
-  year: '年',
-  month: '月',
-  date: '日',
-  datetime: '日'
-}
-
-const confirmTimeSelect = () => {
-  item.value.dynamicTimeSetting = { ...timeDialog.value.curComponent }
-  const {
-    timeGranularity,
-    timeNum,
-    relativeToCurrentType,
-    around,
-    arbitraryTime,
-    relativeToCurrent
-  } = item.value.dynamicTimeSetting
-  if (relativeToCurrent !== 'custom') {
-    item.value.timeValue = [
-      {
-        label: '今年',
-        value: 'thisYear'
-      },
-      {
-        label: '去年',
-        value: 'lastYear'
-      },
-      {
-        label: '本月',
-        value: 'thisMonth'
-      },
-      {
-        label: '上月',
-        value: 'lastMonth'
-      },
-      {
-        label: '今天',
-        value: 'today'
-      },
-      {
-        label: '昨天',
-        value: 'yesterday'
-      },
-      {
-        label: '月初',
-        value: 'monthBeginning'
-      },
-      {
-        label: '年初',
-        value: 'yearBeginning'
-      }
-    ].find(ele => ele.value === relativeToCurrent).label
-    dialogVisible.value = false
-    return
-  }
-  item.value.timeValue = `${timeNum}${relativeToCurrentTypeMap[relativeToCurrentType]}${
-    around === 'f' ? '前' : '后'
-  }`
-  if (timeGranularity === 'datetime') {
-    item.value.timeValue += new Date(arbitraryTime).toLocaleString().split(' ')[1]
-  }
-
-  dialogVisible.value = false
-}
-
 const optionData = data => {
   if (!data) return null
   return data.filter(item => !!item)
@@ -272,9 +192,7 @@ const selectItem = ({ name, id, deType }) => {
     enumValue: '',
     value: '',
     term: '',
-    filterTypeTime: 'dateValue',
-    timeValue: '',
-    dynamicTimeSetting: {}
+    timeValue: ''
   })
   filterListInit(deType)
   checklist.value = []
@@ -296,16 +214,6 @@ const filterListInit = deType => {
   }
 }
 
-const filterListTime = [
-  {
-    value: 'dateValue',
-    label: '固定值'
-  },
-  {
-    value: 'dynamicDate',
-    label: '动态值'
-  }
-]
 const clearAll = () => {
   checklist.value = []
 }
@@ -394,42 +302,22 @@ const emits = defineEmits(['update:item', 'del'])
         </template>
       </el-dropdown>
       <div class="white-nowrap flex-align-center" style="position: relative" v-if="item.fieldId">
-        <template v-if="item.deType !== 1">
-          <span class="filed-title">{{ t('auth.screen_method') }}</span>
-          <el-select
-            size="small"
-            @change="filterTypeChange"
-            v-model="item.filterType"
-            :placeholder="t('auth.select')"
+        <span class="filed-title">{{ t('auth.screen_method') }}</span>
+        <el-select
+          size="small"
+          @change="filterTypeChange"
+          v-model="item.filterType"
+          :placeholder="t('auth.select')"
+        >
+          <el-option
+            v-for="ele in filterList"
+            :key="ele.value"
+            :label="ele.label"
+            :value="ele.value"
           >
-            <el-option
-              v-for="ele in filterList"
-              :key="ele.value"
-              :label="ele.label"
-              :value="ele.value"
-            >
-            </el-option>
-          </el-select>
-          <span class="filed-title">{{ t('auth.fixed_value') }}</span>
-        </template>
-        <template v-else>
-          <el-select
-            size="small"
-            class="w100"
-            style="margin-left: 16px"
-            @change="filterTypeChangeTime"
-            v-model="item.filterTypeTime"
-            :placeholder="t('auth.select')"
-          >
-            <el-option
-              v-for="ele in filterListTime"
-              :key="ele.value"
-              :label="ele.label"
-              :value="ele.value"
-            >
-            </el-option>
-          </el-select>
-        </template>
+          </el-option>
+        </el-select>
+        <span class="filed-title">{{ t('auth.fixed_value') }}</span>
         <template v-if="item.filterType === 'logic'">
           <el-select
             class="w100"
@@ -473,26 +361,13 @@ const emits = defineEmits(['update:item', 'del'])
             <div class="bottom-line"></div>
           </template>
           <template v-else-if="!['null', 'empty', 'not_null', 'not_empty'].includes(item.term)">
-            <el-input
-              v-if="item.deType === 1 && item.filterTypeTime === 'dynamicDate' && !item.timeValue"
-              @click="handleClick"
-              readonly
-              class="w70 mar5"
-              size="small"
-              v-model="item.timeValue"
-            />
             <el-tooltip
               class="item"
-              v-else-if="item.deType === 1 && item.filterTypeTime === 'dynamicDate'"
+              v-if="item.deType === 1"
               effect="light"
               :content="item.timeValue"
               placement="top"
-              ><el-input
-                @click="handleClick"
-                readonly
-                class="w70 mar5"
-                size="small"
-                v-model="item.timeValue"
+              ><el-input class="w70 mar5" size="small" v-model="item.timeValue"
             /></el-tooltip>
             <el-input v-else class="w70 mar5" size="small" v-model="item.value" />
             <div class="bottom-line"></div>
@@ -607,21 +482,6 @@ const emits = defineEmits(['update:item', 'del'])
         /></Icon>
       </el-icon>
     </div>
-    <el-dialog
-      class="create-dialog"
-      append-to-body
-      v-model="dialogVisible"
-      title="日期设置"
-      width="420"
-    >
-      <TimeDialog ref="timeDialog"></TimeDialog>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="confirmTimeSelect"> 确定 </el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 

@@ -49,7 +49,7 @@ import Exceljs from 'exceljs'
 import { saveAs } from 'file-saver'
 import { ElMessage } from 'element-plus-secondary'
 import { useI18n } from '@/hooks/web/useI18n'
-const { t } = useI18n()
+const { t:i18nt } = useI18n()
 
 export function getCustomTheme(chart: Chart): S2Theme {
   const headerColor = hexColorToRGBA(
@@ -65,7 +65,7 @@ export function getCustomTheme(chart: Chart): S2Theme {
   )
   const scrollBarColor = DEFAULT_BASIC_STYLE.tableScrollBarColor
   const scrollBarHoverColor = resetRgbOpacity(scrollBarColor, 3)
-  const textFontFamily = chart.fontFamily ? chart.fontFamily : FONT_FAMILY
+  const textFontFamily = chart.fontFamily && chart.fontFamily !== 'inherit' ? chart.fontFamily : FONT_FAMILY
   const theme: S2Theme = {
     background: {
       color: '#00000000'
@@ -772,40 +772,41 @@ export function mappingColor(value, defaultColor, field, type, filedValueMap?, r
       }
     } else {
       // time
-      const tv = new Date(t.value.replace(/-/g, '/') + ' GMT+8').getTime()
+      const fc = field.conditions[i]
+      tv = new Date(tv.replace(/-/g, '/') + ' GMT+8').getTime()
       const v = new Date(value.replace(/-/g, '/') + ' GMT+8').getTime()
-      if (t.term === 'eq') {
+      if (fc.term === 'eq') {
         if (v === tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'not_eq') {
+      } else if (fc.term === 'not_eq') {
         if (v !== tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'lt') {
+      } else if (fc.term === 'lt') {
         if (v < tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'gt') {
+      } else if (fc.term === 'gt') {
         if (v > tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'le') {
+      } else if (fc.term === 'le') {
         if (v <= tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'ge') {
+      } else if (fc.term === 'ge') {
         if (v >= tv) {
-          color = t[type]
+          color = fc[type]
           flag = true
         }
-      } else if (t.term === 'default') {
-        color = t[type]
+      } else if (fc.term === 'default') {
+        color = fc[type]
         flag = true
       }
       if (flag) {
@@ -1832,10 +1833,10 @@ export const configSummaryRow = (chart, s2Options, newData, tableHeader, basicSt
     }
     if (viewMeta.colIndex === 0) {
       if (tableHeader.showIndex) {
-        viewMeta.fieldValue = basicStyle.summaryLabel ?? t('chart.total_show')
+        viewMeta.fieldValue = basicStyle.summaryLabel ?? i18nt('chart.total_show')
       } else {
         if (xAxis.length) {
-          viewMeta.fieldValue = basicStyle.summaryLabel ?? t('chart.total_show')
+          viewMeta.fieldValue = basicStyle.summaryLabel ?? i18nt('chart.total_show')
         }
       }
     }

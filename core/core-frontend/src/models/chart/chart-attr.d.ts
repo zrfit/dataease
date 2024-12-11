@@ -178,6 +178,10 @@ declare interface ChartBasicStyle {
    */
   columnBarRightAngleRadius: number
   /**
+   * 一般柱状图宽度占比，0 - 100 范围数值
+   */
+  columnWidthRatio: number
+  /**
    * 柱间距
    */
   barGap: number
@@ -355,6 +359,8 @@ declare interface ChartTableHeaderAttr {
    * 表头背景颜色
    */
   tableHeaderBgColor: string
+  tableHeaderCornerBgColor: string
+  tableHeaderColBgColor: string
   /**
    * 表头字体大小
    */

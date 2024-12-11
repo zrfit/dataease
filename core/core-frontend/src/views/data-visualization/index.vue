@@ -336,6 +336,20 @@ const checkPer = async resourceId => {
   await interactiveStore.setInteractive(request)
   return check(wsCache.get('screen-weight'), resourceId, 4)
 }
+// 目标校验： 需要校验targetSourceId 是否是当前可视化资源ID
+const winMsgHandle = event => {
+  const msgInfo = event.data
+  if (msgInfo?.targetSourceId === dvInfo.value.id + '')
+    if (msgInfo.type === 'webParams') {
+      // 网络消息处理
+      winMsgWebParamsHandle(msgInfo)
+    }
+}
+
+const winMsgWebParamsHandle = msgInfo => {
+  const params = msgInfo.params
+  dvMainStore.addWebParamsFilter(params)
+}
 
 const loadFinish = ref(false)
 const newWindowFromDiv = ref(false)
@@ -349,6 +363,7 @@ onMounted(async () => {
   await new Promise(r => (p = r))
   loadFinish.value = true
   window.addEventListener('blur', releaseAttachKey)
+  window.addEventListener('message', winMsgHandle)
   if (editMode.value === 'edit') {
     window.addEventListener('storage', eventCheck)
   }

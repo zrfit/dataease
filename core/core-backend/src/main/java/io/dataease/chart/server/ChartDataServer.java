@@ -35,6 +35,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -115,11 +116,13 @@ public class ChartDataServer implements ChartDataApi {
                 viewDTO.setXAxis(JsonUtil.parseList(JsonUtil.toJSONString(sourceFields).toString(), listTypeReference));
             }
             int curLimit = Math.toIntExact(ExportCenterUtils.getExportLimit("view"));
+            int curDsLimit = Math.toIntExact(ExportCenterUtils.getExportLimit("dataset"));
+            int viewLimit = Math.min(curLimit, curDsLimit);
             if (ChartConstants.VIEW_RESULT_MODE.CUSTOM.equals(viewDTO.getResultMode())) {
                 Integer limitCount = viewDTO.getResultCount();
-                viewDTO.setResultCount(Math.min(curLimit, limitCount));
+                viewDTO.setResultCount(Math.min(viewLimit, limitCount));
             } else {
-                viewDTO.setResultCount(curLimit);
+                viewDTO.setResultCount(viewLimit);
             }
             chartViewInfo = getData(viewDTO);
             List<Object[]> tableRow = (List) chartViewInfo.getData().get("sourceData");
@@ -263,7 +266,7 @@ public class ChartDataServer implements ChartDataApi {
                         request.getViewInfo().getChartExtRequest().setGoPage(i);
                         findExcelData(request);
                         details.addAll(request.getDetails());
-                        if ((details.size() + extractPageSize) > sheetLimit) {
+                        if ((details.size() + extractPageSize) > sheetLimit || i == chartViewDTO.getTotalPage()) {
                             detailsSheet = wb.createSheet("数据" + sheetIndex);
                             Integer[] excelTypes = request.getExcelTypes();
                             details.add(0, request.getHeader());

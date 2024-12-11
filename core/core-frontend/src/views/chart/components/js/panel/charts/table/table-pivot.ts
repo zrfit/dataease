@@ -22,6 +22,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { isNumber, keys, maxBy, merge, minBy, some, isEmpty, get } from 'lodash-es'
 import { copyContent, CustomDataCell } from '../../common/common_table'
 import Decimal from 'decimal.js'
+import { DEFAULT_TABLE_HEADER } from '@/views/chart/components/editor/util/chart'
 
 type DataItem = Record<string, any>
 
@@ -372,6 +373,16 @@ export class TablePivot extends S2ChartView<PivotSheet> {
     if (!isAlphaColor(tableHeaderBgColor)) {
       tableHeaderBgColor = hexColorToRGBA(tableHeaderBgColor, basicStyle.alpha)
     }
+    let tableHeaderCornerBgColor =
+      tableHeader.tableHeaderCornerBgColor ?? DEFAULT_TABLE_HEADER.tableHeaderCornerBgColor
+    if (!isAlphaColor(tableHeaderCornerBgColor)) {
+      tableHeaderCornerBgColor = hexColorToRGBA(tableHeaderCornerBgColor, basicStyle.alpha)
+    }
+    let tableHeaderColBgColor =
+      tableHeader.tableHeaderColBgColor ?? DEFAULT_TABLE_HEADER.tableHeaderColBgColor
+    if (!isAlphaColor(tableHeaderColBgColor)) {
+      tableHeaderColBgColor = hexColorToRGBA(tableHeaderColBgColor, basicStyle.alpha)
+    }
     let tableBorderColor = basicStyle.tableBorderColor
     if (!isAlphaColor(tableBorderColor)) {
       tableBorderColor = hexColorToRGBA(tableBorderColor, basicStyle.alpha)
@@ -382,7 +393,7 @@ export class TablePivot extends S2ChartView<PivotSheet> {
     const pivotTheme = {
       rowCell: {
         cell: {
-          backgroundColor: tableHeaderBgColor,
+          backgroundColor: tableHeaderColBgColor,
           horizontalBorderColor: tableBorderColor,
           verticalBorderColor: tableBorderColor
         },
@@ -414,6 +425,11 @@ export class TablePivot extends S2ChartView<PivotSheet> {
           textAlign: tableHeader.tableHeaderAlign,
           fontStyle,
           fontWeight
+        }
+      },
+      cornerCell: {
+        cell: {
+          backgroundColor: tableHeaderCornerBgColor
         }
       }
     }

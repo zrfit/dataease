@@ -1100,6 +1100,9 @@ public class CalciteProvider extends Provider {
             case impala:
                 sql = String.format("DESCRIBE `%s`", datasourceRequest.getTable());
                 break;
+            case h2:
+                sql = String.format("SELECT COLUMN_NAME, DATA_TYPE, REMARKS FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '%s'", datasourceRequest.getTable());
+                break;
             default:
                 break;
         }

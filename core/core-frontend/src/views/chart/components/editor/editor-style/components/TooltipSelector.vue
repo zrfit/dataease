@@ -479,7 +479,7 @@ onMounted(() => {
         v-if="showProperty('fontSize')"
       >
         <template #label>&nbsp;</template>
-        <el-tooltip content="字号" :effect="toolTip" placement="top">
+        <el-tooltip :content="t('chart.font_size')" :effect="toolTip" placement="top">
           <el-select
             size="small"
             style="width: 108px"
@@ -527,7 +527,7 @@ onMounted(() => {
             </span>
             <el-tooltip class="item" :effect="toolTip" placement="bottom">
               <template #content>
-                <div>可以${fieldName}的形式读取字段值（支持HTML）</div>
+                <div>{{ t('chart.custom_tooltip_content_tip') }}</div>
               </template>
               <el-icon class="hint-icon" :class="{ 'hint-icon--dark': themes === 'dark' }">
                 <Icon name="icon_info_outlined"><icon_info_outlined class="svg-icon" /></Icon>
@@ -852,13 +852,13 @@ onMounted(() => {
           @change="changeTooltipAttr('carousel')"
           v-model="state.tooltipForm.carousel.enable"
         >
-          开启轮播
+          {{ t('chart.carousel_enable') }}
         </el-checkbox>
       </el-form-item>
       <el-row :gutter="8">
         <el-col :span="12">
           <el-form-item
-            label="停留时长（秒）"
+            :label="t('chart.carousel_stay_time')"
             class="form-item w100"
             :class="'form-item-' + themes"
           >
@@ -877,7 +877,7 @@ onMounted(() => {
         </el-col>
         <el-col :span="12">
           <el-form-item
-            label="轮播间隔（秒）"
+            :label="t('chart.carousel_interval')"
             class="form-item w100"
             :class="'form-item-' + themes"
           >

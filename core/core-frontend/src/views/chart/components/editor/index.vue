@@ -20,6 +20,7 @@ import {
   onBeforeMount,
   provide,
   unref,
+  onBeforeUnmount,
   onMounted
 } from 'vue'
 import Icon from '@/components/icon-custom/src/Icon.vue'
@@ -181,6 +182,11 @@ const clearRemove = items => {
 
 onBeforeMount(() => {
   cacheId = route.query.id as unknown as string
+})
+
+onBeforeUnmount(() => {
+  view.value.tableId = ''
+  cacheId = ''
 })
 
 onMounted(() => {
@@ -673,6 +679,9 @@ const addAxis = (e, axis: AxisType) => {
     if (list && list.length > 0) {
       let valid = true
       for (let i = 0; i < list.length; i++) {
+        if (list[i].groupType === 'd' && list[i].deType === 1) {
+          list[i].sort = 'asc'
+        }
         if (!(list[i].groupType === 'q' || (list[i].groupType === 'd' && list[i].deType === 1))) {
           list.splice(i, 1)
           valid = false
@@ -4990,6 +4999,12 @@ span {
   margin-top: 8px;
   :deep(.ed-select) {
     display: block;
+  }
+  :deep(div.ed-select--dark div[data-key='customRoot'] li.is-disabled span) {
+    color: white;
+  }
+  :deep(div[data-key='customRoot'] li.is-disabled span) {
+    color: black;
   }
 }
 

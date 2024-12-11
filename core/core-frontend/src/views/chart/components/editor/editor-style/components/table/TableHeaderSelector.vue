@@ -94,22 +94,67 @@ onMounted(() => {
     ref="tableHeaderForm"
     label-position="top"
   >
-    <el-form-item
-      :label="t('chart.backgroundColor')"
-      class="form-item"
-      :class="'form-item-' + themes"
-      v-if="showProperty('tableHeaderBgColor')"
-    >
-      <el-color-picker
-        :effect="themes"
-        v-model="state.tableHeaderForm.tableHeaderBgColor"
-        is-custom
-        :trigger-width="108"
-        :predefine="predefineColors"
-        show-alpha
-        @change="changeTableHeader('tableHeaderBgColor')"
-      />
-    </el-form-item>
+    <el-row :gutter="8">
+      <el-col :span="12">
+        <el-form-item
+          :label="
+            chart.type === 'table-pivot'
+              ? t('chart.rowBackgroundColor')
+              : t('chart.backgroundColor')
+          "
+          class="form-item"
+          :class="'form-item-' + themes"
+          v-if="showProperty('tableHeaderBgColor')"
+        >
+          <el-color-picker
+            :effect="themes"
+            v-model="state.tableHeaderForm.tableHeaderBgColor"
+            is-custom
+            :trigger-width="108"
+            :predefine="predefineColors"
+            show-alpha
+            @change="changeTableHeader('tableHeaderBgColor')"
+          />
+        </el-form-item>
+      </el-col>
+
+      <template v-if="chart.type === 'table-pivot' && showProperty('tableHeaderBgColor')">
+        <el-col :span="12">
+          <el-form-item
+            :label="t('chart.colBackgroundColor')"
+            class="form-item"
+            :class="'form-item-' + themes"
+          >
+            <el-color-picker
+              :effect="themes"
+              v-model="state.tableHeaderForm.tableHeaderColBgColor"
+              is-custom
+              :trigger-width="108"
+              :predefine="predefineColors"
+              show-alpha
+              @change="changeTableHeader('tableHeaderColBgColor')"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            :label="t('chart.cornerBackgroundColor')"
+            class="form-item"
+            :class="'form-item-' + themes"
+          >
+            <el-color-picker
+              :effect="themes"
+              v-model="state.tableHeaderForm.tableHeaderCornerBgColor"
+              is-custom
+              :trigger-width="108"
+              :predefine="predefineColors"
+              show-alpha
+              @change="changeTableHeader('tableHeaderCornerBgColor')"
+            />
+          </el-form-item>
+        </el-col>
+      </template>
+    </el-row>
 
     <el-space>
       <el-form-item

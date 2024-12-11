@@ -80,6 +80,7 @@ const resourceGroupOpt = ref(null)
 const outerParamsSetRef = ref(null)
 const { wsCache } = useCache('localStorage')
 const userStore = useUserStoreWithOut()
+const isIframe = computed(() => appStore.getIsIframe)
 
 const props = defineProps({
   createType: {
@@ -638,7 +639,7 @@ const initOpenHandler = newWindow => {
           </el-button>
           <template #dropdown>
             <el-dropdown-menu class="drop-style">
-              <el-dropdown-item @click="previewInner">
+              <el-dropdown-item @click="previewInner" v-if="!isIframe">
                 <el-icon style="margin-right: 8px; font-size: 16px">
                   <Icon name="icon_pc_fullscreen"><icon_pc_fullscreen class="svg-icon" /></Icon>
                 </el-icon>

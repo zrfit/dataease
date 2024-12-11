@@ -182,6 +182,7 @@ onMounted(async () => {
     }
   })
   window.addEventListener('storage', eventCheck)
+  window.addEventListener('message', winMsgHandle)
   const resourceId = embeddedStore.resourceId || router.currentRoute.value.query.resourceId
   const pid = embeddedStore.pid || router.currentRoute.value.query.pid
   const opt = embeddedStore.opt || router.currentRoute.value.query.opt
@@ -251,8 +252,24 @@ onMounted(async () => {
   }
 })
 
+// 目标校验： 需要校验targetSourceId 是否是当前可视化资源ID
+const winMsgHandle = event => {
+  const msgInfo = event.data
+  if (msgInfo?.targetSourceId === dvInfo.value.id + '')
+    if (msgInfo.type === 'webParams') {
+      // 网络消息处理
+      winMsgWebParamsHandle(msgInfo)
+    }
+}
+
+const winMsgWebParamsHandle = msgInfo => {
+  const params = msgInfo.params
+  dvMainStore.addWebParamsFilter(params)
+}
+
 onUnmounted(() => {
   window.removeEventListener('storage', eventCheck)
+  window.removeEventListener('message', winMsgHandle)
 })
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div
     class="bar-main"
-    v-if="!mobileInPc"
+    v-if="!mobileInPc && !isMobile()"
     :class="[
       showEditPosition,
       {
@@ -236,7 +236,7 @@ import { ElMessage, ElTooltip, ElButton } from 'element-plus-secondary'
 import CustomTabsSort from '@/custom-component/de-tabs/CustomTabsSort.vue'
 import { exportPivotExcel } from '@/views/chart/components/js/panel/common/common_table'
 import { XpackComponent } from '@/components/plugin'
-import { exportPermission } from '@/utils/utils'
+import { exportPermission, isMobile } from '@/utils/utils'
 const dvMainStore = dvMainStoreWithOut()
 const snapshotStore = snapshotStoreWithOut()
 const copyStore = copyStoreWithOut()
