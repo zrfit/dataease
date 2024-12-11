@@ -1,6 +1,7 @@
 package io.dataease.commons.utils;
 
 import io.dataease.api.permissions.user.vo.UserFormVO;
+import io.dataease.utils.IPUtils;
 import io.dataease.visualization.dto.WatermarkContentDTO;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
@@ -20,7 +21,7 @@ import java.util.Date;
 public class ExcelWatermarkUtils {
 
     public static String transContent(String content, UserFormVO userInfo) {
-        content = content.replaceAll("\\$\\{ip}", userInfo.getIp() == null?"127.0.0.1":userInfo.getIp());
+        content = content.replaceAll("\\$\\{ip}", IPUtils.get()== null?"127.0.0.1":IPUtils.get());
         content = content.replaceAll("\\$\\{username}", userInfo.getAccount());
         content = content.replaceAll("\\$\\{nickName}", userInfo.getName());
         content = content.replaceAll("\\$\\{time}", new Date().toString());

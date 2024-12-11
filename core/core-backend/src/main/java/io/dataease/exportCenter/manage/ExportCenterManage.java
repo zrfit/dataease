@@ -53,11 +53,11 @@ import io.dataease.system.manage.SysParameterManage;
 import io.dataease.utils.*;
 import io.dataease.visualization.dao.auto.entity.VisualizationWatermark;
 import io.dataease.visualization.dao.auto.mapper.VisualizationWatermarkMapper;
+import io.dataease.visualization.dao.ext.mapper.ExtDataVisualizationMapper;
 import io.dataease.visualization.dto.WatermarkContentDTO;
 import io.dataease.visualization.server.DataVisualizationServer;
 import io.dataease.websocket.WsMessage;
 import io.dataease.websocket.WsService;
-import io.dataease.xpack.permissions.user.manage.UserPageManage;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
@@ -109,10 +109,9 @@ public class ExportCenterManage implements BaseExportApi {
     private int max;
     @Resource
     private VisualizationWatermarkMapper watermarkMapper;
+    @Resource
+    private ExtDataVisualizationMapper visualizationMapper;
 
-
-    @Resource(name = "userPageManage")
-    private UserPageManage userPageManage;
 
     private final static String DATA_URL_TITLE = "data:image/jpeg;base64,";
     private static final String exportData_path = "/opt/dataease2.0/data/exportData/";
@@ -698,7 +697,7 @@ public class ExportCenterManage implements BaseExportApi {
                 VisualizationWatermark watermark = watermarkMapper.selectById("system_default");
                 WatermarkContentDTO watermarkContent = JsonUtil.parseObject(watermark.getSettingContent(), WatermarkContentDTO.class);
                 if (watermarkContent.getExcelEnable()) {
-                    UserFormVO userInfo = userPageManage.queryForm(AuthUtils.getUser().getUserId());
+                    UserFormVO userInfo = visualizationMapper.queryInnerUserInfo(AuthUtils.getUser().getUserId());
                     // 在主逻辑中添加水印
                     int watermarkPictureIdx = ExcelWatermarkUtils.addWatermarkImage(wb, watermarkContent,userInfo); // 生成水印图片并获取 ID
                     for (Sheet sheet : wb) {
