@@ -8,6 +8,7 @@ public class CacheConstant {
         public static final String USER_ROLES_CACHE = "de_v2_user_roles";
         public static final String USER_BUSI_PERS_CACHE = "de_v2_user_busi_pers";
         public static final String USER_BUSI_PERS_INTERACTIVE_CACHE = "de_v2_user_busi_pers_interactive";
+        public static final String USER_COMMUNITY_LANGUAGE = "de_v2_user_community_language";
     }
 
     public static class RoleCacheConstant {
