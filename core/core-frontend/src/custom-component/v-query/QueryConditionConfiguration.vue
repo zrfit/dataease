@@ -2266,6 +2266,7 @@ defineExpose({
                 @change="val => setParametersArr(val, field.componentId)"
                 @focus="handleDialogClick"
                 multiple
+                filterable
                 collapse-tags
                 collapse-tags-tooltip
                 key="checkedFieldsMapArrTime"
@@ -2367,6 +2368,7 @@ defineExpose({
                 @change="val => setParametersArrNum(val, field.componentId)"
                 @focus="handleDialogClick"
                 multiple
+                filterable
                 collapse-tags
                 collapse-tags-tooltip
                 key="checkedFieldsMapArr"
@@ -2467,6 +2469,7 @@ defineExpose({
               <el-select
                 @change="setParameters(field)"
                 @focus="handleDialogClick"
+                filterable
                 style="margin-left: 12px"
                 popper-class="field-select--dqp"
                 v-else-if="curComponent.checkedFields.includes(field.componentId)"
