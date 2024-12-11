@@ -2,6 +2,7 @@ package io.dataease.visualization.dao.ext.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import io.dataease.api.permissions.user.vo.UserFormVO;
 import io.dataease.api.visualization.dto.VisualizationViewTableDTO;
 import io.dataease.api.visualization.vo.DataVisualizationBaseVO;
 import io.dataease.api.visualization.vo.DataVisualizationVO;
@@ -55,4 +56,6 @@ public interface ExtDataVisualizationMapper {
     void deleteDataVBatch(@Param("ids") Set<Long> ids);
 
     void deleteViewsBatch(@Param("ids") Set<Long> ids);
+
+    UserFormVO queryInnerUserInfo(@Param("id") Long id);
 }
