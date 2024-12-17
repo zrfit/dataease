@@ -3475,7 +3475,10 @@ Scatter chart (bubble) chart: {a} (series name), {b} (data name), {c} (value arr
     back: 'Return to the public link settings page',
     refresh: 'Refresh',
     time_tips:
-      'Unit: minutes, range: [0-1440], 0 means no time limit, starting from the first access using the ticket'
+      'Unit: minutes, range: [0-1440], 0 means no time limit, starting from the first access using the ticket',
+    arg_val_tips: 'Please enter parameter values',
+    arg_format_tips:
+      'Please use JSON format string, example single valued argVal, multi valued [argVal1, argVal2]'
   },
   pblink: {
     key_pwd: 'Please enter the password to open the link',

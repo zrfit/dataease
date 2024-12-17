@@ -3387,7 +3387,9 @@ export default {
     require: '必选',
     back: '返回公共链接设置页面',
     refresh: '刷新',
-    time_tips: '单位: 分钟，范围: [0-1440],0代表无期限，自首次使用ticket访问开始'
+    time_tips: '单位: 分钟，范围: [0-1440],0代表无期限，自首次使用ticket访问开始',
+    arg_val_tips: '请输入参数值',
+    arg_format_tips: '请使用JSON格式字符串，示例单值argVal，多值[argVal1, argVal2]'
   },
   pblink: {
     key_pwd: '请输入密码打开链接',

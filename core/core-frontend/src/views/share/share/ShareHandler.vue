@@ -17,8 +17,7 @@
     v-if="dialogVisible && props.weight >= 7"
     class="copy-link_dialog"
     :class="{
-      'hidden-footer': !shareEnable || showTicket,
-      'is-ticket-dialog': shareEnable && showTicket
+      'hidden-footer': !shareEnable
     }"
     v-model="dialogVisible"
     :close-on-click-modal="true"
@@ -28,7 +27,7 @@
     width="480px"
     :show-close="false"
   >
-    <div class="share-dialog-container" :class="{ 'hidden-link-container': showTicket }">
+    <div class="share-dialog-container">
       <div class="copy-link">
         <div class="open-share flex-align-center">
           <el-switch size="small" v-model="shareEnable" @change="enableSwitcher" />
@@ -36,24 +35,53 @@
         </div>
         <div v-if="shareEnable" class="custom-link-line">
           <el-input
+            :class="!linkCustom ? 'link-input-readlonly' : ''"
             ref="linkUuidRef"
             placeholder=""
             v-model="state.detailInfo.uuid"
-            :disabled="!linkCustom"
-            @blur="finishEditUuid"
+            :readonly="!linkCustom"
+            @blur="validateUuid"
           >
             <template v-if="!linkCustom" #prefix>
               {{ formatLinkBase() }}
             </template>
-          </el-input>
-          <el-button v-if="linkCustom" text @click="finishEditUuid">{{
-            t('components.complete')
-          }}</el-button>
-          <el-button v-else @click="editUuid" size="default" plain>
-            <template #icon>
-              <icon name="icon_admin_outlined"><icon_admin_outlined class="svg-icon" /></icon>
+
+            <template #suffix>
+              <div class="share-input-suffix">
+                <span class="suffix-split" />
+                <div class="input-suffix-btn" v-if="!linkCustom" @click="editUuid">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="t('commons.edit') + t('chart.indicator_suffix')"
+                    placement="top"
+                  >
+                    <Icon name="icon_edit_outlined"><icon_edit_outlined class="svg-icon" /></Icon>
+                  </el-tooltip>
+                </div>
+                <div class="input-suffix-btn" v-if="linkCustom" @click.stop="resetUuid">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="t('commons.cancel')"
+                    placement="top"
+                  >
+                    <Icon name="icon_close_outlined"><icon_close_outlined class="svg-icon" /></Icon>
+                  </el-tooltip>
+                </div>
+                <div class="input-suffix-btn done" v-if="linkCustom" @click="finishEditUuid">
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    :content="t('commons.save')"
+                    placement="top"
+                  >
+                    <Icon name="icon_done_outlined"><icon_done_outlined class="svg-icon" /></Icon>
+                  </el-tooltip>
+                </div>
+              </div>
             </template>
-          </el-button>
+          </el-input>
         </div>
 
         <div v-if="shareEnable" class="exp-container">
@@ -73,7 +101,6 @@
           <div class="inline-share-item-picker">
             <el-date-picker
               :clearable="false"
-              size="small"
               v-if="state.detailInfo.exp"
               class="share-exp-picker"
               v-model="state.detailInfo.exp"
@@ -112,38 +139,43 @@
           <div class="inline-share-item" v-if="passwdEnable">
             <el-input
               ref="pwdRef"
+              class="link-input-readlonly"
               v-model="state.detailInfo.pwd"
-              :readonly="state.detailInfo.autoPwd"
-              size="small"
-              @blur="validatePwdFormat"
+              readonly
             >
-              <template #append>
-                <div class="share-pwd-opt">
-                  <div
-                    v-if="state.detailInfo.autoPwd"
-                    @click.stop="resetPwd"
-                    class="share-reset-container"
-                  >
-                    <span>{{ t('commons.reset') }}</span>
+              <template #suffix>
+                <div class="share-input-suffix">
+                  <span class="suffix-split" />
+                  <div class="input-suffix-btn" @click="copyPwd">
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      :content="t('commons.copy')"
+                      placement="top"
+                    >
+                      <Icon name="de-copy"><deCopy class="svg-icon" /></Icon>
+                    </el-tooltip>
                   </div>
-                  <div @click.stop="copyPwd" class="share-reset-container">
-                    <span>{{ t('commons.copy') }}</span>
+                  <div class="input-suffix-btn" @click="resetPwd">
+                    <el-tooltip
+                      class="item"
+                      effect="dark"
+                      :content="t('commons.reset')"
+                      placement="top"
+                    >
+                      <Icon name="icon_refresh_outlined"
+                        ><icon_refresh_outlined class="svg-icon"
+                      /></Icon>
+                    </el-tooltip>
                   </div>
                 </div>
               </template>
             </el-input>
+
+            <el-button secondary @click="openPwdDialog">{{ t('user.change_password') }}</el-button>
           </div>
         </div>
       </div>
-    </div>
-    <div v-if="shareEnable && showTicket" class="share-ticket-container">
-      <share-ticket
-        :uuid="state.detailInfo.uuid"
-        :resource-id="props.resourceId"
-        :ticket-require="state.detailInfo.ticketRequire"
-        @require-change="updateRequireTicket"
-        @close="closeTicket"
-      />
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -154,12 +186,28 @@
       </span>
     </template>
   </el-dialog>
+  <custom-link-pwd ref="customPwdRef" @pwd-change="customPwdChange" />
+  <ticket-dialog ref="ticketDialogRef">
+    <div v-if="shareEnable && showTicket">
+      <share-ticket
+        :uuid="state.detailInfo.uuid"
+        :resource-id="props.resourceId"
+        :ticket-require="state.detailInfo.ticketRequire"
+        @require-change="updateRequireTicket"
+        @close="closeTicket"
+      />
+    </div>
+  </ticket-dialog>
 </template>
 
 <script lang="ts" setup>
 import dvShare from '@/assets/svg/dv-share.svg'
 import icon_shareLabel_outlined from '@/assets/svg/icon_share-label_outlined.svg'
-import icon_admin_outlined from '@/assets/svg/icon_admin_outlined.svg'
+import deCopy from '@/assets/svg/de-copy.svg'
+import icon_refresh_outlined from '@/assets/svg/icon_refresh_outlined.svg'
+import icon_edit_outlined from '@/assets/svg/icon_edit_outlined.svg'
+import icon_close_outlined from '@/assets/svg/icon_close_outlined.svg'
+import icon_done_outlined from '@/assets/svg/icon_done_outlined.svg'
 import { useI18n } from '@/hooks/web/useI18n'
 import { ref, reactive, onMounted, computed, nextTick } from 'vue'
 import request from '@/config/axios'
@@ -170,6 +218,9 @@ import useClipboard from 'vue-clipboard3'
 import ShareTicket from './ShareTicket.vue'
 import { useEmbedded } from '@/store/modules/embedded'
 import { useShareStoreWithOut } from '@/store/modules/share'
+import CustomLinkPwd from './CustomLinkPwd.vue'
+import TicketDialog from './TicketDialog.vue'
+
 const shareStore = useShareStoreWithOut()
 const embeddedStore = useEmbedded()
 const { toClipboard } = useClipboard()
@@ -181,6 +232,9 @@ const props = defineProps({
   weight: propTypes.number.def(0),
   isButton: propTypes.bool.def(false)
 })
+const originUuid = ref('')
+const customPwdRef = ref()
+const ticketDialogRef = ref()
 const pwdRef = ref(null)
 const expCheckbox = ref()
 const pwdCheckbox = ref()
@@ -251,6 +305,11 @@ const finishEditUuid = async () => {
   const uuidValid = await validateUuid()
   linkCustom.value = !uuidValid
 }
+const resetUuid = event => {
+  event.stopPropagation()
+  state.detailInfo.uuid = originUuid.value
+  finishEditUuid()
+}
 const copyPwd = async () => {
   if (shareEnable.value && passwdEnable.value) {
     if (!state.detailInfo.autoPwd && existErrorMsg('link-pwd-error-msg')) {
@@ -320,6 +379,7 @@ const loadShareInfo = cb => {
     .get({ url })
     .then(res => {
       state.detailInfo = { ...res.data }
+      originUuid.value = res.data.uuid
       setPageInfo()
     })
     .finally(() => {
@@ -400,9 +460,8 @@ const beforeClose = async done => {
       return
     }
   }
-  const pwdValid = validatePwdFormat()
   const uuidValid = await validateUuid()
-  if (pwdValid && uuidValid) {
+  if (uuidValid) {
     showTicket.value = false
     done()
   }
@@ -432,26 +491,6 @@ const validatePwdRequire = () => {
   }
   showCheckboxError(t('common.required'), pwdCheckbox)
   return false
-}
-const validatePwdFormat = () => {
-  if (!shareEnable.value || state.detailInfo.autoPwd) {
-    showPageError(null, pwdRef)
-    return true
-  }
-  const val = state.detailInfo.pwd
-  if (!val) {
-    showPageError(t('work_branch.password_null_hint'), pwdRef)
-    return false
-  }
-  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{4,10}$/
-  const regep = new RegExp(regex)
-  if (!regep.test(val)) {
-    showPageError(t('work_branch.password_hint'), pwdRef)
-    return false
-  }
-  showPageError(null, pwdRef)
-  resetPwdHandler(val, false)
-  return true
 }
 const showCheckboxError = (msg, target, className?: string) => {
   if (!target.value) {
@@ -575,8 +614,10 @@ const getUuid = () => {
 
 const openTicket = () => {
   showTicket.value = true
+  ticketDialogRef.value.open()
 }
 const closeTicket = () => {
+  ticketDialogRef.value.close()
   showTicket.value = false
 }
 const updateRequireTicket = val => {
@@ -586,6 +627,15 @@ const updateRequireTicket = val => {
 const execute = () => {
   share()
 }
+
+const openPwdDialog = () => {
+  customPwdRef.value.open(state.detailInfo.pwd)
+}
+const customPwdChange = val => {
+  state.detailInfo.pwd = val
+  resetPwdHandler(val, false)
+}
+
 defineExpose({
   execute
 })
@@ -660,45 +710,10 @@ onMounted(() => {
       margin-right: 10px;
     }
     .inline-share-item {
+      display: inline-flex;
+      column-gap: 12px;
       margin-left: 25px;
-      width: 220px;
-
-      :deep(.ed-input-group__append) {
-        width: initial !important;
-        background: none;
-        color: #1f2329;
-        padding: 0px 0px !important;
-        .share-pwd-opt {
-          display: flex;
-          padding: 1px;
-          .share-reset-container {
-            &:not(:first-child) {
-              border-left: 1px solid var(--ed-input-border-color) !important;
-            }
-            width: 45px;
-            display: flex;
-            justify-content: center;
-            &:hover {
-              cursor: pointer;
-              background-color: #f5f6f7;
-            }
-            &:active {
-              cursor: pointer;
-              background-color: #eff0f1;
-            }
-          }
-        }
-      }
-      :deep(.link-pwd-error-msg) {
-        color: red;
-        position: absolute;
-        z-index: 9;
-        font-size: 10px;
-        height: 10px;
-        top: 21px;
-        width: 350px;
-        left: 0px;
-      }
+      width: 332px;
     }
   }
 
@@ -737,9 +752,6 @@ onMounted(() => {
       }
     }
   }
-  .hidden-link-container {
-    display: none;
-  }
 }
 :deep(.checkbox-span) {
   display: flex;
@@ -755,6 +767,54 @@ onMounted(() => {
   }
   .pe-tips-hidden {
     display: none;
+  }
+}
+
+.share-input-suffix {
+  display: flex;
+  height: 30px;
+  line-height: 30px;
+  column-gap: 4px;
+  align-items: center;
+  .suffix-split {
+    height: 30px;
+    width: 1px;
+    display: inline-block;
+    background-color: #bbbfc4;
+    margin-right: 4px;
+  }
+  .done {
+    color: #3370ff;
+    &:hover {
+      background-color: #3370ff1a !important;
+    }
+  }
+  .input-suffix-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      background-color: #1f23291a;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+.link-input-readlonly {
+  :deep(.ed-input__wrapper) {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #8f959e;
+    &:hover {
+      box-shadow: 0 0 0 1px var(--ed-input-border-color, var(--ed-border-color)) inset;
+    }
+    input {
+      color: #646a73;
+    }
   }
 }
 </style>

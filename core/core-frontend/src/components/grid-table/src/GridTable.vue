@@ -15,7 +15,8 @@ const props = defineProps({
   tableData: propTypes.array,
   emptyDesc: propTypes.string,
   emptyImg: propTypes.string,
-  border: propTypes.bool.def(false)
+  border: propTypes.bool.def(false),
+  showEmptyImg: propTypes.bool.def(true)
 })
 
 const attrs = useAttrs()
@@ -136,6 +137,7 @@ defineExpose({
       </table-body>
       <template #empty>
         <empty-background
+          v-if="props.showEmptyImg"
           :description="props.emptyDesc ? props.emptyDesc : '暂无数据'"
           :img-type="imgType || 'noneWhite'"
         />
