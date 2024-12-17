@@ -80,6 +80,7 @@ import RealTimeGroup from '@/components/data-visualization/RealTimeGroup.vue'
 import { contextmenuStoreWithOut } from '@/store/modules/data-visualization/contextmenu'
 import RealTimeTab from '@/components/data-visualization/RealTimeTab.vue'
 import { useI18n } from '@/hooks/web/useI18n'
+import circlePackingOrigin from '@/assets/svg/circle-packing-origin.svg'
 const dropdownMore = ref(null)
 const lockStore = lockStoreWithOut()
 
@@ -329,7 +330,8 @@ const iconMap = {
   'word-cloud-origin': wordCloudOrigin,
   't-heatmap-origin': tHeatmapOrigin,
   'picture-group-origin': pictureGroupOrigin,
-  group: group
+  group: group,
+  'circle-packing-origin': circlePackingOrigin
 }
 const getIconName = item => {
   if (item.component === 'UserView') {
@@ -505,12 +507,11 @@ const canvasChange = () => {
                 }"
                 @click="onClick($event, transformIndex(index))"
               >
-                <div style="width: 22px; padding-left: 3px">
-                  <el-icon
-                    v-show="['Group', 'DeTabs'].includes(getComponent(index)?.component)"
-                    class="component-expand"
-                    @click="expandClick(getComponent(index))"
-                  >
+                <div
+                  v-show="['Group', 'DeTabs'].includes(getComponent(index)?.component)"
+                  style="width: 22px; padding-left: 3px"
+                >
+                  <el-icon class="component-expand" @click="expandClick(getComponent(index))">
                     <Icon
                       v-if="getComponent(index)?.expand"
                       name="dv-expand-down"

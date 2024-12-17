@@ -561,6 +561,8 @@ export default {
     embedded_secret_len_change:
       'The key length has changed. The key will be reset soon. Are you sure?',
     embedded_management: 'Embedded management',
+    embedded_del_confirm: 'Are you sure you want to delete {0} applications?',
+    embedded_search_placeholder: 'Search by application name, APP ID, and cross-domain settings.',
     to_5_applications: 'You can create up to 5 applications',
     update_app_secret: 'Are you sure you want to update the APP Secret?',
     operate_with_caution:
@@ -1917,7 +1919,13 @@ export default {
       'When Customizing, Supports SVG, JPG, JPEG, and PNG files up to 1MB',
     size_range: 'Size Range',
     x_axis_constant_line: 'X-axis Constant Line',
-    y_axis_constant_line: 'Y-axis Constant Line'
+    y_axis_constant_line: 'Y-axis Constant Line',
+    chart_circle_packing: 'Circle Packing Chart',
+    circle_packing_name: 'Circle Name',
+    circle_packing_value: 'Circle Size',
+    circle_packing_border_color: 'Border color',
+    circle_packing_border_width: 'Border width',
+    circle_packing_padding: 'Circle padding'
   },
   dataset: {
     scope_edit: 'Only effective when editing',
@@ -3375,6 +3383,7 @@ export default {
     edit_template: 'Edit template',
     import_template: 'Import template',
     template_name: 'Template name',
+    enter_template_name_hint: ' Please enter template name',
     keywords: 'Search keywords',
     catalog_name: 'Category name',
     search_result: 'Search results',
@@ -3937,7 +3946,7 @@ export default {
       'After data filling is enabled, the form data can be stored in the Datasource. Once enabled, it is not allowed to be closed later. ',
     new_folder: 'New folder',
     form_manage: 'Form management',
-    my_job: 'My report',
+    my_job: 'My reports',
     disable_data_fill_hint:
       'After closing data filling, the form data will fail to submit. Are you sure you want to close it? ',
     enable_data_fill_hint:
